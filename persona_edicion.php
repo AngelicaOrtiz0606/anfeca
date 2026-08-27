@@ -1,7 +1,7 @@
 <?php
 // ============================================================
 // SIDEANFECA - Gestión de Personas
-// Registrar nueva persona
+// Editar persona existente
 // ============================================================
 
 session_start();
@@ -124,6 +124,49 @@ $tipos_directorio = [
     4 => 'Instituciones'
 ];
 
+// ============================================================
+// OBTENER ID DE LA PERSONA
+// ============================================================
+
+$id = isset($_GET['id']) ? (int)$_GET['id'] : 1;
+
+// ============================================================
+// DATOS SIMULADOS DE LA PERSONA A EDITAR
+// ============================================================
+
+$persona = [
+    'id' => $id,
+    'nombre' => 'María',
+    'apellido_paterno' => 'González',
+    'apellido_materno' => 'Pérez',
+    'genero' => 'F',
+    'id_zona' => 7,
+    'institucion' => 'UNAM - Facultad de Contaduría',
+    'tipo_institucion' => 2,
+    'nivel_academico' => 2,
+    'activo' => true,
+    'telefonos' => [
+        ['lada' => '55', 'numero' => '1234 5678', 'extension' => '123', 'visible' => true]
+    ],
+    'correos' => [
+        ['valor' => 'maria.gonzalez@example.com', 'visible' => true]
+    ],
+    'celulares' => [
+        ['lada' => '55', 'numero' => '9876 5432', 'visible' => true]
+    ],
+    'cargos' => [
+        [
+            'nivel' => 1,
+            'nombre' => 'Presidenta',
+            'zona' => null,
+            'coordinacion' => null,
+            'fecha_inicio' => '2024-01-01',
+            'fecha_fin' => null,
+            'directorios' => [1, 3]
+        ]
+    ]
+];
+
 $mensaje = '';
 $error = '';
 
@@ -137,14 +180,49 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($_POST['zona'])) $errores[] = 'Zona Regional';
     if (empty($_POST['institucion'])) $errores[] = 'Institución';
     if (empty($_POST['nivel_academico'])) $errores[] = 'Nivel Académico';
-    if (empty($_POST['cargos'])) $errores[] = 'Al menos un cargo';
-    if (empty($_POST['telefono'])) $errores[] = 'Teléfono';
-    if (empty($_POST['correo'])) $errores[] = 'Correo Electrónico';
+    
+    // Validar cargos
+    if (empty($_POST['cargo_nivel']) || !is_array($_POST['cargo_nivel'])) {
+        $errores[] = 'Al menos un cargo';
+    } else {
+        $tiene_cargo = false;
+        foreach ($_POST['cargo_nivel'] as $nivel) {
+            if (!empty($nivel)) {
+                $tiene_cargo = true;
+                break;
+            }
+        }
+        if (!$tiene_cargo) $errores[] = 'Al menos un cargo';
+    }
+    
+    // Validar teléfonos
+    $tiene_telefono = false;
+    if (!empty($_POST['telefono_numero']) && is_array($_POST['telefono_numero'])) {
+        foreach ($_POST['telefono_numero'] as $num) {
+            if (!empty($num)) {
+                $tiene_telefono = true;
+                break;
+            }
+        }
+    }
+    if (!$tiene_telefono) $errores[] = 'Teléfono';
+    
+    // Validar correos
+    $tiene_correo = false;
+    if (!empty($_POST['correo_valor']) && is_array($_POST['correo_valor'])) {
+        foreach ($_POST['correo_valor'] as $correo) {
+            if (!empty($correo)) {
+                $tiene_correo = true;
+                break;
+            }
+        }
+    }
+    if (!$tiene_correo) $errores[] = 'Correo Electrónico';
     
     if (!empty($errores)) {
         $error = 'Complete los campos obligatorios: ' . implode(', ', $errores);
     } else {
-        $mensaje = 'Persona registrada exitosamente';
+        $mensaje = 'Persona actualizada exitosamente';
     }
 }
 
@@ -159,11 +237,11 @@ include 'template/menu.php';
         <div class="page-header">
             <div class="page-header-content">
                 <div class="page-header-icon">
-                    <i class="fas fa-user-plus"></i>
+                    <i class="fas fa-user-edit"></i>
                 </div>
                 <div>
-                    <h1 class="page-title">Registrar Nueva Persona</h1>
-                    <p class="page-subtitle">Complete los datos para registrar una persona en el sistema de directorios</p>
+                    <h1 class="page-title">Editar Persona</h1>
+                    <p class="page-subtitle">Modifique los datos de la persona en el sistema de directorios</p>
                 </div>
             </div>
             <div class="page-header-right">
@@ -198,7 +276,8 @@ include 'template/menu.php';
                 <span>Campos obligatorios</span>
             </div>
             
-            <form method="POST" id="formRegistro">
+            <form method="POST" id="formEdicion">
+                <input type="hidden" name="id" value="<?= $persona['id'] ?>">
                 
                 <!-- SECCIÓN 1: DATOS PERSONALES -->
                 <div class="form-section">
@@ -211,40 +290,49 @@ include 'template/menu.php';
                     <div class="form-grid">
                         <div class="form-group">
                             <label class="form-label required">Nombre(s)</label>
-                            <input type="text" name="nombre" class="form-control" placeholder="Ej. María" required>
+                            <input type="text" name="nombre" class="form-control" value="<?= htmlspecialchars($persona['nombre']) ?>" required>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label required">Apellido Paterno</label>
-                            <input type="text" name="apellido_paterno" class="form-control" placeholder="Ej. González" required>
+                            <input type="text" name="apellido_paterno" class="form-control" value="<?= htmlspecialchars($persona['apellido_paterno']) ?>" required>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label">Apellido Materno</label>
-                            <input type="text" name="apellido_materno" class="form-control" placeholder="Ej. Pérez">
+                            <input type="text" name="apellido_materno" class="form-control" value="<?= htmlspecialchars($persona['apellido_materno']) ?>">
                         </div>
 
                         <div class="form-group">
                             <label class="form-label required">Género</label>
                             <select name="genero" id="genero" class="form-control" required>
                                 <option value="">Seleccionar...</option>
-                                <option value="F">Femenino</option>
-                                <option value="M">Masculino</option>
+                                <option value="F" <?= $persona['genero'] == 'F' ? 'selected' : '' ?>>Femenino</option>
+                                <option value="M" <?= $persona['genero'] == 'M' ? 'selected' : '' ?>>Masculino</option>
                             </select>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label required">Nivel Académico</label>
                             <select name="nivel_academico" id="nivel_academico" class="form-control" required>
-                                <option value="">Primero seleccione un género</option>
+                                <option value="">Seleccionar nivel...</option>
+                                <?php foreach ($niveles_academicos as $nivel): ?>
+                                    <?php 
+                                    $abreviatura = $persona['genero'] == 'F' ? $nivel['abr_f'] : $nivel['abr_m'];
+                                    $selected = $persona['nivel_academico'] == $nivel['id'] ? 'selected' : '';
+                                    ?>
+                                    <option value="<?= $nivel['id'] ?>" data-abr-m="<?= $nivel['abr_m'] ?>" data-abr-f="<?= $nivel['abr_f'] ?>" <?= $selected ?>>
+                                        <?= $nivel['nombre'] . ' (' . $abreviatura . ')' ?>
+                                    </option>
+                                <?php endforeach; ?>
                             </select>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label required">Estado</label>
                             <select name="estado" class="form-control" required>
-                                <option value="1" selected>Activo</option>
-                                <option value="0">Inactivo</option>
+                                <option value="1" <?= $persona['activo'] ? 'selected' : '' ?>>Activo</option>
+                                <option value="0" <?= !$persona['activo'] ? 'selected' : '' ?>>Inactivo</option>
                             </select>
                         </div>
                     </div>
@@ -264,7 +352,9 @@ include 'template/menu.php';
                             <select name="tipo_institucion" id="tipo_institucion" class="form-control" required>
                                 <option value="">Seleccionar tipo...</option>
                                 <?php foreach ($tipos_institucion as $id => $nombre): ?>
-                                    <option value="<?= $id ?>"><?= htmlspecialchars($nombre) ?></option>
+                                    <option value="<?= $id ?>" <?= $persona['tipo_institucion'] == $id ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($nombre) ?>
+                                    </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -274,7 +364,9 @@ include 'template/menu.php';
                             <select name="zona" id="zona" class="form-control" required>
                                 <option value="">Seleccionar zona...</option>
                                 <?php foreach ($zonas_regionales as $id => $nombre): ?>
-                                    <option value="<?= $id ?>"><?= htmlspecialchars($nombre) ?></option>
+                                    <option value="<?= $id ?>" <?= $persona['id_zona'] == $id ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($nombre) ?>
+                                    </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -282,7 +374,14 @@ include 'template/menu.php';
                         <div class="form-group">
                             <label class="form-label required">Institución</label>
                             <select name="institucion" id="institucion" class="form-control" required>
-                                <option value="">Primero seleccione una zona</option>
+                                <option value="">Seleccionar institución...</option>
+                                <?php if (isset($instituciones_por_zona[$persona['id_zona']])): ?>
+                                    <?php foreach ($instituciones_por_zona[$persona['id_zona']] as $inst): ?>
+                                        <option value="<?= htmlspecialchars($inst) ?>" <?= $persona['institucion'] == $inst ? 'selected' : '' ?>>
+                                            <?= htmlspecialchars($inst) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
                             </select>
                         </div>
                     </div>
@@ -298,77 +397,92 @@ include 'template/menu.php';
                     <p class="section-hint">Seleccione el nivel, el cargo y las fechas de designación.</p>
 
                     <div id="cargos-container">
-                        <div class="cargo-item">
-                            <div class="cargo-grid-base">
-                                <div class="form-group">
-                                    <label class="form-label required">Nivel</label>
-                                    <select name="cargo_nivel[]" class="form-control select-cargo-nivel" required>
-                                        <option value="">Seleccionar nivel...</option>
-                                        <?php foreach ($niveles_cargo as $id => $nombre): ?>
-                                            <option value="<?= $id ?>"><?= htmlspecialchars($nombre) ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label required">Cargo</label>
-                                    <select name="cargo_nombre[]" class="form-control select-cargo-nombre" required>
-                                        <option value="">Primero seleccione un nivel</option>
-                                    </select>
-                                </div>
-                                
-                                <!-- Campos dinámicos para Regional (se muestran aquí antes de las fechas) -->
-                                <div class="cargo-detalle-regional" style="display:none; grid-column: span 2;">
-                                    <div class="cargo-grid-detalle">
-                                        <div class="form-group">
-                                            <label class="form-label required">Zona</label>
-                                            <select name="cargo_zona[]" class="form-control">
-                                                <option value="">Seleccionar zona...</option>
-                                                <?php foreach ($zonas_regionales as $id => $nombre): ?>
-                                                    <option value="<?= $id ?>"><?= htmlspecialchars($nombre) ?></option>
+                        <?php foreach ($persona['cargos'] as $index => $cargo): ?>
+                            <div class="cargo-item">
+                                <div class="cargo-grid-base">
+                                    <div class="form-group">
+                                        <label class="form-label required">Nivel</label>
+                                        <select name="cargo_nivel[]" class="form-control select-cargo-nivel" required>
+                                            <option value="">Seleccionar nivel...</option>
+                                            <?php foreach ($niveles_cargo as $id => $nombre): ?>
+                                                <option value="<?= $id ?>" <?= $cargo['nivel'] == $id ? 'selected' : '' ?>>
+                                                    <?= htmlspecialchars($nombre) ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label required">Cargo</label>
+                                        <select name="cargo_nombre[]" class="form-control select-cargo-nombre" required>
+                                            <option value="">Primero seleccione un nivel</option>
+                                            <?php if (isset($cargos_por_nivel[$cargo['nivel']])): ?>
+                                                <?php foreach ($cargos_por_nivel[$cargo['nivel']] as $nombre_cargo): ?>
+                                                    <option value="<?= htmlspecialchars($nombre_cargo) ?>" <?= $cargo['nombre'] == $nombre_cargo ? 'selected' : '' ?>>
+                                                        <?= htmlspecialchars($nombre_cargo) ?>
+                                                    </option>
                                                 <?php endforeach; ?>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="form-label">Coordinación</label>
-                                            <select name="cargo_coordinacion[]" class="form-control">
-                                                <option value="">Sin coordinación</option>
-                                                <?php foreach ($coordinaciones_nacionales as $id => $nombre): ?>
-                                                    <option value="<?= $id ?>"><?= htmlspecialchars($nombre) ?></option>
-                                                <?php endforeach; ?>
-                                            </select>
+                                            <?php endif; ?>
+                                        </select>
+                                    </div>
+                                    
+                                    <!-- Campos dinámicos para Regional -->
+                                    <div class="cargo-detalle-regional" style="<?= $cargo['nivel'] == 2 ? 'display:block;' : 'display:none;' ?> grid-column: span 2;">
+                                        <div class="cargo-grid-detalle">
+                                            <div class="form-group">
+                                                <label class="form-label required">Zona</label>
+                                                <select name="cargo_zona[]" class="form-control" <?= $cargo['nivel'] == 2 ? 'required' : '' ?>>
+                                                    <option value="">Seleccionar zona...</option>
+                                                    <?php foreach ($zonas_regionales as $id => $nombre): ?>
+                                                        <option value="<?= $id ?>" <?= $cargo['zona'] == $id ? 'selected' : '' ?>>
+                                                            <?= htmlspecialchars($nombre) ?>
+                                                        </option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label">Coordinación</label>
+                                                <select name="cargo_coordinacion[]" class="form-control">
+                                                    <option value="">Sin coordinación</option>
+                                                    <?php foreach ($coordinaciones_nacionales as $id => $nombre): ?>
+                                                        <option value="<?= $id ?>" <?= $cargo['coordinacion'] == $id ? 'selected' : '' ?>>
+                                                            <?= htmlspecialchars($nombre) ?>
+                                                        </option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="form-label required">Fecha Inicio</label>
+                                        <input type="date" name="cargo_fecha_inicio[]" class="form-control" value="<?= $cargo['fecha_inicio'] ?>" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Fecha Fin</label>
+                                        <input type="date" name="cargo_fecha_fin[]" class="form-control" value="<?= $cargo['fecha_fin'] ?>">
+                                    </div>
+                                    <div class="form-group" style="justify-content:flex-end;">
+                                        <button type="button" class="btn-remove" onclick="eliminarCargo(this)" style="<?= $index == 0 ? 'display:none;' : 'display:flex;' ?>">
+                                            <i class="fas fa-trash-alt"></i> Eliminar
+                                        </button>
+                                    </div>
                                 </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label required">Fecha Inicio</label>
-                                    <input type="date" name="cargo_fecha_inicio[]" class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Fecha Fin</label>
-                                    <input type="date" name="cargo_fecha_fin[]" class="form-control">
-                                </div>
-                                <div class="form-group" style="justify-content:flex-end;">
-                                    <button type="button" class="btn-remove" onclick="eliminarCargo(this)" style="display:none;">
-                                        <i class="fas fa-trash-alt"></i> Eliminar
-                                    </button>
-                                </div>
-                            </div>
 
-                            <!-- Directorios -->
-                            <div class="cargo-directorios" style="margin-top:1rem; padding-top:1rem; border-top:1px dashed #e0e0e0;">
-                                <label class="form-label required">Directorios</label>
-                                <p class="section-hint" style="margin:0 0 0.5rem 0; font-size:0.8rem;">Seleccione uno o más directorios donde se mostrará este cargo</p>
-                                <div class="directorios-grid">
-                                    <?php foreach ($tipos_directorio as $id => $nombre): ?>
-                                        <div class="checkbox-directorio">
-                                            <input type="checkbox" name="cargo_directorios[<?= $id ?>][]" value="<?= $id ?>" id="directorio_<?= $id ?>">
-                                            <label for="directorio_<?= $id ?>"><?= htmlspecialchars($nombre) ?></label>
-                                        </div>
-                                    <?php endforeach; ?>
+                                <!-- Directorios -->
+                                <div class="cargo-directorios" style="margin-top:1rem; padding-top:1rem; border-top:1px dashed #e0e0e0;">
+                                    <label class="form-label required">Directorios</label>
+                                    <p class="section-hint" style="margin:0 0 0.5rem 0; font-size:0.8rem;">Seleccione uno o más directorios donde se mostrará este cargo</p>
+                                    <div class="directorios-grid">
+                                        <?php foreach ($tipos_directorio as $id => $nombre): ?>
+                                            <div class="checkbox-directorio">
+                                                <input type="checkbox" name="cargo_directorios[<?= $id ?>][]" value="<?= $id ?>" id="directorio_<?= $id ?>_<?= $index ?>" <?= in_array($id, $cargo['directorios']) ? 'checked' : '' ?>>
+                                                <label for="directorio_<?= $id ?>_<?= $index ?>"><?= htmlspecialchars($nombre) ?></label>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        <?php endforeach; ?>
                     </div>
 
                     <button type="button" class="btn-add" onclick="agregarCargo()">
@@ -395,34 +509,36 @@ include 'template/menu.php';
                         </div>
                         
                         <div id="telefonos-container">
-                            <div class="contacto-item contacto-obligatorio" data-tipo="telefono">
-                                <div class="contacto-grid-telefono">
-                                    <div class="form-group">
-                                        <label class="form-label required">LADA</label>
-                                        <input type="text" name="telefono_lada[]" class="form-control" placeholder="55" required style="max-width:80px;">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label required">Número</label>
-                                        <input type="text" name="telefono_numero[]" class="form-control" placeholder="1234 5678" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Extensión</label>
-                                        <input type="text" name="telefono_extension[]" class="form-control" placeholder="1234">
-                                    </div>
-                                    <div class="form-group" style="justify-content:center;">
-                                        <label class="form-label">Visible</label>
-                                        <div class="toggle-modern">
-                                            <input type="checkbox" name="telefono_visible[]" value="1" checked disabled>
-                                            <span class="toggle-slider"></span>
+                            <?php foreach ($persona['telefonos'] as $index => $telefono): ?>
+                                <div class="contacto-item contacto-obligatorio" data-tipo="telefono">
+                                    <div class="contacto-grid-telefono">
+                                        <div class="form-group">
+                                            <label class="form-label required">LADA</label>
+                                            <input type="text" name="telefono_lada[]" class="form-control" placeholder="55" value="<?= htmlspecialchars($telefono['lada']) ?>" required style="max-width:80px;">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label required">Número</label>
+                                            <input type="text" name="telefono_numero[]" class="form-control" placeholder="1234 5678" value="<?= htmlspecialchars($telefono['numero']) ?>" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Extensión</label>
+                                            <input type="text" name="telefono_extension[]" class="form-control" placeholder="1234" value="<?= htmlspecialchars($telefono['extension']) ?>">
+                                        </div>
+                                        <div class="form-group" style="justify-content:center;">
+                                            <label class="form-label">Visible</label>
+                                            <div class="toggle-modern">
+                                                <input type="checkbox" name="telefono_visible[]" value="1" <?= $telefono['visible'] ? 'checked' : '' ?> <?= $index == 0 ? 'disabled' : '' ?>>
+                                                <span class="toggle-slider"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" style="justify-content:flex-end;">
+                                            <button type="button" class="btn-remove" onclick="eliminarContacto(this, 'telefonos-container')" style="<?= $index == 0 ? 'display:none;' : 'display:flex;' ?>">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
                                         </div>
                                     </div>
-                                    <div class="form-group" style="justify-content:flex-end;">
-                                        <button type="button" class="btn-remove" onclick="eliminarContacto(this, 'telefonos-container')" style="display:none;">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </div>
                                 </div>
-                            </div>
+                            <?php endforeach; ?>
                         </div>
                         <button type="button" class="btn-add-contacto" onclick="agregarContacto('telefonos-container', 'telefono')">
                             <i class="fas fa-plus-circle"></i> Agregar otro teléfono
@@ -436,26 +552,28 @@ include 'template/menu.php';
                         </div>
                         
                         <div id="correos-container">
-                            <div class="contacto-item contacto-obligatorio" data-tipo="correo">
-                                <div class="contacto-grid-correo">
-                                    <div class="form-group">
-                                        <label class="form-label required">Correo</label>
-                                        <input type="email" name="correo_valor[]" class="form-control" placeholder="ejemplo@correo.com" required>
-                                    </div>
-                                    <div class="form-group" style="justify-content:center;">
-                                        <label class="form-label">Visible</label>
-                                        <div class="toggle-modern">
-                                            <input type="checkbox" name="correo_visible[]" value="1" checked disabled>
-                                            <span class="toggle-slider"></span>
+                            <?php foreach ($persona['correos'] as $index => $correo): ?>
+                                <div class="contacto-item contacto-obligatorio" data-tipo="correo">
+                                    <div class="contacto-grid-correo">
+                                        <div class="form-group">
+                                            <label class="form-label required">Correo</label>
+                                            <input type="email" name="correo_valor[]" class="form-control" placeholder="ejemplo@correo.com" value="<?= htmlspecialchars($correo['valor']) ?>" required>
+                                        </div>
+                                        <div class="form-group" style="justify-content:center;">
+                                            <label class="form-label">Visible</label>
+                                            <div class="toggle-modern">
+                                                <input type="checkbox" name="correo_visible[]" value="1" <?= $correo['visible'] ? 'checked' : '' ?> <?= $index == 0 ? 'disabled' : '' ?>>
+                                                <span class="toggle-slider"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" style="justify-content:flex-end;">
+                                            <button type="button" class="btn-remove" onclick="eliminarContacto(this, 'correos-container')" style="<?= $index == 0 ? 'display:none;' : 'display:flex;' ?>">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
                                         </div>
                                     </div>
-                                    <div class="form-group" style="justify-content:flex-end;">
-                                        <button type="button" class="btn-remove" onclick="eliminarContacto(this, 'correos-container')" style="display:none;">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </div>
                                 </div>
-                            </div>
+                            <?php endforeach; ?>
                         </div>
                         <button type="button" class="btn-add-contacto" onclick="agregarContacto('correos-container', 'correo')">
                             <i class="fas fa-plus-circle"></i> Agregar otro correo
@@ -469,7 +587,32 @@ include 'template/menu.php';
                         </div>
                         
                         <div id="celulares-container">
-                            <!-- No hay celular por defecto, solo el botón para agregar -->
+                            <?php foreach ($persona['celulares'] as $index => $celular): ?>
+                                <div class="contacto-item contacto-opcional" data-tipo="celular">
+                                    <div class="contacto-grid-celular">
+                                        <div class="form-group">
+                                            <label class="form-label">LADA</label>
+                                            <input type="text" name="celular_lada[]" class="form-control" placeholder="55" value="<?= htmlspecialchars($celular['lada']) ?>" style="max-width:80px;">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label required">Número</label>
+                                            <input type="text" name="celular_numero[]" class="form-control" placeholder="9876 5432" value="<?= htmlspecialchars($celular['numero']) ?>" required>
+                                        </div>
+                                        <div class="form-group" style="justify-content:center;">
+                                            <label class="form-label">Visible</label>
+                                            <div class="toggle-modern">
+                                                <input type="checkbox" name="celular_visible[]" value="1" <?= $celular['visible'] ? 'checked' : '' ?>>
+                                                <span class="toggle-slider"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" style="justify-content:flex-end;">
+                                            <button type="button" class="btn-remove" onclick="eliminarCelular(this)">
+                                                <i class="fas fa-trash-alt"></i> Eliminar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
                         <button type="button" class="btn-add-contacto" onclick="agregarCelular()">
                             <i class="fas fa-plus-circle"></i> Agregar celular
@@ -480,10 +623,7 @@ include 'template/menu.php';
                 <!-- Botones -->
                 <div class="form-actions">
                     <button type="submit" class="btn-primary-modern">
-                        <i class="fas fa-save"></i> Guardar Persona
-                    </button>
-                    <button type="reset" class="btn-outline-modern">
-                        <i class="fas fa-undo"></i> Limpiar
+                        <i class="fas fa-save"></i> Actualizar Persona
                     </button>
                     <a href="personas.php" class="btn-outline-modern">
                         <i class="fas fa-times"></i> Cancelar
@@ -498,7 +638,7 @@ include 'template/menu.php';
 
 <style>
 /* ============================================================
-   ESTILOS MODERNOS - REGISTRO
+   ESTILOS - MISMO QUE REGISTRO
    ============================================================ */
 
 /* Page Header */
@@ -1133,6 +1273,7 @@ const coordinacionesNacionales = <?= json_encode($coordinaciones_nacionales) ?>;
 const cargosPorNivel = <?= json_encode($cargos_por_nivel) ?>;
 const zonasRegionales = <?= json_encode($zonas_regionales) ?>;
 const nivelesAcademicos = <?= json_encode($niveles_academicos) ?>;
+const institucionesPorZona = <?= json_encode($instituciones_por_zona) ?>;
 
 // ============================================================
 // NIVEL ACADÉMICO SEGÚN GÉNERO
@@ -1145,26 +1286,24 @@ document.addEventListener('DOMContentLoaded', function() {
     if (generoSelect && nivelSelect) {
         generoSelect.addEventListener('change', function() {
             const genero = this.value;
-            nivelSelect.innerHTML = '<option value="">Seleccionar nivel...</option>';
+            const options = nivelSelect.querySelectorAll('option');
             
-            if (genero) {
-                nivelesAcademicos.forEach(function(nivel) {
-                    const option = document.createElement('option');
-                    option.value = nivel.id;
-                    const abreviatura = genero === 'F' ? nivel.abr_f : nivel.abr_m;
-                    option.textContent = nivel.nombre + ' (' + abreviatura + ')';
-                    option.dataset.abrM = nivel.abr_m;
-                    option.dataset.abrF = nivel.abr_f;
-                    nivelSelect.appendChild(option);
-                });
-                nivelSelect.disabled = false;
-            } else {
-                nivelSelect.innerHTML = '<option value="">Primero seleccione un género</option>';
-                nivelSelect.disabled = true;
-            }
+            options.forEach(option => {
+                if (option.value) {
+                    const abrM = option.dataset.abrM || '';
+                    const abrF = option.dataset.abrF || '';
+                    const nombre = option.textContent.replace(/\([^)]*\)/g, '').trim();
+                    
+                    if (genero === 'F' && abrF) {
+                        option.textContent = nombre + ' (' + abrF + ')';
+                    } else if (genero === 'M' && abrM) {
+                        option.textContent = nombre + ' (' + abrM + ')';
+                    } else {
+                        option.textContent = nombre;
+                    }
+                }
+            });
         });
-        
-        nivelSelect.disabled = true;
     }
 });
 
@@ -1175,9 +1314,21 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
     const zonaSelect = document.getElementById('zona');
     const institucionSelect = document.getElementById('institucion');
-    const institucionesPorZona = <?= json_encode($instituciones_por_zona) ?>;
     
     if (zonaSelect && institucionSelect) {
+        const zonaInicial = parseInt(zonaSelect.value);
+        if (zonaInicial && institucionesPorZona[zonaInicial]) {
+            institucionesPorZona[zonaInicial].forEach(function(inst) {
+                const option = document.createElement('option');
+                option.value = inst;
+                option.textContent = inst;
+                institucionSelect.appendChild(option);
+            });
+            institucionSelect.disabled = false;
+        } else {
+            institucionSelect.disabled = true;
+        }
+        
         zonaSelect.addEventListener('change', function() {
             const zonaId = parseInt(this.value);
             institucionSelect.innerHTML = '<option value="">Seleccionar institución...</option>';
@@ -1194,7 +1345,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 institucionSelect.disabled = true;
             }
         });
-        institucionSelect.disabled = true;
     }
 });
 
@@ -1281,14 +1431,6 @@ function eliminarCargo(btn) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    const primerCargo = document.querySelector('#cargos-container .cargo-item');
-    if (primerCargo) {
-        const btnEliminar = primerCargo.querySelector('.btn-remove');
-        if (btnEliminar) btnEliminar.style.display = 'none';
-    }
-});
-
 // ============================================================
 // CONTACTOS - AGREGAR / ELIMINAR
 // ============================================================
@@ -1367,21 +1509,6 @@ function agregarCelular() {
 function eliminarCelular(btn) {
     btn.closest('.contacto-item').remove();
 }
-
-// Ocultar botones eliminar de los primeros contactos
-document.addEventListener('DOMContentLoaded', function() {
-    const primerTelefono = document.querySelector('#telefonos-container .contacto-item');
-    if (primerTelefono) {
-        const btn = primerTelefono.querySelector('.btn-remove');
-        if (btn) btn.style.display = 'none';
-    }
-    
-    const primerCorreo = document.querySelector('#correos-container .contacto-item');
-    if (primerCorreo) {
-        const btn = primerCorreo.querySelector('.btn-remove');
-        if (btn) btn.style.display = 'none';
-    }
-});
 </script>
 
 <?php include 'template/footer.php'; ?>

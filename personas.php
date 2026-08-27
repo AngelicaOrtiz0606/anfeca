@@ -25,6 +25,7 @@ $zonas_regionales = [
     7 => 'Ciudad de México'
 ];
 
+// Personas simuladas (con estado que se puede modificar)
 $personas = [
     [
         'id' => 1,
@@ -152,6 +153,11 @@ usort($personas_filtradas, function($a, $b) use ($orden) {
     }
 });
 
+// Guardar personas en sesión para persistencia (simulación)
+if (!isset($_SESSION['personas'])) {
+    $_SESSION['personas'] = $personas;
+}
+
 include 'template/header.php';
 include 'template/menu.php';
 ?>
@@ -161,9 +167,14 @@ include 'template/menu.php';
         
         <!-- Encabezado -->
         <div class="page-header">
-            <div>
-                <h1 class="page-title">Gestión de Personas</h1>
-                <p class="page-subtitle">Administre las personas registradas en el sistema</p>
+            <div class="page-header-content">
+                <div class="page-header-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div>
+                    <h1 class="page-title">Gestión de Personas</h1>
+                    <p class="page-subtitle">Administre las personas registradas en el sistema de directorios</p>
+                </div>
             </div>
             <div class="page-header-right">
                 <button onclick="descargarCSV()" class="btn-outline-modern">
@@ -256,12 +267,9 @@ include 'template/menu.php';
                                 }
                                 $zona_nombre = $zonas_regionales[$persona['id_zona']] ?? 'Sin zona';
                             ?>
-                            <tr data-id="<?= $persona['id'] ?>">
+                            <tr data-id="<?= $persona['id'] ?>" data-activo="<?= $persona['activo'] ? 'true' : 'false' ?>">
                                 <td>
                                     <div class="persona-cell">
-                                        <div class="persona-avatar" style="background: <?= $persona['genero'] == 'F' ? '#8B0000' : '#1a1a1a' ?>;">
-                                            <?= substr($persona['nombre'], 0, 1) . substr($persona['apellido_paterno'], 0, 1) ?>
-                                        </div>
                                         <div class="persona-nombre"><?= htmlspecialchars($nombre_completo) ?></div>
                                     </div>
                                 </td>
@@ -284,11 +292,11 @@ include 'template/menu.php';
                                             <i class="fas fa-pen"></i>
                                         </a>
                                         <?php if ($persona['activo']): ?>
-                                            <button onclick="desactivar(<?= $persona['id'] ?>)" class="btn-accion btn-desactivar" title="Desactivar">
+                                            <button onclick="desactivarPersona(<?= $persona['id'] ?>)" class="btn-accion btn-desactivar" title="Desactivar">
                                                 <i class="fas fa-user-slash"></i>
                                             </button>
                                         <?php else: ?>
-                                            <button onclick="activar(<?= $persona['id'] ?>)" class="btn-accion btn-activar" title="Activar">
+                                            <button onclick="activarPersona(<?= $persona['id'] ?>)" class="btn-accion btn-activar" title="Activar">
                                                 <i class="fas fa-user-check"></i>
                                             </button>
                                         <?php endif; ?>
@@ -324,30 +332,49 @@ include 'template/menu.php';
 .page-header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 1.75rem;
+    align-items: center;
+    margin-bottom: 2rem;
     gap: 1.5rem;
     flex-wrap: wrap;
 }
 
+.page-header-content {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.page-header-icon {
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, #8B0000, #5C0000);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    box-shadow: 0 4px 15px rgba(139, 0, 0, 0.25);
+}
+
 .page-title {
-    font-size: 1.75rem;
+    font-size: 1.65rem;
     font-weight: 700;
     color: #1a1a1a;
     margin: 0;
 }
 
 .page-subtitle {
-    color: #6b6b6b;
-    margin: 0.2rem 0 0 0;
-    font-size: 0.95rem;
+    color: #888;
+    margin: 0.1rem 0 0 0;
+    font-size: 0.92rem;
 }
 
 .page-header-right {
     display: flex;
     gap: 0.75rem;
     align-items: center;
-    flex-wrap: wrap;
 }
 
 /* Botones */
@@ -355,7 +382,7 @@ include 'template/menu.php';
     display: inline-flex;
     align-items: center;
     gap: 0.6rem;
-    padding: 0.7rem 1.5rem;
+    padding: 0.75rem 1.8rem;
     background: linear-gradient(135deg, #8B0000, #5C0000);
     color: white;
     border: none;
@@ -378,7 +405,7 @@ include 'template/menu.php';
     display: inline-flex;
     align-items: center;
     gap: 0.6rem;
-    padding: 0.7rem 1.5rem;
+    padding: 0.75rem 1.5rem;
     background: white;
     color: #4a4a4a;
     border: 2px solid #e8e8e8;
@@ -574,24 +601,10 @@ include 'template/menu.php';
     background: #faf8f8;
 }
 
-/* Persona cell */
+/* Persona cell - SIN INICIALES */
 .persona-cell {
     display: flex;
     align-items: center;
-    gap: 0.85rem;
-}
-
-.persona-avatar {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: 700;
-    font-size: 0.75rem;
-    flex-shrink: 0;
 }
 
 .persona-nombre {
@@ -749,6 +762,11 @@ include 'template/menu.php';
         align-items: stretch;
     }
 
+    .page-header-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
     .page-title {
         font-size: 1.4rem;
     }
@@ -774,12 +792,6 @@ include 'template/menu.php';
         font-size: 0.8rem;
     }
 
-    .persona-avatar {
-        width: 32px;
-        height: 32px;
-        font-size: 0.65rem;
-    }
-
     .btn-accion {
         width: 30px;
         height: 30px;
@@ -790,7 +802,7 @@ include 'template/menu.php';
 
 <script>
 // ============================================================
-// FILTROS EN TIEMPO REAL (búsqueda automática)
+// BÚSQUEDA Y FILTROS EN TIEMPO REAL
 // ============================================================
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -800,7 +812,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const filtroOrden = document.getElementById('filtroOrden');
     const formFiltros = document.getElementById('formFiltros');
     
-    // Búsqueda automática al escribir (con delay)
     let timeoutId = null;
     
     buscarInput.addEventListener('input', function() {
@@ -810,7 +821,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 400);
     });
     
-    // Los selects también envían automáticamente
     filtroZona.addEventListener('change', function() {
         formFiltros.submit();
     });
@@ -825,56 +835,167 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ============================================================
-// ACCIONES
+// ACTIVAR / DESACTIVAR PERSONA (CON ACTUALIZACIÓN DINÁMICA)
 // ============================================================
 
-function desactivar(id) {
-    if (confirm('¿Está seguro de desactivar esta persona?')) {
-        alert('Persona desactivada (simulación)');
-        location.reload();
+function desactivarPersona(id) {
+    if (!confirm('¿Está seguro de desactivar esta persona?')) {
+        return;
     }
+    
+    // Buscar la fila en la tabla
+    const fila = document.querySelector(`tr[data-id="${id}"]`);
+    if (!fila) {
+        alert('Error: No se encontró la persona en la tabla');
+        return;
+    }
+    
+    // Actualizar en el arreglo de datos (simulación)
+    // En un sistema real, aquí iría una llamada AJAX
+    
+    // Actualizar visualmente la fila
+    const celdaEstado = fila.querySelectorAll('td')[4];
+    const celdaAcciones = fila.querySelectorAll('td')[5];
+    
+    // Actualizar estado
+    celdaEstado.innerHTML = `<span class="status-inactive"><i class="fas fa-circle"></i> Inactivo</span>`;
+    
+    // Actualizar botones de acción
+    celdaAcciones.innerHTML = `
+        <div class="acciones-group">
+            <a href="persona_consulta.php?id=${id}" class="btn-accion btn-ver" title="Consultar">
+                <i class="fas fa-eye"></i>
+            </a>
+            <a href="persona_edicion.php?id=${id}" class="btn-accion btn-editar" title="Editar">
+                <i class="fas fa-pen"></i>
+            </a>
+            <button onclick="activarPersona(${id})" class="btn-accion btn-activar" title="Activar">
+                <i class="fas fa-user-check"></i>
+            </button>
+        </div>
+    `;
+    
+    // Actualizar data attribute
+    fila.dataset.activo = 'false';
+    
+    // Mostrar notificación
+    mostrarNotificacion('Persona desactivada exitosamente', 'success');
 }
 
-function activar(id) {
-    if (confirm('¿Está seguro de activar esta persona?')) {
-        alert('Persona activada (simulación)');
-        location.reload();
+function activarPersona(id) {
+    if (!confirm('¿Está seguro de activar esta persona?')) {
+        return;
     }
+    
+    // Buscar la fila en la tabla
+    const fila = document.querySelector(`tr[data-id="${id}"]`);
+    if (!fila) {
+        alert('Error: No se encontró la persona en la tabla');
+        return;
+    }
+    
+    // Actualizar visualmente la fila
+    const celdaEstado = fila.querySelectorAll('td')[4];
+    const celdaAcciones = fila.querySelectorAll('td')[5];
+    
+    // Actualizar estado
+    celdaEstado.innerHTML = `<span class="status-active"><i class="fas fa-circle"></i> Activo</span>`;
+    
+    // Actualizar botones de acción
+    celdaAcciones.innerHTML = `
+        <div class="acciones-group">
+            <a href="persona_consulta.php?id=${id}" class="btn-accion btn-ver" title="Consultar">
+                <i class="fas fa-eye"></i>
+            </a>
+            <a href="persona_edicion.php?id=${id}" class="btn-accion btn-editar" title="Editar">
+                <i class="fas fa-pen"></i>
+            </a>
+            <button onclick="desactivarPersona(${id})" class="btn-accion btn-desactivar" title="Desactivar">
+                <i class="fas fa-user-slash"></i>
+            </button>
+        </div>
+    `;
+    
+    // Actualizar data attribute
+    fila.dataset.activo = 'true';
+    
+    // Mostrar notificación
+    mostrarNotificacion('Persona activada exitosamente', 'success');
 }
 
 // ============================================================
-// EXPORTAR CSV (visual)
+// NOTIFICACIONES
+// ============================================================
+
+function mostrarNotificacion(mensaje, tipo) {
+    // Crear notificación
+    const notificacion = document.createElement('div');
+    notificacion.className = `alert-modern alert-${tipo}`;
+    notificacion.style.cssText = `
+        position: fixed;
+        top: 90px;
+        right: 20px;
+        z-index: 9999;
+        max-width: 400px;
+        animation: slideInRight 0.5s ease;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    `;
+    notificacion.innerHTML = `
+        <i class="fas fa-check-circle"></i>
+        <div>
+            <strong>¡Éxito!</strong> ${mensaje}
+        </div>
+    `;
+    
+    document.body.appendChild(notificacion);
+    
+    // Eliminar después de 3 segundos
+    setTimeout(function() {
+        notificacion.style.animation = 'slideOutRight 0.5s ease';
+        setTimeout(function() {
+            notificacion.remove();
+        }, 500);
+    }, 3000);
+}
+
+// ============================================================
+// EXPORTAR CSV
 // ============================================================
 
 function descargarCSV() {
-    // Simulación de descarga CSV
     alert('Funcionalidad de exportación CSV en desarrollo.\nSe exportarán los datos mostrados actualmente.');
-    
-    // Aquí iría la lógica real de exportación
-    // Por ahora solo mostramos un mensaje
-    /*
-    const tabla = document.getElementById('tablaPersonas');
-    const filas = tabla.querySelectorAll('tbody tr');
-    let csv = 'Nombre,Institución,Zona,Cargo,Estado\n';
-    
-    filas.forEach(fila => {
-        if (fila.classList.contains('empty-row')) return;
-        const celdas = fila.querySelectorAll('td');
-        const nombre = celdas[0].textContent.trim();
-        const institucion = celdas[1].textContent.trim();
-        const zona = celdas[2].textContent.trim();
-        const cargo = celdas[3].textContent.trim();
-        const estado = celdas[4].textContent.trim();
-        csv += `"${nombre}","${institucion}","${zona}","${cargo}","${estado}"\n`;
-    });
-    
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'personas_anfeca.csv';
-    link.click();
-    */
 }
+
+// ============================================================
+// ANIMACIONES CSS PARA NOTIFICACIONES
+// ============================================================
+
+// Agregar estilos dinámicamente
+const styleNotificaciones = document.createElement('style');
+styleNotificaciones.textContent = `
+    @keyframes slideInRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes slideOutRight {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+`;
+document.head.appendChild(styleNotificaciones);
 </script>
 
 <?php include 'template/footer.php'; ?>
