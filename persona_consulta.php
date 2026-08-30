@@ -18,7 +18,7 @@ if (!isset($_SESSION['usuario'])) {
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 1;
 
 // ============================================================
-// DATOS SIMULADOS DE LA PERSONA
+// DATOS SIMULADOS DE LAS PERSONAS (mismos que en personas.php)
 // ============================================================
 
 $zonas_regionales = [
@@ -50,41 +50,282 @@ $tipos_directorio = [
     4 => 'Instituciones'
 ];
 
-$persona = [
-    'id' => $id,
-    'nombre' => 'María',
-    'apellido_paterno' => 'González',
-    'apellido_materno' => 'Pérez',
-    'genero' => 'F',
-    'id_zona' => 7,
-    'zona_nombre' => 'Ciudad de México',
-    'institucion' => 'UNAM - Facultad de Contaduría',
-    'tipo_institucion' => 2,
-    'tipo_institucion_nombre' => 'Facultad',
-    'nivel_academico' => 'Maestría (Mtra.)',
-    'activo' => true,
-    'telefonos' => [
-        ['lada' => '55', 'numero' => '1234 5678', 'extension' => '123', 'visible' => true]
+// Datos de todas las personas (mismos que en personas.php)
+$personas_data = [
+    [
+        'id' => 1,
+        'num_afiliacion' => '9801001',
+        'nombre' => 'María',
+        'apellido_paterno' => 'González',
+        'apellido_materno' => 'Pérez',
+        'genero' => 'F',
+        'id_zona' => 7,
+        'institucion' => 'UNAM - Facultad de Contaduría',
+        'tipo_institucion' => 2,
+        'nivel_academico' => 'Maestría (Mtra.)',
+        'telefonos' => [
+            ['lada' => '55', 'numero' => '1234 5678', 'extension' => '123', 'visible' => true]
+        ],
+        'correos' => [
+            ['valor' => 'maria.gonzalez@example.com', 'visible' => true]
+        ],
+        'celulares' => [
+            ['lada' => '55', 'numero' => '9876 5432', 'visible' => true]
+        ],
+        'cargos' => [
+            [
+                'nivel' => 1,
+                'nivel_nombre' => 'Nacional',
+                'nombre' => 'Presidenta',
+                'zona' => null,
+                'coordinacion' => null,
+                'fecha_inicio' => '01/01/2024',
+                'fecha_fin' => null,
+                'directorios' => ['Consejo Nacional Directivo', 'Coordinaciones Nacionales']
+            ]
+        ]
     ],
-    'correos' => [
-        ['valor' => 'maria.gonzalez@example.com', 'visible' => true]
+    [
+        'id' => 2,
+        'num_afiliacion' => '9801002',
+        'nombre' => 'Juan',
+        'apellido_paterno' => 'Martínez',
+        'apellido_materno' => 'López',
+        'genero' => 'M',
+        'id_zona' => 7,
+        'institucion' => 'IPN - ESCOM',
+        'tipo_institucion' => 2,
+        'nivel_academico' => 'Doctorado (Dr.)',
+        'telefonos' => [
+            ['lada' => '55', 'numero' => '9876 5432', 'extension' => '', 'visible' => true]
+        ],
+        'correos' => [
+            ['valor' => 'juan.martinez@example.com', 'visible' => true]
+        ],
+        'celulares' => [
+            ['lada' => '55', 'numero' => '9876 5432', 'visible' => false]
+        ],
+        'cargos' => [
+            [
+                'nivel' => 1,
+                'nivel_nombre' => 'Nacional',
+                'nombre' => 'Coordinador Nacional',
+                'zona' => null,
+                'coordinacion' => null,
+                'fecha_inicio' => '15/03/2024',
+                'fecha_fin' => null,
+                'directorios' => ['Consejo Nacional Directivo']
+            ]
+        ]
     ],
-    'celulares' => [
-        ['lada' => '55', 'numero' => '9876 5432', 'visible' => true]
+    [
+        'id' => 3,
+        'num_afiliacion' => '9801003',
+        'nombre' => 'Ana',
+        'apellido_paterno' => 'Sánchez',
+        'apellido_materno' => 'Ramírez',
+        'genero' => 'F',
+        'id_zona' => 3,
+        'institucion' => 'UAQ - Querétaro',
+        'tipo_institucion' => 1,
+        'nivel_academico' => 'Licenciatura (Lic.)',
+        'telefonos' => [
+            ['lada' => '44', 'numero' => '1234 5678', 'extension' => '', 'visible' => true]
+        ],
+        'correos' => [
+            ['valor' => 'ana.sanchez@example.com', 'visible' => true]
+        ],
+        'celulares' => [
+            ['lada' => '44', 'numero' => '9876 5432', 'visible' => false]
+        ],
+        'cargos' => [
+            [
+                'nivel' => 1,
+                'nivel_nombre' => 'Nacional',
+                'nombre' => 'Secretaria General',
+                'zona' => null,
+                'coordinacion' => null,
+                'fecha_inicio' => '01/06/2024',
+                'fecha_fin' => null,
+                'directorios' => ['Consejos Regionales', 'Coordinaciones Nacionales']
+            ],
+            [
+                'nivel' => 2,
+                'nivel_nombre' => 'Regional',
+                'nombre' => 'Coordinadora Regional',
+                'zona' => 'Centro',
+                'coordinacion' => 'Academia ANFECA',
+                'fecha_inicio' => '01/01/2023',
+                'fecha_fin' => '31/12/2023',
+                'directorios' => ['Consejos Regionales']
+            ]
+        ]
     ],
-    'cargos' => [
-        [
-            'nivel' => 1,
-            'nivel_nombre' => 'Nacional',
-            'nombre' => 'Presidenta',
-            'zona' => null,
-            'coordinacion' => null,
-            'fecha_inicio' => '01/01/2024',
-            'fecha_fin' => null,
-            'directorios' => ['Consejo Nacional Directivo', 'Coordinaciones Nacionales']
+    [
+        'id' => 4,
+        'num_afiliacion' => '9801004',
+        'nombre' => 'Carlos',
+        'apellido_paterno' => 'Hernández',
+        'apellido_materno' => 'Díaz',
+        'genero' => 'M',
+        'id_zona' => 4,
+        'institucion' => 'UDG - Guadalajara',
+        'tipo_institucion' => 1,
+        'nivel_academico' => 'Maestría (Mtro.)',
+        'telefonos' => [
+            ['lada' => '33', 'numero' => '1234 5678', 'extension' => '', 'visible' => true]
+        ],
+        'correos' => [
+            ['valor' => 'carlos.hernandez@example.com', 'visible' => true]
+        ],
+        'celulares' => [
+            ['lada' => '33', 'numero' => '9876 5432', 'visible' => true]
+        ],
+        'cargos' => [
+            [
+                'nivel' => 2,
+                'nivel_nombre' => 'Regional',
+                'nombre' => 'Director Regional',
+                'zona' => 'Centro Occidente',
+                'coordinacion' => null,
+                'fecha_inicio' => '01/02/2024',
+                'fecha_fin' => null,
+                'directorios' => ['Consejos Regionales']
+            ]
+        ]
+    ],
+    [
+        'id' => 5,
+        'num_afiliacion' => '9801005',
+        'nombre' => 'Laura',
+        'apellido_paterno' => 'Torres',
+        'apellido_materno' => 'Vega',
+        'genero' => 'F',
+        'id_zona' => 1,
+        'institucion' => 'UABC - Mexicali',
+        'tipo_institucion' => 2,
+        'nivel_academico' => 'Licenciatura (Lic.)',
+        'telefonos' => [
+            ['lada' => '66', 'numero' => '1234 5678', 'extension' => '', 'visible' => true]
+        ],
+        'correos' => [
+            ['valor' => 'laura.torres@example.com', 'visible' => true]
+        ],
+        'celulares' => [
+            ['lada' => '66', 'numero' => '9876 5432', 'visible' => false]
+        ],
+        'cargos' => [
+            [
+                'nivel' => 2,
+                'nivel_nombre' => 'Regional',
+                'nombre' => 'Coordinadora Regional',
+                'zona' => 'Noroeste',
+                'coordinacion' => 'Certificación Académica',
+                'fecha_inicio' => '01/07/2024',
+                'fecha_fin' => null,
+                'directorios' => ['Coordinaciones Nacionales']
+            ]
+        ]
+    ],
+    [
+        'id' => 6,
+        'num_afiliacion' => '9801006',
+        'nombre' => 'Roberto',
+        'apellido_paterno' => 'Mendoza',
+        'apellido_materno' => 'Cruz',
+        'genero' => 'M',
+        'id_zona' => 2,
+        'institucion' => 'UANL - San Nicolás',
+        'tipo_institucion' => 1,
+        'nivel_academico' => 'Maestría (Mtro.)',
+        'telefonos' => [
+            ['lada' => '81', 'numero' => '1234 5678', 'extension' => '', 'visible' => true]
+        ],
+        'correos' => [
+            ['valor' => 'roberto.mendoza@example.com', 'visible' => true]
+        ],
+        'celulares' => [
+            ['lada' => '81', 'numero' => '9876 5432', 'visible' => false]
+        ],
+        'cargos' => [
+            [
+                'nivel' => 2,
+                'nivel_nombre' => 'Regional',
+                'nombre' => 'Secretario Regional',
+                'zona' => 'Norte',
+                'coordinacion' => null,
+                'fecha_inicio' => '01/01/2023',
+                'fecha_fin' => '01/01/2024',
+                'directorios' => ['Instituciones']
+            ]
+        ]
+    ],
+    [
+        'id' => 7,
+        'num_afiliacion' => '9801007',
+        'nombre' => 'Patricia',
+        'apellido_paterno' => 'Flores',
+        'apellido_materno' => 'Reyes',
+        'genero' => 'F',
+        'id_zona' => 5,
+        'institucion' => 'UAEH - Pachuca',
+        'tipo_institucion' => 2,
+        'nivel_academico' => 'Doctorado (Dra.)',
+        'telefonos' => [
+            ['lada' => '77', 'numero' => '1234 5678', 'extension' => '', 'visible' => true]
+        ],
+        'correos' => [
+            ['valor' => 'patricia.flores@example.com', 'visible' => true]
+        ],
+        'celulares' => [
+            ['lada' => '77', 'numero' => '9876 5432', 'visible' => true]
+        ],
+        'cargos' => [
+            [
+                'nivel' => 2,
+                'nivel_nombre' => 'Regional',
+                'nombre' => 'Coordinadora Regional',
+                'zona' => 'Centro Sur',
+                'coordinacion' => 'Investigación',
+                'fecha_inicio' => '01/04/2024',
+                'fecha_fin' => null,
+                'directorios' => ['Coordinaciones Nacionales', 'Instituciones']
+            ]
         ]
     ]
 ];
+
+// Buscar la persona por ID
+$persona = null;
+foreach ($personas_data as $p) {
+    if ($p['id'] == $id) {
+        $persona = $p;
+        break;
+    }
+}
+
+// Si no se encuentra la persona, mostrar error
+if (!$persona) {
+    echo '<div class="main-content"><div class="dashboard-container"><div class="alert-modern alert-error"><i class="fas fa-exclamation-circle"></i><div><strong>Error</strong> No se encontró la persona solicitada.</div></div></div></div>';
+    include 'template/footer.php';
+    exit;
+}
+
+// Determinar estado basado en cargos
+$tiene_cargo_activo = false;
+foreach ($persona['cargos'] as $cargo) {
+    if ($cargo['fecha_fin'] === null) {
+        $tiene_cargo_activo = true;
+        break;
+    }
+}
+$persona['activo'] = $tiene_cargo_activo;
+
+// Agregar zona_nombre
+$persona['zona_nombre'] = $zonas_regionales[$persona['id_zona']] ?? 'Sin zona';
+
+// Agregar tipo_institucion_nombre
+$persona['tipo_institucion_nombre'] = $tipos_institucion[$persona['tipo_institucion']] ?? 'No especificado';
 
 include 'template/header.php';
 include 'template/menu.php';
@@ -129,6 +370,10 @@ include 'template/menu.php';
                     <div class="profile-info">
                         <h2><?= htmlspecialchars($persona['nombre'] . ' ' . $persona['apellido_paterno'] . ' ' . $persona['apellido_materno']) ?></h2>
                         <div class="profile-meta">
+                            <span class="profile-afiliacion">
+                                <span class="afiliacion-label">Núm. Afiliación:</span>
+                                <span class="afiliacion-value"><?= htmlspecialchars($persona['num_afiliacion']) ?></span>
+                            </span>
                             <span class="profile-status <?= $persona['activo'] ? 'status-active' : 'status-inactive' ?>">
                                 <span class="status-dot"></span> <?= $persona['activo'] ? 'Activo' : 'Inactivo' ?>
                             </span>
@@ -238,11 +483,18 @@ include 'template/menu.php';
                 <div class="detail-card-body">
                     <?php if (!empty($persona['cargos'])): ?>
                         <div class="cargos-grid-detail">
-                            <?php foreach ($persona['cargos'] as $cargo): ?>
-                                <div class="cargo-detail-card">
+                            <?php foreach ($persona['cargos'] as $cargo): 
+                                $es_activo = $cargo['fecha_fin'] === null;
+                            ?>
+                                <div class="cargo-detail-card <?= $es_activo ? 'cargo-activo' : 'cargo-inactivo' ?>">
                                     <div class="cargo-detail-header">
                                         <span class="cargo-detail-nivel"><?= htmlspecialchars($cargo['nivel_nombre']) ?></span>
                                         <span class="cargo-detail-nombre"><?= htmlspecialchars($cargo['nombre']) ?></span>
+                                        <?php if ($es_activo): ?>
+                                            <span class="cargo-status-activo">Activo</span>
+                                        <?php else: ?>
+                                            <span class="cargo-status-inactivo">Finalizado</span>
+                                        <?php endif; ?>
                                     </div>
                                     <div class="cargo-detail-body">
                                         <div class="cargo-detail-fechas">
@@ -284,7 +536,7 @@ include 'template/menu.php';
 
 <style>
 /* ============================================================
-   ESTILOS - CONSULTA (VERSIÓN SIMPLIFICADA)
+   ESTILOS - CONSULTA
    ============================================================ */
 
 /* Page Header */
@@ -459,10 +711,31 @@ include 'template/menu.php';
 
 .profile-meta {
     display: flex;
-    gap: 1.25rem;
+    gap: 1.5rem;
     flex-wrap: wrap;
     align-items: center;
     margin-bottom: 0.3rem;
+}
+
+.profile-afiliacion {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+}
+
+.afiliacion-label {
+    color: #888;
+    font-weight: 500;
+}
+
+.afiliacion-value {
+    font-weight: 600;
+    color: #1a1a1a;
+    font-family: monospace;
+    background: #f0ecec;
+    padding: 0.1rem 0.5rem;
+    border-radius: 4px;
 }
 
 .profile-status {
@@ -608,13 +881,20 @@ include 'template/menu.php';
     border-color: #d4c5c4;
 }
 
+.cargo-detail-card.cargo-activo {
+    border-left: 4px solid #2e7d32;
+}
+
+.cargo-detail-card.cargo-inactivo {
+    border-left: 4px solid #c62828;
+}
+
 .cargo-detail-header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 0.5rem;
     margin-bottom: 0.75rem;
     flex-wrap: wrap;
-    gap: 0.5rem;
 }
 
 .cargo-detail-nivel {
@@ -632,6 +912,28 @@ include 'template/menu.php';
     font-size: 1rem;
     font-weight: 600;
     color: #1a1a1a;
+}
+
+.cargo-status-activo {
+    font-size: 0.6rem;
+    font-weight: 700;
+    padding: 0.15rem 0.6rem;
+    border-radius: 20px;
+    background: #e8f5e9;
+    color: #2e7d32;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.cargo-status-inactivo {
+    font-size: 0.6rem;
+    font-weight: 700;
+    padding: 0.15rem 0.6rem;
+    border-radius: 20px;
+    background: #fce4ec;
+    color: #c62828;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .cargo-detail-body {

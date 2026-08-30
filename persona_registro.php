@@ -58,6 +58,37 @@ $instituciones_por_zona = [
     7 => ['UNAM - Facultad de Contaduría', 'UAM - Azcapotzalco', 'IPN - ESCOM', 'UAM - Iztapalapa']
 ];
 
+$num_afiliacion_por_institucion = [
+    'UABC - Mexicali' => '9801001',
+    'UABC - Tijuana' => '9801002',
+    'ITSON - Cd. Obregón' => '9801003',
+    'UAS - Culiacán' => '9801004',
+    'UANL - San Nicolás' => '9801005',
+    'UAT - Ciudad Victoria' => '9801006',
+    'UAdeC - Saltillo' => '9801007',
+    'UACH - Chihuahua' => '9801008',
+    'UAQ - Querétaro' => '9801009',
+    'UASLP - San Luis Potosí' => '9801010',
+    'UAZ - Zacatecas' => '9801011',
+    'UAA - Aguascalientes' => '9801012',
+    'UDG - Guadalajara' => '9801013',
+    'UMSNH - Morelia' => '9801014',
+    'UGTO - Guanajuato' => '9801015',
+    'UdeC - Colima' => '9801016',
+    'UAGro - Chilpancingo' => '9801017',
+    'UAEH - Pachuca' => '9801018',
+    'UAEM - Toluca' => '9801019',
+    'UAEMor - Cuernavaca' => '9801020',
+    'UNACH - Tuxtla Gutiérrez' => '9801021',
+    'UABJO - Oaxaca' => '9801022',
+    'UJAT - Villahermosa' => '9801023',
+    'UV - Xalapa' => '9801024',
+    'UNAM - Facultad de Contaduría' => '9801025',
+    'UAM - Azcapotzalco' => '9801026',
+    'IPN - ESCOM' => '9801027',
+    'UAM - Iztapalapa' => '9801028'
+];
+
 $niveles_academicos = [
     ['id' => 1, 'nombre' => 'Licenciatura', 'abr_m' => 'Lic.', 'abr_f' => 'Lic.'],
     ['id' => 2, 'nombre' => 'Maestría', 'abr_m' => 'Mtro.', 'abr_f' => 'Mtra.'],
@@ -138,8 +169,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($_POST['institucion'])) $errores[] = 'Institución';
     if (empty($_POST['nivel_academico'])) $errores[] = 'Nivel Académico';
     if (empty($_POST['cargos'])) $errores[] = 'Al menos un cargo';
-    if (empty($_POST['telefono'])) $errores[] = 'Teléfono';
-    if (empty($_POST['correo'])) $errores[] = 'Correo Electrónico';
+    if (empty($_POST['telefono_numero']) || empty(array_filter($_POST['telefono_numero']))) $errores[] = 'Teléfono';
+    if (empty($_POST['correo_valor']) || empty(array_filter($_POST['correo_valor']))) $errores[] = 'Correo Electrónico';
     
     if (!empty($errores)) {
         $error = 'Complete los campos obligatorios: ' . implode(', ', $errores);
@@ -211,17 +242,17 @@ include 'template/menu.php';
                     <div class="form-grid">
                         <div class="form-group">
                             <label class="form-label required">Nombre(s)</label>
-                            <input type="text" name="nombre" class="form-control" placeholder="Ej. María" required>
+                            <input type="text" name="nombre" class="form-control" required>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label required">Apellido Paterno</label>
-                            <input type="text" name="apellido_paterno" class="form-control" placeholder="Ej. González" required>
+                            <input type="text" name="apellido_paterno" class="form-control" required>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label">Apellido Materno</label>
-                            <input type="text" name="apellido_materno" class="form-control" placeholder="Ej. Pérez">
+                            <input type="text" name="apellido_materno" class="form-control">
                         </div>
 
                         <div class="form-group">
@@ -237,14 +268,6 @@ include 'template/menu.php';
                             <label class="form-label required">Nivel Académico</label>
                             <select name="nivel_academico" id="nivel_academico" class="form-control" required>
                                 <option value="">Primero seleccione un género</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label required">Estado</label>
-                            <select name="estado" class="form-control" required>
-                                <option value="1" selected>Activo</option>
-                                <option value="0">Inactivo</option>
                             </select>
                         </div>
                     </div>
@@ -284,6 +307,16 @@ include 'template/menu.php';
                             <select name="institucion" id="institucion" class="form-control" required>
                                 <option value="">Primero seleccione una zona</option>
                             </select>
+                        </div>
+
+                        <!-- Número de afiliación (solo lectura) -->
+                        <div class="form-group">
+                            <label class="form-label">Núm. Afiliación</label>
+                            <div class="afiliacion-display">
+                                <span class="afiliacion-value" id="num_afiliacion_mostrado">- - - -</span>
+                                <span class="afiliacion-hint">(Asignado por la institución)</span>
+                            </div>
+                            <input type="hidden" name="num_afiliacion" id="num_afiliacion" value="">
                         </div>
                     </div>
                 </div>
@@ -348,9 +381,9 @@ include 'template/menu.php';
                                     <label class="form-label">Fecha Fin</label>
                                     <input type="date" name="cargo_fecha_fin[]" class="form-control">
                                 </div>
-                                <div class="form-group" style="justify-content:flex-end;">
+                                <div class="form-group" style="justify-content:flex-end; align-self:center; padding-top:1.2rem;">
                                     <button type="button" class="btn-remove" onclick="eliminarCargo(this)" style="display:none;">
-                                        <i class="fas fa-trash-alt"></i> Eliminar
+                                        <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </div>
                             </div>
@@ -399,19 +432,19 @@ include 'template/menu.php';
                                 <div class="contacto-grid-telefono">
                                     <div class="form-group">
                                         <label class="form-label required">LADA</label>
-                                        <input type="text" name="telefono_lada[]" class="form-control" placeholder="55" required style="max-width:80px;">
+                                        <input type="text" name="telefono_lada[]" class="form-control" placeholder="55" required style="max-width:80px;" pattern="[0-9]*" inputmode="numeric">
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label required">Número</label>
-                                        <input type="text" name="telefono_numero[]" class="form-control" placeholder="1234 5678" required>
+                                        <input type="text" name="telefono_numero[]" class="form-control" placeholder="1234 5678" required pattern="[0-9\s]*" inputmode="numeric">
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label">Extensión</label>
-                                        <input type="text" name="telefono_extension[]" class="form-control" placeholder="1234">
+                                        <input type="text" name="telefono_extension[]" class="form-control" placeholder="1234" pattern="[0-9]*" inputmode="numeric">
                                     </div>
                                     <div class="form-group" style="justify-content:center;">
                                         <label class="form-label">Visible</label>
-                                        <div class="toggle-modern">
+                                        <div class="toggle-modern" onclick="toggleVisibility(this)">
                                             <input type="checkbox" name="telefono_visible[]" value="1" checked disabled>
                                             <span class="toggle-slider"></span>
                                         </div>
@@ -444,7 +477,7 @@ include 'template/menu.php';
                                     </div>
                                     <div class="form-group" style="justify-content:center;">
                                         <label class="form-label">Visible</label>
-                                        <div class="toggle-modern">
+                                        <div class="toggle-modern" onclick="toggleVisibility(this)">
                                             <input type="checkbox" name="correo_visible[]" value="1" checked disabled>
                                             <span class="toggle-slider"></span>
                                         </div>
@@ -740,6 +773,30 @@ include 'template/menu.php';
     gap: 0.5rem;
 }
 
+/* Afiliación (solo lectura) */
+.afiliacion-display {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1rem;
+    background: #f8f6f6;
+    border: 2px solid #e8e8e8;
+    border-radius: 10px;
+    min-height: 46px;
+}
+
+.afiliacion-value {
+    font-weight: 600;
+    color: #1a1a1a;
+    font-family: monospace;
+    font-size: 1rem;
+}
+
+.afiliacion-hint {
+    color: #999;
+    font-size: 0.7rem;
+}
+
 /* Contactos */
 .contactos-grupo {
     background: #faf8f8;
@@ -841,12 +898,13 @@ include 'template/menu.php';
     border-color: #8B0000;
 }
 
-/* Toggle Modern */
+/* Toggle Modern - FUNCIONAL */
 .toggle-modern {
     position: relative;
     display: inline-block;
     width: 40px;
     height: 22px;
+    cursor: pointer;
 }
 
 .toggle-modern input {
@@ -980,12 +1038,12 @@ include 'template/menu.php';
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 0.8rem;
     background: #fce8e8;
     color: #c62828;
     border: none;
     border-radius: 8px;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -1133,6 +1191,22 @@ const coordinacionesNacionales = <?= json_encode($coordinaciones_nacionales) ?>;
 const cargosPorNivel = <?= json_encode($cargos_por_nivel) ?>;
 const zonasRegionales = <?= json_encode($zonas_regionales) ?>;
 const nivelesAcademicos = <?= json_encode($niveles_academicos) ?>;
+const institucionesPorZona = <?= json_encode($instituciones_por_zona) ?>;
+const numAfiliacionPorInstitucion = <?= json_encode($num_afiliacion_por_institucion) ?>;
+
+// ============================================================
+// FUNCIÓN PARA ALTERNAR VISIBILIDAD DEL TOGGLE
+// ============================================================
+
+function toggleVisibility(element) {
+    const checkbox = element.querySelector('input[type="checkbox"]');
+    if (checkbox && !checkbox.disabled) {
+        checkbox.checked = !checkbox.checked;
+        // Disparar evento change para actualizar visualmente
+        const event = new Event('change', { bubbles: true });
+        checkbox.dispatchEvent(event);
+    }
+}
 
 // ============================================================
 // NIVEL ACADÉMICO SEGÚN GÉNERO
@@ -1169,18 +1243,21 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ============================================================
-// INSTITUCIONES POR ZONA
+// INSTITUCIONES POR ZONA Y NÚMERO DE AFILIACIÓN
 // ============================================================
 
 document.addEventListener('DOMContentLoaded', function() {
     const zonaSelect = document.getElementById('zona');
     const institucionSelect = document.getElementById('institucion');
-    const institucionesPorZona = <?= json_encode($instituciones_por_zona) ?>;
+    const numAfiliacionDisplay = document.getElementById('num_afiliacion_mostrado');
+    const numAfiliacionInput = document.getElementById('num_afiliacion');
     
     if (zonaSelect && institucionSelect) {
         zonaSelect.addEventListener('change', function() {
             const zonaId = parseInt(this.value);
             institucionSelect.innerHTML = '<option value="">Seleccionar institución...</option>';
+            numAfiliacionDisplay.textContent = '- - - -';
+            numAfiliacionInput.value = '';
             
             if (zonaId && institucionesPorZona[zonaId]) {
                 institucionesPorZona[zonaId].forEach(function(inst) {
@@ -1195,6 +1272,19 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         institucionSelect.disabled = true;
+    }
+    
+    if (institucionSelect) {
+        institucionSelect.addEventListener('change', function() {
+            const institucion = this.value;
+            if (institucion && numAfiliacionPorInstitucion[institucion]) {
+                numAfiliacionDisplay.textContent = numAfiliacionPorInstitucion[institucion];
+                numAfiliacionInput.value = numAfiliacionPorInstitucion[institucion];
+            } else {
+                numAfiliacionDisplay.textContent = '- - - -';
+                numAfiliacionInput.value = '';
+            }
+        });
     }
 });
 
@@ -1281,6 +1371,7 @@ function eliminarCargo(btn) {
     }
 }
 
+// Ocultar botón eliminar del primer cargo al cargar
 document.addEventListener('DOMContentLoaded', function() {
     const primerCargo = document.querySelector('#cargos-container .cargo-item');
     if (primerCargo) {
@@ -1298,6 +1389,7 @@ function agregarContacto(containerId, tipo) {
     const primerContacto = container.querySelector('.contacto-item');
     const nuevoContacto = primerContacto.cloneNode(true);
     
+    // Limpiar inputs
     nuevoContacto.querySelectorAll('input[type="text"]').forEach(input => {
         input.value = '';
     });
@@ -1305,14 +1397,23 @@ function agregarContacto(containerId, tipo) {
         input.value = '';
     });
     
-    const checkbox = nuevoContacto.querySelector('input[type="checkbox"]');
-    if (checkbox) {
-        checkbox.checked = true;
-        checkbox.disabled = false;
+    // Buscar el toggle y habilitar el checkbox
+    const toggle = nuevoContacto.querySelector('.toggle-modern');
+    if (toggle) {
+        const checkbox = toggle.querySelector('input[type="checkbox"]');
+        if (checkbox) {
+            checkbox.checked = true;
+            checkbox.disabled = false;
+        }
     }
     
+    // Mostrar botón eliminar
     const btnEliminar = nuevoContacto.querySelector('.btn-remove');
     if (btnEliminar) btnEliminar.style.display = 'flex';
+    
+    // Cambiar a contacto opcional (quitar clase obligatorio)
+    nuevoContacto.classList.remove('contacto-obligatorio');
+    nuevoContacto.classList.add('contacto-opcional');
     
     container.appendChild(nuevoContacto);
 }
@@ -1340,22 +1441,22 @@ function agregarCelular() {
         <div class="contacto-grid-celular">
             <div class="form-group">
                 <label class="form-label">LADA</label>
-                <input type="text" name="celular_lada[]" class="form-control" placeholder="55" style="max-width:80px;">
+                <input type="text" name="celular_lada[]" class="form-control" placeholder="55" style="max-width:80px;" pattern="[0-9]*" inputmode="numeric">
             </div>
             <div class="form-group">
                 <label class="form-label required">Número</label>
-                <input type="text" name="celular_numero[]" class="form-control" placeholder="9876 5432" required>
+                <input type="text" name="celular_numero[]" class="form-control" placeholder="9876 5432" required pattern="[0-9\s]*" inputmode="numeric">
             </div>
             <div class="form-group" style="justify-content:center;">
                 <label class="form-label">Visible</label>
-                <div class="toggle-modern">
+                <div class="toggle-modern" onclick="toggleVisibility(this)">
                     <input type="checkbox" name="celular_visible[]" value="1" checked>
                     <span class="toggle-slider"></span>
                 </div>
             </div>
             <div class="form-group" style="justify-content:flex-end;">
                 <button type="button" class="btn-remove" onclick="eliminarCelular(this)">
-                    <i class="fas fa-trash-alt"></i> Eliminar
+                    <i class="fas fa-trash-alt"></i>
                 </button>
             </div>
         </div>
@@ -1380,6 +1481,17 @@ document.addEventListener('DOMContentLoaded', function() {
     if (primerCorreo) {
         const btn = primerCorreo.querySelector('.btn-remove');
         if (btn) btn.style.display = 'none';
+    }
+});
+
+// ============================================================
+// VALIDACIÓN DE NÚMEROS EN INPUTS
+// ============================================================
+
+document.addEventListener('input', function(e) {
+    if (e.target.matches('input[pattern="[0-9]*"]') || e.target.matches('input[pattern="[0-9\\s]*"]')) {
+        // Solo permitir números y espacios
+        e.target.value = e.target.value.replace(/[^0-9\s]/g, '');
     }
 });
 </script>

@@ -24,7 +24,7 @@ SIDEBAR
                 </a>
             </li>
             <li class="menu-item">
-                <a href="#">
+                <a href="instituciones.php">
                     <i class="fas fa-university"></i>
                     <span>Instituciones</span>
                 </a>

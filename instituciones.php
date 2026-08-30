@@ -1,7 +1,7 @@
 <?php
 // ============================================================
-// SIDEANFECA - Gestión de Personas
-// Listado de personas registradas
+// SIDEANFECA - Gestión de Instituciones
+// Listado de instituciones registradas
 // ============================================================
 
 session_start();
@@ -12,7 +12,7 @@ if (!isset($_SESSION['usuario'])) {
 }
 
 // ============================================================
-// DATOS SIMULADOS PARA DEMOSTRACIÓN
+// DATOS SIMULADOS
 // ============================================================
 
 $zonas_regionales = [
@@ -25,187 +25,123 @@ $zonas_regionales = [
     7 => 'Ciudad de México'
 ];
 
-// Personas simuladas con sus cargos
-// activo = true si tiene al menos un cargo sin fecha_fin
-$personas = [
+$tipos_institucion = [
+    1 => 'Universidad',
+    2 => 'Facultad',
+    3 => 'Campus'
+];
+
+// Instituciones simuladas con sus relaciones
+$instituciones = [
     [
         'id' => 1,
         'num_afiliacion' => '9801001',
-        'nombre' => 'María',
-        'apellido_paterno' => 'González',
-        'apellido_materno' => 'Pérez',
-        'genero' => 'F',
+        'nombre' => 'UNAM - Facultad de Contaduría',
+        'tipo' => 2,
         'id_zona' => 7,
-        'institucion' => 'UNAM - Facultad de Contaduría',
-        'cargo' => 'Presidenta',
-        'cargo_nivel' => 'Nacional',
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null, // Activo
-        'correo' => 'maria.gonzalez@example.com',
-        'telefono' => '55 1234 5678',
-        'directorios' => ['Consejo Nacional Directivo', 'Coordinaciones Nacionales'],
+        'personas_relacionadas' => 3, // 3 personas asociadas
         'activo' => true
     ],
     [
         'id' => 2,
         'num_afiliacion' => '9801002',
-        'nombre' => 'Juan',
-        'apellido_paterno' => 'Martínez',
-        'apellido_materno' => 'López',
-        'genero' => 'M',
+        'nombre' => 'IPN - ESCOM',
+        'tipo' => 2,
         'id_zona' => 7,
-        'institucion' => 'IPN - ESCOM',
-        'cargo' => 'Coordinador Nacional',
-        'cargo_nivel' => 'Nacional',
-        'fecha_inicio' => '2024-03-15',
-        'fecha_fin' => null, // Activo
-        'correo' => 'juan.martinez@example.com',
-        'telefono' => '55 9876 5432',
-        'directorios' => ['Consejo Nacional Directivo'],
+        'personas_relacionadas' => 2,
         'activo' => true
     ],
     [
         'id' => 3,
         'num_afiliacion' => '9801003',
-        'nombre' => 'Ana',
-        'apellido_paterno' => 'Sánchez',
-        'apellido_materno' => 'Ramírez',
-        'genero' => 'F',
-        'id_zona' => 3,
-        'institucion' => 'UAQ - Querétaro',
-        'cargo' => 'Secretaria General',
-        'cargo_nivel' => 'Nacional',
-        'fecha_inicio' => '2024-06-01',
-        'fecha_fin' => null, // ¡Activo! (cargo vigente)
-        'correo' => 'ana.sanchez@example.com',
-        'telefono' => '44 1234 5678',
-        'directorios' => ['Consejos Regionales', 'Coordinaciones Nacionales'],
-        'activo' => true // Tiene un cargo activo
+        'nombre' => 'UAM - Azcapotzalco',
+        'tipo' => 1,
+        'id_zona' => 7,
+        'personas_relacionadas' => 1,
+        'activo' => false
     ],
     [
         'id' => 4,
         'num_afiliacion' => '9801004',
-        'nombre' => 'Carlos',
-        'apellido_paterno' => 'Hernández',
-        'apellido_materno' => 'Díaz',
-        'genero' => 'M',
+        'nombre' => 'UDG - Guadalajara',
+        'tipo' => 1,
         'id_zona' => 4,
-        'institucion' => 'UDG - Guadalajara',
-        'cargo' => 'Director Regional',
-        'cargo_nivel' => 'Regional',
-        'fecha_inicio' => '2024-02-01',
-        'fecha_fin' => null, // Activo
-        'correo' => 'carlos.hernandez@example.com',
-        'telefono' => '33 1234 5678',
-        'directorios' => ['Consejos Regionales'],
+        'personas_relacionadas' => 0,
         'activo' => true
     ],
     [
         'id' => 5,
         'num_afiliacion' => '9801005',
-        'nombre' => 'Laura',
-        'apellido_paterno' => 'Torres',
-        'apellido_materno' => 'Vega',
-        'genero' => 'F',
+        'nombre' => 'UABC - Mexicali',
+        'tipo' => 1,
         'id_zona' => 1,
-        'institucion' => 'UABC - Mexicali',
-        'cargo' => 'Coordinadora Regional',
-        'cargo_nivel' => 'Regional',
-        'fecha_inicio' => '2024-07-01',
-        'fecha_fin' => null, // Activo
-        'correo' => 'laura.torres@example.com',
-        'telefono' => '66 1234 5678',
-        'directorios' => ['Coordinaciones Nacionales'],
+        'personas_relacionadas' => 2,
         'activo' => true
     ],
     [
         'id' => 6,
         'num_afiliacion' => '9801006',
-        'nombre' => 'Roberto',
-        'apellido_paterno' => 'Mendoza',
-        'apellido_materno' => 'Cruz',
-        'genero' => 'M',
+        'nombre' => 'UANL - San Nicolás',
+        'tipo' => 1,
         'id_zona' => 2,
-        'institucion' => 'UANL - San Nicolás',
-        'cargo' => 'Secretario Regional',
-        'cargo_nivel' => 'Regional',
-        'fecha_inicio' => '2023-01-01',
-        'fecha_fin' => '2024-01-01', // Finalizado
-        'correo' => 'roberto.mendoza@example.com',
-        'telefono' => '81 1234 5678',
-        'directorios' => ['Instituciones'],
-        'activo' => false // Todos sus cargos terminaron
+        'personas_relacionadas' => 0,
+        'activo' => false
     ],
     [
         'id' => 7,
         'num_afiliacion' => '9801007',
-        'nombre' => 'Patricia',
-        'apellido_paterno' => 'Flores',
-        'apellido_materno' => 'Reyes',
-        'genero' => 'F',
+        'nombre' => 'UAEH - Pachuca',
+        'tipo' => 2,
         'id_zona' => 5,
-        'institucion' => 'UAEH - Pachuca',
-        'cargo' => 'Coordinadora Regional',
-        'cargo_nivel' => 'Regional',
-        'fecha_inicio' => '2024-04-01',
-        'fecha_fin' => null, // Activo
-        'correo' => 'patricia.flores@example.com',
-        'telefono' => '77 1234 5678',
-        'directorios' => ['Coordinaciones Nacionales', 'Instituciones'],
+        'personas_relacionadas' => 1,
         'activo' => true
     ]
 ];
 
 // Procesar filtros
 $zona_filtro = isset($_GET['zona']) ? (int)$_GET['zona'] : 0;
+$tipo_filtro = isset($_GET['tipo']) ? (int)$_GET['tipo'] : 0;
 $estado_filtro = isset($_GET['estado']) ? $_GET['estado'] : '';
-$cargo_filtro = isset($_GET['cargo']) ? trim($_GET['cargo']) : '';
 $busqueda = isset($_GET['buscar']) ? trim($_GET['buscar']) : '';
 
-// Ordenamiento (por columnas)
 $orden_columna = isset($_GET['orden_columna']) ? $_GET['orden_columna'] : 'nombre';
 $orden_direccion = isset($_GET['orden_direccion']) ? $_GET['orden_direccion'] : 'asc';
 
-$personas_filtradas = $personas;
+$instituciones_filtradas = $instituciones;
 
 // Aplicar filtros
 if (!empty($busqueda)) {
     $busqueda = strtolower($busqueda);
-    $personas_filtradas = array_filter($personas_filtradas, function($p) use ($busqueda) {
-        $nombre_completo = strtolower($p['nombre'] . ' ' . $p['apellido_paterno'] . ' ' . $p['apellido_materno']);
-        return strpos($nombre_completo, $busqueda) !== false || 
-               strpos(strtolower($p['institucion']), $busqueda) !== false ||
-               strpos(strtolower($p['cargo']), $busqueda) !== false ||
-               strpos(strtolower($p['correo']), $busqueda) !== false ||
-               strpos(strtolower($p['num_afiliacion']), $busqueda) !== false;
+    $instituciones_filtradas = array_filter($instituciones_filtradas, function($i) use ($busqueda) {
+        return strpos(strtolower($i['nombre']), $busqueda) !== false ||
+               strpos(strtolower($i['num_afiliacion']), $busqueda) !== false;
     });
 }
 
 if ($zona_filtro > 0) {
-    $personas_filtradas = array_filter($personas_filtradas, function($p) use ($zona_filtro) {
-        return $p['id_zona'] == $zona_filtro;
+    $instituciones_filtradas = array_filter($instituciones_filtradas, function($i) use ($zona_filtro) {
+        return $i['id_zona'] == $zona_filtro;
     });
 }
 
-if (!empty($cargo_filtro)) {
-    $cargo_filtro_lower = strtolower($cargo_filtro);
-    $personas_filtradas = array_filter($personas_filtradas, function($p) use ($cargo_filtro_lower) {
-        return strpos(strtolower($p['cargo']), $cargo_filtro_lower) !== false;
+if ($tipo_filtro > 0) {
+    $instituciones_filtradas = array_filter($instituciones_filtradas, function($i) use ($tipo_filtro) {
+        return $i['tipo'] == $tipo_filtro;
     });
 }
 
 if ($estado_filtro == 'activo') {
-    $personas_filtradas = array_filter($personas_filtradas, function($p) {
-        return $p['activo'] == true;
+    $instituciones_filtradas = array_filter($instituciones_filtradas, function($i) {
+        return $i['activo'] == true;
     });
 } elseif ($estado_filtro == 'inactivo') {
-    $personas_filtradas = array_filter($personas_filtradas, function($p) {
-        return $p['activo'] == false;
+    $instituciones_filtradas = array_filter($instituciones_filtradas, function($i) {
+        return $i['activo'] == false;
     });
 }
 
-// Ordenar por columna
-usort($personas_filtradas, function($a, $b) use ($orden_columna, $orden_direccion) {
+// Ordenar
+usort($instituciones_filtradas, function($a, $b) use ($orden_columna, $orden_direccion) {
     $valor_a = '';
     $valor_b = '';
     
@@ -215,20 +151,16 @@ usort($personas_filtradas, function($a, $b) use ($orden_columna, $orden_direccio
             $valor_b = $b['num_afiliacion'];
             break;
         case 'nombre':
-            $valor_a = $a['nombre'] . ' ' . $a['apellido_paterno'] . ' ' . $a['apellido_materno'];
-            $valor_b = $b['nombre'] . ' ' . $b['apellido_paterno'] . ' ' . $b['apellido_materno'];
+            $valor_a = $a['nombre'];
+            $valor_b = $b['nombre'];
             break;
-        case 'institucion':
-            $valor_a = $a['institucion'];
-            $valor_b = $b['institucion'];
-            break;
-        case 'cargo':
-            $valor_a = $a['cargo'];
-            $valor_b = $b['cargo'];
+        case 'tipo':
+            $valor_a = $a['tipo'];
+            $valor_b = $b['tipo'];
             break;
         default:
-            $valor_a = $a['nombre'] . ' ' . $a['apellido_paterno'];
-            $valor_b = $b['nombre'] . ' ' . $b['apellido_paterno'];
+            $valor_a = $a['nombre'];
+            $valor_b = $b['nombre'];
     }
     
     if ($orden_direccion == 'asc') {
@@ -249,19 +181,19 @@ include 'template/menu.php';
         <div class="page-header">
             <div class="page-header-content">
                 <div class="page-header-icon">
-                    <i class="fas fa-users"></i>
+                    <i class="fas fa-university"></i>
                 </div>
                 <div>
-                    <h1 class="page-title">Gestión de Personas</h1>
-                    <p class="page-subtitle">Administre las personas registradas en el sistema de directorios</p>
+                    <h1 class="page-title">Gestión de Instituciones</h1>
+                    <p class="page-subtitle">Administre las instituciones educativas registradas en el sistema</p>
                 </div>
             </div>
             <div class="page-header-right">
                 <button onclick="descargarCSV()" class="btn-outline-modern">
                     <i class="fas fa-file-csv"></i> Exportar CSV
                 </button>
-                <a href="persona_registro.php" class="btn-primary-modern">
-                    <i class="fas fa-plus-circle"></i> Nueva Persona
+                <a href="institucion_registro.php" class="btn-primary-modern">
+                    <i class="fas fa-plus-circle"></i> Nueva Institución
                 </a>
             </div>
         </div>
@@ -274,7 +206,7 @@ include 'template/menu.php';
                         <i class="fas fa-search filter-icon"></i>
                         <input type="text" name="buscar" class="filter-input" 
                                placeholder="Buscar..." 
-                               value="<?= htmlspecialchars($busqueda) ?>" id="buscarPersona"
+                               value="<?= htmlspecialchars($busqueda) ?>" id="buscarInstitucion"
                                autocomplete="off">
                     </div>
                     
@@ -290,15 +222,11 @@ include 'template/menu.php';
                     </div>
                     
                     <div class="filter-group">
-                        <select name="cargo" class="filter-select" id="filtroCargo">
-                            <option value="">Todos los cargos</option>
-                            <?php 
-                            $cargos_unicos = array_unique(array_column($personas, 'cargo'));
-                            sort($cargos_unicos);
-                            foreach ($cargos_unicos as $cargo): 
-                            ?>
-                                <option value="<?= htmlspecialchars($cargo) ?>" <?= $cargo_filtro == $cargo ? 'selected' : '' ?>>
-                                    <?= htmlspecialchars($cargo) ?>
+                        <select name="tipo" class="filter-select" id="filtroTipo">
+                            <option value="0">Todos los tipos</option>
+                            <?php foreach ($tipos_institucion as $id => $nombre): ?>
+                                <option value="<?= $id ?>" <?= $tipo_filtro == $id ? 'selected' : '' ?>>
+                                    <?= htmlspecialchars($nombre) ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
@@ -307,8 +235,8 @@ include 'template/menu.php';
                     <div class="filter-group">
                         <select name="estado" class="filter-select" id="filtroEstado">
                             <option value="">Todos</option>
-                            <option value="activo" <?= $estado_filtro == 'activo' ? 'selected' : '' ?>>Activos</option>
-                            <option value="inactivo" <?= $estado_filtro == 'inactivo' ? 'selected' : '' ?>>Inactivos</option>
+                            <option value="activo" <?= $estado_filtro == 'activo' ? 'selected' : '' ?>>Activas</option>
+                            <option value="inactivo" <?= $estado_filtro == 'inactivo' ? 'selected' : '' ?>>Inactivas</option>
                         </select>
                     </div>
                     
@@ -316,7 +244,7 @@ include 'template/menu.php';
                         <i class="fas fa-sliders-h"></i> Aplicar
                     </button>
                     
-                    <a href="personas.php" class="btn-filter-clear <?= (empty($busqueda) && $zona_filtro == 0 && empty($cargo_filtro) && empty($estado_filtro)) ? 'disabled' : '' ?>">
+                    <a href="instituciones.php" class="btn-filter-clear <?= (empty($busqueda) && $zona_filtro == 0 && $tipo_filtro == 0 && empty($estado_filtro)) ? 'disabled' : '' ?>">
                         <i class="fas fa-times"></i> Limpiar
                     </a>
                 </div>
@@ -324,9 +252,9 @@ include 'template/menu.php';
             
             <div class="filters-results">
                 <span class="results-count">
-                    <i class="fas fa-users"></i> 
-                    <strong id="registrosMostrados"><?= count($personas_filtradas) ?></strong> 
-                    persona(s) encontrada(s)
+                    <i class="fas fa-university"></i> 
+                    <strong id="registrosMostrados"><?= count($instituciones_filtradas) ?></strong> 
+                    institución(es) encontrada(s)
                 </span>
             </div>
         </div>
@@ -334,7 +262,7 @@ include 'template/menu.php';
         <!-- Tabla -->
         <div class="table-modern-container">
             <div class="table-modern-wrapper">
-                <table class="table-modern" id="tablaPersonas">
+                <table class="table-modern" id="tablaInstituciones">
                     <thead>
                         <tr>
                             <th>
@@ -351,7 +279,7 @@ include 'template/menu.php';
                             <th>
                                 <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'nombre', 'orden_direccion' => ($orden_columna == 'nombre' && $orden_direccion == 'asc') ? 'desc' : 'asc'])) ?>" 
                                    class="sort-link <?= $orden_columna == 'nombre' ? 'active' : '' ?>">
-                                    <span class="sort-label">Nombre</span>
+                                    <span class="sort-label">Institución</span>
                                     <?php if ($orden_columna == 'nombre'): ?>
                                         <i class="fas fa-chevron-<?= $orden_direccion == 'asc' ? 'up' : 'down' ?>"></i>
                                     <?php else: ?>
@@ -360,21 +288,10 @@ include 'template/menu.php';
                                 </a>
                             </th>
                             <th>
-                                <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'institucion', 'orden_direccion' => ($orden_columna == 'institucion' && $orden_direccion == 'asc') ? 'desc' : 'asc'])) ?>" 
-                                   class="sort-link <?= $orden_columna == 'institucion' ? 'active' : '' ?>">
-                                    <span class="sort-label">Institución</span>
-                                    <?php if ($orden_columna == 'institucion'): ?>
-                                        <i class="fas fa-chevron-<?= $orden_direccion == 'asc' ? 'up' : 'down' ?>"></i>
-                                    <?php else: ?>
-                                        <i class="fas fa-sort sort-icon-inactive"></i>
-                                    <?php endif; ?>
-                                </a>
-                            </th>
-                            <th>
-                                <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'cargo', 'orden_direccion' => ($orden_columna == 'cargo' && $orden_direccion == 'asc') ? 'desc' : 'asc'])) ?>" 
-                                   class="sort-link <?= $orden_columna == 'cargo' ? 'active' : '' ?>">
-                                    <span class="sort-label">Cargo</span>
-                                    <?php if ($orden_columna == 'cargo'): ?>
+                                <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'tipo', 'orden_direccion' => ($orden_columna == 'tipo' && $orden_direccion == 'asc') ? 'desc' : 'asc'])) ?>" 
+                                   class="sort-link <?= $orden_columna == 'tipo' ? 'active' : '' ?>">
+                                    <span class="sort-label">Tipo</span>
+                                    <?php if ($orden_columna == 'tipo'): ?>
                                         <i class="fas fa-chevron-<?= $orden_direccion == 'asc' ? 'up' : 'down' ?>"></i>
                                     <?php else: ?>
                                         <i class="fas fa-sort sort-icon-inactive"></i>
@@ -382,35 +299,33 @@ include 'template/menu.php';
                                 </a>
                             </th>
                             <th>Zona</th>
-                            <th>Correo</th>
-                            <th>Teléfono</th>
+                            <th>Personas</th>
                             <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
-                    <tbody id="tbodyPersonas">
-                        <?php if (count($personas_filtradas) > 0): ?>
-                            <?php foreach ($personas_filtradas as $persona): 
-                                $nombre_completo = $persona['nombre'] . ' ' . $persona['apellido_paterno'];
-                                if (!empty($persona['apellido_materno'])) {
-                                    $nombre_completo .= ' ' . $persona['apellido_materno'];
-                                }
-                                $zona_nombre = $zonas_regionales[$persona['id_zona']] ?? 'Sin zona';
+                    <tbody id="tbodyInstituciones">
+                        <?php if (count($instituciones_filtradas) > 0): ?>
+                            <?php foreach ($instituciones_filtradas as $institucion): 
+                                $zona_nombre = $zonas_regionales[$institucion['id_zona']] ?? 'Sin zona';
+                                $tipo_nombre = $tipos_institucion[$institucion['tipo']] ?? 'No definido';
                             ?>
-                            <tr data-id="<?= $persona['id'] ?>" data-activo="<?= $persona['activo'] ? 'true' : 'false' ?>">
-                                <td><span class="badge-afiliacion"><?= htmlspecialchars($persona['num_afiliacion']) ?></span></td>
+                            <tr data-id="<?= $institucion['id'] ?>">
+                                <td><span class="badge-afiliacion"><?= htmlspecialchars($institucion['num_afiliacion']) ?></span></td>
                                 <td>
-                                    <div class="persona-cell">
-                                        <div class="persona-nombre"><?= htmlspecialchars($nombre_completo) ?></div>
+                                    <div class="institucion-cell">
+                                        <div class="institucion-nombre"><?= htmlspecialchars($institucion['nombre']) ?></div>
                                     </div>
                                 </td>
-                                <td><?= htmlspecialchars($persona['institucion']) ?></td>
-                                <td><?= htmlspecialchars($persona['cargo']) ?></td>
+                                <td><?= htmlspecialchars($tipo_nombre) ?></td>
                                 <td><span class="badge-zona"><?= htmlspecialchars($zona_nombre) ?></span></td>
-                                <td><a href="mailto:<?= htmlspecialchars($persona['correo']) ?>" class="correo-link"><?= htmlspecialchars($persona['correo']) ?></a></td>
-                                <td><?= htmlspecialchars($persona['telefono']) ?></td>
                                 <td>
-                                    <?php if ($persona['activo']): ?>
+                                    <span class="badge-personas <?= $institucion['personas_relacionadas'] > 0 ? 'badge-personas-activo' : 'badge-personas-vacio' ?>">
+                                        <?= $institucion['personas_relacionadas'] ?>
+                                    </span>
+                                </td>
+                                <td>
+                                    <?php if ($institucion['activo']): ?>
                                         <span class="status-active"><i class="fas fa-circle"></i> Activo</span>
                                     <?php else: ?>
                                         <span class="status-inactive"><i class="fas fa-circle"></i> Inactivo</span>
@@ -418,24 +333,30 @@ include 'template/menu.php';
                                 </td>
                                 <td>
                                     <div class="acciones-group">
-                                        <a href="persona_consulta.php?id=<?= $persona['id'] ?>" class="btn-accion btn-ver" title="Consultar">
+                                        <a href="institucion_consulta.php?id=<?= $institucion['id'] ?>" class="btn-accion btn-ver" title="Consultar">
                                             <i class="fas fa-eye"></i>
                                         </a>
-                                        <a href="persona_edicion.php?id=<?= $persona['id'] ?>" class="btn-accion btn-editar" title="Editar">
+                                        <a href="institucion_edicion.php?id=<?= $institucion['id'] ?>" class="btn-accion btn-editar" title="Editar">
                                             <i class="fas fa-pen"></i>
                                         </a>
-                                        <button onclick="eliminarPersona(<?= $persona['id'] ?>)" class="btn-accion btn-eliminar" title="Eliminar">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
+                                        <?php if ($institucion['personas_relacionadas'] > 0): ?>
+                                            <button class="btn-accion btn-eliminar" title="No se puede eliminar (tiene personas asociadas)" style="opacity:0.5; cursor:not-allowed;" onclick="alert('No se puede eliminar esta institución porque tiene <?= $institucion['personas_relacionadas'] ?> persona(s) asociada(s)')">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        <?php else: ?>
+                                            <button onclick="eliminarInstitucion(<?= $institucion['id'] ?>)" class="btn-accion btn-eliminar" title="Eliminar">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        <?php endif; ?>
                                     </div>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="9" class="empty-row">
+                                <td colspan="7" class="empty-row">
                                     <i class="fas fa-search"></i>
-                                    <p>No se encontraron personas con los filtros aplicados</p>
+                                    <p>No se encontraron instituciones con los filtros aplicados</p>
                                 </td>
                             </tr>
                         <?php endif; ?>
@@ -443,7 +364,7 @@ include 'template/menu.php';
                 </table>
             </div>
             <div class="table-modern-footer">
-                <span>Mostrando <strong><?= count($personas_filtradas) ?></strong> de <strong><?= count($personas) ?></strong> registros</span>
+                <span>Mostrando <strong><?= count($instituciones_filtradas) ?></strong> de <strong><?= count($instituciones) ?></strong> registros</span>
             </div>
         </div>
 
@@ -452,7 +373,7 @@ include 'template/menu.php';
 
 <style>
 /* ============================================================
-   ESTILOS MODERNOS - LISTADO
+   ESTILOS MODERNOS - LISTADO INSTITUCIONES
    ============================================================ */
 
 /* Page Header */
@@ -550,7 +471,7 @@ include 'template/menu.php';
     color: #8B0000;
 }
 
-/* Filtros - Tamaño fijo */
+/* Filtros */
 .filters-container {
     background: white;
     border-radius: 14px;
@@ -772,17 +693,6 @@ include 'template/menu.php';
     background: #faf8f8;
 }
 
-/* Persona cell */
-.persona-cell {
-    display: flex;
-    align-items: center;
-}
-
-.persona-nombre {
-    font-weight: 600;
-    color: #1a1a1a;
-}
-
 /* Badges */
 .badge-afiliacion {
     display: inline-block;
@@ -803,6 +713,26 @@ include 'template/menu.php';
     border-radius: 20px;
     font-size: 0.75rem;
     font-weight: 500;
+}
+
+.badge-personas {
+    display: inline-block;
+    padding: 0.25rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    min-width: 30px;
+    text-align: center;
+}
+
+.badge-personas-activo {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.badge-personas-vacio {
+    background: #f5f5f5;
+    color: #999;
 }
 
 /* Estados */
@@ -832,15 +762,9 @@ include 'template/menu.php';
     font-size: 0.5rem;
 }
 
-/* Correo link */
-.correo-link {
-    color: #0d6efd;
-    text-decoration: none;
-    font-size: 0.85rem;
-}
-
-.correo-link:hover {
-    text-decoration: underline;
+.institucion-nombre {
+    font-weight: 600;
+    color: #1a1a1a;
 }
 
 /* Acciones */
@@ -980,7 +904,7 @@ include 'template/menu.php';
     line-height: 1.6;
 }
 
-.modal-card .modal-body .persona-info {
+.modal-card .modal-body .institucion-info {
     background: #faf8f8;
     padding: 1rem;
     border-radius: 10px;
@@ -988,36 +912,25 @@ include 'template/menu.php';
     margin: 0.75rem 0;
 }
 
-.modal-card .modal-body .persona-info .info-item {
+.modal-card .modal-body .institucion-info .info-item {
     display: flex;
     padding: 0.3rem 0;
     border-bottom: 1px solid #f0ecec;
 }
 
-.modal-card .modal-body .persona-info .info-item:last-child {
+.modal-card .modal-body .institucion-info .info-item:last-child {
     border-bottom: none;
 }
 
-.modal-card .modal-body .persona-info .info-label {
+.modal-card .modal-body .institucion-info .info-label {
     font-weight: 600;
     color: #666;
     width: 140px;
     flex-shrink: 0;
 }
 
-.modal-card .modal-body .persona-info .info-value {
+.modal-card .modal-body .institucion-info .info-value {
     color: #1a1a1a;
-}
-
-.modal-card .modal-body .persona-info .info-value .tag-directorio-modal {
-    display: inline-block;
-    padding: 0.1rem 0.5rem;
-    background: white;
-    border: 1px solid #e8e8e8;
-    border-radius: 4px;
-    font-size: 0.7rem;
-    color: #666;
-    margin: 0.1rem 0.2rem;
 }
 
 .modal-card .modal-footer {
@@ -1206,12 +1119,12 @@ include 'template/menu.php';
         margin: 1rem;
     }
 
-    .modal-card .modal-body .persona-info .info-item {
+    .modal-card .modal-body .institucion-info .info-item {
         flex-direction: column;
         padding: 0.5rem 0;
     }
 
-    .modal-card .modal-body .persona-info .info-label {
+    .modal-card .modal-body .institucion-info .info-label {
         width: auto;
         font-size: 0.8rem;
     }
@@ -1220,83 +1133,60 @@ include 'template/menu.php';
 
 <script>
 // ============================================================
-// BÚSQUEDA Y FILTROS EN TIEMPO REAL (SIN INTERRUMPIR ESCRITURA)
+// BÚSQUEDA Y FILTROS EN TIEMPO REAL
 // ============================================================
 
 document.addEventListener('DOMContentLoaded', function() {
-    const buscarInput = document.getElementById('buscarPersona');
+    const buscarInput = document.getElementById('buscarInstitucion');
     const filtroZona = document.getElementById('filtroZona');
-    const filtroCargo = document.getElementById('filtroCargo');
+    const filtroTipo = document.getElementById('filtroTipo');
     const filtroEstado = document.getElementById('filtroEstado');
     const formFiltros = document.getElementById('formFiltros');
     
     let timeoutId = null;
-    let isTyping = false;
     
-    // Búsqueda con debounce - no interrumpe la escritura
     buscarInput.addEventListener('input', function() {
-        // Marcar que el usuario está escribiendo
-        isTyping = true;
-        
-        // Limpiar timeout anterior
         clearTimeout(timeoutId);
-        
-        // Establecer nuevo timeout
         timeoutId = setTimeout(function() {
-            isTyping = false;
             formFiltros.submit();
-        }, 600); // 600ms de pausa después de dejar de escribir
-    });
-    
-    // Evitar que el formulario se envíe mientras se escribe
-    buscarInput.addEventListener('keydown', function(e) {
-        // Si presiona Enter, enviar inmediatamente
-        if (e.key === 'Enter') {
-            clearTimeout(timeoutId);
-            isTyping = false;
-            formFiltros.submit();
-            e.preventDefault();
-        }
+        }, 500);
     });
     
     filtroZona.addEventListener('change', function() {
-        // Si hay un timeout pendiente, limpiarlo
-        clearTimeout(timeoutId);
         formFiltros.submit();
     });
     
-    filtroCargo.addEventListener('change', function() {
-        clearTimeout(timeoutId);
+    filtroTipo.addEventListener('change', function() {
         formFiltros.submit();
     });
     
     filtroEstado.addEventListener('change', function() {
-        clearTimeout(timeoutId);
         formFiltros.submit();
     });
 });
 
 // ============================================================
-// DATOS DE PERSONAS (para modal)
+// DATOS DE INSTITUCIONES
 // ============================================================
 
-const personasData = <?= json_encode($personas) ?>;
+const institucionesData = <?= json_encode($instituciones) ?>;
+const tiposInstitucion = <?= json_encode($tipos_institucion) ?>;
+const zonasRegionales = <?= json_encode($zonas_regionales) ?>;
 
 // ============================================================
-// ELIMINAR PERSONA (CON MODAL)
+// ELIMINAR INSTITUCIÓN (CON MODAL)
 // ============================================================
 
-function eliminarPersona(id) {
-    const persona = personasData.find(p => p.id === id);
-    if (!persona) {
-        mostrarMensaje('No se encontró la persona', 'error');
+function eliminarInstitucion(id) {
+    const institucion = institucionesData.find(i => i.id === id);
+    if (!institucion) {
+        mostrarMensaje('No se encontró la institución', 'error');
         return;
     }
     
-    const nombreCompleto = persona.nombre + ' ' + persona.apellido_paterno + ' ' + (persona.apellido_materno || '');
-    const zonaNombre = <?= json_encode($zonas_regionales) ?>[persona.id_zona] || 'Sin zona';
-    const directorios = persona.directorios || ['Sin directorios'];
-    const estado = persona.activo ? 'Activo' : 'Inactivo';
+    const zonaNombre = zonasRegionales[institucion.id_zona] || 'Sin zona';
+    const tipoNombre = tiposInstitucion[institucion.tipo] || 'No definido';
+    const estado = institucion.activo ? 'Activo' : 'Inactivo';
     
     // Crear modal
     const modal = document.createElement('div');
@@ -1306,55 +1196,41 @@ function eliminarPersona(id) {
         <div class="modal-card">
             <div class="modal-header">
                 <i class="fas fa-exclamation-triangle"></i>
-                <h3>¿Eliminar persona?</h3>
+                <h3>¿Eliminar institución?</h3>
             </div>
             <div class="modal-body">
-                <p><strong>¡Advertencia!</strong> Esta acción eliminará por completo el registro de la persona. Esta operación <strong>no se puede deshacer</strong>.</p>
+                <p><strong>¡Advertencia!</strong> Esta acción eliminará por completo el registro de la institución. Esta operación <strong>no se puede deshacer</strong>.</p>
                 
-                <div class="persona-info">
+                <div class="institucion-info">
                     <div class="info-item">
                         <span class="info-label">Núm. Afiliación</span>
-                        <span class="info-value">${persona.num_afiliacion}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Nombre completo</span>
-                        <span class="info-value">${nombreCompleto}</span>
+                        <span class="info-value">${institucion.num_afiliacion}</span>
                     </div>
                     <div class="info-item">
                         <span class="info-label">Institución</span>
-                        <span class="info-value">${persona.institucion}</span>
+                        <span class="info-value">${institucion.nombre}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Tipo</span>
+                        <span class="info-value">${tipoNombre}</span>
                     </div>
                     <div class="info-item">
                         <span class="info-label">Zona</span>
                         <span class="info-value">${zonaNombre}</span>
                     </div>
                     <div class="info-item">
-                        <span class="info-label">Cargo</span>
-                        <span class="info-value">${persona.cargo}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Correo</span>
-                        <span class="info-value">${persona.correo}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Teléfono</span>
-                        <span class="info-value">${persona.telefono}</span>
-                    </div>
-                    <div class="info-item">
                         <span class="info-label">Estado</span>
                         <span class="info-value">${estado}</span>
                     </div>
                     <div class="info-item">
-                        <span class="info-label">Directorios</span>
-                        <span class="info-value">
-                            ${directorios.map(d => `<span class="tag-directorio-modal">${d}</span>`).join(' ')}
-                        </span>
+                        <span class="info-label">Personas asociadas</span>
+                        <span class="info-value">${institucion.personas_relacionadas}</span>
                     </div>
                 </div>
                 
                 <p style="color:#c62828; font-weight:600; margin-top:0.75rem;">
                     <i class="fas fa-exclamation-circle"></i> 
-                    Se perderá toda la información asociada a esta persona.
+                    Se perderá toda la información asociada a esta institución.
                 </p>
             </div>
             <div class="modal-footer">
@@ -1393,7 +1269,7 @@ function confirmarEliminar(id) {
             registrosMostrados.textContent = actual - 1;
         }
         
-        mostrarMensaje('Persona eliminada exitosamente', 'success');
+        mostrarMensaje('Institución eliminada exitosamente', 'success');
     }
     
     cerrarModal();
@@ -1432,50 +1308,38 @@ function mostrarMensaje(mensaje, tipo) {
 }
 
 // ============================================================
-// EXPORTAR CSV (CON TODA LA INFO)
+// EXPORTAR CSV
 // ============================================================
 
 function descargarCSV() {
-    const filas = document.querySelectorAll('#tbodyPersonas tr');
+    const filas = document.querySelectorAll('#tbodyInstituciones tr');
     if (filas.length === 0 || (filas.length === 1 && filas[0].classList.contains('empty-row'))) {
         mostrarMensaje('No hay datos para exportar', 'error');
         return;
     }
     
-    let csv = 'Núm. Afiliación,Nombre,Institución,Cargo,Nivel,Zona,Correo,Teléfono,Fecha Inicio,Fecha Fin,Estado,Directorios\n';
+    let csv = 'Núm. Afiliación,Institución,Tipo,Zona,Personas,Estado\n';
     
     filas.forEach(fila => {
         if (fila.classList.contains('empty-row')) return;
         
         const celdas = fila.querySelectorAll('td');
-        if (celdas.length < 9) return;
+        if (celdas.length < 7) return;
         
         const numAfiliacion = celdas[0].textContent.trim();
         const nombre = celdas[1].textContent.trim();
-        const institucion = celdas[2].textContent.trim();
-        const cargo = celdas[3].textContent.trim();
-        const zona = celdas[4].textContent.trim();
-        const correo = celdas[5].textContent.trim();
-        const telefono = celdas[6].textContent.trim();
-        const estado = celdas[7].textContent.trim();
+        const tipo = celdas[2].textContent.trim();
+        const zona = celdas[3].textContent.trim();
+        const personas = celdas[4].textContent.trim();
+        const estado = celdas[5].textContent.trim();
         
-        const id = parseInt(fila.dataset.id);
-        const persona = personasData.find(p => p.id === id);
-        
-        if (persona) {
-            const nivel = persona.cargo_nivel || '';
-            const fechaInicio = persona.fecha_inicio || '';
-            const fechaFin = persona.fecha_fin || '';
-            const directorios = persona.directorios ? persona.directorios.join('; ') : '';
-            
-            csv += `"${numAfiliacion}","${nombre}","${institucion}","${cargo}","${nivel}","${zona}","${correo}","${telefono}","${fechaInicio}","${fechaFin}","${estado}","${directorios}"\n`;
-        }
+        csv += `"${numAfiliacion}","${nombre}","${tipo}","${zona}","${personas}","${estado}"\n`;
     });
     
     const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    link.download = `personas_${new Date().toISOString().slice(0,10)}.csv`;
+    link.download = `instituciones_${new Date().toISOString().slice(0,10)}.csv`;
     link.click();
     
     mostrarMensaje('CSV exportado exitosamente', 'success');
