@@ -71,201 +71,19 @@ $tipos_participacion = [
     'observadora' => 'Observadora'
 ];
 
-// Instituciones simuladas (ordenadas de más reciente a más antigua - por ID)
+// Instituciones simuladas (mezcladas, sin orden específico)
 $instituciones = [
     [
-        'id' => 17,
-        'num_afiliacion' => null,
-        'nombre' => 'Facultad de Ciencias Administrativas (CESUN)',
-        'tipo' => 2,
-        'participacion' => 'observadora',
-        'id_zona' => 1,
-        'id_entidad' => 2,
-        'id_universidad' => 14,
-        'personas_relacionadas' => 0,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 16,
-        'num_afiliacion' => null,
-        'nombre' => 'Instituto Tecnológico de los Mochis',
-        'tipo' => 1,
-        'participacion' => 'observadora',
-        'id_zona' => 1,
-        'id_entidad' => 25,
-        'id_universidad' => null,
-        'personas_relacionadas' => 0,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 15,
-        'num_afiliacion' => null,
-        'nombre' => 'Instituto de Estudios Superiores de Chihuahua',
-        'tipo' => 1,
-        'participacion' => 'observadora',
-        'id_zona' => 1,
-        'id_entidad' => 6,
-        'id_universidad' => null,
-        'personas_relacionadas' => 0,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 14,
-        'num_afiliacion' => null,
-        'nombre' => 'Centro de Estudios Superiores del Noroeste',
-        'tipo' => 1,
-        'participacion' => 'observadora',
-        'id_zona' => 1,
-        'id_entidad' => 2,
-        'id_universidad' => null,
-        'personas_relacionadas' => 0,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => '2024-12-31'
-    ],
-    [
-        'id' => 13,
-        'num_afiliacion' => '2601013',
-        'nombre' => 'Universidad Autónoma de Sinaloa',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 1,
-        'id_entidad' => 25,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-07-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 12,
-        'num_afiliacion' => '2606012',
-        'nombre' => 'Universidad Autónoma de Yucatán',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 6,
-        'id_entidad' => 31,
-        'id_universidad' => null,
-        'personas_relacionadas' => 0,
-        'fecha_inicio' => '2024-06-15',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 11,
-        'num_afiliacion' => '2603011',
-        'nombre' => 'Universidad Autónoma de Querétaro',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 3,
-        'id_entidad' => 22,
-        'id_universidad' => null,
-        'personas_relacionadas' => 0,
-        'fecha_inicio' => '2024-06-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 10,
-        'num_afiliacion' => '2605010',
-        'nombre' => 'Campus UANL - San Nicolás',
-        'tipo' => 3,
-        'participacion' => 'afiliada',
-        'id_zona' => 2,
-        'id_entidad' => 19,
-        'id_universidad' => 9,
-        'personas_relacionadas' => 0,
-        'fecha_inicio' => '2024-05-15',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 9,
-        'num_afiliacion' => '2602009',
-        'nombre' => 'Universidad Autónoma de Nuevo León',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 2,
-        'id_entidad' => 19,
-        'id_universidad' => null,
-        'personas_relacionadas' => 0,
-        'fecha_inicio' => '2024-05-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 8,
-        'num_afiliacion' => '2601008',
-        'nombre' => 'Campus UABC - Mexicali',
-        'tipo' => 3,
-        'participacion' => 'afiliada',
-        'id_zona' => 1,
-        'id_entidad' => 2,
-        'id_universidad' => 7,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-04-15',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 7,
-        'num_afiliacion' => '2601007',
-        'nombre' => 'Universidad Autónoma de Baja California',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 1,
-        'id_entidad' => 2,
-        'id_universidad' => null,
-        'personas_relacionadas' => 2,
-        'fecha_inicio' => '2024-04-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 6,
-        'num_afiliacion' => '2604006',
-        'nombre' => 'Facultad de Contaduría (UDG)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 15,
-        'id_universidad' => 5,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-03-15',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 5,
-        'num_afiliacion' => '2601005',
-        'nombre' => 'Universidad de Guadalajara',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 15,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-03-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 4,
-        'num_afiliacion' => '2607004',
-        'nombre' => 'ESCOM (IPN)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 7,
-        'id_entidad' => 7,
-        'id_universidad' => 3,
-        'personas_relacionadas' => 2,
-        'fecha_inicio' => '2024-02-15',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 3,
-        'num_afiliacion' => '2601003',
-        'nombre' => 'Instituto Politécnico Nacional',
+        'id' => 1,
+        'num_afiliacion' => '2601001',
+        'nombre' => 'Universidad Nacional Autónoma de México',
         'tipo' => 1,
         'participacion' => 'afiliada',
         'id_zona' => 7,
         'id_entidad' => 7,
         'id_universidad' => null,
-        'personas_relacionadas' => 2,
-        'fecha_inicio' => '2024-02-01',
+        'personas_relacionadas' => 5,
+        'fecha_inicio' => '2024-01-01',
         'fecha_fin' => null
     ],
     [
@@ -282,16 +100,198 @@ $instituciones = [
         'fecha_fin' => null
     ],
     [
-        'id' => 1,
-        'num_afiliacion' => '2601001',
-        'nombre' => 'Universidad Nacional Autónoma de México',
+        'id' => 3,
+        'num_afiliacion' => '2601003',
+        'nombre' => 'Instituto Politécnico Nacional',
         'tipo' => 1,
         'participacion' => 'afiliada',
         'id_zona' => 7,
         'id_entidad' => 7,
         'id_universidad' => null,
-        'personas_relacionadas' => 5,
+        'personas_relacionadas' => 2,
+        'fecha_inicio' => '2024-02-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 4,
+        'num_afiliacion' => '2607004',
+        'nombre' => 'ESCOM (IPN)',
+        'tipo' => 2,
+        'participacion' => 'afiliada',
+        'id_zona' => 7,
+        'id_entidad' => 7,
+        'id_universidad' => 3,
+        'personas_relacionadas' => 2,
+        'fecha_inicio' => '2024-02-15',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 5,
+        'num_afiliacion' => '2601005',
+        'nombre' => 'Universidad de Guadalajara',
+        'tipo' => 1,
+        'participacion' => 'afiliada',
+        'id_zona' => 4,
+        'id_entidad' => 15,
+        'id_universidad' => null,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-03-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 6,
+        'num_afiliacion' => '2604006',
+        'nombre' => 'Facultad de Contaduría (UDG)',
+        'tipo' => 2,
+        'participacion' => 'afiliada',
+        'id_zona' => 4,
+        'id_entidad' => 15,
+        'id_universidad' => 5,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-03-15',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 7,
+        'num_afiliacion' => '2601007',
+        'nombre' => 'Universidad Autónoma de Baja California',
+        'tipo' => 1,
+        'participacion' => 'afiliada',
+        'id_zona' => 1,
+        'id_entidad' => 2,
+        'id_universidad' => null,
+        'personas_relacionadas' => 2,
+        'fecha_inicio' => '2024-04-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 8,
+        'num_afiliacion' => '2601008',
+        'nombre' => 'Campus UABC - Mexicali',
+        'tipo' => 3,
+        'participacion' => 'afiliada',
+        'id_zona' => 1,
+        'id_entidad' => 2,
+        'id_universidad' => 7,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-04-15',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 9,
+        'num_afiliacion' => '2602009',
+        'nombre' => 'Universidad Autónoma de Nuevo León',
+        'tipo' => 1,
+        'participacion' => 'afiliada',
+        'id_zona' => 2,
+        'id_entidad' => 19,
+        'id_universidad' => null,
+        'personas_relacionadas' => 0,
+        'fecha_inicio' => '2024-05-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 10,
+        'num_afiliacion' => '2605010',
+        'nombre' => 'Campus UANL - San Nicolás',
+        'tipo' => 3,
+        'participacion' => 'afiliada',
+        'id_zona' => 2,
+        'id_entidad' => 19,
+        'id_universidad' => 9,
+        'personas_relacionadas' => 0,
+        'fecha_inicio' => '2024-05-15',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 11,
+        'num_afiliacion' => null,
+        'nombre' => 'Instituto Tecnológico de los Mochis',
+        'tipo' => 1,
+        'participacion' => 'observadora',
+        'id_zona' => 1,
+        'id_entidad' => 25,
+        'id_universidad' => null,
+        'personas_relacionadas' => 1,
         'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 12,
+        'num_afiliacion' => null,
+        'nombre' => 'Centro de Estudios Superiores del Noroeste',
+        'tipo' => 1,
+        'participacion' => 'observadora',
+        'id_zona' => 1,
+        'id_entidad' => 2,
+        'id_universidad' => null,
+        'personas_relacionadas' => 0,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => '2024-12-31'
+    ],
+    [
+        'id' => 13,
+        'num_afiliacion' => null,
+        'nombre' => 'Instituto de Estudios Superiores de Chihuahua',
+        'tipo' => 1,
+        'participacion' => 'observadora',
+        'id_zona' => 1,
+        'id_entidad' => 6,
+        'id_universidad' => null,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 14,
+        'num_afiliacion' => null,
+        'nombre' => 'Facultad de Ciencias Administrativas (CESUN)',
+        'tipo' => 2,
+        'participacion' => 'observadora',
+        'id_zona' => 1,
+        'id_entidad' => 2,
+        'id_universidad' => 12,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 15,
+        'num_afiliacion' => '2603011',
+        'nombre' => 'Universidad Autónoma de Querétaro',
+        'tipo' => 1,
+        'participacion' => 'afiliada',
+        'id_zona' => 3,
+        'id_entidad' => 22,
+        'id_universidad' => null,
+        'personas_relacionadas' => 0,
+        'fecha_inicio' => '2024-06-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 16,
+        'num_afiliacion' => '2606012',
+        'nombre' => 'Universidad Autónoma de Yucatán',
+        'tipo' => 1,
+        'participacion' => 'afiliada',
+        'id_zona' => 6,
+        'id_entidad' => 31,
+        'id_universidad' => null,
+        'personas_relacionadas' => 0,
+        'fecha_inicio' => '2024-06-15',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 17,
+        'num_afiliacion' => '2601013',
+        'nombre' => 'Universidad Autónoma de Sinaloa',
+        'tipo' => 1,
+        'participacion' => 'afiliada',
+        'id_zona' => 1,
+        'id_entidad' => 25,
+        'id_universidad' => null,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-07-01',
         'fecha_fin' => null
     ]
 ];
@@ -321,8 +321,8 @@ $participacion_filtro = isset($_GET['participacion']) ? $_GET['participacion'] :
 $estado_filtro = isset($_GET['estado']) ? $_GET['estado'] : '';
 $busqueda = isset($_GET['buscar']) ? trim($_GET['buscar']) : '';
 
-$orden_columna = isset($_GET['orden_columna']) ? $_GET['orden_columna'] : 'id';
-$orden_direccion = isset($_GET['orden_direccion']) ? $_GET['orden_direccion'] : 'desc';
+$orden_columna = isset($_GET['orden_columna']) ? $_GET['orden_columna'] : '';
+$orden_direccion = isset($_GET['orden_direccion']) ? $_GET['orden_direccion'] : 'asc';
 
 $instituciones_filtradas = $instituciones;
 
@@ -369,43 +369,41 @@ if ($estado_filtro == 'vigente') {
     });
 }
 
-// Ordenar
-usort($instituciones_filtradas, function($a, $b) use ($orden_columna, $orden_direccion) {
-    $valor_a = '';
-    $valor_b = '';
-    
-    switch ($orden_columna) {
-        case 'id':
-            $valor_a = $a['id'];
-            $valor_b = $b['id'];
-            break;
-        case 'num_afiliacion':
-            $valor_a = $a['num_afiliacion'] ?? '';
-            $valor_b = $b['num_afiliacion'] ?? '';
-            break;
-        case 'nombre':
-            $valor_a = $a['nombre'];
-            $valor_b = $b['nombre'];
-            break;
-        case 'tipo':
-            $valor_a = $a['tipo'];
-            $valor_b = $b['tipo'];
-            break;
-        case 'zona':
-            $valor_a = $a['id_zona'];
-            $valor_b = $b['id_zona'];
-            break;
-        default:
-            $valor_a = $a['id'];
-            $valor_b = $b['id'];
-    }
-    
-    if ($orden_direccion == 'asc') {
-        return $valor_a <=> $valor_b;
-    } else {
-        return $valor_b <=> $valor_a;
-    }
-});
+// Ordenar solo si se selecciona una columna
+if (!empty($orden_columna)) {
+    usort($instituciones_filtradas, function($a, $b) use ($orden_columna, $orden_direccion) {
+        $valor_a = '';
+        $valor_b = '';
+        
+        switch ($orden_columna) {
+            case 'num_afiliacion':
+                $valor_a = $a['num_afiliacion'] ?? '';
+                $valor_b = $b['num_afiliacion'] ?? '';
+                break;
+            case 'nombre':
+                $valor_a = $a['nombre'];
+                $valor_b = $b['nombre'];
+                break;
+            case 'tipo':
+                $valor_a = $a['tipo'];
+                $valor_b = $b['tipo'];
+                break;
+            case 'zona':
+                $valor_a = $a['id_zona'];
+                $valor_b = $b['id_zona'];
+                break;
+            default:
+                $valor_a = $a['id'];
+                $valor_b = $b['id'];
+        }
+        
+        if ($orden_direccion == 'asc') {
+            return $valor_a <=> $valor_b;
+        } else {
+            return $valor_b <=> $valor_a;
+        }
+    });
+}
 
 include 'template/header.php';
 include 'template/menu.php';
@@ -530,17 +528,6 @@ include 'template/menu.php';
                     <thead>
                         <tr>
                             <th>
-                                <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'id', 'orden_direccion' => ($orden_columna == 'id' && $orden_direccion == 'asc') ? 'desc' : 'asc'])) ?>" 
-                                   class="sort-link <?= $orden_columna == 'id' ? 'active' : '' ?>">
-                                    <span class="sort-label">#</span>
-                                    <?php if ($orden_columna == 'id'): ?>
-                                        <i class="fas fa-chevron-<?= $orden_direccion == 'asc' ? 'up' : 'down' ?>"></i>
-                                    <?php else: ?>
-                                        <i class="fas fa-sort sort-icon-inactive"></i>
-                                    <?php endif; ?>
-                                </a>
-                            </th>
-                            <th>
                                 <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'num_afiliacion', 'orden_direccion' => ($orden_columna == 'num_afiliacion' && $orden_direccion == 'asc') ? 'desc' : 'asc'])) ?>" 
                                    class="sort-link <?= $orden_columna == 'num_afiliacion' ? 'active' : '' ?>">
                                     <span class="sort-label">Núm. Afiliación</span>
@@ -573,8 +560,8 @@ include 'template/menu.php';
                                     <?php endif; ?>
                                 </a>
                             </th>
+                            <th>Dependencia</th>
                             <th>Participación</th>
-                            <th>Depende de</th>
                             <th>
                                 <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'zona', 'orden_direccion' => ($orden_columna == 'zona' && $orden_direccion == 'asc') ? 'desc' : 'asc'])) ?>" 
                                    class="sort-link <?= $orden_columna == 'zona' ? 'active' : '' ?>">
@@ -608,7 +595,6 @@ include 'template/menu.php';
                                 $num_afiliacion = $institucion['num_afiliacion'] ?? '---';
                             ?>
                             <tr data-id="<?= $institucion['id'] ?>">
-                                <td><?= $institucion['id'] ?></td>
                                 <td>
                                     <?php if ($institucion['participacion'] == 'afiliada'): ?>
                                         <span class="badge-afiliacion"><?= htmlspecialchars($num_afiliacion) ?></span>
@@ -622,12 +608,12 @@ include 'template/menu.php';
                                     </div>
                                 </td>
                                 <td><?= htmlspecialchars($tipo_nombre) ?></td>
+                                <td><?= htmlspecialchars($depende_de) ?></td>
                                 <td>
                                     <span class="badge-participacion <?= $institucion['participacion'] == 'afiliada' ? 'badge-afiliada' : 'badge-observadora' ?>">
                                         <?= htmlspecialchars($participacion_nombre) ?>
                                     </span>
                                 </td>
-                                <td><?= htmlspecialchars($depende_de) ?></td>
                                 <td><span class="badge-zona"><?= htmlspecialchars($zona_nombre) ?></span></td>
                                 <td>
                                     <span class="badge-personas <?= $institucion['personas_relacionadas'] > 0 ? 'badge-personas-activo' : 'badge-personas-vacio' ?>">
@@ -662,7 +648,7 @@ include 'template/menu.php';
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="10" class="empty-row">
+                                <td colspan="9" class="empty-row">
                                     <i class="fas fa-search"></i>
                                     <p>No se encontraron instituciones con los filtros aplicados</p>
                                 </td>
@@ -681,7 +667,7 @@ include 'template/menu.php';
 
 <style>
 /* ============================================================
-   ESTILOS MODERNOS - LISTADO INSTITUCIONES
+   ESTILOS MODERNOS - LISTADO INSTITUCIONES (RESPONSIVE)
    ============================================================ */
 
 /* Page Header */
@@ -796,15 +782,15 @@ include 'template/menu.php';
 .filters-row {
     display: flex;
     gap: 0.75rem;
-    align-items: center;
+    align-items: flex-end;
     flex-wrap: wrap;
 }
 
 .filter-group {
     position: relative;
     flex: 0 1 auto;
-    min-width: 150px;
-    max-width: 190px;
+    min-width: 140px;
+    max-width: 180px;
 }
 
 .filter-label {
@@ -879,7 +865,6 @@ include 'template/menu.php';
     cursor: pointer;
     transition: all 0.3s ease;
     white-space: nowrap;
-    margin-top: 1.1rem;
 }
 
 .btn-filter-apply:hover {
@@ -899,7 +884,6 @@ include 'template/menu.php';
     transition: all 0.3s ease;
     text-decoration: none;
     white-space: nowrap;
-    margin-top: 1.1rem;
 }
 
 .btn-filter-clear:hover {
@@ -929,7 +913,7 @@ include 'template/menu.php';
     margin-right: 0.3rem;
 }
 
-/* Tabla moderna */
+/* Tabla moderna - Responsive */
 .table-modern-container {
     background: white;
     border-radius: 14px;
@@ -940,12 +924,14 @@ include 'template/menu.php';
 
 .table-modern-wrapper {
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .table-modern {
     width: 100%;
     border-collapse: collapse;
     font-size: 0.9rem;
+    min-width: 950px;
 }
 
 .table-modern thead {
@@ -961,6 +947,7 @@ include 'template/menu.php';
     letter-spacing: 0.8px;
     color: #6b6b6b;
     border-bottom: 2px solid #e8e8e8;
+    white-space: nowrap;
 }
 
 /* Sort links */
@@ -1414,7 +1401,6 @@ include 'template/menu.php';
     .btn-filter-clear {
         width: 100%;
         justify-content: center;
-        margin-top: 0.5rem;
     }
 }
 
@@ -1448,10 +1434,14 @@ include 'template/menu.php';
         padding: 1rem;
     }
 
+    .table-modern {
+        min-width: 700px;
+        font-size: 0.8rem;
+    }
+
     .table-modern thead th,
     .table-modern tbody td {
-        padding: 0.6rem 0.6rem;
-        font-size: 0.75rem;
+        padding: 0.5rem 0.6rem;
     }
 
     .btn-accion {
@@ -1473,6 +1463,56 @@ include 'template/menu.php';
     .modal-card .modal-body .institucion-info .info-label {
         width: auto;
         font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .page-header-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 1.2rem;
+    }
+
+    .page-title {
+        font-size: 1.2rem;
+    }
+
+    .table-modern {
+        min-width: 600px;
+        font-size: 0.7rem;
+    }
+
+    .table-modern thead th,
+    .table-modern tbody td {
+        padding: 0.4rem 0.4rem;
+    }
+
+    .badge-afiliacion {
+        font-size: 0.65rem;
+        padding: 0.1rem 0.4rem;
+    }
+
+    .badge-zona {
+        font-size: 0.65rem;
+        padding: 0.15rem 0.6rem;
+    }
+
+    .badge-personas {
+        font-size: 0.7rem;
+        padding: 0.15rem 0.6rem;
+        min-width: 24px;
+    }
+
+    .btn-accion {
+        width: 24px;
+        height: 24px;
+        font-size: 0.55rem;
+        border-radius: 6px;
+    }
+
+    .modal-card {
+        padding: 1rem;
+        margin: 0.5rem;
     }
 }
 </style>
@@ -1574,6 +1614,10 @@ function eliminarInstitucion(id) {
                     <div class="info-item">
                         <span class="info-label">Tipo</span>
                         <span class="info-value">${tipoNombre}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Depende de</span>
+                        <span class="info-value">${institucion.id_universidad ? 'Universidad relacionada' : 'Es universidad'}</span>
                     </div>
                     <div class="info-item">
                         <span class="info-label">Participación</span>
@@ -1687,25 +1731,24 @@ function descargarCSV() {
         return;
     }
     
-    let csv = '#,Núm. Afiliación,Institución,Tipo,Participación,Dependencia,Zona,Personas,Estado\n';
+    let csv = 'Núm. Afiliación,Institución,Tipo,Depende de,Participación,Zona,Personas,Estado\n';
     
     filas.forEach(fila => {
         if (fila.classList.contains('empty-row')) return;
         
         const celdas = fila.querySelectorAll('td');
-        if (celdas.length < 10) return;
+        if (celdas.length < 9) return;
         
-        const id = celdas[0].textContent.trim();
-        const numAfiliacion = celdas[1].textContent.trim();
-        const nombre = celdas[2].textContent.trim();
-        const tipo = celdas[3].textContent.trim();
+        const numAfiliacion = celdas[0].textContent.trim();
+        const nombre = celdas[1].textContent.trim();
+        const tipo = celdas[2].textContent.trim();
+        const dependencia = celdas[3].textContent.trim();
         const participacion = celdas[4].textContent.trim();
-        const dependencia = celdas[5].textContent.trim();
-        const zona = celdas[6].textContent.trim();
-        const personas = celdas[7].textContent.trim();
-        const estado = celdas[8].textContent.trim();
+        const zona = celdas[5].textContent.trim();
+        const personas = celdas[6].textContent.trim();
+        const estado = celdas[7].textContent.trim();
         
-        csv += `"${id}","${numAfiliacion}","${nombre}","${tipo}","${participacion}","${dependencia}","${zona}","${personas}","${estado}"\n`;
+        csv += `"${numAfiliacion}","${nombre}","${tipo}","${dependencia}","${participacion}","${zona}","${personas}","${estado}"\n`;
     });
     
     const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
