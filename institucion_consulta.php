@@ -473,41 +473,41 @@ foreach ($universidades as $u) {
     $universidades_nombres[$u['id']] = $u['nombre'];
 }
 
-// Personas asociadas a instituciones (solo para no matrices)
+// Personas asociadas con IDs (coincidiendo con personas.php)
 $personas_asociadas = [
     2 => [
-        ['nombre' => 'Roberto Mendoza', 'cargo' => 'Director', 'titular' => true, 'fecha_inicio' => '2024-01-15', 'fecha_fin' => null, 'activo' => true],
-        ['nombre' => 'Patricia Flores', 'cargo' => 'Subdirectora', 'titular' => false, 'fecha_inicio' => '2024-02-15', 'fecha_fin' => null, 'activo' => true],
-        ['nombre' => 'Luis Reyes', 'cargo' => 'Coordinador', 'titular' => false, 'fecha_inicio' => '2023-08-01', 'fecha_fin' => '2024-07-31', 'activo' => false]
+        ['id' => 1, 'nombre' => 'María González Pérez', 'cargo' => 'Presidenta', 'titular' => true, 'fecha_inicio' => '2024-01-15', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 2, 'nombre' => 'Juan Martínez López', 'cargo' => 'Coordinador Nacional', 'titular' => false, 'fecha_inicio' => '2024-02-15', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 16, 'nombre' => 'Fernando Cruz Salazar', 'cargo' => 'Secretario Técnico General', 'titular' => false, 'fecha_inicio' => '2023-08-01', 'fecha_fin' => '2024-07-31', 'activo' => false]
     ],
     4 => [
-        ['nombre' => 'Mario Salcido', 'cargo' => 'Director', 'titular' => true, 'fecha_inicio' => '2024-02-15', 'fecha_fin' => null, 'activo' => true],
-        ['nombre' => 'Diana Ruiz', 'cargo' => 'Coordinadora', 'titular' => false, 'fecha_inicio' => '2024-03-01', 'fecha_fin' => null, 'activo' => true]
+        ['id' => 2, 'nombre' => 'Juan Martínez López', 'cargo' => 'Coordinador Nacional', 'titular' => true, 'fecha_inicio' => '2024-02-15', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 4, 'nombre' => 'Carlos Hernández Díaz', 'cargo' => 'Director Regional', 'titular' => false, 'fecha_inicio' => '2024-03-01', 'fecha_fin' => null, 'activo' => true]
     ],
     5 => [
-        ['nombre' => 'Jesús Padilla', 'cargo' => 'Director', 'titular' => true, 'fecha_inicio' => '2024-03-01', 'fecha_fin' => null, 'activo' => true]
+        ['id' => 3, 'nombre' => 'Ana Sánchez Ramírez', 'cargo' => 'Secretaria General', 'titular' => true, 'fecha_inicio' => '2024-03-01', 'fecha_fin' => null, 'activo' => true]
     ],
     6 => [
-        ['nombre' => 'Sósima Carrillo', 'cargo' => 'Directora', 'titular' => true, 'fecha_inicio' => '2024-03-15', 'fecha_fin' => null, 'activo' => true]
+        ['id' => 3, 'nombre' => 'Ana Sánchez Ramírez', 'cargo' => 'Secretaria General', 'titular' => true, 'fecha_inicio' => '2024-03-15', 'fecha_fin' => null, 'activo' => true]
     ],
     7 => [
-        ['nombre' => 'Edith Montiel', 'cargo' => 'Directora', 'titular' => true, 'fecha_inicio' => '2024-04-01', 'fecha_fin' => null, 'activo' => true],
-        ['nombre' => 'Isidro Basantes', 'cargo' => 'Coordinador', 'titular' => false, 'fecha_inicio' => '2024-04-10', 'fecha_fin' => null, 'activo' => true]
+        ['id' => 5, 'nombre' => 'Laura Torres Vega', 'cargo' => 'Coordinadora Regional', 'titular' => true, 'fecha_inicio' => '2024-04-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 10, 'nombre' => 'Luis Méndez Vargas', 'cargo' => 'Secretario Técnico', 'titular' => false, 'fecha_inicio' => '2024-04-10', 'fecha_fin' => null, 'activo' => true]
     ],
     8 => [
-        ['nombre' => 'Ana Vázquez', 'cargo' => 'Directora', 'titular' => true, 'fecha_inicio' => '2024-04-15', 'fecha_fin' => null, 'activo' => true]
+        ['id' => 5, 'nombre' => 'Laura Torres Vega', 'cargo' => 'Coordinadora Regional', 'titular' => true, 'fecha_inicio' => '2024-04-15', 'fecha_fin' => null, 'activo' => true]
     ],
     11 => [
-        ['nombre' => 'Francisco Cupa', 'cargo' => 'Director', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+        ['id' => 9, 'nombre' => 'Carmen Rivera Morales', 'cargo' => 'Coordinadora Académica', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
     ],
     13 => [
-        ['nombre' => 'Hermenegildo Lagarda', 'cargo' => 'Director', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+        ['id' => 6, 'nombre' => 'Roberto Mendoza Cruz', 'cargo' => 'Secretario Regional', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
     ],
     14 => [
-        ['nombre' => 'Diana Woolsolk', 'cargo' => 'Directora', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+        ['id' => 6, 'nombre' => 'Roberto Mendoza Cruz', 'cargo' => 'Secretario Regional', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
     ],
     17 => [
-        ['nombre' => 'Leobardo Berrelleza', 'cargo' => 'Director', 'titular' => true, 'fecha_inicio' => '2024-07-01', 'fecha_fin' => null, 'activo' => true]
+        ['id' => 8, 'nombre' => 'Jorge Gómez García', 'cargo' => 'Director Académico', 'titular' => true, 'fecha_inicio' => '2024-07-01', 'fecha_fin' => null, 'activo' => true]
     ]
 ];
 
@@ -615,17 +615,7 @@ include 'template/menu.php';
             <div class="detail-card profile-card">
                 <div class="profile-header">
                     <div class="profile-avatar">
-                        <?php 
-                        $letras = explode(' ', $institucion['nombre']);
-                        $iniciales = '';
-                        foreach ($letras as $l) {
-                            if (strlen($l) > 0) {
-                                $iniciales .= substr($l, 0, 1);
-                            }
-                            if (strlen($iniciales) >= 3) break;
-                        }
-                        ?>
-                        <span><?= strtoupper($iniciales) ?></span>
+                        <i class="fas fa-university"></i>
                     </div>
                     <div class="profile-info">
                         <h2><?= htmlspecialchars($institucion['nombre']) ?></h2>
@@ -834,7 +824,11 @@ include 'template/menu.php';
                                     <tbody>
                                         <?php foreach ($personas as $persona): ?>
                                             <tr>
-                                                <td><?= htmlspecialchars($persona['nombre']) ?></td>
+                                                <td>
+                                                    <a href="persona_consulta.php?id=<?= $persona['id'] ?>" class="persona-link">
+                                                        <?= htmlspecialchars($persona['nombre']) ?>
+                                                    </a>
+                                                </td>
                                                 <td><?= htmlspecialchars($persona['cargo']) ?></td>
                                                 <td>
                                                     <?php if ($persona['titular']): ?>
@@ -1040,8 +1034,7 @@ include 'template/menu.php';
     align-items: center;
     justify-content: center;
     color: white;
-    font-size: 1.8rem;
-    font-weight: 700;
+    font-size: 2rem;
     flex-shrink: 0;
     box-shadow: 0 4px 15px rgba(139, 0, 0, 0.25);
 }
@@ -1195,6 +1188,19 @@ include 'template/menu.php';
 
 .institucion-link:hover {
     color: #5C0000;
+    text-decoration: underline;
+}
+
+/* Persona link */
+.persona-link {
+    color: #0d6efd;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.persona-link:hover {
+    color: #0a58ca;
     text-decoration: underline;
 }
 
@@ -1506,7 +1512,7 @@ include 'template/menu.php';
     .profile-avatar {
         width: 64px;
         height: 64px;
-        font-size: 1.4rem;
+        font-size: 1.5rem;
     }
 
     .profile-info h2 {

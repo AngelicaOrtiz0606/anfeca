@@ -138,6 +138,23 @@ $universidades = [
     10 => 'Universidad Veracruzana'
 ];
 
+// Instituciones existentes para validar número de afiliación único
+$instituciones_existentes = [
+    '2601001', '2601002', '2601003', '2601004', '2601005',
+    '2601006', '2601007', '2601008', '2601009', '2601010',
+    '2607002', '2607004', '2604006', '2601008'
+];
+
+// Estructura para almacenar números por zona
+$numeros_por_zona = [];
+foreach ($instituciones_existentes as $num) {
+    $zona = (int)substr($num, 2, 2);
+    if (!isset($numeros_por_zona[$zona])) {
+        $numeros_por_zona[$zona] = [];
+    }
+    $numeros_por_zona[$zona][] = (int)substr($num, 4);
+}
+
 // Direcciones simuladas
 $direcciones = [
     1 => [
@@ -534,6 +551,32 @@ $webs = $sitios_web[$id] ?? [''];
 $mensaje = '';
 $error = '';
 
+// Función para generar número de afiliación
+function generarNumAfiliacion($zona, $existentes_por_zona) {
+    $anio = date('y');
+    $prefijo = $anio . str_pad($zona, 2, '0', STR_PAD_LEFT);
+    
+    $numeros = isset($existentes_por_zona[$zona]) ? $existentes_por_zona[$zona] : [];
+    $numero = 1;
+    
+    if (!empty($numeros)) {
+        $numero = max($numeros) + 1;
+    }
+    
+    return $prefijo . str_pad($numero, 3, '0', STR_PAD_LEFT);
+}
+
+// Función para validar si un número de afiliación ya existe (excluyendo el actual)
+function existeNumeroAfiliacion($numero, $existentes, $id_actual) {
+    // Si el número es el mismo que el actual, no es un conflicto
+    foreach ($instituciones as $i) {
+        if ($i['id'] == $id_actual && $i['num_afiliacion'] == $numero) {
+            return false;
+        }
+    }
+    return in_array($numero, $existentes);
+}
+
 // Procesar formulario de edición
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $errores = [];
@@ -557,11 +600,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     $requiere_numero = false;
     
-    if ($tipo == 1) { // Universidad
+    if ($tipo == 1) {
         if ($participacion == 'afiliada') {
             $requiere_numero = true;
         }
-    } elseif ($tipo == 2 || $tipo == 3) { // Facultad o Campus
+    } elseif ($tipo == 2 || $tipo == 3) {
         if ($participacion != 'observadora') {
             $requiere_numero = true;
         }
@@ -570,6 +613,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($requiere_numero) {
         if (empty($num_afiliacion)) {
             $errores[] = 'Número de afiliación';
+        } elseif (existeNumeroAfiliacion($num_afiliacion, $instituciones_existentes, $id)) {
+            $errores[] = 'El número de afiliación "' . htmlspecialchars($num_afiliacion) . '" ya existe, use otro';
         }
     }
     
@@ -688,7 +733,6 @@ include 'template/menu.php';
                                     </option>
                                 <?php endforeach; ?>
                             </select>
-                            <small class="form-hint">Seleccione la universidad a la que pertenece</small>
                         </div>
 
                         <div class="form-group">
@@ -701,23 +745,6 @@ include 'template/menu.php';
                                     </option>
                                 <?php endforeach; ?>
                             </select>
-                            <small class="form-hint" id="participacion_hint">
-                                <?php if ($institucion['tipo'] == 1): ?>
-                                    Para universidades matriz, seleccione "Matriz"
-                                <?php endif; ?>
-                            </small>
-                        </div>
-
-                        <!-- Número de afiliación -->
-                        <div class="form-group" id="num_afiliacion_container" style="<?= ($institucion['participacion'] == 'afiliada' && $institucion['tipo'] != 1) || ($institucion['tipo'] == 1 && $institucion['participacion'] == 'afiliada') ? 'display:block;' : 'display:none;' ?>">
-                            <label class="form-label" id="num_afiliacion_label">Número de Afiliación <span id="num_afiliacion_required" style="color:#c62828;">*</span></label>
-                            <div class="afiliacion-display">
-                                <span class="afiliacion-value" id="num_afiliacion_mostrado">
-                                    <?= $institucion['num_afiliacion'] ?? '- - - - - - -' ?>
-                                </span>
-                            </div>
-                            <input type="hidden" name="num_afiliacion" id="num_afiliacion" value="<?= $institucion['num_afiliacion'] ?? '' ?>">
-                            <small class="form-hint" id="num_afiliacion_hint">Se genera con el año, zona y consecutivo</small>
                         </div>
 
                         <!-- Sitios Web -->
@@ -768,12 +795,11 @@ include 'template/menu.php';
                             <input type="text" name="cp" id="cp" class="form-control cp-input" 
                                    value="<?= $direccion ? htmlspecialchars($direccion['cp']) : '' ?>" 
                                    placeholder="Ej. 04510" pattern="[0-9]{5}" inputmode="numeric" required>
-                            <small class="form-hint">Ejemplos: 04510 (UNAM), 07738 (IPN), 09340 (UAM)</small>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label required">Entidad</label>
-                            <select name="entidad" id="entidad" class="form-control" required>
+                            <select name="entidad" id="entidad" class="form-control" required disabled>
                                 <option value="">Seleccionar entidad...</option>
                                 <?php foreach ($entidades_federativas as $id_ent => $nombre): ?>
                                     <option value="<?= $id_ent ?>" <?= $institucion['id_entidad'] == $id_ent ? 'selected' : '' ?>>
@@ -781,12 +807,11 @@ include 'template/menu.php';
                                     </option>
                                 <?php endforeach; ?>
                             </select>
-                            <small class="form-hint">Se carga automáticamente con el código postal</small>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label required">Alcaldía / Municipio</label>
-                            <select name="municipio" id="municipio" class="form-control" required>
+                            <select name="municipio" id="municipio" class="form-control" required disabled>
                                 <option value="">Seleccionar alcaldía/municipio...</option>
                                 <?php if ($direccion && !empty($direccion['municipio'])): ?>
                                     <option value="<?= htmlspecialchars($direccion['municipio']) ?>" selected>
@@ -794,12 +819,11 @@ include 'template/menu.php';
                                     </option>
                                 <?php endif; ?>
                             </select>
-                            <small class="form-hint">Se carga automáticamente con el código postal</small>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label required">Colonia</label>
-                            <select name="colonia" id="colonia" class="form-control" required>
+                            <select name="colonia" id="colonia" class="form-control" required disabled>
                                 <option value="">Seleccionar colonia...</option>
                                 <?php if ($direccion && !empty($direccion['colonia'])): ?>
                                     <option value="<?= htmlspecialchars($direccion['colonia']) ?>" selected>
@@ -807,7 +831,6 @@ include 'template/menu.php';
                                     </option>
                                 <?php endif; ?>
                             </select>
-                            <small class="form-hint">Se carga automáticamente con el código postal</small>
                         </div>
 
                         <div class="form-group">
@@ -820,7 +843,6 @@ include 'template/menu.php';
                                     </option>
                                 <?php endforeach; ?>
                             </select>
-                            <small class="form-hint">Se carga con el código postal, puede modificarse</small>
                         </div>
 
                         <div class="form-group">
@@ -866,6 +888,26 @@ include 'template/menu.php';
                             <input type="date" name="fecha_fin" id="fecha_fin" class="form-control" 
                                    value="<?= $institucion['fecha_fin'] ?>">
                             <small class="form-hint">Dejar vacío si está vigente</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECCIÓN 4: NÚMERO DE AFILIACIÓN -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <span class="section-number">04</span>
+                        <h3>Número de Afiliación</h3>
+                        <span class="section-line"></span>
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" id="num_afiliacion_label">Número de Afiliación <span id="num_afiliacion_required" style="color:#c62828; display:none;">*</span></label>
+                            <input type="text" name="num_afiliacion" id="num_afiliacion_input" class="form-control afiliacion-input" 
+                                   placeholder="No aplica" pattern="[0-9]{7}" maxlength="7" autocomplete="off" 
+                                   value="<?= htmlspecialchars($institucion['num_afiliacion'] ?? '') ?>" disabled>
+                            <small class="form-hint" id="num_afiliacion_hint">Se genera automáticamente cuando aplique</small>
+                            <small class="form-hint" id="num_afiliacion_status" style="display:none;"></small>
                         </div>
                     </div>
                 </div>
@@ -1089,17 +1131,6 @@ include 'template/menu.php';
     background: linear-gradient(90deg, #e0d6d6, transparent);
 }
 
-.section-hint {
-    color: #888;
-    font-size: 0.85rem;
-    margin: -0.5rem 0 1.25rem 2.5rem;
-}
-
-.hint-asterisk {
-    color: #c62828;
-    font-weight: 700;
-}
-
 /* Grids - Responsive */
 .form-grid {
     display: grid;
@@ -1107,27 +1138,25 @@ include 'template/menu.php';
     gap: 1.25rem;
 }
 
-/* Afiliación Display */
-.afiliacion-display {
-    display: flex;
-    align-items: center;
-    padding: 0.7rem 1rem;
-    background: #f8f6f6;
-    border: 2px solid #e8e8e8;
-    border-radius: 10px;
-    min-height: 46px;
-    width: 100%;
-}
-
-.afiliacion-value {
-    font-weight: 600;
-    color: #1a1a1a;
+/* Afiliación - Input */
+.afiliacion-input {
     font-family: monospace;
     font-size: 1.1rem;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
-/* Form groups */
+.afiliacion-input:disabled {
+    background: #f5f5f5;
+    color: #999;
+    cursor: not-allowed;
+}
+
+.afiliacion-input:disabled::placeholder {
+    color: #bbb;
+}
+
+/* Form groups - Responsive */
 .form-group {
     display: flex;
     flex-direction: column;
@@ -1153,6 +1182,14 @@ include 'template/menu.php';
     margin-top: 0.15rem;
 }
 
+.form-hint.error {
+    color: #c62828;
+}
+
+.form-hint.success {
+    color: #2e7d32;
+}
+
 .form-control {
     padding: 0.7rem 1rem;
     border: 2px solid #e8e8e8;
@@ -1175,12 +1212,18 @@ include 'template/menu.php';
     color: #bbb;
 }
 
+.form-control:disabled {
+    background: #f0f0f0;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
 .cp-input {
     font-weight: 600;
     letter-spacing: 1px;
 }
 
-/* Sitios Web */
+/* Sitios Web - Responsive */
 .sitio-web-item {
     margin-bottom: 0.5rem;
     width: 100%;
@@ -1239,7 +1282,7 @@ include 'template/menu.php';
     border-color: #8B0000;
 }
 
-/* Form actions */
+/* Form actions - Responsive */
 .form-actions {
     display: flex;
     gap: 1rem;
@@ -1289,10 +1332,6 @@ include 'template/menu.php';
         grid-template-columns: 1fr;
     }
 
-    .section-hint {
-        margin-left: 0;
-    }
-
     .form-actions {
         flex-direction: column;
     }
@@ -1305,19 +1344,6 @@ include 'template/menu.php';
 
     .sitio-web-input-group {
         flex-direction: column;
-    }
-
-    .afiliacion-display {
-        min-height: 40px;
-        padding: 0.5rem 0.8rem;
-    }
-
-    .afiliacion-value {
-        font-size: 0.95rem;
-    }
-
-    .form-label {
-        white-space: normal;
     }
 }
 
@@ -1338,6 +1364,7 @@ include 'template/menu.php';
 
     .form-label {
         font-size: 0.75rem;
+        white-space: normal;
     }
 
     .form-control {
@@ -1345,14 +1372,8 @@ include 'template/menu.php';
         font-size: 0.85rem;
     }
 
-    .afiliacion-display {
-        min-height: 36px;
-        padding: 0.4rem 0.6rem;
-    }
-
-    .afiliacion-value {
-        font-size: 0.85rem;
-        letter-spacing: 1px;
+    .afiliacion-input {
+        font-size: 0.95rem;
     }
 
     .btn-remove-sitio {
@@ -1370,11 +1391,13 @@ include 'template/menu.php';
 
 const datosPorCP = <?= json_encode($datos_por_cp) ?>;
 const zonaPorEntidad = <?= json_encode($zona_por_entidad) ?>;
-const tiposInstitucion = <?= json_encode($tipos_institucion) ?>;
-const tiposParticipacion = <?= json_encode($tipos_participacion) ?>;
+const numerosPorZona = <?= json_encode($numeros_por_zona) ?>;
+const institucionesExistentes = <?= json_encode($instituciones_existentes) ?>;
+const idActual = <?= $id ?>;
+const numAfiliacionActual = <?= json_encode($institucion['num_afiliacion'] ?? '') ?>;
 
 // ============================================================
-// FUNCIÓN PARA GENERAR NÚMERO DE AFILIACIÓN
+// GENERAR NÚMERO DE AFILIACIÓN AUTOMÁTICAMENTE
 // ============================================================
 
 function generarNumeroAfiliacion(zona) {
@@ -1391,17 +1414,26 @@ function generarNumeroAfiliacion(zona) {
     const zonaStr = String(zona).padStart(2, '0');
     const prefijo = anio + zonaStr;
     
-    // Números existentes para esta zona (simulado)
-    const numerosExistentes = {
-        1: [1, 3, 5, 7, 8, 13, 17],
-        2: [9, 10],
-        3: [11, 15],
-        4: [5, 6],
-        6: [12, 16],
-        7: [1, 2, 3, 4]
-    };
+    // Obtener números existentes para este prefijo
+    let numeros = [];
+    institucionesExistentes.forEach(function(num) {
+        if (num.substring(0, 4) === prefijo) {
+            const n = parseInt(num.substring(4));
+            if (!numeros.includes(n)) {
+                numeros.push(n);
+            }
+        }
+    });
     
-    let numeros = numerosExistentes[zona] || [];
+    // También considerar números de la zona
+    if (numerosPorZona[zona]) {
+        numerosPorZona[zona].forEach(function(n) {
+            if (!numeros.includes(n)) {
+                numeros.push(n);
+            }
+        });
+    }
+    
     let consecutivo = 1;
     if (numeros.length > 0) {
         consecutivo = Math.max(...numeros) + 1;
@@ -1411,77 +1443,165 @@ function generarNumeroAfiliacion(zona) {
 }
 
 // ============================================================
-// ACTUALIZAR CAMPOS SEGÚN TIPO Y PARTICIPACIÓN
+// VALIDAR NÚMERO DE AFILIACIÓN EN TIEMPO REAL
+// ============================================================
+
+function validarNumeroAfiliacion(numero) {
+    if (!numero || numero.length === 0) { 
+        return { valido: false, mensaje: '', clase: '' }; 
+    }
+    
+    // Verificar formato (7 dígitos)
+    if (!/^[0-9]{7}$/.test(numero)) {
+        return { valido: false, mensaje: 'Formato inválido. Use 7 dígitos (Ej. 2601001)', clase: 'error' };
+    }
+    
+    // Verificar si ya existe (excluyendo el actual)
+    let existe = false;
+    for (let i = 0; i < institucionesExistentes.length; i++) {
+        if (institucionesExistentes[i] === numero) {
+            // Verificar si este número pertenece a la institución actual
+            if (numAfiliacionActual !== numero) {
+                existe = true;
+            }
+            break;
+        }
+    }
+    
+    if (existe) {
+        return { valido: false, mensaje: 'Este número ya está registrado', clase: 'error' };
+    }
+    
+    // Verificar que la zona corresponda
+    const zona = parseInt(numero.substring(2, 4));
+    if (isNaN(zona) || zona < 1 || zona > 7) {
+        return { valido: false, mensaje: 'Zona inválida en el número (posiciones 3-4)', clase: 'error' };
+    }
+    
+    // Verificar que el año no sea futuro
+    const anio = parseInt(numero.substring(0, 2));
+    const anioActual = parseInt(new Date().getFullYear().toString().slice(-2));
+    if (anio > anioActual + 1) {
+        return { valido: false, mensaje: 'Año futuro (posiciones 1-2)', clase: 'error' };
+    }
+    
+    return { valido: true, mensaje: 'Número disponible', clase: 'success' };
+}
+
+function actualizarStatusNumeroAfiliacion() {
+    const input = document.getElementById('num_afiliacion_input');
+    const status = document.getElementById('num_afiliacion_status');
+    const numero = input.value.trim();
+    
+    if (!numero || input.disabled) {
+        status.style.display = 'none';
+        return;
+    }
+    
+    const resultado = validarNumeroAfiliacion(numero);
+    status.style.display = 'block';
+    status.textContent = resultado.mensaje;
+    status.className = 'form-hint ' + (resultado.clase || '');
+    
+    // Cambiar color del borde del input
+    if (resultado.clase === 'error') {
+        input.style.borderColor = '#c62828';
+    } else if (resultado.clase === 'success') {
+        input.style.borderColor = '#2e7d32';
+    } else {
+        input.style.borderColor = '';
+    }
+}
+
+// ============================================================
+// ACTIVAR/DESACTIVAR CAMPO DE AFILIACIÓN
 // ============================================================
 
 function actualizarCampos() {
     const tipoSelect = document.getElementById('tipo');
     const participacionSelect = document.getElementById('participacion');
+    const numInput = document.getElementById('num_afiliacion_input');
+    const numRequired = document.getElementById('num_afiliacion_required');
+    const numHint = document.getElementById('num_afiliacion_hint');
     const universidadContainer = document.getElementById('universidad_container');
     const universidadSelect = document.getElementById('universidad');
-    const numContainer = document.getElementById('num_afiliacion_container');
-    const numRequired = document.getElementById('num_afiliacion_required');
-    const numDisplay = document.getElementById('num_afiliacion_mostrado');
-    const numInput = document.getElementById('num_afiliacion');
-    const participacionHint = document.getElementById('participacion_hint');
     const zonaSelect = document.getElementById('zona');
+    const fechaInicio = document.getElementById('fecha_inicio');
     
     const tipo = parseInt(tipoSelect.value);
     const participacion = participacionSelect.value;
+    const zona = parseInt(zonaSelect.value);
     
-    // Universidad
+    // Reset universidad
+    universidadContainer.style.display = 'none';
+    universidadSelect.removeAttribute('required');
+    universidadSelect.value = '';
+    
+    // Determinar si requiere número de afiliación
+    let requiereNumero = false;
+    let hintTexto = 'Se genera automáticamente cuando aplique';
+    
     if (tipo === 1) {
-        universidadContainer.style.display = 'none';
-        universidadSelect.removeAttribute('required');
-        universidadSelect.value = '';
-        participacionHint.textContent = 'Para universidades matriz, seleccione "Matriz"';
-    } else {
+        if (participacion === 'matriz') {
+            requiereNumero = false;
+            hintTexto = 'No aplica para universidades matriz';
+        } else if (participacion === 'afiliada') {
+            requiereNumero = true;
+            hintTexto = 'Formato: Año(2) + Zona(2) + Consecutivo(3)';
+        } else {
+            requiereNumero = false;
+            hintTexto = 'No aplica para universidades observadoras';
+        }
+    } else if (tipo === 2 || tipo === 3) {
         universidadContainer.style.display = 'block';
         universidadSelect.setAttribute('required', 'required');
-        participacionHint.textContent = '';
-    }
-    
-    // Número de afiliación
-    let requiereNumero = false;
-    let mostrarNumero = false;
-    let numeroActual = numInput.value;
-    
-    if (tipo === 1) { // Universidad
-        if (participacion === 'afiliada') {
-            requiereNumero = true;
-            mostrarNumero = true;
-        } else {
-            requiereNumero = false;
-            mostrarNumero = false;
-        }
-    } else if (tipo === 2 || tipo === 3) { // Facultad o Campus
+        
         if (participacion === 'observadora') {
             requiereNumero = false;
-            mostrarNumero = false;
+            hintTexto = 'No aplica para facultades/campus observadores';
         } else {
             requiereNumero = true;
-            mostrarNumero = true;
+            hintTexto = 'Formato: Año(2) + Zona(2) + Consecutivo(3)';
         }
     }
     
-    if (mostrarNumero) {
-        numContainer.style.display = 'block';
-        numRequired.style.display = requiereNumero ? 'inline' : 'none';
+    // Activar/desactivar campo
+    if (requiereNumero && zona > 0 && fechaInicio.value) {
+        numInput.disabled = false;
+        numInput.required = true;
+        numRequired.style.display = 'inline';
+        numHint.textContent = hintTexto;
+        numInput.placeholder = '';
         
-        const zona = parseInt(zonaSelect.value);
-        if (zona && zona > 0 && !numeroActual) {
+        // Si el campo está vacío, generar número automáticamente
+        if (!numInput.value) {
             const nuevoNum = generarNumeroAfiliacion(zona);
-            numDisplay.textContent = nuevoNum;
             numInput.value = nuevoNum;
-        } else if (numeroActual) {
-            numDisplay.textContent = numeroActual;
+            actualizarStatusNumeroAfiliacion();
         } else {
-            numDisplay.textContent = '- - - - - - -';
+            // Si ya tiene valor, validar
+            actualizarStatusNumeroAfiliacion();
         }
     } else {
-        numContainer.style.display = 'none';
-        numDisplay.textContent = '- - - - - - -';
-        numInput.value = '';
+        numInput.disabled = true;
+        numInput.required = false;
+        numRequired.style.display = 'none';
+        // Si no requiere número, limpiar el campo
+        if (!requiereNumero) {
+            numInput.value = '';
+            numInput.placeholder = 'No aplica';
+        } else {
+            // Si requiere pero falta zona o fecha, mantener el valor pero deshabilitado
+            if (numInput.value) {
+                numInput.placeholder = '';
+            } else {
+                numInput.placeholder = 'No aplica';
+            }
+        }
+        numInput.style.borderColor = '';
+        numHint.textContent = 'Se genera automáticamente cuando aplique';
+        document.getElementById('num_afiliacion_status').style.display = 'none';
+        document.getElementById('num_afiliacion_status').textContent = '';
     }
 }
 
@@ -1493,12 +1613,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const tipoSelect = document.getElementById('tipo');
     const participacionSelect = document.getElementById('participacion');
     const zonaSelect = document.getElementById('zona');
-    const cpInput = document.getElementById('cp');
-    const entidadSelect = document.getElementById('entidad');
-    const municipioSelect = document.getElementById('municipio');
-    const coloniaSelect = document.getElementById('colonia');
+    const fechaInicio = document.getElementById('fecha_inicio');
+    const numInput = document.getElementById('num_afiliacion_input');
     
-    // Eventos para actualizar campos
+    // Eventos que disparan actualización
     if (tipoSelect) {
         tipoSelect.addEventListener('change', actualizarCampos);
     }
@@ -1511,57 +1629,14 @@ document.addEventListener('DOMContentLoaded', function() {
         zonaSelect.addEventListener('change', actualizarCampos);
     }
     
-    // Código postal → cargar datos
-    if (cpInput) {
-        cpInput.addEventListener('blur', function() {
-            const cp = this.value.trim();
-            
-            if (cp.length === 5 && datosPorCP[cp]) {
-                const datos = datosPorCP[cp];
-                
-                if (datos.entidad) {
-                    entidadSelect.value = datos.entidad;
-                    // Disparar cambio para actualizar municipio y colonia
-                    entidadSelect.dispatchEvent(new Event('change'));
-                }
-                
-                if (datos.municipio) {
-                    municipioSelect.innerHTML = '<option value="">Seleccionar alcaldía/municipio...</option>';
-                    const option = document.createElement('option');
-                    option.value = datos.municipio;
-                    option.textContent = datos.municipio;
-                    option.selected = true;
-                    municipioSelect.appendChild(option);
-                    municipioSelect.disabled = false;
-                }
-                
-                if (datos.colonia) {
-                    coloniaSelect.innerHTML = '<option value="">Seleccionar colonia...</option>';
-                    const option = document.createElement('option');
-                    option.value = datos.colonia;
-                    option.textContent = datos.colonia;
-                    option.selected = true;
-                    coloniaSelect.appendChild(option);
-                    coloniaSelect.disabled = false;
-                }
-                
-                if (datos.zona) {
-                    zonaSelect.value = datos.zona;
-                    actualizarCampos();
-                }
-            }
-        });
+    if (fechaInicio) {
+        fechaInicio.addEventListener('change', actualizarCampos);
     }
     
-    // Entidad → zona
-    if (entidadSelect && zonaSelect) {
-        entidadSelect.addEventListener('change', function() {
-            const entidadId = parseInt(this.value);
-            if (entidadId && zonaPorEntidad[entidadId]) {
-                zonaSelect.value = zonaPorEntidad[entidadId];
-                actualizarCampos();
-            }
-        });
+    // Validar número en tiempo real cuando el usuario escribe (editable)
+    if (numInput) {
+        numInput.addEventListener('input', actualizarStatusNumeroAfiliacion);
+        numInput.addEventListener('blur', actualizarStatusNumeroAfiliacion);
     }
     
     // Inicializar
@@ -1569,7 +1644,114 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ============================================================
-// SITIOS WEB - AGREGAR / ELIMINAR
+// CÓDIGO POSTAL → DATOS (con campos bloqueados)
+// ============================================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    const cpInput = document.getElementById('cp');
+    const entidadSelect = document.getElementById('entidad');
+    const zonaSelect = document.getElementById('zona');
+    const coloniaSelect = document.getElementById('colonia');
+    const municipioSelect = document.getElementById('municipio');
+    
+    function cargarDatosPorCP() {
+        const cp = cpInput.value.trim();
+        
+        const existing = document.querySelector('.cp-mensaje');
+        if (existing) existing.remove();
+        
+        if (cp.length === 5 && datosPorCP[cp]) {
+            const datos = datosPorCP[cp];
+            
+            // Entidad - solo lectura
+            if (datos.entidad) {
+                entidadSelect.value = datos.entidad;
+            }
+            
+            // Municipio - solo lectura
+            municipioSelect.innerHTML = '<option value="">Seleccionar alcaldía/municipio...</option>';
+            if (datos.municipio) {
+                const option = document.createElement('option');
+                option.value = datos.municipio;
+                option.textContent = datos.municipio;
+                option.selected = true;
+                municipioSelect.appendChild(option);
+            }
+            
+            // Colonia - solo lectura
+            coloniaSelect.innerHTML = '<option value="">Seleccionar colonia...</option>';
+            if (datos.colonia) {
+                const option = document.createElement('option');
+                option.value = datos.colonia;
+                option.textContent = datos.colonia;
+                option.selected = true;
+                coloniaSelect.appendChild(option);
+            }
+            
+            // Zona - se carga pero es editable
+            if (datos.zona) {
+                zonaSelect.value = datos.zona;
+                // Disparar cambio para actualizar número de afiliación
+                zonaSelect.dispatchEvent(new Event('change'));
+            }
+            
+            mostrarMensajeCP('Datos cargados correctamente', 'success');
+        } else if (cp.length === 5) {
+            mostrarMensajeCP('No se encontraron datos para este código postal', 'error');
+        }
+    }
+    
+    function mostrarMensajeCP(mensaje, tipo) {
+        const existing = document.querySelector('.cp-mensaje');
+        if (existing) existing.remove();
+        
+        const div = document.createElement('div');
+        div.className = 'cp-mensaje';
+        div.style.cssText = `
+            font-size: 0.8rem;
+            padding: 0.3rem 0.5rem;
+            border-radius: 4px;
+            margin-top: 0.15rem;
+            color: ${tipo === 'success' ? '#2e7d32' : '#c62828'};
+            background: ${tipo === 'success' ? '#e8f5e9' : '#fce4ec'};
+        `;
+        div.textContent = mensaje;
+        cpInput.parentNode.appendChild(div);
+    }
+    
+    if (cpInput) {
+        cpInput.addEventListener('blur', cargarDatosPorCP);
+        cpInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                cargarDatosPorCP();
+            }
+        });
+    }
+});
+
+// ============================================================
+// ZONA SEGÚN ENTIDAD
+// ============================================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    const entidadSelect = document.getElementById('entidad');
+    const zonaSelect = document.getElementById('zona');
+    
+    if (entidadSelect && zonaSelect) {
+        entidadSelect.addEventListener('change', function() {
+            const entidadId = parseInt(this.value);
+            if (entidadId && zonaPorEntidad[entidadId]) {
+                zonaSelect.value = zonaPorEntidad[entidadId];
+                // Disparar cambio para actualizar número de afiliación
+                zonaSelect.dispatchEvent(new Event('change'));
+            }
+        });
+    }
+});
+
+// ============================================================
+// SITIOS WEB
 // ============================================================
 
 function agregarSitioWeb() {
@@ -1603,29 +1785,62 @@ function eliminarSitioWeb(btn) {
 // VALIDACIÓN DEL FORMULARIO
 // ============================================================
 
+function validarFormulario() {
+    const numInput = document.getElementById('num_afiliacion_input');
+    const tipo = parseInt(document.getElementById('tipo').value);
+    const participacion = document.getElementById('participacion').value;
+    
+    // Determinar si requiere número
+    let requiereNumero = false;
+    
+    if (tipo === 1) {
+        if (participacion === 'afiliada') {
+            requiereNumero = true;
+        }
+    } else if (tipo === 2 || tipo === 3) {
+        if (participacion !== 'observadora') {
+            requiereNumero = true;
+        }
+    }
+    
+    if (requiereNumero) {
+        const numero = numInput.value.trim();
+        if (!numero) {
+            alert('El número de afiliación es obligatorio. Verifique que la zona y fecha de inicio estén completas.');
+            numInput.focus();
+            return false;
+        }
+        
+        // Validar formato
+        if (!/^[0-9]{7}$/.test(numero)) {
+            alert('El número de afiliación debe tener exactamente 7 dígitos (Ej. 2601001)');
+            numInput.focus();
+            return false;
+        }
+        
+        // Validar unicidad (excluyendo el actual)
+        let existe = false;
+        for (let i = 0; i < institucionesExistentes.length; i++) {
+            if (institucionesExistentes[i] === numero && numAfiliacionActual !== numero) {
+                existe = true;
+                break;
+            }
+        }
+        
+        if (existe) {
+            alert('El número de afiliación "' + numero + '" ya está registrado. Use otro número.');
+            numInput.focus();
+            return false;
+        }
+    }
+    
+    return true;
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('formEdicion');
     if (form) {
-        form.onsubmit = function() {
-            const numAfiliacion = document.getElementById('num_afiliacion');
-            const tipo = parseInt(document.getElementById('tipo').value);
-            const participacion = document.getElementById('participacion').value;
-            
-            let requiereNumero = false;
-            
-            if (tipo === 1 && participacion === 'afiliada') {
-                requiereNumero = true;
-            } else if ((tipo === 2 || tipo === 3) && participacion !== 'observadora') {
-                requiereNumero = true;
-            }
-            
-            if (requiereNumero && !numAfiliacion.value) {
-                alert('Por favor, seleccione una zona para generar el número de afiliación.');
-                return false;
-            }
-            
-            return true;
-        };
+        form.onsubmit = validarFormulario;
     }
 });
 </script>
