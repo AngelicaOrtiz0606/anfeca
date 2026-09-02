@@ -1,7 +1,7 @@
 <?php
 // ============================================================
 // SIDEANFECA - Gestión de Instituciones
-// Registrar nueva institución
+// Editar institución existente
 // ============================================================
 
 session_start();
@@ -138,41 +138,403 @@ $universidades = [
     10 => 'Universidad Veracruzana'
 ];
 
-// Instituciones existentes para validar número de afiliación único
-$instituciones_existentes = [
-    '2601001', '2601002', '2601003', '2601004', '2601005',
-    '2601006', '2601007', '2601008', '2601009', '2601010',
-    '2607002', '2607004', '2604006', '2601008'
+// Direcciones simuladas
+$direcciones = [
+    1 => [
+        'calle' => 'Avenida Universidad',
+        'numero_exterior' => '3000',
+        'numero_interior' => '',
+        'colonia' => 'Ciudad Universitaria',
+        'cp' => '04510',
+        'municipio' => 'Coyoacán'
+    ],
+    2 => [
+        'calle' => 'Circuito Exterior',
+        'numero_exterior' => 'S/N',
+        'numero_interior' => 'Edificio A',
+        'colonia' => 'Ciudad Universitaria',
+        'cp' => '04510',
+        'municipio' => 'Coyoacán'
+    ],
+    3 => [
+        'calle' => 'Avenida Instituto Politécnico Nacional',
+        'numero_exterior' => 'S/N',
+        'numero_interior' => '',
+        'colonia' => 'Zacatenco',
+        'cp' => '07738',
+        'municipio' => 'Gustavo A. Madero'
+    ],
+    4 => [
+        'calle' => 'Avenida Instituto Politécnico Nacional',
+        'numero_exterior' => 'S/N',
+        'numero_interior' => 'Edificio 8',
+        'colonia' => 'Zacatenco',
+        'cp' => '07738',
+        'municipio' => 'Gustavo A. Madero'
+    ],
+    5 => [
+        'calle' => 'Avenida Juárez',
+        'numero_exterior' => '976',
+        'numero_interior' => '',
+        'colonia' => 'Centro',
+        'cp' => '44100',
+        'municipio' => 'Guadalajara'
+    ],
+    6 => [
+        'calle' => 'Periférico Norte',
+        'numero_exterior' => '799',
+        'numero_interior' => 'Int. 301',
+        'colonia' => 'Centro',
+        'cp' => '44100',
+        'municipio' => 'Guadalajara'
+    ],
+    7 => [
+        'calle' => 'Carretera Transpeninsular',
+        'numero_exterior' => 'S/N',
+        'numero_interior' => '',
+        'colonia' => 'Ciudad Universitaria',
+        'cp' => '21259',
+        'municipio' => 'Mexicali'
+    ],
+    8 => [
+        'calle' => 'Calzada Universidad',
+        'numero_exterior' => '14418',
+        'numero_interior' => '',
+        'colonia' => 'Internacional Tijuana',
+        'cp' => '22424',
+        'municipio' => 'Tijuana'
+    ],
+    9 => [
+        'calle' => 'Avenida Universidad',
+        'numero_exterior' => 'S/N',
+        'numero_interior' => '',
+        'colonia' => 'Ciudad Universitaria',
+        'cp' => '66450',
+        'municipio' => 'San Nicolás de los Garza'
+    ],
+    10 => [
+        'calle' => 'Avenida Universidad',
+        'numero_exterior' => 'S/N',
+        'numero_interior' => '',
+        'colonia' => 'Ciudad Universitaria',
+        'cp' => '66450',
+        'municipio' => 'San Nicolás de los Garza'
+    ],
+    11 => [
+        'calle' => 'Blv. Juan de Dios Batiz y 20 de Noviembre',
+        'numero_exterior' => 'S/N',
+        'numero_interior' => 'Apartado 766',
+        'colonia' => 'Del Parque',
+        'cp' => '81250',
+        'municipio' => 'Ahome'
+    ],
+    12 => [
+        'calle' => 'Blv. Cucapahcu',
+        'numero_exterior' => '20100',
+        'numero_interior' => '',
+        'colonia' => 'Fracc. Lago',
+        'cp' => '22100',
+        'municipio' => 'Tijuana'
+    ],
+    13 => [
+        'calle' => 'Calle Francisco Javier Mina',
+        'numero_exterior' => '1000',
+        'numero_interior' => '',
+        'colonia' => 'Zona Centro',
+        'cp' => '31000',
+        'municipio' => 'Chihuahua'
+    ],
+    14 => [
+        'calle' => 'Blv. Cucapahcu',
+        'numero_exterior' => '20100',
+        'numero_interior' => '',
+        'colonia' => 'Fracc. Lago',
+        'cp' => '22100',
+        'municipio' => 'Tijuana'
+    ],
+    15 => [
+        'calle' => 'Avenida Tecnológico',
+        'numero_exterior' => 'S/N',
+        'numero_interior' => '',
+        'colonia' => 'Ciudad Universitaria',
+        'cp' => '76010',
+        'municipio' => 'Querétaro'
+    ],
+    16 => [
+        'calle' => 'Calle 60',
+        'numero_exterior' => '491',
+        'numero_interior' => '',
+        'colonia' => 'Centro',
+        'cp' => '97160',
+        'municipio' => 'Mérida'
+    ],
+    17 => [
+        'calle' => 'Blvd. Universitarios y Avenida las Américas',
+        'numero_exterior' => 'S/N',
+        'numero_interior' => '',
+        'colonia' => 'Ciudad Universitaria',
+        'cp' => '80013',
+        'municipio' => 'Culiacán'
+    ]
 ];
 
-// Estructura para almacenar números por zona
-$numeros_por_zona = [];
-foreach ($instituciones_existentes as $num) {
-    $zona = (int)substr($num, 2, 2);
-    if (!isset($numeros_por_zona[$zona])) {
-        $numeros_por_zona[$zona] = [];
+// Sitios web simulados
+$sitios_web = [
+    1 => ['https://www.unam.mx'],
+    2 => ['https://www.fca.unam.mx'],
+    3 => ['https://www.ipn.mx', 'https://www.tecnm.mx'],
+    4 => ['https://www.escom.ipn.mx'],
+    5 => ['https://www.udg.mx', 'https://www.cucea.udg.mx'],
+    6 => ['https://www.cucea.udg.mx'],
+    7 => ['https://www.uabc.mx', 'https://www.uabc.mx/ensenada'],
+    8 => ['https://www.uabc.mx/planteles/mexicali'],
+    9 => ['https://www.uanl.mx', 'https://www.uanl.mx/ciudad-universitaria'],
+    10 => ['https://www.uanl.mx/campus-san-nicolas'],
+    11 => ['https://www.itmochis.edu.mx'],
+    12 => ['https://www.cesun.mx'],
+    13 => ['https://www.iesch.edu.mx'],
+    14 => ['https://www.cesun.mx/administrativas'],
+    15 => ['https://www.uaq.mx'],
+    16 => ['https://www.uady.mx'],
+    17 => ['https://www.uas.edu.mx']
+];
+
+// Instituciones existentes
+$instituciones = [
+    [
+        'id' => 1,
+        'num_afiliacion' => null,
+        'nombre' => 'Universidad Nacional Autónoma de México',
+        'tipo' => 1,
+        'participacion' => 'matriz',
+        'id_zona' => 7,
+        'id_entidad' => 7,
+        'id_universidad' => null,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 2,
+        'num_afiliacion' => '2607002',
+        'nombre' => 'Facultad de Contaduría y Administración (UNAM)',
+        'tipo' => 2,
+        'participacion' => 'afiliada',
+        'id_zona' => 7,
+        'id_entidad' => 7,
+        'id_universidad' => 1,
+        'fecha_inicio' => '2024-01-15',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 3,
+        'num_afiliacion' => null,
+        'nombre' => 'Instituto Politécnico Nacional',
+        'tipo' => 1,
+        'participacion' => 'matriz',
+        'id_zona' => 7,
+        'id_entidad' => 7,
+        'id_universidad' => null,
+        'fecha_inicio' => '2024-02-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 4,
+        'num_afiliacion' => '2607004',
+        'nombre' => 'ESCOM (IPN)',
+        'tipo' => 2,
+        'participacion' => 'afiliada',
+        'id_zona' => 7,
+        'id_entidad' => 7,
+        'id_universidad' => 3,
+        'fecha_inicio' => '2024-02-15',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 5,
+        'num_afiliacion' => '2601005',
+        'nombre' => 'Universidad de Guadalajara',
+        'tipo' => 1,
+        'participacion' => 'afiliada',
+        'id_zona' => 4,
+        'id_entidad' => 15,
+        'id_universidad' => null,
+        'fecha_inicio' => '2024-03-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 6,
+        'num_afiliacion' => '2604006',
+        'nombre' => 'Facultad de Contaduría (UDG)',
+        'tipo' => 2,
+        'participacion' => 'afiliada',
+        'id_zona' => 4,
+        'id_entidad' => 15,
+        'id_universidad' => 5,
+        'fecha_inicio' => '2024-03-15',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 7,
+        'num_afiliacion' => '2601007',
+        'nombre' => 'Universidad Autónoma de Baja California',
+        'tipo' => 1,
+        'participacion' => 'afiliada',
+        'id_zona' => 1,
+        'id_entidad' => 2,
+        'id_universidad' => null,
+        'fecha_inicio' => '2024-04-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 8,
+        'num_afiliacion' => '2601008',
+        'nombre' => 'Campus UABC - Mexicali',
+        'tipo' => 3,
+        'participacion' => 'afiliada',
+        'id_zona' => 1,
+        'id_entidad' => 2,
+        'id_universidad' => 7,
+        'fecha_inicio' => '2024-04-15',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 9,
+        'num_afiliacion' => '2602009',
+        'nombre' => 'Universidad Autónoma de Nuevo León',
+        'tipo' => 1,
+        'participacion' => 'afiliada',
+        'id_zona' => 2,
+        'id_entidad' => 19,
+        'id_universidad' => null,
+        'fecha_inicio' => '2024-05-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 10,
+        'num_afiliacion' => '2605010',
+        'nombre' => 'Campus UANL - San Nicolás',
+        'tipo' => 3,
+        'participacion' => 'afiliada',
+        'id_zona' => 2,
+        'id_entidad' => 19,
+        'id_universidad' => 9,
+        'fecha_inicio' => '2024-05-15',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 11,
+        'num_afiliacion' => null,
+        'nombre' => 'Instituto Tecnológico de los Mochis',
+        'tipo' => 1,
+        'participacion' => 'observadora',
+        'id_zona' => 1,
+        'id_entidad' => 25,
+        'id_universidad' => null,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 12,
+        'num_afiliacion' => null,
+        'nombre' => 'Centro de Estudios Superiores del Noroeste',
+        'tipo' => 1,
+        'participacion' => 'observadora',
+        'id_zona' => 1,
+        'id_entidad' => 2,
+        'id_universidad' => null,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => '2024-12-31'
+    ],
+    [
+        'id' => 13,
+        'num_afiliacion' => null,
+        'nombre' => 'Instituto de Estudios Superiores de Chihuahua',
+        'tipo' => 1,
+        'participacion' => 'observadora',
+        'id_zona' => 1,
+        'id_entidad' => 6,
+        'id_universidad' => null,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 14,
+        'num_afiliacion' => null,
+        'nombre' => 'Facultad de Ciencias Administrativas (CESUN)',
+        'tipo' => 2,
+        'participacion' => 'observadora',
+        'id_zona' => 1,
+        'id_entidad' => 2,
+        'id_universidad' => 12,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 15,
+        'num_afiliacion' => '2603011',
+        'nombre' => 'Universidad Autónoma de Querétaro',
+        'tipo' => 1,
+        'participacion' => 'afiliada',
+        'id_zona' => 3,
+        'id_entidad' => 22,
+        'id_universidad' => null,
+        'fecha_inicio' => '2024-06-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 16,
+        'num_afiliacion' => '2606012',
+        'nombre' => 'Universidad Autónoma de Yucatán',
+        'tipo' => 1,
+        'participacion' => 'afiliada',
+        'id_zona' => 6,
+        'id_entidad' => 31,
+        'id_universidad' => null,
+        'fecha_inicio' => '2024-06-15',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 17,
+        'num_afiliacion' => '2601013',
+        'nombre' => 'Universidad Autónoma de Sinaloa',
+        'tipo' => 1,
+        'participacion' => 'afiliada',
+        'id_zona' => 1,
+        'id_entidad' => 25,
+        'id_universidad' => null,
+        'fecha_inicio' => '2024-07-01',
+        'fecha_fin' => null
+    ]
+];
+
+// Obtener el ID de la institución a editar
+$id = isset($_GET['id']) ? (int)$_GET['id'] : 1;
+
+// Buscar la institución
+$institucion = null;
+foreach ($instituciones as $i) {
+    if ($i['id'] == $id) {
+        $institucion = $i;
+        break;
     }
-    $numeros_por_zona[$zona][] = (int)substr($num, 4);
 }
+
+if (!$institucion) {
+    echo '<div class="main-content"><div class="dashboard-container"><div class="alert-modern alert-error"><i class="fas fa-exclamation-circle"></i><div><strong>Error</strong> No se encontró la institución solicitada.</div></div></div></div>';
+    include 'template/footer.php';
+    exit;
+}
+
+// Obtener dirección de la institución
+$direccion = $direcciones[$id] ?? null;
+
+// Obtener sitios web de la institución
+$webs = $sitios_web[$id] ?? [''];
 
 $mensaje = '';
 $error = '';
 
-// Función para generar número de afiliación
-function generarNumAfiliacion($zona, $existentes_por_zona) {
-    $anio = date('y');
-    $prefijo = $anio . str_pad($zona, 2, '0', STR_PAD_LEFT);
-    
-    $numeros = isset($existentes_por_zona[$zona]) ? $existentes_por_zona[$zona] : [];
-    $numero = 1;
-    
-    if (!empty($numeros)) {
-        $numero = max($numeros) + 1;
-    }
-    
-    return $prefijo . str_pad($numero, 3, '0', STR_PAD_LEFT);
-}
-
+// Procesar formulario de edición
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $errores = [];
     
@@ -196,12 +558,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $requiere_numero = false;
     
     if ($tipo == 1) { // Universidad
-        // Matriz no requiere número, Afiliada sí requiere
         if ($participacion == 'afiliada') {
             $requiere_numero = true;
         }
-    } elseif ($tipo == 2 || $tipo == 3) {
-        // Facultad o Campus: siempre requieren número (excepto observadoras)
+    } elseif ($tipo == 2 || $tipo == 3) { // Facultad o Campus
         if ($participacion != 'observadora') {
             $requiere_numero = true;
         }
@@ -210,8 +570,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($requiere_numero) {
         if (empty($num_afiliacion)) {
             $errores[] = 'Número de afiliación';
-        } elseif (in_array($num_afiliacion, $instituciones_existentes) && $_POST['id'] != $num_afiliacion) {
-            $errores[] = 'Número de afiliación ya existe';
         }
     }
     
@@ -235,15 +593,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!empty($errores)) {
         $error = 'Complete los campos obligatorios: ' . implode(', ', $errores);
     } else {
-        $mensaje = 'Institución registrada exitosamente';
-        if (!empty($num_afiliacion)) {
-            $instituciones_existentes[] = $num_afiliacion;
-            $zona = (int)substr($num_afiliacion, 2, 2);
-            if (!isset($numeros_por_zona[$zona])) {
-                $numeros_por_zona[$zona] = [];
-            }
-            $numeros_por_zona[$zona][] = (int)substr($num_afiliacion, 4);
-        }
+        $mensaje = 'Institución actualizada exitosamente';
+        // Aquí iría la lógica de actualización en BD
     }
 }
 
@@ -261,8 +612,8 @@ include 'template/menu.php';
                     <i class="fas fa-university"></i>
                 </div>
                 <div>
-                    <h1 class="page-title">Registrar Institución</h1>
-                    <p class="page-subtitle">Complete los datos para registrar una institución educativa en el sistema</p>
+                    <h1 class="page-title">Editar Institución</h1>
+                    <p class="page-subtitle">Modifique los datos de la institución educativa en el sistema</p>
                 </div>
             </div>
             <div class="page-header-right">
@@ -297,7 +648,8 @@ include 'template/menu.php';
                 <span>Campos obligatorios</span>
             </div>
             
-            <form method="POST" id="formRegistro">
+            <form method="POST" id="formEdicion">
+                <input type="hidden" name="id" value="<?= $id ?>">
                 
                 <!-- SECCIÓN 1: DATOS GENERALES -->
                 <div class="form-section">
@@ -310,25 +662,30 @@ include 'template/menu.php';
                     <div class="form-grid">
                         <div class="form-group">
                             <label class="form-label required">Nombre de la Institución</label>
-                            <input type="text" name="nombre" class="form-control" placeholder="Ej. Universidad Nacional Autónoma de México" required>
+                            <input type="text" name="nombre" class="form-control" 
+                                   value="<?= htmlspecialchars($institucion['nombre']) ?>" required>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label required">Tipo de Institución</label>
                             <select name="tipo" id="tipo" class="form-control" required>
                                 <option value="">Seleccionar tipo...</option>
-                                <?php foreach ($tipos_institucion as $id => $nombre): ?>
-                                    <option value="<?= $id ?>"><?= htmlspecialchars($nombre) ?></option>
+                                <?php foreach ($tipos_institucion as $id_tipo => $nombre): ?>
+                                    <option value="<?= $id_tipo ?>" <?= $institucion['tipo'] == $id_tipo ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($nombre) ?>
+                                    </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
 
-                        <div class="form-group" id="universidad_container" style="display:none;">
+                        <div class="form-group" id="universidad_container" style="<?= $institucion['tipo'] != 1 ? 'display:block;' : 'display:none;' ?>">
                             <label class="form-label required">Universidad</label>
-                            <select name="universidad" id="universidad" class="form-control">
+                            <select name="universidad" id="universidad" class="form-control" <?= $institucion['tipo'] != 1 ? 'required' : '' ?>>
                                 <option value="">Seleccionar universidad...</option>
-                                <?php foreach ($universidades as $id => $nombre): ?>
-                                    <option value="<?= $id ?>"><?= htmlspecialchars($nombre) ?></option>
+                                <?php foreach ($universidades as $id_uni => $nombre): ?>
+                                    <option value="<?= $id_uni ?>" <?= $institucion['id_universidad'] == $id_uni ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($nombre) ?>
+                                    </option>
                                 <?php endforeach; ?>
                             </select>
                             <small class="form-hint">Seleccione la universidad a la que pertenece</small>
@@ -339,19 +696,27 @@ include 'template/menu.php';
                             <select name="participacion" id="participacion" class="form-control" required>
                                 <option value="">Seleccionar...</option>
                                 <?php foreach ($tipos_participacion as $key => $nombre): ?>
-                                    <option value="<?= $key ?>"><?= htmlspecialchars($nombre) ?></option>
+                                    <option value="<?= $key ?>" <?= $institucion['participacion'] == $key ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($nombre) ?>
+                                    </option>
                                 <?php endforeach; ?>
                             </select>
-                            <small class="form-hint" id="participacion_hint"></small>
+                            <small class="form-hint" id="participacion_hint">
+                                <?php if ($institucion['tipo'] == 1): ?>
+                                    Para universidades matriz, seleccione "Matriz"
+                                <?php endif; ?>
+                            </small>
                         </div>
 
                         <!-- Número de afiliación -->
-                        <div class="form-group" id="num_afiliacion_container">
-                            <label class="form-label" id="num_afiliacion_label">Número de Afiliación <span id="num_afiliacion_required" style="color:#c62828; display:none;">*</span></label>
+                        <div class="form-group" id="num_afiliacion_container" style="<?= ($institucion['participacion'] == 'afiliada' && $institucion['tipo'] != 1) || ($institucion['tipo'] == 1 && $institucion['participacion'] == 'afiliada') ? 'display:block;' : 'display:none;' ?>">
+                            <label class="form-label" id="num_afiliacion_label">Número de Afiliación <span id="num_afiliacion_required" style="color:#c62828;">*</span></label>
                             <div class="afiliacion-display">
-                                <span class="afiliacion-value" id="num_afiliacion_mostrado">- - - - - - -</span>
+                                <span class="afiliacion-value" id="num_afiliacion_mostrado">
+                                    <?= $institucion['num_afiliacion'] ?? '- - - - - - -' ?>
+                                </span>
                             </div>
-                            <input type="hidden" name="num_afiliacion" id="num_afiliacion" value="">
+                            <input type="hidden" name="num_afiliacion" id="num_afiliacion" value="<?= $institucion['num_afiliacion'] ?? '' ?>">
                             <small class="form-hint" id="num_afiliacion_hint">Se genera con el año, zona y consecutivo</small>
                         </div>
 
@@ -359,14 +724,27 @@ include 'template/menu.php';
                         <div class="form-group">
                             <label class="form-label">Sitios Web</label>
                             <div id="sitios_web_container">
-                                <div class="sitio-web-item">
-                                    <div class="sitio-web-input-group">
-                                        <input type="url" name="sitios_web[]" class="form-control" placeholder="https://www.ejemplo.com">
-                                        <button type="button" class="btn-remove-sitio" onclick="eliminarSitioWeb(this)" style="display:none;">
-                                            <i class="fas fa-times"></i>
-                                        </button>
+                                <?php if (empty($webs) || (count($webs) == 1 && empty($webs[0]))): ?>
+                                    <div class="sitio-web-item">
+                                        <div class="sitio-web-input-group">
+                                            <input type="url" name="sitios_web[]" class="form-control" placeholder="https://www.ejemplo.com">
+                                            <button type="button" class="btn-remove-sitio" onclick="eliminarSitioWeb(this)" style="display:none;">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
+                                <?php else: ?>
+                                    <?php foreach ($webs as $index => $web): ?>
+                                        <div class="sitio-web-item">
+                                            <div class="sitio-web-input-group">
+                                                <input type="url" name="sitios_web[]" class="form-control" placeholder="https://www.ejemplo.com" value="<?= htmlspecialchars($web) ?>">
+                                                <button type="button" class="btn-remove-sitio" onclick="eliminarSitioWeb(this)" style="<?= $index == 0 ? 'display:none;' : 'display:flex;' ?>">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
                             </div>
                             <button type="button" class="btn-add-sitio" onclick="agregarSitioWeb()">
                                 <i class="fas fa-plus-circle"></i> Agregar otro sitio web
@@ -387,7 +765,9 @@ include 'template/menu.php';
                     <div class="form-grid">
                         <div class="form-group">
                             <label class="form-label required">Código Postal</label>
-                            <input type="text" name="cp" id="cp" class="form-control cp-input" placeholder="Ej. 04510" pattern="[0-9]{5}" inputmode="numeric" required>
+                            <input type="text" name="cp" id="cp" class="form-control cp-input" 
+                                   value="<?= $direccion ? htmlspecialchars($direccion['cp']) : '' ?>" 
+                                   placeholder="Ej. 04510" pattern="[0-9]{5}" inputmode="numeric" required>
                             <small class="form-hint">Ejemplos: 04510 (UNAM), 07738 (IPN), 09340 (UAM)</small>
                         </div>
 
@@ -395,8 +775,10 @@ include 'template/menu.php';
                             <label class="form-label required">Entidad</label>
                             <select name="entidad" id="entidad" class="form-control" required>
                                 <option value="">Seleccionar entidad...</option>
-                                <?php foreach ($entidades_federativas as $id => $nombre): ?>
-                                    <option value="<?= $id ?>"><?= htmlspecialchars($nombre) ?></option>
+                                <?php foreach ($entidades_federativas as $id_ent => $nombre): ?>
+                                    <option value="<?= $id_ent ?>" <?= $institucion['id_entidad'] == $id_ent ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($nombre) ?>
+                                    </option>
                                 <?php endforeach; ?>
                             </select>
                             <small class="form-hint">Se carga automáticamente con el código postal</small>
@@ -406,6 +788,11 @@ include 'template/menu.php';
                             <label class="form-label required">Alcaldía / Municipio</label>
                             <select name="municipio" id="municipio" class="form-control" required>
                                 <option value="">Seleccionar alcaldía/municipio...</option>
+                                <?php if ($direccion && !empty($direccion['municipio'])): ?>
+                                    <option value="<?= htmlspecialchars($direccion['municipio']) ?>" selected>
+                                        <?= htmlspecialchars($direccion['municipio']) ?>
+                                    </option>
+                                <?php endif; ?>
                             </select>
                             <small class="form-hint">Se carga automáticamente con el código postal</small>
                         </div>
@@ -414,6 +801,11 @@ include 'template/menu.php';
                             <label class="form-label required">Colonia</label>
                             <select name="colonia" id="colonia" class="form-control" required>
                                 <option value="">Seleccionar colonia...</option>
+                                <?php if ($direccion && !empty($direccion['colonia'])): ?>
+                                    <option value="<?= htmlspecialchars($direccion['colonia']) ?>" selected>
+                                        <?= htmlspecialchars($direccion['colonia']) ?>
+                                    </option>
+                                <?php endif; ?>
                             </select>
                             <small class="form-hint">Se carga automáticamente con el código postal</small>
                         </div>
@@ -422,8 +814,10 @@ include 'template/menu.php';
                             <label class="form-label required">Zona</label>
                             <select name="zona" id="zona" class="form-control" required>
                                 <option value="">Seleccionar zona...</option>
-                                <?php foreach ($zonas_regionales as $id => $nombre): ?>
-                                    <option value="<?= $id ?>"><?= htmlspecialchars($nombre) ?></option>
+                                <?php foreach ($zonas_regionales as $id_zona => $nombre): ?>
+                                    <option value="<?= $id_zona ?>" <?= $institucion['id_zona'] == $id_zona ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($nombre) ?>
+                                    </option>
                                 <?php endforeach; ?>
                             </select>
                             <small class="form-hint">Se carga con el código postal, puede modificarse</small>
@@ -431,17 +825,23 @@ include 'template/menu.php';
 
                         <div class="form-group">
                             <label class="form-label required">Calle</label>
-                            <input type="text" name="calle" class="form-control" placeholder="Ej. Calzada Universidad" required>
+                            <input type="text" name="calle" class="form-control" 
+                                   value="<?= $direccion ? htmlspecialchars($direccion['calle']) : '' ?>" 
+                                   placeholder="Ej. Calzada Universidad" required>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label required">Número Exterior</label>
-                            <input type="text" name="numero_exterior" class="form-control" placeholder="Ej. 14418" required>
+                            <input type="text" name="numero_exterior" class="form-control" 
+                                   value="<?= $direccion ? htmlspecialchars($direccion['numero_exterior']) : '' ?>" 
+                                   placeholder="Ej. 14418" required>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label">Número Interior</label>
-                            <input type="text" name="numero_interior" class="form-control" placeholder="Ej. A-102">
+                            <input type="text" name="numero_interior" class="form-control" 
+                                   value="<?= $direccion && !empty($direccion['numero_interior']) ? htmlspecialchars($direccion['numero_interior']) : '' ?>" 
+                                   placeholder="Ej. A-102">
                         </div>
                     </div>
                 </div>
@@ -457,12 +857,14 @@ include 'template/menu.php';
                     <div class="form-grid">
                         <div class="form-group">
                             <label class="form-label required">Fecha de Inicio</label>
-                            <input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control" required>
+                            <input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control" 
+                                   value="<?= $institucion['fecha_inicio'] ?>" required>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label">Fecha de Fin</label>
-                            <input type="date" name="fecha_fin" id="fecha_fin" class="form-control">
+                            <input type="date" name="fecha_fin" id="fecha_fin" class="form-control" 
+                                   value="<?= $institucion['fecha_fin'] ?>">
                             <small class="form-hint">Dejar vacío si está vigente</small>
                         </div>
                     </div>
@@ -471,10 +873,7 @@ include 'template/menu.php';
                 <!-- Botones -->
                 <div class="form-actions">
                     <button type="submit" class="btn-primary-modern">
-                        <i class="fas fa-save"></i> Guardar Institución
-                    </button>
-                    <button type="reset" class="btn-outline-modern">
-                        <i class="fas fa-undo"></i> Limpiar
+                        <i class="fas fa-save"></i> Actualizar Institución
                     </button>
                     <a href="instituciones.php" class="btn-outline-modern">
                         <i class="fas fa-times"></i> Cancelar
@@ -489,7 +888,7 @@ include 'template/menu.php';
 
 <style>
 /* ============================================================
-   ESTILOS MODERNOS - REGISTRO INSTITUCIÓN (RESPONSIVE)
+   ESTILOS MODERNOS - EDICIÓN INSTITUCIÓN
    ============================================================ */
 
 /* Page Header */
@@ -708,7 +1107,7 @@ include 'template/menu.php';
     gap: 1.25rem;
 }
 
-/* Afiliación Display - Responsive */
+/* Afiliación Display */
 .afiliacion-display {
     display: flex;
     align-items: center;
@@ -728,7 +1127,7 @@ include 'template/menu.php';
     letter-spacing: 2px;
 }
 
-/* Form groups - Responsive */
+/* Form groups */
 .form-group {
     display: flex;
     flex-direction: column;
@@ -781,7 +1180,7 @@ include 'template/menu.php';
     letter-spacing: 1px;
 }
 
-/* Sitios Web - Responsive */
+/* Sitios Web */
 .sitio-web-item {
     margin-bottom: 0.5rem;
     width: 100%;
@@ -840,7 +1239,7 @@ include 'template/menu.php';
     border-color: #8B0000;
 }
 
-/* Form actions - Responsive */
+/* Form actions */
 .form-actions {
     display: flex;
     gap: 1rem;
@@ -916,6 +1315,10 @@ include 'template/menu.php';
     .afiliacion-value {
         font-size: 0.95rem;
     }
+
+    .form-label {
+        white-space: normal;
+    }
 }
 
 @media (max-width: 480px) {
@@ -935,7 +1338,6 @@ include 'template/menu.php';
 
     .form-label {
         font-size: 0.75rem;
-        white-space: normal;
     }
 
     .form-control {
@@ -968,14 +1370,11 @@ include 'template/menu.php';
 
 const datosPorCP = <?= json_encode($datos_por_cp) ?>;
 const zonaPorEntidad = <?= json_encode($zona_por_entidad) ?>;
-const numerosPorZona = <?= json_encode($numeros_por_zona) ?>;
-const institucionesExistentes = <?= json_encode($instituciones_existentes) ?>;
-const entidadesFederativas = <?= json_encode($entidades_federativas) ?>;
 const tiposInstitucion = <?= json_encode($tipos_institucion) ?>;
 const tiposParticipacion = <?= json_encode($tipos_participacion) ?>;
 
 // ============================================================
-// GENERAR NÚMERO DE AFILIACIÓN
+// FUNCIÓN PARA GENERAR NÚMERO DE AFILIACIÓN
 // ============================================================
 
 function generarNumeroAfiliacion(zona) {
@@ -992,20 +1391,17 @@ function generarNumeroAfiliacion(zona) {
     const zonaStr = String(zona).padStart(2, '0');
     const prefijo = anio + zonaStr;
     
-    let numeros = [];
-    if (numerosPorZona[zona]) {
-        numeros = numerosPorZona[zona];
-    }
+    // Números existentes para esta zona (simulado)
+    const numerosExistentes = {
+        1: [1, 3, 5, 7, 8, 13, 17],
+        2: [9, 10],
+        3: [11, 15],
+        4: [5, 6],
+        6: [12, 16],
+        7: [1, 2, 3, 4]
+    };
     
-    institucionesExistentes.forEach(function(num) {
-        if (num.substring(0, 4) === prefijo) {
-            const n = parseInt(num.substring(4));
-            if (!numeros.includes(n)) {
-                numeros.push(n);
-            }
-        }
-    });
-    
+    let numeros = numerosExistentes[zona] || [];
     let consecutivo = 1;
     if (numeros.length > 0) {
         consecutivo = Math.max(...numeros) + 1;
@@ -1015,87 +1411,72 @@ function generarNumeroAfiliacion(zona) {
 }
 
 // ============================================================
-// ACTUALIZAR PARTICIPACIÓN Y NÚMERO DE AFILIACIÓN
+// ACTUALIZAR CAMPOS SEGÚN TIPO Y PARTICIPACIÓN
 // ============================================================
 
 function actualizarCampos() {
     const tipoSelect = document.getElementById('tipo');
     const participacionSelect = document.getElementById('participacion');
-    const participacionHint = document.getElementById('participacion_hint');
+    const universidadContainer = document.getElementById('universidad_container');
+    const universidadSelect = document.getElementById('universidad');
     const numContainer = document.getElementById('num_afiliacion_container');
-    const numLabel = document.getElementById('num_afiliacion_label');
     const numRequired = document.getElementById('num_afiliacion_required');
     const numDisplay = document.getElementById('num_afiliacion_mostrado');
     const numInput = document.getElementById('num_afiliacion');
-    const universidadContainer = document.getElementById('universidad_container');
-    const universidadSelect = document.getElementById('universidad');
+    const participacionHint = document.getElementById('participacion_hint');
     const zonaSelect = document.getElementById('zona');
     
     const tipo = parseInt(tipoSelect.value);
     const participacion = participacionSelect.value;
     
-    // Reset universidad
-    universidadContainer.style.display = 'none';
-    universidadSelect.removeAttribute('required');
-    universidadSelect.value = '';
-    
-    // Determinar si requiere número de afiliación
-    let requiereNumero = false;
-    let mostrarNumero = false;
-    let hintTexto = '';
-    
-    if (tipo === 1) { // Universidad
-        // Mostrar todas las opciones de participación para universidad
-        // Matriz no requiere número, Afiliada sí requiere
-        if (participacion === 'matriz') {
-            requiereNumero = false;
-            mostrarNumero = false;
-            hintTexto = 'Las universidades matriz no tienen número de afiliación propio';
-        } else if (participacion === 'afiliada') {
-            requiereNumero = true;
-            mostrarNumero = true;
-            hintTexto = 'Se genera con el año, zona y consecutivo';
-        } else {
-            requiereNumero = false;
-            mostrarNumero = false;
-            hintTexto = 'Las universidades observadoras no tienen número de afiliación';
-        }
-    } else if (tipo === 2 || tipo === 3) { // Facultad o Campus
-        universidadContainer.style.display = 'block';
-        universidadSelect.setAttribute('required', 'required');
-        
-        if (participacion === 'observadora') {
-            requiereNumero = false;
-            mostrarNumero = false;
-            hintTexto = 'Las facultades/campus observadores no tienen número de afiliación';
-        } else {
-            requiereNumero = true;
-            mostrarNumero = true;
-            hintTexto = 'Se genera con el año, zona y consecutivo';
-        }
-    }
-    
-    // Actualizar hint de participación
+    // Universidad
     if (tipo === 1) {
+        universidadContainer.style.display = 'none';
+        universidadSelect.removeAttribute('required');
+        universidadSelect.value = '';
         participacionHint.textContent = 'Para universidades matriz, seleccione "Matriz"';
     } else {
+        universidadContainer.style.display = 'block';
+        universidadSelect.setAttribute('required', 'required');
         participacionHint.textContent = '';
     }
     
-    // Mostrar/ocultar número de afiliación
+    // Número de afiliación
+    let requiereNumero = false;
+    let mostrarNumero = false;
+    let numeroActual = numInput.value;
+    
+    if (tipo === 1) { // Universidad
+        if (participacion === 'afiliada') {
+            requiereNumero = true;
+            mostrarNumero = true;
+        } else {
+            requiereNumero = false;
+            mostrarNumero = false;
+        }
+    } else if (tipo === 2 || tipo === 3) { // Facultad o Campus
+        if (participacion === 'observadora') {
+            requiereNumero = false;
+            mostrarNumero = false;
+        } else {
+            requiereNumero = true;
+            mostrarNumero = true;
+        }
+    }
+    
     if (mostrarNumero) {
         numContainer.style.display = 'block';
         numRequired.style.display = requiereNumero ? 'inline' : 'none';
-        numLabel.textContent = 'Número de Afiliación';
         
         const zona = parseInt(zonaSelect.value);
-        if (zona && zona > 0) {
+        if (zona && zona > 0 && !numeroActual) {
             const nuevoNum = generarNumeroAfiliacion(zona);
             numDisplay.textContent = nuevoNum;
             numInput.value = nuevoNum;
+        } else if (numeroActual) {
+            numDisplay.textContent = numeroActual;
         } else {
             numDisplay.textContent = '- - - - - - -';
-            numInput.value = '';
         }
     } else {
         numContainer.style.display = 'none';
@@ -1112,9 +1493,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const tipoSelect = document.getElementById('tipo');
     const participacionSelect = document.getElementById('participacion');
     const zonaSelect = document.getElementById('zona');
-    const fechaInicio = document.getElementById('fecha_inicio');
+    const cpInput = document.getElementById('cp');
+    const entidadSelect = document.getElementById('entidad');
+    const municipioSelect = document.getElementById('municipio');
+    const coloniaSelect = document.getElementById('colonia');
     
-    // Eventos que disparan actualización
+    // Eventos para actualizar campos
     if (tipoSelect) {
         tipoSelect.addEventListener('change', actualizarCampos);
     }
@@ -1127,104 +1511,49 @@ document.addEventListener('DOMContentLoaded', function() {
         zonaSelect.addEventListener('change', actualizarCampos);
     }
     
-    if (fechaInicio) {
-        fechaInicio.addEventListener('change', actualizarCampos);
-    }
-    
-    // Inicializar
-    actualizarCampos();
-});
-
-// ============================================================
-// CÓDIGO POSTAL → DATOS
-// ============================================================
-
-document.addEventListener('DOMContentLoaded', function() {
-    const cpInput = document.getElementById('cp');
-    const entidadSelect = document.getElementById('entidad');
-    const zonaSelect = document.getElementById('zona');
-    const coloniaSelect = document.getElementById('colonia');
-    const municipioSelect = document.getElementById('municipio');
-    
-    function cargarDatosPorCP() {
-        const cp = cpInput.value.trim();
-        
-        const existing = document.querySelector('.cp-mensaje');
-        if (existing) existing.remove();
-        
-        if (cp.length === 5 && datosPorCP[cp]) {
-            const datos = datosPorCP[cp];
-            
-            if (datos.entidad) entidadSelect.value = datos.entidad;
-            
-            municipioSelect.innerHTML = '<option value="">Seleccionar alcaldía/municipio...</option>';
-            if (datos.municipio) {
-                const option = document.createElement('option');
-                option.value = datos.municipio;
-                option.textContent = datos.municipio;
-                option.selected = true;
-                municipioSelect.appendChild(option);
-            }
-            municipioSelect.disabled = false;
-            
-            coloniaSelect.innerHTML = '<option value="">Seleccionar colonia...</option>';
-            if (datos.colonia) {
-                const option = document.createElement('option');
-                option.value = datos.colonia;
-                option.textContent = datos.colonia;
-                option.selected = true;
-                coloniaSelect.appendChild(option);
-            }
-            coloniaSelect.disabled = false;
-            
-            if (datos.zona) {
-                zonaSelect.value = datos.zona;
-                actualizarCampos();
-            }
-            
-            mostrarMensajeCP('Datos cargados correctamente', 'success');
-        } else if (cp.length === 5) {
-            mostrarMensajeCP('No se encontraron datos para este código postal', 'error');
-        }
-    }
-    
-    function mostrarMensajeCP(mensaje, tipo) {
-        const existing = document.querySelector('.cp-mensaje');
-        if (existing) existing.remove();
-        
-        const div = document.createElement('div');
-        div.className = 'cp-mensaje';
-        div.style.cssText = `
-            font-size: 0.8rem;
-            padding: 0.3rem 0.5rem;
-            border-radius: 4px;
-            margin-top: 0.15rem;
-            color: ${tipo === 'success' ? '#2e7d32' : '#c62828'};
-            background: ${tipo === 'success' ? '#e8f5e9' : '#fce4ec'};
-        `;
-        div.textContent = mensaje;
-        cpInput.parentNode.appendChild(div);
-    }
-    
+    // Código postal → cargar datos
     if (cpInput) {
-        cpInput.addEventListener('blur', cargarDatosPorCP);
-        cpInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                cargarDatosPorCP();
+        cpInput.addEventListener('blur', function() {
+            const cp = this.value.trim();
+            
+            if (cp.length === 5 && datosPorCP[cp]) {
+                const datos = datosPorCP[cp];
+                
+                if (datos.entidad) {
+                    entidadSelect.value = datos.entidad;
+                    // Disparar cambio para actualizar municipio y colonia
+                    entidadSelect.dispatchEvent(new Event('change'));
+                }
+                
+                if (datos.municipio) {
+                    municipioSelect.innerHTML = '<option value="">Seleccionar alcaldía/municipio...</option>';
+                    const option = document.createElement('option');
+                    option.value = datos.municipio;
+                    option.textContent = datos.municipio;
+                    option.selected = true;
+                    municipioSelect.appendChild(option);
+                    municipioSelect.disabled = false;
+                }
+                
+                if (datos.colonia) {
+                    coloniaSelect.innerHTML = '<option value="">Seleccionar colonia...</option>';
+                    const option = document.createElement('option');
+                    option.value = datos.colonia;
+                    option.textContent = datos.colonia;
+                    option.selected = true;
+                    coloniaSelect.appendChild(option);
+                    coloniaSelect.disabled = false;
+                }
+                
+                if (datos.zona) {
+                    zonaSelect.value = datos.zona;
+                    actualizarCampos();
+                }
             }
         });
     }
-});
-
-// ============================================================
-// ZONA SEGÚN ENTIDAD
-// ============================================================
-
-document.addEventListener('DOMContentLoaded', function() {
-    const entidadSelect = document.getElementById('entidad');
-    const zonaSelect = document.getElementById('zona');
     
+    // Entidad → zona
     if (entidadSelect && zonaSelect) {
         entidadSelect.addEventListener('change', function() {
             const entidadId = parseInt(this.value);
@@ -1234,10 +1563,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+    
+    // Inicializar
+    actualizarCampos();
 });
 
 // ============================================================
-// SITIOS WEB
+// SITIOS WEB - AGREGAR / ELIMINAR
 // ============================================================
 
 function agregarSitioWeb() {
@@ -1268,45 +1600,32 @@ function eliminarSitioWeb(btn) {
 }
 
 // ============================================================
-// VALIDACIÓN
+// VALIDACIÓN DEL FORMULARIO
 // ============================================================
 
-function validarFormulario() {
-    const numAfiliacion = document.getElementById('num_afiliacion');
-    const tipo = parseInt(document.getElementById('tipo').value);
-    const participacion = document.getElementById('participacion').value;
-    
-    // Determinar si requiere número
-    let requiereNumero = false;
-    
-    if (tipo === 1) { // Universidad
-        if (participacion === 'afiliada') {
-            requiereNumero = true;
-        }
-    } else if (tipo === 2 || tipo === 3) { // Facultad o Campus
-        if (participacion !== 'observadora') {
-            requiereNumero = true;
-        }
-    }
-    
-    if (requiereNumero) {
-        if (!numAfiliacion.value) {
-            alert('Seleccione una zona para generar el número de afiliación.');
-            return false;
-        }
-        if (institucionesExistentes.includes(numAfiliacion.value)) {
-            alert('El número de afiliación ya existe. Verifique la zona.');
-            return false;
-        }
-    }
-    
-    return true;
-}
-
 document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('formRegistro');
+    const form = document.getElementById('formEdicion');
     if (form) {
-        form.onsubmit = validarFormulario;
+        form.onsubmit = function() {
+            const numAfiliacion = document.getElementById('num_afiliacion');
+            const tipo = parseInt(document.getElementById('tipo').value);
+            const participacion = document.getElementById('participacion').value;
+            
+            let requiereNumero = false;
+            
+            if (tipo === 1 && participacion === 'afiliada') {
+                requiereNumero = true;
+            } else if ((tipo === 2 || tipo === 3) && participacion !== 'observadora') {
+                requiereNumero = true;
+            }
+            
+            if (requiereNumero && !numAfiliacion.value) {
+                alert('Por favor, seleccione una zona para generar el número de afiliación.');
+                return false;
+            }
+            
+            return true;
+        };
     }
 });
 </script>

@@ -68,23 +68,25 @@ $tipos_institucion = [
 
 $tipos_participacion = [
     'afiliada' => 'Afiliada',
-    'observadora' => 'Observadora'
+    'observadora' => 'Observadora',
+    'matriz' => 'Matriz'
 ];
 
 // Instituciones simuladas
 $instituciones = [
     [
         'id' => 1,
-        'num_afiliacion' => '2601001',
+        'num_afiliacion' => null,
         'nombre' => 'Universidad Nacional Autónoma de México',
         'tipo' => 1,
-        'participacion' => 'afiliada',
+        'participacion' => 'matriz',
         'id_zona' => 7,
         'id_entidad' => 7,
         'id_universidad' => null,
         'personas_relacionadas' => 5,
         'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
+        'fecha_fin' => null,
+        'instituciones_asociadas' => [2]
     ],
     [
         'id' => 2,
@@ -97,20 +99,22 @@ $instituciones = [
         'id_universidad' => 1,
         'personas_relacionadas' => 3,
         'fecha_inicio' => '2024-01-15',
-        'fecha_fin' => null
+        'fecha_fin' => null,
+        'instituciones_asociadas' => []
     ],
     [
         'id' => 3,
-        'num_afiliacion' => '2601003',
+        'num_afiliacion' => null,
         'nombre' => 'Instituto Politécnico Nacional',
         'tipo' => 1,
-        'participacion' => 'afiliada',
+        'participacion' => 'matriz',
         'id_zona' => 7,
         'id_entidad' => 7,
         'id_universidad' => null,
         'personas_relacionadas' => 2,
         'fecha_inicio' => '2024-02-01',
-        'fecha_fin' => null
+        'fecha_fin' => null,
+        'instituciones_asociadas' => [4]
     ],
     [
         'id' => 4,
@@ -123,7 +127,8 @@ $instituciones = [
         'id_universidad' => 3,
         'personas_relacionadas' => 2,
         'fecha_inicio' => '2024-02-15',
-        'fecha_fin' => null
+        'fecha_fin' => null,
+        'instituciones_asociadas' => []
     ],
     [
         'id' => 5,
@@ -136,7 +141,8 @@ $instituciones = [
         'id_universidad' => null,
         'personas_relacionadas' => 1,
         'fecha_inicio' => '2024-03-01',
-        'fecha_fin' => null
+        'fecha_fin' => null,
+        'instituciones_asociadas' => [6]
     ],
     [
         'id' => 6,
@@ -149,7 +155,8 @@ $instituciones = [
         'id_universidad' => 5,
         'personas_relacionadas' => 1,
         'fecha_inicio' => '2024-03-15',
-        'fecha_fin' => null
+        'fecha_fin' => null,
+        'instituciones_asociadas' => []
     ],
     [
         'id' => 7,
@@ -162,7 +169,8 @@ $instituciones = [
         'id_universidad' => null,
         'personas_relacionadas' => 2,
         'fecha_inicio' => '2024-04-01',
-        'fecha_fin' => null
+        'fecha_fin' => null,
+        'instituciones_asociadas' => [8]
     ],
     [
         'id' => 8,
@@ -175,7 +183,8 @@ $instituciones = [
         'id_universidad' => 7,
         'personas_relacionadas' => 1,
         'fecha_inicio' => '2024-04-15',
-        'fecha_fin' => null
+        'fecha_fin' => null,
+        'instituciones_asociadas' => []
     ],
     [
         'id' => 9,
@@ -188,7 +197,8 @@ $instituciones = [
         'id_universidad' => null,
         'personas_relacionadas' => 0,
         'fecha_inicio' => '2024-05-01',
-        'fecha_fin' => null
+        'fecha_fin' => null,
+        'instituciones_asociadas' => [10]
     ],
     [
         'id' => 10,
@@ -201,7 +211,8 @@ $instituciones = [
         'id_universidad' => 9,
         'personas_relacionadas' => 0,
         'fecha_inicio' => '2024-05-15',
-        'fecha_fin' => null
+        'fecha_fin' => null,
+        'instituciones_asociadas' => []
     ],
     [
         'id' => 11,
@@ -214,7 +225,8 @@ $instituciones = [
         'id_universidad' => null,
         'personas_relacionadas' => 1,
         'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
+        'fecha_fin' => null,
+        'instituciones_asociadas' => []
     ],
     [
         'id' => 12,
@@ -227,7 +239,8 @@ $instituciones = [
         'id_universidad' => null,
         'personas_relacionadas' => 0,
         'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => '2024-12-31'
+        'fecha_fin' => '2024-12-31',
+        'instituciones_asociadas' => [14]
     ],
     [
         'id' => 13,
@@ -240,7 +253,8 @@ $instituciones = [
         'id_universidad' => null,
         'personas_relacionadas' => 1,
         'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
+        'fecha_fin' => null,
+        'instituciones_asociadas' => []
     ],
     [
         'id' => 14,
@@ -253,7 +267,8 @@ $instituciones = [
         'id_universidad' => 12,
         'personas_relacionadas' => 1,
         'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
+        'fecha_fin' => null,
+        'instituciones_asociadas' => []
     ],
     [
         'id' => 15,
@@ -266,7 +281,8 @@ $instituciones = [
         'id_universidad' => null,
         'personas_relacionadas' => 0,
         'fecha_inicio' => '2024-06-01',
-        'fecha_fin' => null
+        'fecha_fin' => null,
+        'instituciones_asociadas' => []
     ],
     [
         'id' => 16,
@@ -279,7 +295,8 @@ $instituciones = [
         'id_universidad' => null,
         'personas_relacionadas' => 0,
         'fecha_inicio' => '2024-06-15',
-        'fecha_fin' => null
+        'fecha_fin' => null,
+        'instituciones_asociadas' => []
     ],
     [
         'id' => 17,
@@ -292,25 +309,35 @@ $instituciones = [
         'id_universidad' => null,
         'personas_relacionadas' => 1,
         'fecha_inicio' => '2024-07-01',
-        'fecha_fin' => null
+        'fecha_fin' => null,
+        'instituciones_asociadas' => []
     ]
 ];
 
+// Calcular personas relacionadas para matrices (suma de sus asociadas)
+foreach ($instituciones as &$inst) {
+    if ($inst['participacion'] == 'matriz' && !empty($inst['instituciones_asociadas'])) {
+        $total_personas = 0;
+        foreach ($inst['instituciones_asociadas'] as $asociada_id) {
+            foreach ($instituciones as $asociada) {
+                if ($asociada['id'] == $asociada_id) {
+                    $total_personas += $asociada['personas_relacionadas'];
+                    break;
+                }
+            }
+        }
+        $inst['personas_relacionadas'] = $total_personas;
+    }
+}
+unset($inst);
+
 // Obtener nombres de universidades para mostrar
 $universidades = array_filter($instituciones, function($i) {
-    return $i['tipo'] == 1 && $i['participacion'] == 'afiliada';
+    return $i['tipo'] == 1 && ($i['participacion'] == 'afiliada' || $i['participacion'] == 'matriz');
 });
 $universidades_nombres = [];
 foreach ($universidades as $u) {
     $universidades_nombres[$u['id']] = $u['nombre'];
-}
-
-// También agregar universidades observadoras para dependencia
-$universidades_observadoras = array_filter($instituciones, function($i) {
-    return $i['tipo'] == 1 && $i['participacion'] == 'observadora';
-});
-foreach ($universidades_observadoras as $u) {
-    $universidades_nombres[$u['id']] = $u['nombre'] . ' (Observadora)';
 }
 
 // Procesar filtros
@@ -413,11 +440,9 @@ if (!empty($orden_columna)) {
 $total_registros = count($instituciones_filtradas);
 $total_paginas = ceil($total_registros / $registros_por_pagina);
 
-// Asegurar que la página actual sea válida
 if ($pagina_actual < 1) $pagina_actual = 1;
 if ($pagina_actual > $total_paginas && $total_paginas > 0) $pagina_actual = $total_paginas;
 
-// Obtener registros de la página actual
 $offset = ($pagina_actual - 1) * $registros_por_pagina;
 $instituciones_paginadas = array_slice($instituciones_filtradas, $offset, $registros_por_pagina);
 
@@ -449,7 +474,7 @@ include 'template/menu.php';
             </div>
         </div>
 
-        <!-- Filtros y búsqueda -->
+        <!-- Filtros -->
         <div class="filters-container">
             <form method="GET" id="formFiltros" class="filters-form">
                 <div class="filters-row">
@@ -576,7 +601,7 @@ include 'template/menu.php';
                                     <?php endif; ?>
                                 </a>
                             </th>
-                            <th>Depende de</th>
+                            <th>Dependencia</th>
                             <th>Participación</th>
                             <th>
                                 <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'zona', 'orden_direccion' => ($orden_columna == 'zona' && $orden_direccion == 'asc') ? 'desc' : 'asc', 'pagina' => 1])) ?>" 
@@ -610,11 +635,15 @@ include 'template/menu.php';
                                 $estado_class = $institucion['fecha_fin'] === null ? 'status-active' : 'status-inactive';
                                 $num_afiliacion = $institucion['num_afiliacion'] ?? '---';
                                 $puede_eliminar = $institucion['personas_relacionadas'] == 0;
+                                $personas_count = $institucion['personas_relacionadas'];
                             ?>
-                            <tr data-id="<?= $institucion['id'] ?>" data-personas="<?= $institucion['personas_relacionadas'] ?>">
+                            <tr data-id="<?= $institucion['id'] ?>" data-personas="<?= $personas_count ?>" 
+                                data-es-matriz="<?= $institucion['participacion'] == 'matriz' ? 'true' : 'false' ?>">
                                 <td>
-                                    <?php if ($institucion['participacion'] == 'afiliada'): ?>
+                                    <?php if ($institucion['participacion'] == 'afiliada' && $num_afiliacion != '---'): ?>
                                         <span class="badge-afiliacion"><?= htmlspecialchars($num_afiliacion) ?></span>
+                                    <?php elseif ($institucion['participacion'] == 'matriz'): ?>
+                                        <span class="badge-afiliacion badge-matriz">No aplica</span>
                                     <?php else: ?>
                                         <span class="badge-afiliacion badge-observadora">---</span>
                                     <?php endif; ?>
@@ -622,19 +651,25 @@ include 'template/menu.php';
                                 <td>
                                     <div class="institucion-cell">
                                         <div class="institucion-nombre"><?= htmlspecialchars($institucion['nombre']) ?></div>
+                                        <?php if ($institucion['participacion'] == 'matriz'): ?>
+                                            <span class="badge-matriz-label">Matriz</span>
+                                        <?php endif; ?>
                                     </div>
                                 </td>
                                 <td><?= htmlspecialchars($tipo_nombre) ?></td>
                                 <td><?= htmlspecialchars($depende_de) ?></td>
                                 <td>
-                                    <span class="badge-participacion <?= $institucion['participacion'] == 'afiliada' ? 'badge-afiliada' : 'badge-observadora' ?>">
+                                    <span class="badge-participacion <?= 
+                                        $institucion['participacion'] == 'afiliada' ? 'badge-afiliada' : 
+                                        ($institucion['participacion'] == 'matriz' ? 'badge-matriz' : 'badge-observadora') 
+                                    ?>">
                                         <?= htmlspecialchars($participacion_nombre) ?>
                                     </span>
                                 </td>
                                 <td><span class="badge-zona"><?= htmlspecialchars($zona_nombre) ?></span></td>
                                 <td>
-                                    <span class="badge-personas <?= $institucion['personas_relacionadas'] > 0 ? 'badge-personas-activo' : 'badge-personas-vacio' ?>">
-                                        <?= $institucion['personas_relacionadas'] ?>
+                                    <span class="badge-personas <?= $personas_count > 0 ? 'badge-personas-activo' : 'badge-personas-vacio' ?>">
+                                        <?= $personas_count ?>
                                     </span>
                                 </td>
                                 <td>
@@ -1084,11 +1119,31 @@ include 'template/menu.php';
     font-family: monospace;
 }
 
+.badge-afiliacion.badge-matriz {
+    background: #e3f2fd;
+    color: #0d47a1;
+    font-family: inherit;
+    font-weight: 500;
+}
+
 .badge-afiliacion.badge-observadora {
     background: #f0ecec;
     color: #999;
     font-family: inherit;
     font-weight: 500;
+}
+
+.badge-matriz-label {
+    display: inline-block;
+    padding: 0.1rem 0.4rem;
+    background: #e3f2fd;
+    color: #0d47a1;
+    border-radius: 4px;
+    font-size: 0.6rem;
+    font-weight: 600;
+    margin-left: 0.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .badge-zona {
@@ -1103,9 +1158,9 @@ include 'template/menu.php';
 
 .badge-participacion {
     display: inline-block;
-    padding: 0.2rem 0.7rem;
+    padding: 0.15rem 0.6rem;
     border-radius: 20px;
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     font-weight: 600;
 }
 
@@ -1117,6 +1172,11 @@ include 'template/menu.php';
 .badge-observadora {
     background: #fff3e0;
     color: #e65100;
+}
+
+.badge-matriz {
+    background: #e3f2fd;
+    color: #0d47a1;
 }
 
 .badge-personas {
@@ -1169,6 +1229,13 @@ include 'template/menu.php';
 .institucion-nombre {
     font-weight: 600;
     color: #1a1a1a;
+}
+
+.institucion-cell {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.25rem;
 }
 
 /* Acciones */
@@ -1349,7 +1416,7 @@ include 'template/menu.php';
 }
 
 /* ============================================================
-   MODAL DE ELIMINACIÓN MEJORADO
+   MODAL DE ELIMINACIÓN (CORREGIDO)
    ============================================================ */
 
 .modal-overlay {
@@ -1369,7 +1436,7 @@ include 'template/menu.php';
 .modal-card {
     background: white;
     border-radius: 16px;
-    max-width: 550px;
+    max-width: 650px;
     width: 90%;
     max-height: 80vh;
     overflow-y: auto;
@@ -1445,76 +1512,6 @@ include 'template/menu.php';
     border-top: 1px solid #f5f0f0;
 }
 
-/* Modal - No se puede eliminar (estilo mejorado) */
-.modal-no-eliminar .modal-header i {
-    color: #e65100;
-}
-
-.modal-no-eliminar .modal-header {
-    border-bottom-color: #fff3e0;
-}
-
-.modal-no-eliminar .no-eliminar-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 64px;
-    height: 64px;
-    background: #fff3e0;
-    border-radius: 50%;
-    margin: 0 auto 1rem auto;
-}
-
-.modal-no-eliminar .no-eliminar-icon i {
-    font-size: 2rem;
-    color: #e65100;
-}
-
-.modal-no-eliminar .no-eliminar-titulo {
-    text-align: center;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #e65100;
-    margin-bottom: 0.5rem;
-}
-
-.modal-no-eliminar .no-eliminar-subtitulo {
-    text-align: center;
-    color: #666;
-    font-size: 0.95rem;
-    margin-bottom: 1rem;
-}
-
-.modal-no-eliminar .personas-destacadas {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    padding: 0.75rem 1rem;
-    background: #fce4ec;
-    border-radius: 10px;
-    margin: 1rem 0;
-}
-
-.modal-no-eliminar .personas-destacadas .numero {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #c62828;
-}
-
-.modal-no-eliminar .personas-destacadas .texto {
-    color: #c62828;
-    font-weight: 500;
-}
-
-.modal-no-eliminar .btn-modal-danger {
-    background: #e65100;
-}
-
-.modal-no-eliminar .btn-modal-danger:hover {
-    background: #bf360c;
-}
-
 /* Modal - Sí se puede eliminar */
 .modal-si-eliminar .modal-header i {
     color: #dc3545;
@@ -1526,13 +1523,41 @@ include 'template/menu.php';
 
 .modal-si-eliminar .btn-modal-danger {
     background: #dc3545;
+    color: #ffffff !important;
 }
 
 .modal-si-eliminar .btn-modal-danger:hover {
     background: #c62828;
+    color: #ffffff !important;
 }
 
-/* Botones modales */
+/* Modal - No se puede eliminar */
+.modal-no-eliminar .modal-header i {
+    color: #e65100;
+}
+
+.modal-no-eliminar .modal-header {
+    border-bottom-color: #fff3e0;
+}
+
+.modal-no-eliminar .btn-modal-danger {
+    background: #e65100;
+    color: #ffffff !important;
+}
+
+.modal-no-eliminar .btn-modal-danger:hover {
+    background: #bf360c;
+    color: #ffffff !important;
+}
+
+.modal-no-eliminar .btn-modal-danger:disabled {
+    background: #cccccc !important;
+    color: #666666 !important;
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Botones modales - GENERAL */
 .modal-card .btn-modal-cancel {
     padding: 0.6rem 1.5rem;
     background: white;
@@ -1552,7 +1577,7 @@ include 'template/menu.php';
 
 .modal-card .btn-modal-danger {
     padding: 0.6rem 1.5rem;
-    color: white;
+    color: #ffffff !important;
     border: none;
     border-radius: 10px;
     font-weight: 600;
@@ -1563,10 +1588,13 @@ include 'template/menu.php';
 
 .modal-card .btn-modal-danger:hover {
     opacity: 0.85;
+    color: #ffffff !important;
 }
 
 .modal-card .btn-modal-danger:disabled {
-    opacity: 0.5;
+    background: #cccccc !important;
+    color: #666666 !important;
+    opacity: 0.7;
     cursor: not-allowed;
 }
 
@@ -1842,7 +1870,7 @@ const entidadesFederativas = <?= json_encode($entidades_federativas) ?>;
 const tiposParticipacion = <?= json_encode($tipos_participacion) ?>;
 
 // ============================================================
-// ELIMINAR INSTITUCIÓN (CON MODAL COMPLETO)
+// ELIMINAR INSTITUCIÓN (CON MODAL MEJORADO)
 // ============================================================
 
 function eliminarInstitucion(id) {
@@ -1857,53 +1885,64 @@ function eliminarInstitucion(id) {
     const entidadNombre = entidadesFederativas[institucion.id_entidad] || 'Sin entidad';
     const participacionNombre = tiposParticipacion[institucion.participacion] || 'No definido';
     const estado = institucion.fecha_fin === null ? 'Vigente' : 'Finalizada';
-    const numAfiliacion = institucion.num_afiliacion ?? 'No aplica (Observadora)';
+    const numAfiliacion = institucion.num_afiliacion ?? 'No aplica';
+    const esMatriz = institucion.participacion === 'matriz';
     const tienePersonas = institucion.personas_relacionadas > 0;
     
-    // Determinar clase del modal
-    const modalClase = tienePersonas ? 'modal-no-eliminar' : 'modal-si-eliminar';
+    // Obtener instituciones asociadas (si es matriz)
+    let institucionesAsociadas = [];
+    let personasTotales = 0;
+    if (esMatriz && institucion.instituciones_asociadas) {
+        institucionesAsociadas = institucion.instituciones_asociadas.map(idAsoc => {
+            const inst = institucionesData.find(i => i.id === idAsoc);
+            if (inst) {
+                personasTotales += inst.personas_relacionadas || 0;
+                return inst;
+            }
+            return null;
+        }).filter(i => i !== null);
+    }
     
     // Modal
     const modal = document.createElement('div');
-    modal.className = `modal-overlay ${modalClase}`;
+    modal.className = 'modal-overlay';
     modal.id = 'modalEliminar';
     
     let contenidoBody = '';
     
     if (tienePersonas) {
         contenidoBody = `
-            <div class="no-eliminar-icon">
-                <i class="fas fa-lock"></i>
+            <div style="display:flex; align-items:center; justify-content:center; width:64px; height:64px; background:#fce4ec; border-radius:50%; margin:0 auto 1rem auto;">
+                <i class="fas fa-lock" style="font-size:2rem; color:#c62828;"></i>
             </div>
-            <div class="no-eliminar-titulo">No se puede eliminar esta institución</div>
-            <div class="no-eliminar-subtitulo">
-                Esta institución tiene personas asociadas en los directorios del sistema.
+            <div style="text-align:center; font-size:1.1rem; font-weight:700; color:#c62828; margin-bottom:0.5rem;">
+                No se puede eliminar esta institución
             </div>
-            
-            <div class="personas-destacadas">
-                <span class="numero">${institucion.personas_relacionadas}</span>
-                <span class="texto">persona(s) asociada(s)</span>
+            <div style="text-align:center; color:#666; font-size:0.95rem; margin-bottom:1rem;">
+                ${esMatriz ? 'Esta institución matriz tiene instituciones asociadas que dependen de ella.' : 'Esta institución tiene personas asociadas en los directorios del sistema.'}
             </div>
             
-            <div style="text-align:center; color:#666; font-size:0.9rem; margin-top:0.5rem;">
+            <div style="display:flex; align-items:center; justify-content:center; gap:0.75rem; padding:0.75rem 1rem; background:#fce4ec; border-radius:10px; margin:1rem 0;">
+                <span style="font-size:1.5rem; font-weight:700; color:#c62828;">${institucion.personas_relacionadas}</span>
+                <span style="color:#c62828; font-weight:500;">${esMatriz ? 'persona(s) en total en sus instituciones asociadas' : 'persona(s) asociada(s)'}</span>
+            </div>
+            
+            ${esMatriz && institucionesAsociadas.length > 0 ? `
+                <div style="background:#faf8f8; padding:0.75rem; border-radius:10px; border:1px solid #f0ecec; margin-top:0.75rem;">
+                    <div style="font-weight:600; color:#4a4a4a; margin-bottom:0.5rem;">Instituciones asociadas:</div>
+                    ${institucionesAsociadas.map(inst => `
+                        <div style="display:flex; justify-content:space-between; padding:0.25rem 0; border-bottom:1px solid #f0ecec; font-size:0.85rem;">
+                            <span>${inst.nombre}</span>
+                            <span style="font-weight:600; color:#2e7d32;">${inst.personas_relacionadas || 0} personas</span>
+                        </div>
+                    `).join('')}
+                </div>
+            ` : ''}
+            
+            <div style="text-align:center; color:#666; font-size:0.9rem; margin-top:0.75rem;">
                 <i class="fas fa-info-circle" style="color:#e65100;"></i>
                 Para poder eliminar esta institución, primero debe eliminar o reasignar 
-                todas las personas asociadas a ella.
-            </div>
-            
-            <div class="institucion-info" style="margin-top:1rem;">
-                <div class="info-item">
-                    <span class="info-label">Institución</span>
-                    <span class="info-value">${institucion.nombre}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Tipo</span>
-                    <span class="info-value">${tipoNombre}</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">Participación</span>
-                    <span class="info-value">${participacionNombre}</span>
-                </div>
+                ${esMatriz ? 'todas las instituciones asociadas' : 'todas las personas asociadas'} a ella.
             </div>
         `;
     } else {
@@ -1954,6 +1993,9 @@ function eliminarInstitucion(id) {
             </p>
         `;
     }
+    
+    const modalClase = tienePersonas ? 'modal-no-eliminar' : 'modal-si-eliminar';
+    modal.className = `modal-overlay ${modalClase}`;
     
     modal.innerHTML = `
         <div class="modal-card">

@@ -31,45 +31,45 @@ SIDEBAR
             </li>
             <li class="menu-divider">CATÁLOGOS</li>
             <li class="menu-item">
-                <a href="#">
+                <a href="cargos.php">
                     <i class="fas fa-briefcase"></i>
                     <span>Cargos</span>
                 </a>
             </li>
             <li class="menu-item">
-                <a href="#">
+                <a href="coordinaciones_nacionales.php">
                     <i class="fas fa-sitemap"></i>
                     <span>Coordinaciones Nacionales</span>
                 </a>
             </li>
             <li class="menu-item">
-                <a href="#">
+                <a href="zonas_regionales.php">
                     <i class="fas fa-map-marker-alt"></i>
                     <span>Zonas Regionales</span>
                 </a>
             </li>
             <li class="menu-item">
-                <a href="#">
+                <a href="niveles_academicos.php">
                     <i class="fas fa-graduation-cap"></i>
                     <span>Niveles Académicos</span>
                 </a>
             </li>
             <li class="menu-divider">DIRECTORIOS</li>
             <li class="menu-item">
-                <a href="#">
+                <a href="consultar_directorio.php">
                     <i class="fas fa-book"></i>
                     <span>Consultar Directorios</span>
                 </a>
             </li>
             <li class="menu-item">
-                <a href="#">
+                <a href="odernar_cargos.php">
                     <i class="fas fa-arrows-alt-v"></i>
                     <span>Ordenar Cargos</span>
                 </a>
             </li>
             <li class="menu-divider">CUENTA</li>
             <li class="menu-item">
-                <a href="#">
+                <a href="cambiar_contrasenia">
                     <i class="fas fa-key"></i>
                     <span>Cambiar contraseña</span>
                 </a>

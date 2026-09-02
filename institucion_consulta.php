@@ -74,10 +74,11 @@ $tipos_institucion = [
 
 $tipos_participacion = [
     'afiliada' => 'Afiliada',
-    'observadora' => 'Observadora'
+    'observadora' => 'Observadora',
+    'matriz' => 'Matriz'
 ];
 
-// Direcciones simuladas (con alcaldía/municipio)
+// Direcciones simuladas
 $direcciones = [
     1 => [
         'calle' => 'Avenida Universidad',
@@ -217,7 +218,7 @@ $direcciones = [
     ]
 ];
 
-// Sitios web simulados (UNAM solo uno)
+// Sitios web simulados
 $sitios_web = [
     1 => ['https://www.unam.mx'],
     2 => ['https://www.fca.unam.mx'],
@@ -242,10 +243,10 @@ $sitios_web = [
 $instituciones = [
     [
         'id' => 1,
-        'num_afiliacion' => '2601001',
+        'num_afiliacion' => null,
         'nombre' => 'Universidad Nacional Autónoma de México',
         'tipo' => 1,
-        'participacion' => 'afiliada',
+        'participacion' => 'matriz',
         'id_zona' => 7,
         'id_entidad' => 7,
         'id_universidad' => null,
@@ -268,10 +269,10 @@ $instituciones = [
     ],
     [
         'id' => 3,
-        'num_afiliacion' => '2601003',
+        'num_afiliacion' => null,
         'nombre' => 'Instituto Politécnico Nacional',
         'tipo' => 1,
-        'participacion' => 'afiliada',
+        'participacion' => 'matriz',
         'id_zona' => 7,
         'id_entidad' => 7,
         'id_universidad' => null,
@@ -463,23 +464,21 @@ $instituciones = [
     ]
 ];
 
-// Personas asociadas a instituciones (con cargos institucionales)
+// Obtener nombres de universidades para mostrar
+$universidades = array_filter($instituciones, function($i) {
+    return $i['tipo'] == 1 && ($i['participacion'] == 'afiliada' || $i['participacion'] == 'matriz');
+});
+$universidades_nombres = [];
+foreach ($universidades as $u) {
+    $universidades_nombres[$u['id']] = $u['nombre'];
+}
+
+// Personas asociadas a instituciones (solo para no matrices)
 $personas_asociadas = [
-    1 => [
-        ['nombre' => 'María González', 'cargo' => 'Directora', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
-        ['nombre' => 'Juan Martínez', 'cargo' => 'Coordinador', 'titular' => false, 'fecha_inicio' => '2024-01-15', 'fecha_fin' => null, 'activo' => true],
-        ['nombre' => 'Ana Sánchez', 'cargo' => 'Secretario', 'titular' => false, 'fecha_inicio' => '2023-06-01', 'fecha_fin' => '2024-05-31', 'activo' => false],
-        ['nombre' => 'Carlos Hernández', 'cargo' => 'Director de División', 'titular' => false, 'fecha_inicio' => '2024-02-01', 'fecha_fin' => null, 'activo' => true],
-        ['nombre' => 'Laura Torres', 'cargo' => 'Coordinadora Académica', 'titular' => false, 'fecha_inicio' => '2024-03-01', 'fecha_fin' => null, 'activo' => true]
-    ],
     2 => [
         ['nombre' => 'Roberto Mendoza', 'cargo' => 'Director', 'titular' => true, 'fecha_inicio' => '2024-01-15', 'fecha_fin' => null, 'activo' => true],
         ['nombre' => 'Patricia Flores', 'cargo' => 'Subdirectora', 'titular' => false, 'fecha_inicio' => '2024-02-15', 'fecha_fin' => null, 'activo' => true],
         ['nombre' => 'Luis Reyes', 'cargo' => 'Coordinador', 'titular' => false, 'fecha_inicio' => '2023-08-01', 'fecha_fin' => '2024-07-31', 'activo' => false]
-    ],
-    3 => [
-        ['nombre' => 'Carlos López', 'cargo' => 'Director General', 'titular' => true, 'fecha_inicio' => '2024-02-01', 'fecha_fin' => null, 'activo' => true],
-        ['nombre' => 'Ana Torres', 'cargo' => 'Secretaria', 'titular' => false, 'fecha_inicio' => '2024-02-15', 'fecha_fin' => null, 'activo' => true]
     ],
     4 => [
         ['nombre' => 'Mario Salcido', 'cargo' => 'Director', 'titular' => true, 'fecha_inicio' => '2024-02-15', 'fecha_fin' => null, 'activo' => true],
@@ -533,6 +532,18 @@ $tipo_nombre = $tipos_institucion[$institucion['tipo']] ?? 'No definido';
 $entidad_nombre = $entidades_federativas[$institucion['id_entidad']] ?? 'Sin entidad';
 $participacion_nombre = $tipos_participacion[$institucion['participacion']] ?? 'No definido';
 $estado = $institucion['fecha_fin'] === null ? 'Vigente' : 'Finalizada';
+$es_matriz = $institucion['participacion'] == 'matriz';
+
+// Determinar si muestra número de afiliación
+$mostrar_num_afiliacion = false;
+$num_afiliacion_mostrar = '---';
+if ($institucion['participacion'] == 'matriz') {
+    $num_afiliacion_mostrar = 'No aplica';
+    $mostrar_num_afiliacion = false;
+} elseif ($institucion['num_afiliacion']) {
+    $num_afiliacion_mostrar = $institucion['num_afiliacion'];
+    $mostrar_num_afiliacion = true;
+}
 
 // Obtener dependencia y su ID para enlace
 $dependencia = '';
@@ -547,14 +558,27 @@ if ($institucion['tipo'] != 1 && $institucion['id_universidad']) {
     }
 }
 
+// Si es matriz, obtener sus facultades/campus asociados
+$instituciones_asociadas = [];
+if ($es_matriz) {
+    foreach ($instituciones as $i) {
+        if ($i['id_universidad'] == $institucion['id']) {
+            $instituciones_asociadas[] = $i;
+        }
+    }
+}
+
 // Obtener dirección
 $direccion = $direcciones[$id] ?? null;
 
 // Obtener sitios web
 $webs = $sitios_web[$id] ?? [];
 
-// Obtener personas asociadas
-$personas = $personas_asociadas[$id] ?? [];
+// Obtener personas asociadas (solo si no es matriz)
+$personas = [];
+if (!$es_matriz) {
+    $personas = $personas_asociadas[$id] ?? [];
+}
 
 include 'template/header.php';
 include 'template/menu.php';
@@ -608,12 +632,17 @@ include 'template/menu.php';
                         <div class="profile-meta">
                             <span class="profile-afiliacion">
                                 <span class="afiliacion-label">Núm. Afiliación:</span>
-                                <span class="afiliacion-value"><?= htmlspecialchars($institucion['num_afiliacion'] ?? '--- (Observadora)') ?></span>
+                                <span class="afiliacion-value <?= !$mostrar_num_afiliacion ? 'afiliacion-no-aplica' : '' ?>">
+                                    <?= htmlspecialchars($num_afiliacion_mostrar) ?>
+                                </span>
                             </span>
                             <span class="profile-status <?= $estado == 'Vigente' ? 'status-active' : 'status-inactive' ?>">
                                 <span class="status-dot"></span> <?= $estado ?>
                             </span>
-                            <span class="profile-participacion <?= $institucion['participacion'] == 'afiliada' ? 'badge-afiliada' : 'badge-observadora' ?>">
+                            <span class="profile-participacion <?= 
+                                $institucion['participacion'] == 'afiliada' ? 'badge-afiliada' : 
+                                ($institucion['participacion'] == 'matriz' ? 'badge-matriz' : 'badge-observadora') 
+                            ?>">
                                 <?= htmlspecialchars($participacion_nombre) ?>
                             </span>
                         </div>
@@ -656,6 +685,68 @@ include 'template/menu.php';
                     </div>
                 </div>
             </div>
+
+            <?php if ($es_matriz): ?>
+                <!-- Instituciones asociadas (solo para Matriz) -->
+                <div class="detail-card">
+                    <div class="detail-card-header">
+                        <h3>Instituciones asociadas</h3>
+                        <span class="detail-badge"><?= count($instituciones_asociadas) ?> institución(es)</span>
+                    </div>
+                    <div class="detail-card-body">
+                        <?php if (count($instituciones_asociadas) > 0): ?>
+                            <div class="table-modern-container">
+                                <div class="table-modern-wrapper">
+                                    <table class="table-modern">
+                                        <thead>
+                                            <tr>
+                                                <th>Institución</th>
+                                                <th>Tipo</th>
+                                                <th>Participación</th>
+                                                <th>Personas</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($instituciones_asociadas as $asociada): 
+                                                $tipo_asociada = $tipos_institucion[$asociada['tipo']] ?? 'No definido';
+                                                $participacion_asociada = $tipos_participacion[$asociada['participacion']] ?? 'No definido';
+                                                $personas_count = $asociada['personas_relacionadas'] ?? 0;
+                                            ?>
+                                                <tr>
+                                                    <td>
+                                                        <a href="institucion_consulta.php?id=<?= $asociada['id'] ?>" class="institucion-link">
+                                                            <?= htmlspecialchars($asociada['nombre']) ?>
+                                                        </a>
+                                                    </td>
+                                                    <td><?= htmlspecialchars($tipo_asociada) ?></td>
+                                                    <td>
+                                                        <span class="badge-participacion <?= 
+                                                            $asociada['participacion'] == 'afiliada' ? 'badge-afiliada' : 
+                                                            ($asociada['participacion'] == 'matriz' ? 'badge-matriz' : 'badge-observadora') 
+                                                        ?>">
+                                                            <?= htmlspecialchars($participacion_asociada) ?>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge-personas <?= $personas_count > 0 ? 'badge-personas-activo' : 'badge-personas-vacio' ?>">
+                                                            <?= $personas_count ?>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        <?php else: ?>
+                            <div class="empty-instituciones">
+                                <i class="fas fa-university"></i>
+                                <p>Esta institución matriz no tiene facultades o campus asociados</p>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            <?php endif; ?>
 
             <!-- Dirección -->
             <?php if ($direccion): ?>
@@ -718,7 +809,8 @@ include 'template/menu.php';
             </div>
             <?php endif; ?>
 
-            <!-- Personas asociadas -->
+            <!-- Personas asociadas (solo si NO es matriz) -->
+            <?php if (!$es_matriz): ?>
             <div class="detail-card">
                 <div class="detail-card-header">
                     <h3>Personas asociadas</h3>
@@ -774,6 +866,7 @@ include 'template/menu.php';
                     <?php endif; ?>
                 </div>
             </div>
+            <?php endif; ?>
 
         </div>
 
@@ -992,6 +1085,13 @@ include 'template/menu.php';
     border-radius: 4px;
 }
 
+.afiliacion-value.afiliacion-no-aplica {
+    color: #999;
+    font-family: inherit;
+    background: transparent;
+    font-weight: 500;
+}
+
 .profile-status {
     font-size: 0.8rem;
     font-weight: 600;
@@ -1040,6 +1140,11 @@ include 'template/menu.php';
     color: #e65100;
 }
 
+.profile-participacion.badge-matriz {
+    background: #e3f2fd;
+    color: #0d47a1;
+}
+
 .profile-body {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -1080,6 +1185,19 @@ include 'template/menu.php';
     text-decoration: underline;
 }
 
+/* Institución link */
+.institucion-link {
+    color: #8B0000;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.institucion-link:hover {
+    color: #5C0000;
+    text-decoration: underline;
+}
+
 /* Badge Zona */
 .badge-zona {
     display: inline-block;
@@ -1089,6 +1207,51 @@ include 'template/menu.php';
     border-radius: 20px;
     font-size: 0.75rem;
     font-weight: 500;
+}
+
+/* Badge Participación en tabla */
+.badge-participacion {
+    display: inline-block;
+    padding: 0.15rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.65rem;
+    font-weight: 600;
+}
+
+.badge-participacion.badge-afiliada {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.badge-participacion.badge-observadora {
+    background: #fff3e0;
+    color: #e65100;
+}
+
+.badge-participacion.badge-matriz {
+    background: #e3f2fd;
+    color: #0d47a1;
+}
+
+/* Badge Personas */
+.badge-personas {
+    display: inline-block;
+    padding: 0.15rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    min-width: 30px;
+    text-align: center;
+}
+
+.badge-personas-activo {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.badge-personas-vacio {
+    background: #f5f5f5;
+    color: #999;
 }
 
 /* Dirección */
@@ -1234,7 +1397,25 @@ include 'template/menu.php';
     font-size: 0.5rem;
 }
 
-/* Empty personas */
+/* Empty states */
+.empty-instituciones {
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.empty-instituciones i {
+    font-size: 2.5rem;
+    color: #d0d0d0;
+    display: block;
+    margin-bottom: 0.75rem;
+}
+
+.empty-instituciones p {
+    color: #999;
+    margin: 0;
+    font-size: 0.95rem;
+}
+
 .empty-personas {
     text-align: center;
     padding: 2rem 0;
