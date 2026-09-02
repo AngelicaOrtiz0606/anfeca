@@ -16,21 +16,21 @@ if (!isset($_SESSION['usuario'])) {
 // ============================================================
 
 $zonas_regionales = [
-    1 => 'Noroeste',
-    2 => 'Norte',
-    3 => 'Centro',
-    4 => 'Centro Occidente',
-    5 => 'Centro Sur',
-    6 => 'Sur',
-    7 => 'Ciudad de México'
+    1 => '1 - Noroeste',
+    2 => '2 - Norte',
+    3 => '3 - Centro',
+    4 => '4 - Centro Occidente',
+    5 => '5 - Centro Sur',
+    6 => '6 - Sur',
+    7 => '7 - Ciudad de México'
 ];
 
-// Personas simuladas con sus cargos
+// Personas simuladas
 // activo = true si tiene al menos un cargo sin fecha_fin
 $personas = [
     [
         'id' => 1,
-        'num_afiliacion' => '9801001',
+        'num_afiliacion' => '2601001',
         'nombre' => 'María',
         'apellido_paterno' => 'González',
         'apellido_materno' => 'Pérez',
@@ -40,7 +40,7 @@ $personas = [
         'cargo' => 'Presidenta',
         'cargo_nivel' => 'Nacional',
         'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null, // Activo
+        'fecha_fin' => null,
         'correo' => 'maria.gonzalez@example.com',
         'telefono' => '55 1234 5678',
         'directorios' => ['Consejo Nacional Directivo', 'Coordinaciones Nacionales'],
@@ -48,7 +48,7 @@ $personas = [
     ],
     [
         'id' => 2,
-        'num_afiliacion' => '9801002',
+        'num_afiliacion' => '2601002',
         'nombre' => 'Juan',
         'apellido_paterno' => 'Martínez',
         'apellido_materno' => 'López',
@@ -58,7 +58,7 @@ $personas = [
         'cargo' => 'Coordinador Nacional',
         'cargo_nivel' => 'Nacional',
         'fecha_inicio' => '2024-03-15',
-        'fecha_fin' => null, // Activo
+        'fecha_fin' => null,
         'correo' => 'juan.martinez@example.com',
         'telefono' => '55 9876 5432',
         'directorios' => ['Consejo Nacional Directivo'],
@@ -66,7 +66,7 @@ $personas = [
     ],
     [
         'id' => 3,
-        'num_afiliacion' => '9801003',
+        'num_afiliacion' => '2601003',
         'nombre' => 'Ana',
         'apellido_paterno' => 'Sánchez',
         'apellido_materno' => 'Ramírez',
@@ -76,15 +76,15 @@ $personas = [
         'cargo' => 'Secretaria General',
         'cargo_nivel' => 'Nacional',
         'fecha_inicio' => '2024-06-01',
-        'fecha_fin' => null, // ¡Activo! (cargo vigente)
+        'fecha_fin' => null,
         'correo' => 'ana.sanchez@example.com',
         'telefono' => '44 1234 5678',
         'directorios' => ['Consejos Regionales', 'Coordinaciones Nacionales'],
-        'activo' => true // Tiene un cargo activo
+        'activo' => true
     ],
     [
         'id' => 4,
-        'num_afiliacion' => '9801004',
+        'num_afiliacion' => '2601004',
         'nombre' => 'Carlos',
         'apellido_paterno' => 'Hernández',
         'apellido_materno' => 'Díaz',
@@ -94,7 +94,7 @@ $personas = [
         'cargo' => 'Director Regional',
         'cargo_nivel' => 'Regional',
         'fecha_inicio' => '2024-02-01',
-        'fecha_fin' => null, // Activo
+        'fecha_fin' => null,
         'correo' => 'carlos.hernandez@example.com',
         'telefono' => '33 1234 5678',
         'directorios' => ['Consejos Regionales'],
@@ -102,7 +102,7 @@ $personas = [
     ],
     [
         'id' => 5,
-        'num_afiliacion' => '9801005',
+        'num_afiliacion' => '2601005',
         'nombre' => 'Laura',
         'apellido_paterno' => 'Torres',
         'apellido_materno' => 'Vega',
@@ -112,7 +112,7 @@ $personas = [
         'cargo' => 'Coordinadora Regional',
         'cargo_nivel' => 'Regional',
         'fecha_inicio' => '2024-07-01',
-        'fecha_fin' => null, // Activo
+        'fecha_fin' => null,
         'correo' => 'laura.torres@example.com',
         'telefono' => '66 1234 5678',
         'directorios' => ['Coordinaciones Nacionales'],
@@ -120,7 +120,7 @@ $personas = [
     ],
     [
         'id' => 6,
-        'num_afiliacion' => '9801006',
+        'num_afiliacion' => '2601006',
         'nombre' => 'Roberto',
         'apellido_paterno' => 'Mendoza',
         'apellido_materno' => 'Cruz',
@@ -130,15 +130,15 @@ $personas = [
         'cargo' => 'Secretario Regional',
         'cargo_nivel' => 'Regional',
         'fecha_inicio' => '2023-01-01',
-        'fecha_fin' => '2024-01-01', // Finalizado
+        'fecha_fin' => '2024-01-01',
         'correo' => 'roberto.mendoza@example.com',
         'telefono' => '81 1234 5678',
         'directorios' => ['Instituciones'],
-        'activo' => false // Todos sus cargos terminaron
+        'activo' => false
     ],
     [
         'id' => 7,
-        'num_afiliacion' => '9801007',
+        'num_afiliacion' => '2601007',
         'nombre' => 'Patricia',
         'apellido_paterno' => 'Flores',
         'apellido_materno' => 'Reyes',
@@ -148,10 +148,190 @@ $personas = [
         'cargo' => 'Coordinadora Regional',
         'cargo_nivel' => 'Regional',
         'fecha_inicio' => '2024-04-01',
-        'fecha_fin' => null, // Activo
+        'fecha_fin' => null,
         'correo' => 'patricia.flores@example.com',
         'telefono' => '77 1234 5678',
         'directorios' => ['Coordinaciones Nacionales', 'Instituciones'],
+        'activo' => true
+    ],
+    [
+        'id' => 8,
+        'num_afiliacion' => '2601008',
+        'nombre' => 'Jorge',
+        'apellido_paterno' => 'Gómez',
+        'apellido_materno' => 'García',
+        'genero' => 'M',
+        'id_zona' => 6,
+        'institucion' => 'UADY - Mérida',
+        'cargo' => 'Director Académico',
+        'cargo_nivel' => 'Institucional',
+        'fecha_inicio' => '2024-08-01',
+        'fecha_fin' => null,
+        'correo' => 'jorge.gomez@example.com',
+        'telefono' => '99 1234 5678',
+        'directorios' => ['Instituciones'],
+        'activo' => true
+    ],
+    [
+        'id' => 9,
+        'num_afiliacion' => '2601009',
+        'nombre' => 'Carmen',
+        'apellido_paterno' => 'Rivera',
+        'apellido_materno' => 'Morales',
+        'genero' => 'F',
+        'id_zona' => 4,
+        'institucion' => 'UDG - Guadalajara',
+        'cargo' => 'Coordinadora Académica',
+        'cargo_nivel' => 'Institucional',
+        'fecha_inicio' => '2024-05-01',
+        'fecha_fin' => null,
+        'correo' => 'carmen.rivera@example.com',
+        'telefono' => '33 9876 5432',
+        'directorios' => ['Instituciones'],
+        'activo' => true
+    ],
+    [
+        'id' => 10,
+        'num_afiliacion' => '2601010',
+        'nombre' => 'Luis',
+        'apellido_paterno' => 'Méndez',
+        'apellido_materno' => 'Vargas',
+        'genero' => 'M',
+        'id_zona' => 1,
+        'institucion' => 'UABC - Tijuana',
+        'cargo' => 'Secretario Técnico',
+        'cargo_nivel' => 'Regional',
+        'fecha_inicio' => '2023-06-01',
+        'fecha_fin' => '2024-05-31',
+        'correo' => 'luis.mendez@example.com',
+        'telefono' => '66 9876 5432',
+        'directorios' => ['Consejos Regionales'],
+        'activo' => false
+    ],
+    [
+        'id' => 11,
+        'num_afiliacion' => '2601011',
+        'nombre' => 'Elena',
+        'apellido_paterno' => 'Castro',
+        'apellido_materno' => 'Ramos',
+        'genero' => 'F',
+        'id_zona' => 3,
+        'institucion' => 'UASLP - San Luis Potosí',
+        'cargo' => 'Directora General',
+        'cargo_nivel' => 'Institucional',
+        'fecha_inicio' => '2024-09-01',
+        'fecha_fin' => null,
+        'correo' => 'elena.castro@example.com',
+        'telefono' => '44 9876 5432',
+        'directorios' => ['Instituciones', 'Coordinaciones Nacionales'],
+        'activo' => true
+    ],
+    [
+        'id' => 12,
+        'num_afiliacion' => '2601012',
+        'nombre' => 'Andrés',
+        'apellido_paterno' => 'Moreno',
+        'apellido_materno' => 'Rojas',
+        'genero' => 'M',
+        'id_zona' => 2,
+        'institucion' => 'UANL - San Nicolás',
+        'cargo' => 'Coordinador Regional',
+        'cargo_nivel' => 'Regional',
+        'fecha_inicio' => '2024-10-01',
+        'fecha_fin' => null,
+        'correo' => 'andres.moreno@example.com',
+        'telefono' => '81 9876 5432',
+        'directorios' => ['Consejos Regionales'],
+        'activo' => true
+    ],
+    [
+        'id' => 13,
+        'num_afiliacion' => '2601013',
+        'nombre' => 'Teresa',
+        'apellido_paterno' => 'Ortega',
+        'apellido_materno' => 'Luna',
+        'genero' => 'F',
+        'id_zona' => 5,
+        'institucion' => 'UAEM - Toluca',
+        'cargo' => 'Director de División',
+        'cargo_nivel' => 'Institucional',
+        'fecha_inicio' => '2024-11-15',
+        'fecha_fin' => null,
+        'correo' => 'teresa.ortega@example.com',
+        'telefono' => '72 1234 5678',
+        'directorios' => ['Instituciones'],
+        'activo' => true
+    ],
+    [
+        'id' => 14,
+        'num_afiliacion' => '2601014',
+        'nombre' => 'Ricardo',
+        'apellido_paterno' => 'Peña',
+        'apellido_materno' => 'Fuentes',
+        'genero' => 'M',
+        'id_zona' => 6,
+        'institucion' => 'UABJO - Oaxaca',
+        'cargo' => 'Jefe de Departamento',
+        'cargo_nivel' => 'Institucional',
+        'fecha_inicio' => '2023-12-01',
+        'fecha_fin' => '2024-11-30',
+        'correo' => 'ricardo.pena@example.com',
+        'telefono' => '95 1234 5678',
+        'directorios' => ['Instituciones'],
+        'activo' => false
+    ],
+    [
+        'id' => 15,
+        'num_afiliacion' => '2601015',
+        'nombre' => 'Sofía',
+        'apellido_paterno' => 'Reyes',
+        'apellido_materno' => 'Gil',
+        'genero' => 'F',
+        'id_zona' => 7,
+        'institucion' => 'UAM - Iztapalapa',
+        'cargo' => 'Coordinadora General',
+        'cargo_nivel' => 'Nacional',
+        'fecha_inicio' => '2024-12-01',
+        'fecha_fin' => null,
+        'correo' => 'sofia.reyes@example.com',
+        'telefono' => '55 5678 1234',
+        'directorios' => ['Consejo Nacional Directivo', 'Coordinaciones Nacionales'],
+        'activo' => true
+    ],
+    [
+        'id' => 16,
+        'num_afiliacion' => '2601016',
+        'nombre' => 'Fernando',
+        'apellido_paterno' => 'Cruz',
+        'apellido_materno' => 'Salazar',
+        'genero' => 'M',
+        'id_zona' => 3,
+        'institucion' => 'UAQ - Querétaro',
+        'cargo' => 'Secretario Técnico General',
+        'cargo_nivel' => 'Nacional',
+        'fecha_inicio' => '2024-07-01',
+        'fecha_fin' => null,
+        'correo' => 'fernando.cruz@example.com',
+        'telefono' => '44 5678 1234',
+        'directorios' => ['Consejo Nacional Directivo'],
+        'activo' => true
+    ],
+    [
+        'id' => 17,
+        'num_afiliacion' => '2601017',
+        'nombre' => 'Gabriela',
+        'apellido_paterno' => 'Mendoza',
+        'apellido_materno' => 'Soto',
+        'genero' => 'F',
+        'id_zona' => 4,
+        'institucion' => 'UDG - Guadalajara',
+        'cargo' => 'Directora Regional',
+        'cargo_nivel' => 'Regional',
+        'fecha_inicio' => '2024-08-15',
+        'fecha_fin' => null,
+        'correo' => 'gabriela.mendoza@example.com',
+        'telefono' => '33 5678 1234',
+        'directorios' => ['Consejos Regionales'],
         'activo' => true
     ]
 ];
@@ -162,9 +342,12 @@ $estado_filtro = isset($_GET['estado']) ? $_GET['estado'] : '';
 $cargo_filtro = isset($_GET['cargo']) ? trim($_GET['cargo']) : '';
 $busqueda = isset($_GET['buscar']) ? trim($_GET['buscar']) : '';
 
-// Ordenamiento (por columnas)
-$orden_columna = isset($_GET['orden_columna']) ? $_GET['orden_columna'] : 'nombre';
+$orden_columna = isset($_GET['orden_columna']) ? $_GET['orden_columna'] : '';
 $orden_direccion = isset($_GET['orden_direccion']) ? $_GET['orden_direccion'] : 'asc';
+
+// Paginación
+$pagina_actual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+$registros_por_pagina = 6;
 
 $personas_filtradas = $personas;
 
@@ -204,39 +387,57 @@ if ($estado_filtro == 'activo') {
     });
 }
 
-// Ordenar por columna
-usort($personas_filtradas, function($a, $b) use ($orden_columna, $orden_direccion) {
-    $valor_a = '';
-    $valor_b = '';
-    
-    switch ($orden_columna) {
-        case 'num_afiliacion':
-            $valor_a = $a['num_afiliacion'];
-            $valor_b = $b['num_afiliacion'];
-            break;
-        case 'nombre':
-            $valor_a = $a['nombre'] . ' ' . $a['apellido_paterno'] . ' ' . $a['apellido_materno'];
-            $valor_b = $b['nombre'] . ' ' . $b['apellido_paterno'] . ' ' . $b['apellido_materno'];
-            break;
-        case 'institucion':
-            $valor_a = $a['institucion'];
-            $valor_b = $b['institucion'];
-            break;
-        case 'cargo':
-            $valor_a = $a['cargo'];
-            $valor_b = $b['cargo'];
-            break;
-        default:
-            $valor_a = $a['nombre'] . ' ' . $a['apellido_paterno'];
-            $valor_b = $b['nombre'] . ' ' . $b['apellido_paterno'];
-    }
-    
-    if ($orden_direccion == 'asc') {
-        return strcmp($valor_a, $valor_b);
-    } else {
-        return strcmp($valor_b, $valor_a);
-    }
-});
+// Ordenar solo si se selecciona una columna
+if (!empty($orden_columna)) {
+    usort($personas_filtradas, function($a, $b) use ($orden_columna, $orden_direccion) {
+        $valor_a = '';
+        $valor_b = '';
+        
+        switch ($orden_columna) {
+            case 'num_afiliacion':
+                $valor_a = $a['num_afiliacion'];
+                $valor_b = $b['num_afiliacion'];
+                break;
+            case 'nombre':
+                $valor_a = $a['nombre'] . ' ' . $a['apellido_paterno'] . ' ' . $a['apellido_materno'];
+                $valor_b = $b['nombre'] . ' ' . $b['apellido_paterno'] . ' ' . $b['apellido_materno'];
+                break;
+            case 'institucion':
+                $valor_a = $a['institucion'];
+                $valor_b = $b['institucion'];
+                break;
+            case 'cargo':
+                $valor_a = $a['cargo'];
+                $valor_b = $b['cargo'];
+                break;
+            case 'zona':
+                $valor_a = $a['id_zona'];
+                $valor_b = $b['id_zona'];
+                break;
+            default:
+                $valor_a = $a['nombre'] . ' ' . $a['apellido_paterno'];
+                $valor_b = $b['nombre'] . ' ' . $b['apellido_paterno'];
+        }
+        
+        if ($orden_direccion == 'asc') {
+            return $valor_a <=> $valor_b;
+        } else {
+            return $valor_b <=> $valor_a;
+        }
+    });
+}
+
+// Calcular total de registros
+$total_registros = count($personas_filtradas);
+$total_paginas = ceil($total_registros / $registros_por_pagina);
+
+// Asegurar que la página actual sea válida
+if ($pagina_actual < 1) $pagina_actual = 1;
+if ($pagina_actual > $total_paginas && $total_paginas > 0) $pagina_actual = $total_paginas;
+
+// Obtener registros de la página actual
+$offset = ($pagina_actual - 1) * $registros_por_pagina;
+$personas_paginadas = array_slice($personas_filtradas, $offset, $registros_por_pagina);
 
 include 'template/header.php';
 include 'template/menu.php';
@@ -273,14 +474,15 @@ include 'template/menu.php';
                     <div class="filter-group">
                         <i class="fas fa-search filter-icon"></i>
                         <input type="text" name="buscar" class="filter-input" 
-                               placeholder="Buscar..." 
+                               placeholder="Buscar por nombre, institución, cargo..." 
                                value="<?= htmlspecialchars($busqueda) ?>" id="buscarPersona"
                                autocomplete="off">
                     </div>
                     
                     <div class="filter-group">
+                        <label class="filter-label">Zona</label>
                         <select name="zona" class="filter-select" id="filtroZona">
-                            <option value="0">Todas las zonas</option>
+                            <option value="0">Todas</option>
                             <?php foreach ($zonas_regionales as $id => $nombre): ?>
                                 <option value="<?= $id ?>" <?= $zona_filtro == $id ? 'selected' : '' ?>>
                                     <?= htmlspecialchars($nombre) ?>
@@ -290,8 +492,9 @@ include 'template/menu.php';
                     </div>
                     
                     <div class="filter-group">
+                        <label class="filter-label">Cargo</label>
                         <select name="cargo" class="filter-select" id="filtroCargo">
-                            <option value="">Todos los cargos</option>
+                            <option value="">Todos</option>
                             <?php 
                             $cargos_unicos = array_unique(array_column($personas, 'cargo'));
                             sort($cargos_unicos);
@@ -305,6 +508,7 @@ include 'template/menu.php';
                     </div>
                     
                     <div class="filter-group">
+                        <label class="filter-label">Estado</label>
                         <select name="estado" class="filter-select" id="filtroEstado">
                             <option value="">Todos</option>
                             <option value="activo" <?= $estado_filtro == 'activo' ? 'selected' : '' ?>>Activos</option>
@@ -338,7 +542,7 @@ include 'template/menu.php';
                     <thead>
                         <tr>
                             <th>
-                                <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'num_afiliacion', 'orden_direccion' => ($orden_columna == 'num_afiliacion' && $orden_direccion == 'asc') ? 'desc' : 'asc'])) ?>" 
+                                <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'num_afiliacion', 'orden_direccion' => ($orden_columna == 'num_afiliacion' && $orden_direccion == 'asc') ? 'desc' : 'asc', 'pagina' => 1])) ?>" 
                                    class="sort-link <?= $orden_columna == 'num_afiliacion' ? 'active' : '' ?>">
                                     <span class="sort-label">Núm. Afiliación</span>
                                     <?php if ($orden_columna == 'num_afiliacion'): ?>
@@ -349,7 +553,7 @@ include 'template/menu.php';
                                 </a>
                             </th>
                             <th>
-                                <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'nombre', 'orden_direccion' => ($orden_columna == 'nombre' && $orden_direccion == 'asc') ? 'desc' : 'asc'])) ?>" 
+                                <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'nombre', 'orden_direccion' => ($orden_columna == 'nombre' && $orden_direccion == 'asc') ? 'desc' : 'asc', 'pagina' => 1])) ?>" 
                                    class="sort-link <?= $orden_columna == 'nombre' ? 'active' : '' ?>">
                                     <span class="sort-label">Nombre</span>
                                     <?php if ($orden_columna == 'nombre'): ?>
@@ -360,7 +564,7 @@ include 'template/menu.php';
                                 </a>
                             </th>
                             <th>
-                                <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'institucion', 'orden_direccion' => ($orden_columna == 'institucion' && $orden_direccion == 'asc') ? 'desc' : 'asc'])) ?>" 
+                                <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'institucion', 'orden_direccion' => ($orden_columna == 'institucion' && $orden_direccion == 'asc') ? 'desc' : 'asc', 'pagina' => 1])) ?>" 
                                    class="sort-link <?= $orden_columna == 'institucion' ? 'active' : '' ?>">
                                     <span class="sort-label">Institución</span>
                                     <?php if ($orden_columna == 'institucion'): ?>
@@ -371,7 +575,7 @@ include 'template/menu.php';
                                 </a>
                             </th>
                             <th>
-                                <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'cargo', 'orden_direccion' => ($orden_columna == 'cargo' && $orden_direccion == 'asc') ? 'desc' : 'asc'])) ?>" 
+                                <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'cargo', 'orden_direccion' => ($orden_columna == 'cargo' && $orden_direccion == 'asc') ? 'desc' : 'asc', 'pagina' => 1])) ?>" 
                                    class="sort-link <?= $orden_columna == 'cargo' ? 'active' : '' ?>">
                                     <span class="sort-label">Cargo</span>
                                     <?php if ($orden_columna == 'cargo'): ?>
@@ -381,7 +585,17 @@ include 'template/menu.php';
                                     <?php endif; ?>
                                 </a>
                             </th>
-                            <th>Zona</th>
+                            <th>
+                                <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'zona', 'orden_direccion' => ($orden_columna == 'zona' && $orden_direccion == 'asc') ? 'desc' : 'asc', 'pagina' => 1])) ?>" 
+                                   class="sort-link <?= $orden_columna == 'zona' ? 'active' : '' ?>">
+                                    <span class="sort-label">Zona</span>
+                                    <?php if ($orden_columna == 'zona'): ?>
+                                        <i class="fas fa-chevron-<?= $orden_direccion == 'asc' ? 'up' : 'down' ?>"></i>
+                                    <?php else: ?>
+                                        <i class="fas fa-sort sort-icon-inactive"></i>
+                                    <?php endif; ?>
+                                </a>
+                            </th>
                             <th>Correo</th>
                             <th>Teléfono</th>
                             <th>Estado</th>
@@ -389,13 +603,14 @@ include 'template/menu.php';
                         </tr>
                     </thead>
                     <tbody id="tbodyPersonas">
-                        <?php if (count($personas_filtradas) > 0): ?>
-                            <?php foreach ($personas_filtradas as $persona): 
+                        <?php if (count($personas_paginadas) > 0): ?>
+                            <?php foreach ($personas_paginadas as $persona): 
                                 $nombre_completo = $persona['nombre'] . ' ' . $persona['apellido_paterno'];
                                 if (!empty($persona['apellido_materno'])) {
                                     $nombre_completo .= ' ' . $persona['apellido_materno'];
                                 }
                                 $zona_nombre = $zonas_regionales[$persona['id_zona']] ?? 'Sin zona';
+                                $puede_eliminar = true; // Las personas siempre se pueden eliminar
                             ?>
                             <tr data-id="<?= $persona['id'] ?>" data-activo="<?= $persona['activo'] ? 'true' : 'false' ?>">
                                 <td><span class="badge-afiliacion"><?= htmlspecialchars($persona['num_afiliacion']) ?></span></td>
@@ -433,7 +648,7 @@ include 'template/menu.php';
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="9" class="empty-row">
+                                <td colspan="10" class="empty-row">
                                     <i class="fas fa-search"></i>
                                     <p>No se encontraron personas con los filtros aplicados</p>
                                 </td>
@@ -442,9 +657,60 @@ include 'template/menu.php';
                     </tbody>
                 </table>
             </div>
-            <div class="table-modern-footer">
-                <span>Mostrando <strong><?= count($personas_filtradas) ?></strong> de <strong><?= count($personas) ?></strong> registros</span>
+            
+            <!-- Paginación -->
+            <?php if ($total_paginas > 1): ?>
+            <div class="pagination-container">
+                <div class="pagination-info">
+                    Mostrando <strong><?= count($personas_paginadas) ?></strong> de <strong><?= $total_registros ?></strong> registros
+                    <?php if ($total_paginas > 1): ?>
+                        (Página <?= $pagina_actual ?> de <?= $total_paginas ?>)
+                    <?php endif; ?>
+                </div>
+                <div class="pagination-controls">
+                    <?php if ($pagina_actual > 1): ?>
+                        <a href="?<?= http_build_query(array_merge($_GET, ['pagina' => $pagina_actual - 1])) ?>" class="pagination-btn">
+                            <i class="fas fa-chevron-left"></i> Anterior
+                        </a>
+                    <?php else: ?>
+                        <span class="pagination-btn disabled">
+                            <i class="fas fa-chevron-left"></i> Anterior
+                        </span>
+                    <?php endif; ?>
+                    
+                    <?php
+                    $rango = 2;
+                    $inicio = max(1, $pagina_actual - $rango);
+                    $fin = min($total_paginas, $pagina_actual + $rango);
+                    
+                    if ($inicio > 1) {
+                        echo '<a href="?' . http_build_query(array_merge($_GET, ['pagina' => 1])) . '" class="pagination-num">1</a>';
+                        if ($inicio > 2) echo '<span class="pagination-dots">...</span>';
+                    }
+                    
+                    for ($i = $inicio; $i <= $fin; $i++) {
+                        $active = $i == $pagina_actual ? 'active' : '';
+                        echo '<a href="?' . http_build_query(array_merge($_GET, ['pagina' => $i])) . '" class="pagination-num ' . $active . '">' . $i . '</a>';
+                    }
+                    
+                    if ($fin < $total_paginas) {
+                        if ($fin < $total_paginas - 1) echo '<span class="pagination-dots">...</span>';
+                        echo '<a href="?' . http_build_query(array_merge($_GET, ['pagina' => $total_paginas])) . '" class="pagination-num">' . $total_paginas . '</a>';
+                    }
+                    ?>
+                    
+                    <?php if ($pagina_actual < $total_paginas): ?>
+                        <a href="?<?= http_build_query(array_merge($_GET, ['pagina' => $pagina_actual + 1])) ?>" class="pagination-btn">
+                            Siguiente <i class="fas fa-chevron-right"></i>
+                        </a>
+                    <?php else: ?>
+                        <span class="pagination-btn disabled">
+                            Siguiente <i class="fas fa-chevron-right"></i>
+                        </span>
+                    <?php endif; ?>
+                </div>
             </div>
+            <?php endif; ?>
         </div>
 
     </div>
@@ -452,7 +718,7 @@ include 'template/menu.php';
 
 <style>
 /* ============================================================
-   ESTILOS MODERNOS - LISTADO
+   ESTILOS MODERNOS - LISTADO PERSONAS
    ============================================================ */
 
 /* Page Header */
@@ -550,7 +816,7 @@ include 'template/menu.php';
     color: #8B0000;
 }
 
-/* Filtros - Tamaño fijo */
+/* Filtros */
 .filters-container {
     background: white;
     border-radius: 14px;
@@ -567,15 +833,25 @@ include 'template/menu.php';
 .filters-row {
     display: flex;
     gap: 0.75rem;
-    align-items: center;
+    align-items: flex-end;
     flex-wrap: wrap;
 }
 
 .filter-group {
     position: relative;
     flex: 0 1 auto;
-    min-width: 160px;
-    max-width: 240px;
+    min-width: 140px;
+    max-width: 200px;
+}
+
+.filter-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.15rem;
+    display: block;
 }
 
 .filter-icon {
@@ -590,10 +866,10 @@ include 'template/menu.php';
 
 .filter-input {
     width: 100%;
-    padding: 0.6rem 1rem 0.6rem 3rem;
+    padding: 0.5rem 1rem 0.5rem 3rem;
     border: 2px solid #e8e8e8;
     border-radius: 10px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     transition: all 0.3s ease;
     background: #fafafa;
     color: #1a1a1a;
@@ -608,10 +884,10 @@ include 'template/menu.php';
 
 .filter-select {
     width: 100%;
-    padding: 0.6rem 1rem;
+    padding: 0.5rem 1rem;
     border: 2px solid #e8e8e8;
     border-radius: 10px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     transition: all 0.3s ease;
     background: #fafafa;
     color: #1a1a1a;
@@ -630,7 +906,7 @@ include 'template/menu.php';
 }
 
 .btn-filter-apply {
-    padding: 0.6rem 1.25rem;
+    padding: 0.5rem 1.25rem;
     background: #8B0000;
     color: white;
     border: none;
@@ -648,7 +924,7 @@ include 'template/menu.php';
 }
 
 .btn-filter-clear {
-    padding: 0.6rem 1.25rem;
+    padding: 0.5rem 1.25rem;
     background: transparent;
     color: #6b6b6b;
     border: 2px solid #e8e8e8;
@@ -699,12 +975,14 @@ include 'template/menu.php';
 
 .table-modern-wrapper {
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .table-modern {
     width: 100%;
     border-collapse: collapse;
     font-size: 0.9rem;
+    min-width: 1050px;
 }
 
 .table-modern thead {
@@ -713,13 +991,14 @@ include 'template/menu.php';
 
 .table-modern thead th {
     text-align: left;
-    padding: 1rem 1.25rem;
+    padding: 0.8rem 1rem;
     font-weight: 600;
     font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 0.8px;
     color: #6b6b6b;
     border-bottom: 2px solid #e8e8e8;
+    white-space: nowrap;
 }
 
 /* Sort links */
@@ -759,7 +1038,7 @@ include 'template/menu.php';
 }
 
 .table-modern tbody td {
-    padding: 0.9rem 1.25rem;
+    padding: 0.8rem 1rem;
     border-bottom: 1px solid #f0f0f0;
     vertical-align: middle;
 }
@@ -770,17 +1049,6 @@ include 'template/menu.php';
 
 .table-modern tbody tr:hover {
     background: #faf8f8;
-}
-
-/* Persona cell */
-.persona-cell {
-    display: flex;
-    align-items: center;
-}
-
-.persona-nombre {
-    font-weight: 600;
-    color: #1a1a1a;
 }
 
 /* Badges */
@@ -803,6 +1071,21 @@ include 'template/menu.php';
     border-radius: 20px;
     font-size: 0.75rem;
     font-weight: 500;
+}
+
+.persona-nombre {
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.correo-link {
+    color: #0d6efd;
+    text-decoration: none;
+    font-size: 0.85rem;
+}
+
+.correo-link:hover {
+    text-decoration: underline;
 }
 
 /* Estados */
@@ -830,17 +1113,6 @@ include 'template/menu.php';
 
 .status-inactive i {
     font-size: 0.5rem;
-}
-
-/* Correo link */
-.correo-link {
-    color: #0d6efd;
-    text-decoration: none;
-    font-size: 0.85rem;
-}
-
-.correo-link:hover {
-    text-decoration: underline;
 }
 
 /* Acciones */
@@ -913,16 +1185,94 @@ include 'template/menu.php';
     font-size: 0.95rem;
 }
 
-/* Table footer */
-.table-modern-footer {
-    padding: 0.9rem 1.25rem;
+/* Paginación */
+.pagination-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 1.25rem;
     border-top: 1px solid #f0f0f0;
     background: #fafafa;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.pagination-info {
     font-size: 0.85rem;
     color: #6b6b6b;
 }
 
-/* Modal de confirmación */
+.pagination-controls {
+    display: flex;
+    gap: 0.35rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.pagination-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.8rem;
+    background: white;
+    color: #4a4a4a;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.pagination-btn:hover:not(.disabled) {
+    background: #f5edec;
+    border-color: #8B0000;
+    color: #8B0000;
+}
+
+.pagination-btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pagination-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #4a4a4a;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.pagination-num:hover:not(.active) {
+    background: #f5edec;
+    border-color: #e0d6d6;
+}
+
+.pagination-num.active {
+    background: #8B0000;
+    color: white;
+    border-color: #8B0000;
+}
+
+.pagination-dots {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    color: #999;
+    font-size: 0.8rem;
+}
+
+/* Modal */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -940,7 +1290,7 @@ include 'template/menu.php';
 .modal-card {
     background: white;
     border-radius: 16px;
-    max-width: 650px;
+    max-width: 550px;
     width: 90%;
     max-height: 80vh;
     overflow-y: auto;
@@ -953,7 +1303,7 @@ include 'template/menu.php';
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1rem;
     padding-bottom: 0.75rem;
     border-bottom: 2px solid #f5f0f0;
 }
@@ -1157,6 +1507,12 @@ include 'template/menu.php';
         width: 100%;
         justify-content: center;
     }
+    
+    .pagination-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
 }
 
 @media (max-width: 768px) {
@@ -1189,16 +1545,20 @@ include 'template/menu.php';
         padding: 1rem;
     }
 
-    .table-modern thead th,
-    .table-modern tbody td {
-        padding: 0.7rem 0.75rem;
+    .table-modern {
+        min-width: 750px;
         font-size: 0.8rem;
     }
 
+    .table-modern thead th,
+    .table-modern tbody td {
+        padding: 0.5rem 0.6rem;
+    }
+
     .btn-accion {
-        width: 30px;
-        height: 30px;
-        font-size: 0.7rem;
+        width: 28px;
+        height: 28px;
+        font-size: 0.65rem;
     }
 
     .modal-card {
@@ -1216,11 +1576,45 @@ include 'template/menu.php';
         font-size: 0.8rem;
     }
 }
+
+@media (max-width: 480px) {
+    .page-header-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 1.2rem;
+    }
+
+    .page-title {
+        font-size: 1.2rem;
+    }
+
+    .table-modern {
+        min-width: 650px;
+        font-size: 0.7rem;
+    }
+
+    .table-modern thead th,
+    .table-modern tbody td {
+        padding: 0.4rem 0.4rem;
+    }
+
+    .btn-accion {
+        width: 24px;
+        height: 24px;
+        font-size: 0.55rem;
+        border-radius: 6px;
+    }
+
+    .modal-card {
+        padding: 1rem;
+        margin: 0.5rem;
+    }
+}
 </style>
 
 <script>
 // ============================================================
-// BÚSQUEDA Y FILTROS EN TIEMPO REAL (SIN INTERRUMPIR ESCRITURA)
+// BÚSQUEDA Y FILTROS EN TIEMPO REAL
 // ============================================================
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -1231,56 +1625,33 @@ document.addEventListener('DOMContentLoaded', function() {
     const formFiltros = document.getElementById('formFiltros');
     
     let timeoutId = null;
-    let isTyping = false;
     
-    // Búsqueda con debounce - no interrumpe la escritura
     buscarInput.addEventListener('input', function() {
-        // Marcar que el usuario está escribiendo
-        isTyping = true;
-        
-        // Limpiar timeout anterior
         clearTimeout(timeoutId);
-        
-        // Establecer nuevo timeout
         timeoutId = setTimeout(function() {
-            isTyping = false;
             formFiltros.submit();
-        }, 600); // 600ms de pausa después de dejar de escribir
-    });
-    
-    // Evitar que el formulario se envíe mientras se escribe
-    buscarInput.addEventListener('keydown', function(e) {
-        // Si presiona Enter, enviar inmediatamente
-        if (e.key === 'Enter') {
-            clearTimeout(timeoutId);
-            isTyping = false;
-            formFiltros.submit();
-            e.preventDefault();
-        }
+        }, 500);
     });
     
     filtroZona.addEventListener('change', function() {
-        // Si hay un timeout pendiente, limpiarlo
-        clearTimeout(timeoutId);
         formFiltros.submit();
     });
     
     filtroCargo.addEventListener('change', function() {
-        clearTimeout(timeoutId);
         formFiltros.submit();
     });
     
     filtroEstado.addEventListener('change', function() {
-        clearTimeout(timeoutId);
         formFiltros.submit();
     });
 });
 
 // ============================================================
-// DATOS DE PERSONAS (para modal)
+// DATOS DE PERSONAS
 // ============================================================
 
 const personasData = <?= json_encode($personas) ?>;
+const zonasRegionales = <?= json_encode($zonas_regionales) ?>;
 
 // ============================================================
 // ELIMINAR PERSONA (CON MODAL)
@@ -1294,11 +1665,10 @@ function eliminarPersona(id) {
     }
     
     const nombreCompleto = persona.nombre + ' ' + persona.apellido_paterno + ' ' + (persona.apellido_materno || '');
-    const zonaNombre = <?= json_encode($zonas_regionales) ?>[persona.id_zona] || 'Sin zona';
+    const zonaNombre = zonasRegionales[persona.id_zona] || 'Sin zona';
     const directorios = persona.directorios || ['Sin directorios'];
     const estado = persona.activo ? 'Activo' : 'Inactivo';
     
-    // Crear modal
     const modal = document.createElement('div');
     modal.className = 'modal-overlay';
     modal.id = 'modalEliminar';
@@ -1432,7 +1802,7 @@ function mostrarMensaje(mensaje, tipo) {
 }
 
 // ============================================================
-// EXPORTAR CSV (CON TODA LA INFO)
+// EXPORTAR CSV
 // ============================================================
 
 function descargarCSV() {
@@ -1442,13 +1812,13 @@ function descargarCSV() {
         return;
     }
     
-    let csv = 'Núm. Afiliación,Nombre,Institución,Cargo,Nivel,Zona,Correo,Teléfono,Fecha Inicio,Fecha Fin,Estado,Directorios\n';
+    let csv = 'Núm. Afiliación,Nombre,Institución,Cargo,Zona,Correo,Teléfono,Estado,Directorios\n';
     
     filas.forEach(fila => {
         if (fila.classList.contains('empty-row')) return;
         
         const celdas = fila.querySelectorAll('td');
-        if (celdas.length < 9) return;
+        if (celdas.length < 10) return;
         
         const numAfiliacion = celdas[0].textContent.trim();
         const nombre = celdas[1].textContent.trim();
@@ -1461,15 +1831,9 @@ function descargarCSV() {
         
         const id = parseInt(fila.dataset.id);
         const persona = personasData.find(p => p.id === id);
+        const directorios = persona && persona.directorios ? persona.directorios.join('; ') : '';
         
-        if (persona) {
-            const nivel = persona.cargo_nivel || '';
-            const fechaInicio = persona.fecha_inicio || '';
-            const fechaFin = persona.fecha_fin || '';
-            const directorios = persona.directorios ? persona.directorios.join('; ') : '';
-            
-            csv += `"${numAfiliacion}","${nombre}","${institucion}","${cargo}","${nivel}","${zona}","${correo}","${telefono}","${fechaInicio}","${fechaFin}","${estado}","${directorios}"\n`;
-        }
+        csv += `"${numAfiliacion}","${nombre}","${institucion}","${cargo}","${zona}","${correo}","${telefono}","${estado}","${directorios}"\n`;
     });
     
     const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });

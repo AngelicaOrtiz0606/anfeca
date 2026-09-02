@@ -15,20 +15,14 @@ if (!isset($_SESSION['usuario'])) {
 // DATOS SIMULADOS
 // ============================================================
 
-$tipos_institucion = [
-    1 => 'Universidad',
-    2 => 'Facultad',
-    3 => 'Campus'
-];
-
 $zonas_regionales = [
-    1 => 'Noroeste',
-    2 => 'Norte',
-    3 => 'Centro',
-    4 => 'Centro Occidente',
-    5 => 'Centro Sur',
-    6 => 'Sur',
-    7 => 'Ciudad de México'
+    1 => '1 - Noroeste',
+    2 => '2 - Norte',
+    3 => '3 - Centro',
+    4 => '4 - Centro Occidente',
+    5 => '5 - Centro Sur',
+    6 => '6 - Sur',
+    7 => '7 - Ciudad de México'
 ];
 
 $coordinaciones_nacionales = [
@@ -48,45 +42,184 @@ $coordinaciones_nacionales = [
     14 => 'Desarrollo Académico Estudiantil'
 ];
 
-$instituciones_por_zona = [
-    1 => ['UABC - Mexicali', 'UABC - Tijuana', 'ITSON - Cd. Obregón', 'UAS - Culiacán'],
-    2 => ['UANL - San Nicolás', 'UAT - Ciudad Victoria', 'UAdeC - Saltillo', 'UACH - Chihuahua'],
-    3 => ['UAQ - Querétaro', 'UASLP - San Luis Potosí', 'UAZ - Zacatecas', 'UAA - Aguascalientes'],
-    4 => ['UDG - Guadalajara', 'UMSNH - Morelia', 'UGTO - Guanajuato', 'UdeC - Colima'],
-    5 => ['UAGro - Chilpancingo', 'UAEH - Pachuca', 'UAEM - Toluca', 'UAEMor - Cuernavaca'],
-    6 => ['UNACH - Tuxtla Gutiérrez', 'UABJO - Oaxaca', 'UJAT - Villahermosa', 'UV - Xalapa'],
-    7 => ['UNAM - Facultad de Contaduría', 'UAM - Azcapotzalco', 'IPN - ESCOM', 'UAM - Iztapalapa']
+// Universidades por zona
+$universidades_por_zona = [
+    1 => ['Universidad Autónoma de Baja California', 'Universidad de Sonora', 'Instituto Tecnológico de Sonora'],
+    2 => ['Universidad Autónoma de Nuevo León', 'Universidad Autónoma de Coahuila', 'Instituto Tecnológico de Nuevo León'],
+    3 => ['Universidad Autónoma de Querétaro', 'Universidad Autónoma de San Luis Potosí', 'Universidad Autónoma de Zacatecas'],
+    4 => ['Universidad de Guadalajara', 'Universidad Michoacana de San Nicolás de Hidalgo', 'Universidad de Guanajuato'],
+    5 => ['Universidad Autónoma de Guerrero', 'Universidad Autónoma del Estado de Hidalgo', 'Universidad Autónoma del Estado de México'],
+    6 => ['Universidad Autónoma de Yucatán', 'Universidad Autónoma de Chiapas', 'Universidad Veracruzana'],
+    7 => ['Universidad Nacional Autónoma de México', 'Instituto Politécnico Nacional', 'Universidad Autónoma Metropolitana']
 ];
 
+// Facultades por universidad
+$facultades_por_universidad = [
+    'Universidad Nacional Autónoma de México' => [
+        'Facultad de Contaduría y Administración',
+        'Facultad de Ingeniería',
+        'Facultad de Derecho',
+        'Facultad de Medicina',
+        'Facultad de Ciencias Políticas y Sociales'
+    ],
+    'Instituto Politécnico Nacional' => [
+        'Escuela Superior de Cómputo (ESCOM)',
+        'Escuela Superior de Ingeniería Mecánica y Eléctrica (ESIME)',
+        'Escuela Superior de Física y Matemáticas (ESFM)',
+        'Centro de Estudios Científicos y Tecnológicos (CECyT)'
+    ],
+    'Universidad de Guadalajara' => [
+        'Facultad de Contaduría y Administración',
+        'Facultad de Ingeniería',
+        'Facultad de Derecho',
+        'Centro Universitario de Ciencias Económico Administrativas (CUCEA)'
+    ],
+    'Universidad Autónoma Metropolitana' => [
+        'División de Ciencias Sociales y Humanidades',
+        'División de Ciencias Naturales e Ingeniería',
+        'Unidad Azcapotzalco',
+        'Unidad Iztapalapa',
+        'Unidad Xochimilco'
+    ],
+    'Universidad Autónoma de Baja California' => [
+        'Facultad de Ciencias Administrativas y Sociales',
+        'Facultad de Ingeniería',
+        'Facultad de Derecho',
+        'Facultad de Ciencias Marinas'
+    ],
+    'Universidad de Sonora' => [
+        'Facultad de Contaduría y Administración',
+        'Facultad de Ingeniería',
+        'Facultad de Derecho',
+        'División de Ciencias Económicas y Sociales'
+    ],
+    'Universidad Autónoma de Nuevo León' => [
+        'Facultad de Contaduría Pública y Administración',
+        'Facultad de Ingeniería Mecánica y Eléctrica',
+        'Facultad de Derecho y Criminología',
+        'Facultad de Ciencias de la Comunicación'
+    ],
+    'Universidad Autónoma de Querétaro' => [
+        'Facultad de Contaduría y Administración',
+        'Facultad de Ingeniería',
+        'Facultad de Derecho',
+        'Facultad de Ciencias Políticas y Sociales'
+    ],
+    'Universidad Autónoma de Yucatán' => [
+        'Facultad de Contaduría y Administración',
+        'Facultad de Ingeniería',
+        'Facultad de Derecho',
+        'Facultad de Ciencias Antropológicas'
+    ],
+    'Universidad Veracruzana' => [
+        'Facultad de Contaduría y Administración',
+        'Facultad de Ingeniería',
+        'Facultad de Derecho',
+        'Facultad de Ciencias Administrativas y Sociales'
+    ]
+];
+
+// Campus por universidad
+$campus_por_universidad = [
+    'Universidad Nacional Autónoma de México' => [
+        'Ciudad Universitaria (CU)',
+        'Campus Juriquilla',
+        'Campus Morelos',
+        'Campus Ensenada',
+        'Campus Mérida'
+    ],
+    'Instituto Politécnico Nacional' => [
+        'Unidad Profesional Zacatenco',
+        'Unidad Profesional Adolfo López Mateos',
+        'Unidad Profesional Ticomán',
+        'Unidad Profesional Santo Tomás'
+    ],
+    'Universidad de Guadalajara' => [
+        'Campus Centro',
+        'Campus CUCEA',
+        'Campus CUCBA',
+        'Campus CUCSH'
+    ],
+    'Universidad Autónoma Metropolitana' => [
+        'Unidad Azcapotzalco',
+        'Unidad Iztapalapa',
+        'Unidad Xochimilco',
+        'Unidad Cuajimalpa'
+    ],
+    'Universidad Autónoma de Baja California' => [
+        'Campus Mexicali',
+        'Campus Tijuana',
+        'Campus Ensenada',
+        'Campus San Quintín',
+        'Campus Tecate'
+    ],
+    'Universidad de Sonora' => [
+        'Campus Hermosillo',
+        'Campus Cajeme',
+        'Campus Navojoa',
+        'Campus Caborca'
+    ],
+    'Universidad Autónoma de Nuevo León' => [
+        'Ciudad Universitaria',
+        'Campus Mederos',
+        'Campus Escobedo',
+        'Campus Linares'
+    ],
+    'Universidad Autónoma de Querétaro' => [
+        'Campus Centro',
+        'Campus Juriquilla',
+        'Campus Aeropuerto',
+        'Campus San Juan del Río'
+    ],
+    'Universidad Autónoma de Yucatán' => [
+        'Campus Ciencias Sociales',
+        'Campus Ciencias Biológicas',
+        'Campus Ciencias de la Salud',
+        'Campus Norte'
+    ],
+    'Universidad Veracruzana' => [
+        'Campus Xalapa',
+        'Campus Veracruz',
+        'Campus Orizaba',
+        'Campus Poza Rica',
+        'Campus Coatzacoalcos'
+    ]
+];
+
+// Números de afiliación por institución
 $num_afiliacion_por_institucion = [
-    'UABC - Mexicali' => '9801001',
-    'UABC - Tijuana' => '9801002',
-    'ITSON - Cd. Obregón' => '9801003',
-    'UAS - Culiacán' => '9801004',
-    'UANL - San Nicolás' => '9801005',
-    'UAT - Ciudad Victoria' => '9801006',
-    'UAdeC - Saltillo' => '9801007',
-    'UACH - Chihuahua' => '9801008',
-    'UAQ - Querétaro' => '9801009',
-    'UASLP - San Luis Potosí' => '9801010',
-    'UAZ - Zacatecas' => '9801011',
-    'UAA - Aguascalientes' => '9801012',
-    'UDG - Guadalajara' => '9801013',
-    'UMSNH - Morelia' => '9801014',
-    'UGTO - Guanajuato' => '9801015',
-    'UdeC - Colima' => '9801016',
-    'UAGro - Chilpancingo' => '9801017',
-    'UAEH - Pachuca' => '9801018',
-    'UAEM - Toluca' => '9801019',
-    'UAEMor - Cuernavaca' => '9801020',
-    'UNACH - Tuxtla Gutiérrez' => '9801021',
-    'UABJO - Oaxaca' => '9801022',
-    'UJAT - Villahermosa' => '9801023',
-    'UV - Xalapa' => '9801024',
-    'UNAM - Facultad de Contaduría' => '9801025',
-    'UAM - Azcapotzalco' => '9801026',
-    'IPN - ESCOM' => '9801027',
-    'UAM - Iztapalapa' => '9801028'
+    'Universidad Nacional Autónoma de México' => '2601001',
+    'Instituto Politécnico Nacional' => '2601003',
+    'Universidad de Guadalajara' => '2601005',
+    'Universidad Autónoma Metropolitana' => '2601008',
+    'Universidad Autónoma de Baja California' => '2601007',
+    'Universidad de Sonora' => '2601013',
+    'Instituto Tecnológico de Sonora' => '2601015',
+    'Universidad Autónoma de Nuevo León' => '2602009',
+    'Universidad Autónoma de Coahuila' => '2602010',
+    'Instituto Tecnológico de Nuevo León' => '2602011',
+    'Universidad Autónoma de Querétaro' => '2603011',
+    'Universidad Autónoma de San Luis Potosí' => '2603012',
+    'Universidad Autónoma de Zacatecas' => '2603013',
+    'Universidad Michoacana de San Nicolás de Hidalgo' => '2604007',
+    'Universidad de Guanajuato' => '2604008',
+    'Universidad Autónoma de Guerrero' => '2605014',
+    'Universidad Autónoma del Estado de Hidalgo' => '2605015',
+    'Universidad Autónoma del Estado de México' => '2605016',
+    'Universidad Autónoma de Yucatán' => '2606012',
+    'Universidad Autónoma de Chiapas' => '2606016',
+    'Universidad Veracruzana' => '2606017',
+    'Facultad de Contaduría y Administración (UNAM)' => '2607002',
+    'Escuela Superior de Cómputo (ESCOM)' => '2607004',
+    'Facultad de Contaduría y Administración (UDG)' => '2604006',
+    'Campus UABC - Mexicali' => '2601008',
+    'Campus UANL - San Nicolás' => '2605010'
+];
+
+$tipos_institucion = [
+    1 => 'Universidad',
+    2 => 'Facultad',
+    3 => 'Campus'
 ];
 
 $niveles_academicos = [
@@ -155,8 +288,47 @@ $tipos_directorio = [
     4 => 'Instituciones'
 ];
 
+// ============================================================
+// DATOS EXISTENTES PARA VALIDAR TITULARIDAD
+// ============================================================
+
+$personas_existentes = [
+    [
+        'id' => 1,
+        'nombre' => 'María',
+        'apellido_paterno' => 'González',
+        'apellido_materno' => 'Pérez',
+        'institucion' => 'Universidad Nacional Autónoma de México',
+        'cargo' => 'Directora',
+        'titular' => true,
+        'activo' => true
+    ],
+    [
+        'id' => 2,
+        'nombre' => 'Juan',
+        'apellido_paterno' => 'Martínez',
+        'apellido_materno' => 'López',
+        'institucion' => 'Instituto Politécnico Nacional',
+        'cargo' => 'Director',
+        'titular' => true,
+        'activo' => true
+    ],
+    [
+        'id' => 3,
+        'nombre' => 'Ana',
+        'apellido_paterno' => 'Sánchez',
+        'apellido_materno' => 'Ramírez',
+        'institucion' => 'Universidad de Guadalajara',
+        'cargo' => 'Directora',
+        'titular' => true,
+        'activo' => true
+    ]
+];
+
 $mensaje = '';
 $error = '';
+$mostrar_modal_titular = false;
+$titular_existente = null;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $errores = [];
@@ -172,8 +344,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($_POST['telefono_numero']) || empty(array_filter($_POST['telefono_numero']))) $errores[] = 'Teléfono';
     if (empty($_POST['correo_valor']) || empty(array_filter($_POST['correo_valor']))) $errores[] = 'Correo Electrónico';
     
+    $titular_institucional = false;
+    $institucion_seleccionada = $_POST['institucion'] ?? '';
+    
+    if (!empty($_POST['cargo_titular']) && is_array($_POST['cargo_titular'])) {
+        foreach ($_POST['cargo_titular'] as $index => $titular) {
+            if ($titular == '1' && isset($_POST['cargo_nivel'][$index]) && $_POST['cargo_nivel'][$index] == '3') {
+                $titular_institucional = true;
+                break;
+            }
+        }
+    }
+    
+    if ($titular_institucional && !empty($institucion_seleccionada)) {
+        foreach ($personas_existentes as $persona) {
+            if ($persona['institucion'] == $institucion_seleccionada && $persona['titular'] && $persona['activo']) {
+                $titular_existente = $persona;
+                break;
+            }
+        }
+    }
+    
     if (!empty($errores)) {
         $error = 'Complete los campos obligatorios: ' . implode(', ', $errores);
+    } else if ($titular_existente) {
+        $mostrar_modal_titular = true;
     } else {
         $mensaje = 'Persona registrada exitosamente';
     }
@@ -220,6 +415,47 @@ include 'template/menu.php';
                     <strong>Por favor revise</strong> <?= $error ?>
                 </div>
             </div>
+        <?php endif; ?>
+
+        <?php if ($mostrar_modal_titular && $titular_existente): ?>
+        <div class="modal-overlay modal-titular" id="modalTitular">
+            <div class="modal-card modal-card-titular">
+                <div class="modal-header">
+                    <i class="fas fa-user-check" style="color:#e65100;"></i>
+                    <h3>Ya existe un titular para esta institución</h3>
+                </div>
+                <div class="modal-body">
+                    <p>La persona <strong><?= htmlspecialchars($titular_existente['nombre'] . ' ' . $titular_existente['apellido_paterno']) ?></strong> ya está registrada como titular de <strong><?= htmlspecialchars($titular_existente['institucion']) ?></strong> con el cargo de <strong><?= htmlspecialchars($titular_existente['cargo']) ?></strong>.</p>
+                    
+                    <div class="modal-opciones">
+                        <div class="modal-opcion">
+                            <div class="modal-opcion-icon">
+                                <i class="fas fa-user-edit"></i>
+                            </div>
+                            <div>
+                                <h4>Reemplazar titular</h4>
+                                <p>La persona actual dejará de ser titular y la nueva persona ocupará su lugar.</p>
+                            </div>
+                        </div>
+                        <div class="modal-opcion">
+                            <div class="modal-opcion-icon">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <div>
+                                <h4>Registrar sin titular</h4>
+                                <p>La nueva persona se registrará sin el rol de titular. La titularidad permanecerá con la persona actual.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-modal-cancel" onclick="cerrarModalTitular('sin_titular')">Registrar sin titular</button>
+                    <button class="btn-modal-danger" onclick="cerrarModalTitular('reemplazar')">
+                        <i class="fas fa-exchange-alt"></i> Reemplazar titular
+                    </button>
+                </div>
+            </div>
+        </div>
         <?php endif; ?>
 
         <!-- Formulario -->
@@ -302,6 +538,14 @@ include 'template/menu.php';
                             </select>
                         </div>
 
+                        <div class="form-group" id="universidad_container" style="display:none;">
+                            <label class="form-label required">Universidad</label>
+                            <select name="universidad" id="universidad" class="form-control">
+                                <option value="">Seleccionar universidad...</option>
+                            </select>
+                            <small class="form-hint">Seleccione la universidad a la que pertenece</small>
+                        </div>
+
                         <div class="form-group">
                             <label class="form-label required">Institución</label>
                             <select name="institucion" id="institucion" class="form-control" required>
@@ -313,10 +557,10 @@ include 'template/menu.php';
                         <div class="form-group">
                             <label class="form-label">Núm. Afiliación</label>
                             <div class="afiliacion-display">
-                                <span class="afiliacion-value" id="num_afiliacion_mostrado">- - - -</span>
-                                <span class="afiliacion-hint">(Asignado por la institución)</span>
+                                <span class="afiliacion-value" id="num_afiliacion_mostrado">- - - - - - -</span>
                             </div>
                             <input type="hidden" name="num_afiliacion" id="num_afiliacion" value="">
+                            <small class="form-hint">Asignado por la institución</small>
                         </div>
                     </div>
                 </div>
@@ -349,7 +593,7 @@ include 'template/menu.php';
                                     </select>
                                 </div>
                                 
-                                <!-- Campos dinámicos para Regional (se muestran aquí antes de las fechas) -->
+                                <!-- Campos dinámicos para Regional -->
                                 <div class="cargo-detalle-regional" style="display:none; grid-column: span 2;">
                                     <div class="cargo-grid-detalle">
                                         <div class="form-group">
@@ -370,6 +614,14 @@ include 'template/menu.php';
                                                 <?php endforeach; ?>
                                             </select>
                                         </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Titular de institución (solo para cargos institucionales) -->
+                                <div class="form-group cargo-titular" style="display:none; align-self:flex-end; padding-bottom:0;">
+                                    <div class="checkbox-titular">
+                                        <input type="checkbox" name="cargo_titular[]" value="1" id="titular_actual">
+                                        <label for="titular_actual">Titular</label>
                                     </div>
                                 </div>
                                 
@@ -752,7 +1004,7 @@ include 'template/menu.php';
 
 .cargo-grid-base {
     display: grid;
-    grid-template-columns: 1fr 1.2fr 1fr 1fr auto;
+    grid-template-columns: 1fr 1.2fr 0.7fr 1fr 1fr auto;
     gap: 1rem;
     align-items: start;
 }
@@ -773,11 +1025,10 @@ include 'template/menu.php';
     gap: 0.5rem;
 }
 
-/* Afiliación (solo lectura) */
+/* Afiliación Display */
 .afiliacion-display {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
     padding: 0.7rem 1rem;
     background: #f8f6f6;
     border: 2px solid #e8e8e8;
@@ -792,9 +1043,139 @@ include 'template/menu.php';
     font-size: 1rem;
 }
 
-.afiliacion-hint {
-    color: #999;
-    font-size: 0.7rem;
+/* Checkbox Titular */
+.cargo-titular {
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 0;
+}
+
+.checkbox-titular {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1rem;
+    background: #faf8f8;
+    border-radius: 10px;
+    border: 2px solid #e8e8e8;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 46px;
+    width: 100%;
+}
+
+.checkbox-titular:hover {
+    background: #f5edec;
+    border-color: #d4c5c4;
+}
+
+.checkbox-titular input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #8B0000;
+    cursor: pointer;
+}
+
+.checkbox-titular label {
+    font-size: 0.85rem;
+    color: #4a4a4a;
+    cursor: pointer;
+    margin: 0;
+    font-weight: 500;
+}
+
+/* Modal Titular */
+.modal-titular .modal-card {
+    max-width: 580px;
+}
+
+.modal-card-titular .modal-header i {
+    font-size: 1.5rem;
+}
+
+.modal-opciones {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.modal-opcion {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    background: #faf8f8;
+    border-radius: 10px;
+    border: 1px solid #f0ecec;
+}
+
+.modal-opcion-icon {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    background: #f5edec;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8B0000;
+    font-size: 1rem;
+}
+
+.modal-opcion h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 0 0 0.15rem 0;
+    color: #1a1a1a;
+}
+
+.modal-opcion p {
+    font-size: 0.8rem;
+    color: #666;
+    margin: 0;
+}
+
+.modal-card-titular .modal-footer {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    padding-top: 1rem;
+    border-top: 1px solid #f5f0f0;
+    flex-wrap: wrap;
+}
+
+.modal-card-titular .btn-modal-cancel {
+    padding: 0.6rem 1.5rem;
+    background: white;
+    color: #4a4a4a;
+    border: 2px solid #e8e8e8;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.modal-card-titular .btn-modal-cancel:hover {
+    border-color: #8B0000;
+    color: #8B0000;
+}
+
+.modal-card-titular .btn-modal-danger {
+    padding: 0.6rem 1.5rem;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.modal-card-titular .btn-modal-danger:hover {
+    background: #c62828;
 }
 
 /* Contactos */
@@ -898,7 +1279,7 @@ include 'template/menu.php';
     border-color: #8B0000;
 }
 
-/* Toggle Modern - FUNCIONAL */
+/* Toggle Modern */
 .toggle-modern {
     position: relative;
     display: inline-block;
@@ -966,6 +1347,12 @@ include 'template/menu.php';
 .form-label.required::after {
     content: ' *';
     color: #c62828;
+}
+
+.form-hint {
+    font-size: 0.7rem;
+    color: #999;
+    margin-top: 0.15rem;
 }
 
 .form-control {
@@ -1191,7 +1578,10 @@ const coordinacionesNacionales = <?= json_encode($coordinaciones_nacionales) ?>;
 const cargosPorNivel = <?= json_encode($cargos_por_nivel) ?>;
 const zonasRegionales = <?= json_encode($zonas_regionales) ?>;
 const nivelesAcademicos = <?= json_encode($niveles_academicos) ?>;
-const institucionesPorZona = <?= json_encode($instituciones_por_zona) ?>;
+const universidadesPorZona = <?= json_encode($universidades_por_zona) ?>;
+const facultadesPorUniversidad = <?= json_encode($facultades_por_universidad) ?>;
+const campusPorUniversidad = <?= json_encode($campus_por_universidad) ?>;
+const nivelesCargo = <?= json_encode($niveles_cargo) ?>;
 const numAfiliacionPorInstitucion = <?= json_encode($num_afiliacion_por_institucion) ?>;
 
 // ============================================================
@@ -1202,9 +1592,44 @@ function toggleVisibility(element) {
     const checkbox = element.querySelector('input[type="checkbox"]');
     if (checkbox && !checkbox.disabled) {
         checkbox.checked = !checkbox.checked;
-        // Disparar evento change para actualizar visualmente
         const event = new Event('change', { bubbles: true });
         checkbox.dispatchEvent(event);
+    }
+}
+
+// ============================================================
+// ACTUALIZAR NÚMERO DE AFILIACIÓN
+// ============================================================
+
+function actualizarNumeroAfiliacion() {
+    const institucionSelect = document.getElementById('institucion');
+    const numDisplay = document.getElementById('num_afiliacion_mostrado');
+    const numInput = document.getElementById('num_afiliacion');
+    const institucion = institucionSelect.value;
+    
+    if (institucion && numAfiliacionPorInstitucion[institucion]) {
+        numDisplay.textContent = numAfiliacionPorInstitucion[institucion];
+        numInput.value = numAfiliacionPorInstitucion[institucion];
+    } else {
+        numDisplay.textContent = '- - - - - - -';
+        numInput.value = '';
+    }
+}
+
+// ============================================================
+// CERRAR MODAL DE TITULAR
+// ============================================================
+
+function cerrarModalTitular(accion) {
+    const modal = document.getElementById('modalTitular');
+    if (modal) {
+        modal.remove();
+    }
+    
+    if (accion === 'reemplazar') {
+        mostrarMensaje('Titular reemplazado exitosamente', 'success');
+    } else {
+        mostrarMensaje('Persona registrada sin rol de titular', 'success');
     }
 }
 
@@ -1243,53 +1668,142 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ============================================================
-// INSTITUCIONES POR ZONA Y NÚMERO DE AFILIACIÓN
+// INSTITUCIONES POR ZONA Y TIPO
 // ============================================================
 
 document.addEventListener('DOMContentLoaded', function() {
     const zonaSelect = document.getElementById('zona');
+    const tipoSelect = document.getElementById('tipo_institucion');
     const institucionSelect = document.getElementById('institucion');
-    const numAfiliacionDisplay = document.getElementById('num_afiliacion_mostrado');
-    const numAfiliacionInput = document.getElementById('num_afiliacion');
+    const universidadContainer = document.getElementById('universidad_container');
+    const universidadSelect = document.getElementById('universidad');
     
-    if (zonaSelect && institucionSelect) {
-        zonaSelect.addEventListener('change', function() {
-            const zonaId = parseInt(this.value);
-            institucionSelect.innerHTML = '<option value="">Seleccionar institución...</option>';
-            numAfiliacionDisplay.textContent = '- - - -';
-            numAfiliacionInput.value = '';
-            
-            if (zonaId && institucionesPorZona[zonaId]) {
-                institucionesPorZona[zonaId].forEach(function(inst) {
+    function cargarUniversidades() {
+        const zonaId = parseInt(zonaSelect.value);
+        universidadSelect.innerHTML = '<option value="">Seleccionar universidad...</option>';
+        
+        if (zonaId && universidadesPorZona[zonaId]) {
+            universidadesPorZona[zonaId].forEach(function(uni) {
+                const option = document.createElement('option');
+                option.value = uni;
+                option.textContent = uni;
+                universidadSelect.appendChild(option);
+            });
+            universidadSelect.disabled = false;
+        } else {
+            universidadSelect.disabled = true;
+        }
+    }
+    
+    function cargarInstituciones() {
+        const tipo = parseInt(tipoSelect.value);
+        const universidad = universidadSelect.value;
+        
+        institucionSelect.innerHTML = '<option value="">Seleccionar institución...</option>';
+        
+        if (tipo === 1) {
+            // Universidad: mostrar universidades de la zona
+            const zonaId = parseInt(zonaSelect.value);
+            if (zonaId && universidadesPorZona[zonaId]) {
+                universidadesPorZona[zonaId].forEach(function(uni) {
                     const option = document.createElement('option');
-                    option.value = inst;
-                    option.textContent = inst;
+                    option.value = uni;
+                    option.textContent = uni;
                     institucionSelect.appendChild(option);
                 });
                 institucionSelect.disabled = false;
             } else {
                 institucionSelect.disabled = true;
             }
-        });
-        institucionSelect.disabled = true;
+        } else if (tipo === 2) {
+            // Facultad: mostrar facultades de la universidad seleccionada
+            if (universidad && facultadesPorUniversidad[universidad]) {
+                facultadesPorUniversidad[universidad].forEach(function(facultad) {
+                    const option = document.createElement('option');
+                    option.value = facultad;
+                    option.textContent = facultad;
+                    institucionSelect.appendChild(option);
+                });
+                institucionSelect.disabled = false;
+            } else {
+                institucionSelect.disabled = true;
+            }
+        } else if (tipo === 3) {
+            // Campus: mostrar campus de la universidad seleccionada
+            if (universidad && campusPorUniversidad[universidad]) {
+                campusPorUniversidad[universidad].forEach(function(campus) {
+                    const option = document.createElement('option');
+                    option.value = campus;
+                    option.textContent = campus;
+                    institucionSelect.appendChild(option);
+                });
+                institucionSelect.disabled = false;
+            } else {
+                institucionSelect.disabled = true;
+            }
+        } else {
+            institucionSelect.disabled = true;
+        }
+        
+        // Actualizar número de afiliación
+        actualizarNumeroAfiliacion();
     }
     
-    if (institucionSelect) {
-        institucionSelect.addEventListener('change', function() {
-            const institucion = this.value;
-            if (institucion && numAfiliacionPorInstitucion[institucion]) {
-                numAfiliacionDisplay.textContent = numAfiliacionPorInstitucion[institucion];
-                numAfiliacionInput.value = numAfiliacionPorInstitucion[institucion];
+    // Evento: cambio de zona
+    if (zonaSelect) {
+        zonaSelect.addEventListener('change', function() {
+            cargarUniversidades();
+            cargarInstituciones();
+        });
+    }
+    
+    // Evento: cambio de tipo
+    if (tipoSelect) {
+        tipoSelect.addEventListener('change', function() {
+            const tipo = parseInt(this.value);
+            
+            if (tipo === 1) {
+                universidadContainer.style.display = 'none';
+                universidadSelect.removeAttribute('required');
+                universidadSelect.value = '';
+                cargarInstituciones();
+            } else if (tipo === 2 || tipo === 3) {
+                universidadContainer.style.display = 'block';
+                universidadSelect.setAttribute('required', 'required');
+                cargarUniversidades();
+                cargarInstituciones();
             } else {
-                numAfiliacionDisplay.textContent = '- - - -';
-                numAfiliacionInput.value = '';
+                universidadContainer.style.display = 'none';
+                universidadSelect.removeAttribute('required');
+                universidadSelect.value = '';
+                institucionSelect.innerHTML = '<option value="">Primero seleccione tipo</option>';
+                institucionSelect.disabled = true;
             }
         });
     }
+    
+    // Evento: cambio de universidad
+    if (universidadSelect) {
+        universidadSelect.addEventListener('change', function() {
+            cargarInstituciones();
+        });
+    }
+    
+    // Evento: cambio de institución
+    if (institucionSelect) {
+        institucionSelect.addEventListener('change', function() {
+            actualizarNumeroAfiliacion();
+        });
+    }
+    
+    // Inicializar
+    institucionSelect.disabled = true;
+    universidadSelect.disabled = true;
+    universidadContainer.style.display = 'none';
 });
 
 // ============================================================
-// CARGOS DINÁMICOS POR NIVEL
+// CARGOS DINÁMICOS POR NIVEL (con Titular)
 // ============================================================
 
 document.addEventListener('change', function(e) {
@@ -1298,11 +1812,13 @@ document.addEventListener('change', function(e) {
         const container = selectNivel.closest('.cargo-item');
         const selectCargo = container.querySelector('.select-cargo-nombre');
         const detalleRegional = container.querySelector('.cargo-detalle-regional');
+        const titularContainer = container.querySelector('.cargo-titular');
         const nivelId = parseInt(selectNivel.value);
         
         selectCargo.innerHTML = '<option value="">Primero seleccione un nivel</option>';
         selectCargo.disabled = true;
         detalleRegional.style.display = 'none';
+        titularContainer.style.display = 'none';
         
         const selectsDetalle = detalleRegional.querySelectorAll('select');
         selectsDetalle.forEach(sel => sel.removeAttribute('required'));
@@ -1320,6 +1836,10 @@ document.addEventListener('change', function(e) {
                 detalleRegional.style.display = 'block';
                 const zonaSelect = detalleRegional.querySelector('select[name="cargo_zona[]"]');
                 if (zonaSelect) zonaSelect.setAttribute('required', 'required');
+            }
+            
+            if (nivelId === 3) {
+                titularContainer.style.display = 'flex';
             }
         }
     }
@@ -1356,6 +1876,11 @@ function agregarCargo() {
         sel.removeAttribute('required');
     });
     
+    const titularContainer = nuevoCargo.querySelector('.cargo-titular');
+    titularContainer.style.display = 'none';
+    const titularCheckbox = titularContainer.querySelector('input[type="checkbox"]');
+    if (titularCheckbox) titularCheckbox.checked = true;
+    
     const btnEliminar = nuevoCargo.querySelector('.btn-remove');
     if (btnEliminar) btnEliminar.style.display = 'flex';
     
@@ -1371,15 +1896,6 @@ function eliminarCargo(btn) {
     }
 }
 
-// Ocultar botón eliminar del primer cargo al cargar
-document.addEventListener('DOMContentLoaded', function() {
-    const primerCargo = document.querySelector('#cargos-container .cargo-item');
-    if (primerCargo) {
-        const btnEliminar = primerCargo.querySelector('.btn-remove');
-        if (btnEliminar) btnEliminar.style.display = 'none';
-    }
-});
-
 // ============================================================
 // CONTACTOS - AGREGAR / ELIMINAR
 // ============================================================
@@ -1389,7 +1905,6 @@ function agregarContacto(containerId, tipo) {
     const primerContacto = container.querySelector('.contacto-item');
     const nuevoContacto = primerContacto.cloneNode(true);
     
-    // Limpiar inputs
     nuevoContacto.querySelectorAll('input[type="text"]').forEach(input => {
         input.value = '';
     });
@@ -1397,7 +1912,6 @@ function agregarContacto(containerId, tipo) {
         input.value = '';
     });
     
-    // Buscar el toggle y habilitar el checkbox
     const toggle = nuevoContacto.querySelector('.toggle-modern');
     if (toggle) {
         const checkbox = toggle.querySelector('input[type="checkbox"]');
@@ -1407,11 +1921,9 @@ function agregarContacto(containerId, tipo) {
         }
     }
     
-    // Mostrar botón eliminar
     const btnEliminar = nuevoContacto.querySelector('.btn-remove');
     if (btnEliminar) btnEliminar.style.display = 'flex';
     
-    // Cambiar a contacto opcional (quitar clase obligatorio)
     nuevoContacto.classList.remove('contacto-obligatorio');
     nuevoContacto.classList.add('contacto-opcional');
     
@@ -1469,20 +1981,56 @@ function eliminarCelular(btn) {
     btn.closest('.contacto-item').remove();
 }
 
-// Ocultar botones eliminar de los primeros contactos
-document.addEventListener('DOMContentLoaded', function() {
-    const primerTelefono = document.querySelector('#telefonos-container .contacto-item');
-    if (primerTelefono) {
-        const btn = primerTelefono.querySelector('.btn-remove');
-        if (btn) btn.style.display = 'none';
-    }
+// ============================================================
+// MENSAJES FLOTANTES
+// ============================================================
+
+function mostrarMensaje(mensaje, tipo) {
+    const mensajesAnteriores = document.querySelectorAll('.mensaje-flotante');
+    mensajesAnteriores.forEach(el => el.remove());
     
-    const primerCorreo = document.querySelector('#correos-container .contacto-item');
-    if (primerCorreo) {
-        const btn = primerCorreo.querySelector('.btn-remove');
-        if (btn) btn.style.display = 'none';
-    }
-});
+    const div = document.createElement('div');
+    div.className = `mensaje-flotante ${tipo}`;
+    div.style.cssText = `
+        position: fixed;
+        top: 90px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 9998;
+        max-width: 600px;
+        width: 90%;
+        animation: slideDown 0.4s ease;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        border-radius: 12px;
+        padding: 1rem 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        background: ${tipo === 'success' ? '#f0f7f0' : '#fdf0f0'};
+        color: ${tipo === 'success' ? '#1a5a1a' : '#7a1a1a'};
+        border-left: 4px solid ${tipo === 'success' ? '#2e7d32' : '#c62828'};
+    `;
+    div.innerHTML = `
+        <i class="fas ${tipo === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}" style="font-size:1.25rem; color:${tipo === 'success' ? '#2e7d32' : '#c62828'};"></i>
+        <div>
+            <strong>${tipo === 'success' ? '¡Éxito!' : '¡Atención!'}</strong> ${mensaje}
+        </div>
+        <button onclick="this.parentElement.remove()" style="background:none;border:none;font-size:1.2rem;cursor:pointer;color:${tipo === 'success' ? '#1a5a1a' : '#7a1a1a'};margin-left:auto;">
+            <i class="fas fa-times"></i>
+        </button>
+    `;
+    
+    document.body.appendChild(div);
+    
+    setTimeout(function() {
+        if (div.parentElement) {
+            div.style.animation = 'slideUpMessage 0.3s ease';
+            setTimeout(function() {
+                div.remove();
+            }, 300);
+        }
+    }, 4000);
+}
 
 // ============================================================
 // VALIDACIÓN DE NÚMEROS EN INPUTS
@@ -1490,7 +2038,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 document.addEventListener('input', function(e) {
     if (e.target.matches('input[pattern="[0-9]*"]') || e.target.matches('input[pattern="[0-9\\s]*"]')) {
-        // Solo permitir números y espacios
         e.target.value = e.target.value.replace(/[^0-9\s]/g, '');
     }
 });

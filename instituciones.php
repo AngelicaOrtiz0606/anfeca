@@ -71,7 +71,7 @@ $tipos_participacion = [
     'observadora' => 'Observadora'
 ];
 
-// Instituciones simuladas (mezcladas, sin orden específico)
+// Instituciones simuladas
 $instituciones = [
     [
         'id' => 1,
@@ -324,6 +324,10 @@ $busqueda = isset($_GET['buscar']) ? trim($_GET['buscar']) : '';
 $orden_columna = isset($_GET['orden_columna']) ? $_GET['orden_columna'] : '';
 $orden_direccion = isset($_GET['orden_direccion']) ? $_GET['orden_direccion'] : 'asc';
 
+// Paginación
+$pagina_actual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+$registros_por_pagina = 6;
+
 $instituciones_filtradas = $instituciones;
 
 // Aplicar filtros
@@ -404,6 +408,18 @@ if (!empty($orden_columna)) {
         }
     });
 }
+
+// Calcular total de registros
+$total_registros = count($instituciones_filtradas);
+$total_paginas = ceil($total_registros / $registros_por_pagina);
+
+// Asegurar que la página actual sea válida
+if ($pagina_actual < 1) $pagina_actual = 1;
+if ($pagina_actual > $total_paginas && $total_paginas > 0) $pagina_actual = $total_paginas;
+
+// Obtener registros de la página actual
+$offset = ($pagina_actual - 1) * $registros_por_pagina;
+$instituciones_paginadas = array_slice($instituciones_filtradas, $offset, $registros_por_pagina);
 
 include 'template/header.php';
 include 'template/menu.php';
@@ -528,7 +544,7 @@ include 'template/menu.php';
                     <thead>
                         <tr>
                             <th>
-                                <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'num_afiliacion', 'orden_direccion' => ($orden_columna == 'num_afiliacion' && $orden_direccion == 'asc') ? 'desc' : 'asc'])) ?>" 
+                                <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'num_afiliacion', 'orden_direccion' => ($orden_columna == 'num_afiliacion' && $orden_direccion == 'asc') ? 'desc' : 'asc', 'pagina' => 1])) ?>" 
                                    class="sort-link <?= $orden_columna == 'num_afiliacion' ? 'active' : '' ?>">
                                     <span class="sort-label">Núm. Afiliación</span>
                                     <?php if ($orden_columna == 'num_afiliacion'): ?>
@@ -539,7 +555,7 @@ include 'template/menu.php';
                                 </a>
                             </th>
                             <th>
-                                <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'nombre', 'orden_direccion' => ($orden_columna == 'nombre' && $orden_direccion == 'asc') ? 'desc' : 'asc'])) ?>" 
+                                <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'nombre', 'orden_direccion' => ($orden_columna == 'nombre' && $orden_direccion == 'asc') ? 'desc' : 'asc', 'pagina' => 1])) ?>" 
                                    class="sort-link <?= $orden_columna == 'nombre' ? 'active' : '' ?>">
                                     <span class="sort-label">Institución</span>
                                     <?php if ($orden_columna == 'nombre'): ?>
@@ -550,7 +566,7 @@ include 'template/menu.php';
                                 </a>
                             </th>
                             <th>
-                                <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'tipo', 'orden_direccion' => ($orden_columna == 'tipo' && $orden_direccion == 'asc') ? 'desc' : 'asc'])) ?>" 
+                                <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'tipo', 'orden_direccion' => ($orden_columna == 'tipo' && $orden_direccion == 'asc') ? 'desc' : 'asc', 'pagina' => 1])) ?>" 
                                    class="sort-link <?= $orden_columna == 'tipo' ? 'active' : '' ?>">
                                     <span class="sort-label">Tipo</span>
                                     <?php if ($orden_columna == 'tipo'): ?>
@@ -560,10 +576,10 @@ include 'template/menu.php';
                                     <?php endif; ?>
                                 </a>
                             </th>
-                            <th>Dependencia</th>
+                            <th>Depende de</th>
                             <th>Participación</th>
                             <th>
-                                <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'zona', 'orden_direccion' => ($orden_columna == 'zona' && $orden_direccion == 'asc') ? 'desc' : 'asc'])) ?>" 
+                                <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'zona', 'orden_direccion' => ($orden_columna == 'zona' && $orden_direccion == 'asc') ? 'desc' : 'asc', 'pagina' => 1])) ?>" 
                                    class="sort-link <?= $orden_columna == 'zona' ? 'active' : '' ?>">
                                     <span class="sort-label">Zona</span>
                                     <?php if ($orden_columna == 'zona'): ?>
@@ -579,8 +595,8 @@ include 'template/menu.php';
                         </tr>
                     </thead>
                     <tbody id="tbodyInstituciones">
-                        <?php if (count($instituciones_filtradas) > 0): ?>
-                            <?php foreach ($instituciones_filtradas as $institucion): 
+                        <?php if (count($instituciones_paginadas) > 0): ?>
+                            <?php foreach ($instituciones_paginadas as $institucion): 
                                 $zona_nombre = $zonas_regionales[$institucion['id_zona']] ?? 'Sin zona';
                                 $tipo_nombre = $tipos_institucion[$institucion['tipo']] ?? 'No definido';
                                 $participacion_nombre = $tipos_participacion[$institucion['participacion']] ?? 'No definido';
@@ -593,8 +609,9 @@ include 'template/menu.php';
                                 $estado = $institucion['fecha_fin'] === null ? 'Vigente' : 'Finalizada';
                                 $estado_class = $institucion['fecha_fin'] === null ? 'status-active' : 'status-inactive';
                                 $num_afiliacion = $institucion['num_afiliacion'] ?? '---';
+                                $puede_eliminar = $institucion['personas_relacionadas'] == 0;
                             ?>
-                            <tr data-id="<?= $institucion['id'] ?>">
+                            <tr data-id="<?= $institucion['id'] ?>" data-personas="<?= $institucion['personas_relacionadas'] ?>">
                                 <td>
                                     <?php if ($institucion['participacion'] == 'afiliada'): ?>
                                         <span class="badge-afiliacion"><?= htmlspecialchars($num_afiliacion) ?></span>
@@ -633,8 +650,8 @@ include 'template/menu.php';
                                         <a href="institucion_edicion.php?id=<?= $institucion['id'] ?>" class="btn-accion btn-editar" title="Editar">
                                             <i class="fas fa-pen"></i>
                                         </a>
-                                        <?php if ($institucion['personas_relacionadas'] > 0): ?>
-                                            <button class="btn-accion btn-eliminar" title="No se puede eliminar (tiene personas asociadas)" style="opacity:0.5; cursor:not-allowed;" onclick="alert('No se puede eliminar esta institución porque tiene <?= $institucion['personas_relacionadas'] ?> persona(s) asociada(s)')">
+                                        <?php if (!$puede_eliminar): ?>
+                                            <button onclick="eliminarInstitucion(<?= $institucion['id'] ?>)" class="btn-accion btn-eliminar btn-eliminar-bloqueado" title="No se puede eliminar (tiene personas asociadas)">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
                                         <?php else: ?>
@@ -657,8 +674,63 @@ include 'template/menu.php';
                     </tbody>
                 </table>
             </div>
+            
+            <!-- Paginación -->
+            <?php if ($total_paginas > 1): ?>
+            <div class="pagination-container">
+                <div class="pagination-info">
+                    Mostrando <strong><?= count($instituciones_paginadas) ?></strong> de <strong><?= $total_registros ?></strong> registros
+                    <?php if ($total_paginas > 1): ?>
+                        (Página <?= $pagina_actual ?> de <?= $total_paginas ?>)
+                    <?php endif; ?>
+                </div>
+                <div class="pagination-controls">
+                    <?php if ($pagina_actual > 1): ?>
+                        <a href="?<?= http_build_query(array_merge($_GET, ['pagina' => $pagina_actual - 1])) ?>" class="pagination-btn">
+                            <i class="fas fa-chevron-left"></i> Anterior
+                        </a>
+                    <?php else: ?>
+                        <span class="pagination-btn disabled">
+                            <i class="fas fa-chevron-left"></i> Anterior
+                        </span>
+                    <?php endif; ?>
+                    
+                    <?php
+                    $rango = 2;
+                    $inicio = max(1, $pagina_actual - $rango);
+                    $fin = min($total_paginas, $pagina_actual + $rango);
+                    
+                    if ($inicio > 1) {
+                        echo '<a href="?' . http_build_query(array_merge($_GET, ['pagina' => 1])) . '" class="pagination-num">1</a>';
+                        if ($inicio > 2) echo '<span class="pagination-dots">...</span>';
+                    }
+                    
+                    for ($i = $inicio; $i <= $fin; $i++) {
+                        $active = $i == $pagina_actual ? 'active' : '';
+                        echo '<a href="?' . http_build_query(array_merge($_GET, ['pagina' => $i])) . '" class="pagination-num ' . $active . '">' . $i . '</a>';
+                    }
+                    
+                    if ($fin < $total_paginas) {
+                        if ($fin < $total_paginas - 1) echo '<span class="pagination-dots">...</span>';
+                        echo '<a href="?' . http_build_query(array_merge($_GET, ['pagina' => $total_paginas])) . '" class="pagination-num">' . $total_paginas . '</a>';
+                    }
+                    ?>
+                    
+                    <?php if ($pagina_actual < $total_paginas): ?>
+                        <a href="?<?= http_build_query(array_merge($_GET, ['pagina' => $pagina_actual + 1])) ?>" class="pagination-btn">
+                            Siguiente <i class="fas fa-chevron-right"></i>
+                        </a>
+                    <?php else: ?>
+                        <span class="pagination-btn disabled">
+                            Siguiente <i class="fas fa-chevron-right"></i>
+                        </span>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <?php endif; ?>
+            
             <div class="table-modern-footer">
-                <span>Mostrando <strong><?= count($instituciones_filtradas) ?></strong> de <strong><?= count($instituciones) ?></strong> registros</span>
+                <span>Mostrando <strong><?= count($instituciones_paginadas) ?></strong> de <strong><?= $total_registros ?></strong> registros</span>
             </div>
         </div>
 
@@ -667,7 +739,7 @@ include 'template/menu.php';
 
 <style>
 /* ============================================================
-   ESTILOS MODERNOS - LISTADO INSTITUCIONES (RESPONSIVE)
+   ESTILOS MODERNOS - LISTADO INSTITUCIONES
    ============================================================ */
 
 /* Page Header */
@@ -913,7 +985,7 @@ include 'template/menu.php';
     margin-right: 0.3rem;
 }
 
-/* Tabla moderna - Responsive */
+/* Tabla moderna */
 .table-modern-container {
     background: white;
     border-radius: 14px;
@@ -1150,6 +1222,16 @@ include 'template/menu.php';
     color: white;
 }
 
+.btn-eliminar-bloqueado {
+    opacity: 0.5;
+    cursor: pointer !important;
+}
+
+.btn-eliminar-bloqueado:hover {
+    background: #fce8e8 !important;
+    color: #dc3545 !important;
+}
+
 /* Empty row */
 .empty-row {
     text-align: center;
@@ -1169,16 +1251,107 @@ include 'template/menu.php';
     font-size: 0.95rem;
 }
 
-/* Table footer */
-.table-modern-footer {
-    padding: 0.8rem 1rem;
+/* Paginación */
+.pagination-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 1.25rem;
     border-top: 1px solid #f0f0f0;
     background: #fafafa;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.pagination-info {
     font-size: 0.85rem;
     color: #6b6b6b;
 }
 
-/* Modal de confirmación */
+.pagination-controls {
+    display: flex;
+    gap: 0.35rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.pagination-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.8rem;
+    background: white;
+    color: #4a4a4a;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.pagination-btn:hover:not(.disabled) {
+    background: #f5edec;
+    border-color: #8B0000;
+    color: #8B0000;
+}
+
+.pagination-btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pagination-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #4a4a4a;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.pagination-num:hover:not(.active) {
+    background: #f5edec;
+    border-color: #e0d6d6;
+}
+
+.pagination-num.active {
+    background: #8B0000;
+    color: white;
+    border-color: #8B0000;
+}
+
+.pagination-dots {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    color: #999;
+    font-size: 0.8rem;
+}
+
+/* Table footer */
+.table-modern-footer {
+    padding: 0.8rem 1.25rem;
+    border-top: 1px solid #f0f0f0;
+    background: #fafafa;
+    font-size: 0.85rem;
+    color: #6b6b6b;
+    display: none;
+}
+
+/* ============================================================
+   MODAL DE ELIMINACIÓN MEJORADO
+   ============================================================ */
+
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -1196,7 +1369,7 @@ include 'template/menu.php';
 .modal-card {
     background: white;
     border-radius: 16px;
-    max-width: 650px;
+    max-width: 550px;
     width: 90%;
     max-height: 80vh;
     overflow-y: auto;
@@ -1209,14 +1382,13 @@ include 'template/menu.php';
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1rem;
     padding-bottom: 0.75rem;
     border-bottom: 2px solid #f5f0f0;
 }
 
 .modal-card .modal-header i {
     font-size: 1.5rem;
-    color: #dc3545;
 }
 
 .modal-card .modal-header h3 {
@@ -1273,6 +1445,94 @@ include 'template/menu.php';
     border-top: 1px solid #f5f0f0;
 }
 
+/* Modal - No se puede eliminar (estilo mejorado) */
+.modal-no-eliminar .modal-header i {
+    color: #e65100;
+}
+
+.modal-no-eliminar .modal-header {
+    border-bottom-color: #fff3e0;
+}
+
+.modal-no-eliminar .no-eliminar-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    background: #fff3e0;
+    border-radius: 50%;
+    margin: 0 auto 1rem auto;
+}
+
+.modal-no-eliminar .no-eliminar-icon i {
+    font-size: 2rem;
+    color: #e65100;
+}
+
+.modal-no-eliminar .no-eliminar-titulo {
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #e65100;
+    margin-bottom: 0.5rem;
+}
+
+.modal-no-eliminar .no-eliminar-subtitulo {
+    text-align: center;
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+}
+
+.modal-no-eliminar .personas-destacadas {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: #fce4ec;
+    border-radius: 10px;
+    margin: 1rem 0;
+}
+
+.modal-no-eliminar .personas-destacadas .numero {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #c62828;
+}
+
+.modal-no-eliminar .personas-destacadas .texto {
+    color: #c62828;
+    font-weight: 500;
+}
+
+.modal-no-eliminar .btn-modal-danger {
+    background: #e65100;
+}
+
+.modal-no-eliminar .btn-modal-danger:hover {
+    background: #bf360c;
+}
+
+/* Modal - Sí se puede eliminar */
+.modal-si-eliminar .modal-header i {
+    color: #dc3545;
+}
+
+.modal-si-eliminar .modal-header {
+    border-bottom-color: #fce4ec;
+}
+
+.modal-si-eliminar .btn-modal-danger {
+    background: #dc3545;
+}
+
+.modal-si-eliminar .btn-modal-danger:hover {
+    background: #c62828;
+}
+
+/* Botones modales */
 .modal-card .btn-modal-cancel {
     padding: 0.6rem 1.5rem;
     background: white;
@@ -1292,7 +1552,6 @@ include 'template/menu.php';
 
 .modal-card .btn-modal-danger {
     padding: 0.6rem 1.5rem;
-    background: #dc3545;
     color: white;
     border: none;
     border-radius: 10px;
@@ -1303,7 +1562,12 @@ include 'template/menu.php';
 }
 
 .modal-card .btn-modal-danger:hover {
-    background: #c62828;
+    opacity: 0.85;
+}
+
+.modal-card .btn-modal-danger:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 @keyframes fadeIn {
@@ -1401,6 +1665,12 @@ include 'template/menu.php';
     .btn-filter-clear {
         width: 100%;
         justify-content: center;
+    }
+    
+    .pagination-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
     }
 }
 
@@ -1572,7 +1842,7 @@ const entidadesFederativas = <?= json_encode($entidades_federativas) ?>;
 const tiposParticipacion = <?= json_encode($tipos_participacion) ?>;
 
 // ============================================================
-// ELIMINAR INSTITUCIÓN (CON MODAL)
+// ELIMINAR INSTITUCIÓN (CON MODAL COMPLETO)
 // ============================================================
 
 function eliminarInstitucion(id) {
@@ -1588,69 +1858,123 @@ function eliminarInstitucion(id) {
     const participacionNombre = tiposParticipacion[institucion.participacion] || 'No definido';
     const estado = institucion.fecha_fin === null ? 'Vigente' : 'Finalizada';
     const numAfiliacion = institucion.num_afiliacion ?? 'No aplica (Observadora)';
+    const tienePersonas = institucion.personas_relacionadas > 0;
+    
+    // Determinar clase del modal
+    const modalClase = tienePersonas ? 'modal-no-eliminar' : 'modal-si-eliminar';
     
     // Modal
     const modal = document.createElement('div');
-    modal.className = 'modal-overlay';
+    modal.className = `modal-overlay ${modalClase}`;
     modal.id = 'modalEliminar';
+    
+    let contenidoBody = '';
+    
+    if (tienePersonas) {
+        contenidoBody = `
+            <div class="no-eliminar-icon">
+                <i class="fas fa-lock"></i>
+            </div>
+            <div class="no-eliminar-titulo">No se puede eliminar esta institución</div>
+            <div class="no-eliminar-subtitulo">
+                Esta institución tiene personas asociadas en los directorios del sistema.
+            </div>
+            
+            <div class="personas-destacadas">
+                <span class="numero">${institucion.personas_relacionadas}</span>
+                <span class="texto">persona(s) asociada(s)</span>
+            </div>
+            
+            <div style="text-align:center; color:#666; font-size:0.9rem; margin-top:0.5rem;">
+                <i class="fas fa-info-circle" style="color:#e65100;"></i>
+                Para poder eliminar esta institución, primero debe eliminar o reasignar 
+                todas las personas asociadas a ella.
+            </div>
+            
+            <div class="institucion-info" style="margin-top:1rem;">
+                <div class="info-item">
+                    <span class="info-label">Institución</span>
+                    <span class="info-value">${institucion.nombre}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Tipo</span>
+                    <span class="info-value">${tipoNombre}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Participación</span>
+                    <span class="info-value">${participacionNombre}</span>
+                </div>
+            </div>
+        `;
+    } else {
+        contenidoBody = `
+            <p style="margin-bottom:0.75rem;">
+                <strong>¡Advertencia!</strong> Esta acción eliminará por completo el registro de la institución. 
+                Esta operación <strong>no se puede deshacer</strong>.
+            </p>
+            
+            <div class="institucion-info">
+                <div class="info-item">
+                    <span class="info-label">Núm. Afiliación</span>
+                    <span class="info-value">${numAfiliacion}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Institución</span>
+                    <span class="info-value">${institucion.nombre}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Tipo</span>
+                    <span class="info-value">${tipoNombre}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Participación</span>
+                    <span class="info-value">${participacionNombre}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Entidad</span>
+                    <span class="info-value">${entidadNombre}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Zona</span>
+                    <span class="info-value">${zonaNombre}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Estado</span>
+                    <span class="info-value">${estado}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Personas asociadas</span>
+                    <span class="info-value">${institucion.personas_relacionadas}</span>
+                </div>
+            </div>
+            
+            <p style="color:#c62828; font-weight:600; margin-top:0.75rem;">
+                <i class="fas fa-exclamation-circle"></i> 
+                Se perderá toda la información asociada a esta institución.
+            </p>
+        `;
+    }
+    
     modal.innerHTML = `
         <div class="modal-card">
             <div class="modal-header">
-                <i class="fas fa-exclamation-triangle"></i>
-                <h3>¿Eliminar institución?</h3>
+                <i class="fas ${tienePersonas ? 'fa-lock' : 'fa-exclamation-triangle'}"></i>
+                <h3>${tienePersonas ? 'Acción no permitida' : 'Confirmar eliminación'}</h3>
             </div>
             <div class="modal-body">
-                <p><strong>¡Advertencia!</strong> Esta acción eliminará por completo el registro de la institución. Esta operación <strong>no se puede deshacer</strong>.</p>
-                
-                <div class="institucion-info">
-                    <div class="info-item">
-                        <span class="info-label">Núm. Afiliación</span>
-                        <span class="info-value">${numAfiliacion}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Institución</span>
-                        <span class="info-value">${institucion.nombre}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Tipo</span>
-                        <span class="info-value">${tipoNombre}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Depende de</span>
-                        <span class="info-value">${institucion.id_universidad ? 'Universidad relacionada' : 'Es universidad'}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Participación</span>
-                        <span class="info-value">${participacionNombre}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Entidad</span>
-                        <span class="info-value">${entidadNombre}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Zona</span>
-                        <span class="info-value">${zonaNombre}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Estado</span>
-                        <span class="info-value">${estado}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Personas asociadas</span>
-                        <span class="info-value">${institucion.personas_relacionadas}</span>
-                    </div>
-                </div>
-                
-                <p style="color:#c62828; font-weight:600; margin-top:0.75rem;">
-                    <i class="fas fa-exclamation-circle"></i> 
-                    Se perderá toda la información asociada a esta institución.
-                </p>
+                ${contenidoBody}
             </div>
             <div class="modal-footer">
-                <button class="btn-modal-cancel" onclick="cerrarModal()">Cancelar</button>
-                <button class="btn-modal-danger" onclick="confirmarEliminar(${id})">
-                    <i class="fas fa-trash-alt"></i> Eliminar permanentemente
-                </button>
+                <button class="btn-modal-cancel" onclick="cerrarModal()">${tienePersonas ? 'Entendido' : 'Cancelar'}</button>
+                ${tienePersonas ? `
+                    <button class="btn-modal-danger" disabled>
+                        <i class="fas fa-lock"></i> No se puede eliminar
+                    </button>
+                ` : `
+                    <button class="btn-modal-danger" onclick="confirmarEliminar(${id})">
+                        <i class="fas fa-trash-alt"></i> Eliminar permanentemente
+                    </button>
+                `}
             </div>
         </div>
     `;
@@ -1721,7 +2045,7 @@ function mostrarMensaje(mensaje, tipo) {
 }
 
 // ============================================================
-// EXPORTAR CSV (CON TODA LA INFO DE LA TABLA)
+// EXPORTAR CSV
 // ============================================================
 
 function descargarCSV() {
@@ -1731,7 +2055,7 @@ function descargarCSV() {
         return;
     }
     
-    let csv = 'Núm. Afiliación,Institución,Tipo,Depende de,Participación,Zona,Personas,Estado\n';
+    let csv = 'Núm. Afiliación,Institución,Tipo,Dependencia,Participación,Zona,Personas,Estado\n';
     
     filas.forEach(fila => {
         if (fila.classList.contains('empty-row')) return;
