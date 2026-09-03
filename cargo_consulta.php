@@ -1,0 +1,1130 @@
+<?php
+// ============================================================
+// SIDEANFECA - Catálogo de Cargos
+// Consultar detalle de cargo
+// ============================================================
+
+session_start();
+
+if (!isset($_SESSION['usuario'])) {
+    header('Location: login.php');
+    exit;
+}
+
+// ============================================================
+// OBTENER ID DEL CARGO
+// ============================================================
+
+$id = isset($_GET['id']) ? (int)$_GET['id'] : 1;
+
+// ============================================================
+// DATOS SIMULADOS
+// ============================================================
+
+$niveles_cargo = [
+    1 => 'Nacional',
+    2 => 'Regional',
+    3 => 'Institucional'
+];
+
+$cargos = [
+    [
+        'id' => 1,
+        'nombre_m' => 'Presidente',
+        'nombre_f' => 'Presidenta',
+        'id_nivel' => 1,
+        'activo' => true,
+        'personas' => 1
+    ],
+    [
+        'id' => 2,
+        'nombre_m' => 'Vicepresidente',
+        'nombre_f' => 'Vicepresidenta',
+        'id_nivel' => 1,
+        'activo' => true,
+        'personas' => 2
+    ],
+    [
+        'id' => 3,
+        'nombre_m' => 'Secretario General',
+        'nombre_f' => 'Secretaria General',
+        'id_nivel' => 1,
+        'activo' => true,
+        'personas' => 0
+    ],
+    [
+        'id' => 4,
+        'nombre_m' => 'Director Ejecutivo',
+        'nombre_f' => 'Directora Ejecutiva',
+        'id_nivel' => 1,
+        'activo' => true,
+        'personas' => 1
+    ],
+    [
+        'id' => 5,
+        'nombre_m' => 'Coordinador Nacional',
+        'nombre_f' => 'Coordinadora Nacional',
+        'id_nivel' => 1,
+        'activo' => true,
+        'personas' => 3
+    ],
+    [
+        'id' => 6,
+        'nombre_m' => 'Director Regional',
+        'nombre_f' => 'Directora Regional',
+        'id_nivel' => 2,
+        'activo' => true,
+        'personas' => 4
+    ],
+    [
+        'id' => 7,
+        'nombre_m' => 'Secretario Regional',
+        'nombre_f' => 'Secretaria Regional',
+        'id_nivel' => 2,
+        'activo' => true,
+        'personas' => 0
+    ],
+    [
+        'id' => 8,
+        'nombre_m' => 'Coordinador Regional',
+        'nombre_f' => 'Coordinadora Regional',
+        'id_nivel' => 2,
+        'activo' => true,
+        'personas' => 2
+    ],
+    [
+        'id' => 9,
+        'nombre_m' => 'Director',
+        'nombre_f' => 'Directora',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => 5
+    ],
+    [
+        'id' => 10,
+        'nombre_m' => 'Director General',
+        'nombre_f' => 'Directora General',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => 1
+    ],
+    [
+        'id' => 11,
+        'nombre_m' => 'Coordinador Académico',
+        'nombre_f' => 'Coordinadora Académica',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => 3
+    ],
+    [
+        'id' => 12,
+        'nombre_m' => 'Jefe de Departamento',
+        'nombre_f' => 'Jefa de Departamento',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => 6
+    ],
+    [
+        'id' => 13,
+        'nombre_m' => 'Rector',
+        'nombre_f' => 'Rectora',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => 0
+    ],
+    [
+        'id' => 14,
+        'nombre_m' => 'Secretario Técnico General',
+        'nombre_f' => 'Secretaria Técnica General',
+        'id_nivel' => 1,
+        'activo' => false,
+        'personas' => 0
+    ],
+    [
+        'id' => 15,
+        'nombre_m' => 'Representante ANFECA ante ALAFEC',
+        'nombre_f' => 'Representante ANFECA ante ALAFEC',
+        'id_nivel' => 1,
+        'activo' => true,
+        'personas' => 1
+    ],
+    [
+        'id' => 16,
+        'nombre_m' => 'Director General CACECA',
+        'nombre_f' => 'Directora General CACECA',
+        'id_nivel' => 1,
+        'activo' => true,
+        'personas' => 0
+    ],
+    [
+        'id' => 17,
+        'nombre_m' => 'Secretario Técnico',
+        'nombre_f' => 'Secretaria Técnica',
+        'id_nivel' => 2,
+        'activo' => true,
+        'personas' => 2
+    ],
+    [
+        'id' => 18,
+        'nombre_m' => 'Director Académico',
+        'nombre_f' => 'Directora Académica',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => 1
+    ],
+    [
+        'id' => 19,
+        'nombre_m' => 'Director de Área',
+        'nombre_f' => 'Directora de Área',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => 2
+    ],
+    [
+        'id' => 20,
+        'nombre_m' => 'Director de Contaduría',
+        'nombre_f' => 'Directora de Contaduría',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => 0
+    ],
+    [
+        'id' => 21,
+        'nombre_m' => 'Director de División',
+        'nombre_f' => 'Directora de División',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => 3
+    ],
+    [
+        'id' => 22,
+        'nombre_m' => 'Director de División Económico-Administrativa',
+        'nombre_f' => 'Directora de División Económico-Administrativa',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => 0
+    ],
+    [
+        'id' => 23,
+        'nombre_m' => 'Director de Carrera de LIN',
+        'nombre_f' => 'Directora de Carrera de LIN',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => 1
+    ],
+    [
+        'id' => 24,
+        'nombre_m' => 'Coordinador de Licenciatura en Administración',
+        'nombre_f' => 'Coordinadora de Licenciatura en Administración',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => 0
+    ],
+    [
+        'id' => 25,
+        'nombre_m' => 'Coordinador de Contaduría y Administración',
+        'nombre_f' => 'Coordinadora de Contaduría y Administración',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => 2
+    ],
+    [
+        'id' => 26,
+        'nombre_m' => 'Coordinador de Licenciatura en Contaduría Pública',
+        'nombre_f' => 'Coordinadora de Licenciatura en Contaduría Pública',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => 0
+    ],
+    [
+        'id' => 27,
+        'nombre_m' => 'Coordinador de la Facultad',
+        'nombre_f' => 'Coordinadora de la Facultad',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => 3
+    ],
+    [
+        'id' => 28,
+        'nombre_m' => 'Coordinador General',
+        'nombre_f' => 'Coordinadora General',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => 1
+    ],
+    [
+        'id' => 29,
+        'nombre_m' => 'Coordinador de Negocios',
+        'nombre_f' => 'Coordinadora de Negocios',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => 0
+    ],
+    [
+        'id' => 30,
+        'nombre_m' => 'Coordinador de Proyectos y Vinculación Institucional',
+        'nombre_f' => 'Coordinadora de Proyectos y Vinculación Institucional',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => 0
+    ],
+    [
+        'id' => 31,
+        'nombre_m' => 'Coordinador de Unidad Académica',
+        'nombre_f' => 'Coordinadora de Unidad Académica',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => 2
+    ],
+    [
+        'id' => 32,
+        'nombre_m' => 'Coordinador de Área Económico-Administrativa',
+        'nombre_f' => 'Coordinadora de Área Económico-Administrativa',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => 0
+    ],
+    [
+        'id' => 33,
+        'nombre_m' => 'Coordinador de Ciencias Económico Administrativas',
+        'nombre_f' => 'Coordinadora de Ciencias Económico Administrativas',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => 1
+    ],
+    [
+        'id' => 34,
+        'nombre_m' => 'Coordinador de Contaduría',
+        'nombre_f' => 'Coordinadora de Contaduría',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => 0
+    ],
+    [
+        'id' => 35,
+        'nombre_m' => 'Jefe de Departamento de Ciencias Administrativas',
+        'nombre_f' => 'Jefa de Departamento de Ciencias Administrativas',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => 4
+    ],
+    [
+        'id' => 36,
+        'nombre_m' => 'Jefe de Departamento de Ciencias Económico Administrativas',
+        'nombre_f' => 'Jefa de Departamento de Ciencias Económico Administrativas',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => 0
+    ],
+    [
+        'id' => 37,
+        'nombre_m' => 'Jefe del Departamento de Contabilidad',
+        'nombre_f' => 'Jefa del Departamento de Contabilidad',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => 2
+    ],
+    [
+        'id' => 38,
+        'nombre_m' => 'Encargado de la Dirección',
+        'nombre_f' => 'Encargada de la Dirección',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => 0
+    ],
+    [
+        'id' => 39,
+        'nombre_m' => 'Secretario',
+        'nombre_f' => 'Secretaria',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => 1
+    ]
+];
+
+$personas_asociadas = [
+    1 => [
+        ['id' => 1, 'nombre' => 'María González Pérez', 'institucion' => 'UNAM - Facultad de Contaduría', 'cargo' => 'Presidenta', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
+    ],
+    2 => [
+        ['id' => 2, 'nombre' => 'Juan Martínez López', 'institucion' => 'IPN - ESCOM', 'cargo' => 'Vicepresidente', 'titular' => true, 'fecha_inicio' => '2024-03-15', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 3, 'nombre' => 'Carlos Hernández Díaz', 'institucion' => 'UDG - Guadalajara', 'cargo' => 'Vicepresidente', 'titular' => false, 'fecha_inicio' => '2024-02-01', 'fecha_fin' => '2024-12-31', 'activo' => false],
+    ],
+    4 => [
+        ['id' => 4, 'nombre' => 'Ana Sánchez Ramírez', 'institucion' => 'UAQ - Querétaro', 'cargo' => 'Directora Ejecutiva', 'titular' => true, 'fecha_inicio' => '2024-06-01', 'fecha_fin' => null, 'activo' => true],
+    ],
+    5 => [
+        ['id' => 5, 'nombre' => 'Laura Torres Vega', 'institucion' => 'UABC - Mexicali', 'cargo' => 'Coordinadora Nacional', 'titular' => true, 'fecha_inicio' => '2024-07-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 6, 'nombre' => 'Patricia Flores Reyes', 'institucion' => 'UAEH - Pachuca', 'cargo' => 'Coordinadora Nacional', 'titular' => false, 'fecha_inicio' => '2024-04-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 7, 'nombre' => 'Sofía Reyes Gil', 'institucion' => 'UAM - Iztapalapa', 'cargo' => 'Coordinadora Nacional', 'titular' => true, 'fecha_inicio' => '2024-12-01', 'fecha_fin' => null, 'activo' => true],
+    ],
+    6 => [
+        ['id' => 3, 'nombre' => 'Carlos Hernández Díaz', 'institucion' => 'UDG - Guadalajara', 'cargo' => 'Director Regional', 'titular' => true, 'fecha_inicio' => '2024-02-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 8, 'nombre' => 'Gabriela Mendoza Soto', 'institucion' => 'UDG - Guadalajara', 'cargo' => 'Directora Regional', 'titular' => false, 'fecha_inicio' => '2024-08-15', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 9, 'nombre' => 'Luis Méndez Vargas', 'institucion' => 'UABC - Tijuana', 'cargo' => 'Director Regional', 'titular' => false, 'fecha_inicio' => '2023-06-01', 'fecha_fin' => '2024-05-31', 'activo' => false],
+        ['id' => 10, 'nombre' => 'Andrés Moreno Rojas', 'institucion' => 'UANL - San Nicolás', 'cargo' => 'Coordinador Regional', 'titular' => true, 'fecha_inicio' => '2024-10-01', 'fecha_fin' => null, 'activo' => true],
+    ],
+    8 => [
+        ['id' => 6, 'nombre' => 'Patricia Flores Reyes', 'institucion' => 'UAEH - Pachuca', 'cargo' => 'Coordinadora Regional', 'titular' => true, 'fecha_inicio' => '2024-04-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 10, 'nombre' => 'Andrés Moreno Rojas', 'institucion' => 'UANL - San Nicolás', 'cargo' => 'Coordinador Regional', 'titular' => false, 'fecha_inicio' => '2024-10-01', 'fecha_fin' => null, 'activo' => true],
+    ],
+    9 => [
+        ['id' => 11, 'nombre' => 'Jorge Gómez García', 'institucion' => 'UADY - Mérida', 'cargo' => 'Director Académico', 'titular' => true, 'fecha_inicio' => '2024-08-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 12, 'nombre' => 'Carmen Rivera Morales', 'institucion' => 'UDG - Guadalajara', 'cargo' => 'Coordinadora Académica', 'titular' => true, 'fecha_inicio' => '2024-05-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 13, 'nombre' => 'Teresa Ortega Luna', 'institucion' => 'UAEM - Toluca', 'cargo' => 'Director de División', 'titular' => true, 'fecha_inicio' => '2024-11-15', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 14, 'nombre' => 'Ricardo Peña Fuentes', 'institucion' => 'UABJO - Oaxaca', 'cargo' => 'Jefe de Departamento', 'titular' => false, 'fecha_inicio' => '2023-12-01', 'fecha_fin' => '2024-11-30', 'activo' => false],
+        ['id' => 15, 'nombre' => 'Elena Castro Ramos', 'institucion' => 'UASLP - San Luis Potosí', 'cargo' => 'Directora General', 'titular' => true, 'fecha_inicio' => '2024-09-01', 'fecha_fin' => null, 'activo' => true],
+    ],
+    10 => [
+        ['id' => 15, 'nombre' => 'Elena Castro Ramos', 'institucion' => 'UASLP - San Luis Potosí', 'cargo' => 'Directora General', 'titular' => true, 'fecha_inicio' => '2024-09-01', 'fecha_fin' => null, 'activo' => true],
+    ],
+    11 => [
+        ['id' => 12, 'nombre' => 'Carmen Rivera Morales', 'institucion' => 'UDG - Guadalajara', 'cargo' => 'Coordinadora Académica', 'titular' => true, 'fecha_inicio' => '2024-05-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 13, 'nombre' => 'Teresa Ortega Luna', 'institucion' => 'UAEM - Toluca', 'cargo' => 'Directora de División', 'titular' => false, 'fecha_inicio' => '2024-11-15', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 11, 'nombre' => 'Jorge Gómez García', 'institucion' => 'UADY - Mérida', 'cargo' => 'Director Académico', 'titular' => false, 'fecha_inicio' => '2024-08-01', 'fecha_fin' => null, 'activo' => true],
+    ],
+    12 => [
+        ['id' => 14, 'nombre' => 'Ricardo Peña Fuentes', 'institucion' => 'UABJO - Oaxaca', 'cargo' => 'Jefe de Departamento', 'titular' => false, 'fecha_inicio' => '2023-12-01', 'fecha_fin' => '2024-11-30', 'activo' => false],
+        ['id' => 1, 'nombre' => 'María González Pérez', 'institucion' => 'UNAM - Facultad de Contaduría', 'cargo' => 'Jefa de Departamento', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 3, 'nombre' => 'Carlos Hernández Díaz', 'institucion' => 'UDG - Guadalajara', 'cargo' => 'Jefe de Departamento', 'titular' => false, 'fecha_inicio' => '2024-02-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 4, 'nombre' => 'Ana Sánchez Ramírez', 'institucion' => 'UAQ - Querétaro', 'cargo' => 'Jefa de Departamento', 'titular' => true, 'fecha_inicio' => '2024-06-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 6, 'nombre' => 'Patricia Flores Reyes', 'institucion' => 'UAEH - Pachuca', 'cargo' => 'Jefa de Departamento', 'titular' => false, 'fecha_inicio' => '2024-04-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 16, 'nombre' => 'Fernando Cruz Salazar', 'institucion' => 'UAQ - Querétaro', 'cargo' => 'Jefe de Departamento', 'titular' => true, 'fecha_inicio' => '2024-07-01', 'fecha_fin' => null, 'activo' => true],
+    ],
+    15 => [
+        ['id' => 3, 'nombre' => 'Carlos Hernández Díaz', 'institucion' => 'UDG - Guadalajara', 'cargo' => 'Representante ANFECA ante ALAFEC', 'titular' => true, 'fecha_inicio' => '2024-02-01', 'fecha_fin' => null, 'activo' => true],
+    ],
+    17 => [
+        ['id' => 9, 'nombre' => 'Luis Méndez Vargas', 'institucion' => 'UABC - Tijuana', 'cargo' => 'Secretario Técnico', 'titular' => false, 'fecha_inicio' => '2023-06-01', 'fecha_fin' => '2024-05-31', 'activo' => false],
+        ['id' => 10, 'nombre' => 'Andrés Moreno Rojas', 'institucion' => 'UANL - San Nicolás', 'cargo' => 'Secretario Técnico', 'titular' => true, 'fecha_inicio' => '2024-10-01', 'fecha_fin' => null, 'activo' => true],
+    ],
+    18 => [
+        ['id' => 11, 'nombre' => 'Jorge Gómez García', 'institucion' => 'UADY - Mérida', 'cargo' => 'Director Académico', 'titular' => true, 'fecha_inicio' => '2024-08-01', 'fecha_fin' => null, 'activo' => true],
+    ],
+    19 => [
+        ['id' => 12, 'nombre' => 'Carmen Rivera Morales', 'institucion' => 'UDG - Guadalajara', 'cargo' => 'Directora de Área', 'titular' => true, 'fecha_inicio' => '2024-05-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 13, 'nombre' => 'Teresa Ortega Luna', 'institucion' => 'UAEM - Toluca', 'cargo' => 'Directora de Área', 'titular' => false, 'fecha_inicio' => '2024-11-15', 'fecha_fin' => null, 'activo' => true],
+    ],
+    21 => [
+        ['id' => 11, 'nombre' => 'Jorge Gómez García', 'institucion' => 'UADY - Mérida', 'cargo' => 'Director de División', 'titular' => false, 'fecha_inicio' => '2024-08-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 14, 'nombre' => 'Ricardo Peña Fuentes', 'institucion' => 'UABJO - Oaxaca', 'cargo' => 'Director de División', 'titular' => false, 'fecha_inicio' => '2023-12-01', 'fecha_fin' => '2024-11-30', 'activo' => false],
+        ['id' => 15, 'nombre' => 'Elena Castro Ramos', 'institucion' => 'UASLP - San Luis Potosí', 'cargo' => 'Directora de División', 'titular' => true, 'fecha_inicio' => '2024-09-01', 'fecha_fin' => null, 'activo' => true],
+    ],
+    23 => [
+        ['id' => 1, 'nombre' => 'María González Pérez', 'institucion' => 'UNAM - Facultad de Contaduría', 'cargo' => 'Directora de Carrera de LIN', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
+    ],
+    25 => [
+        ['id' => 4, 'nombre' => 'Ana Sánchez Ramírez', 'institucion' => 'UAQ - Querétaro', 'cargo' => 'Coordinadora de Contaduría y Administración', 'titular' => true, 'fecha_inicio' => '2024-06-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 16, 'nombre' => 'Fernando Cruz Salazar', 'institucion' => 'UAQ - Querétaro', 'cargo' => 'Coordinador de Contaduría y Administración', 'titular' => false, 'fecha_inicio' => '2024-07-01', 'fecha_fin' => null, 'activo' => true],
+    ],
+    27 => [
+        ['id' => 13, 'nombre' => 'Teresa Ortega Luna', 'institucion' => 'UAEM - Toluca', 'cargo' => 'Coordinadora de la Facultad', 'titular' => true, 'fecha_inicio' => '2024-11-15', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 11, 'nombre' => 'Jorge Gómez García', 'institucion' => 'UADY - Mérida', 'cargo' => 'Coordinador de la Facultad', 'titular' => false, 'fecha_inicio' => '2024-08-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 14, 'nombre' => 'Ricardo Peña Fuentes', 'institucion' => 'UABJO - Oaxaca', 'cargo' => 'Coordinador de la Facultad', 'titular' => false, 'fecha_inicio' => '2023-12-01', 'fecha_fin' => '2024-11-30', 'activo' => false],
+    ],
+    28 => [
+        ['id' => 7, 'nombre' => 'Sofía Reyes Gil', 'institucion' => 'UAM - Iztapalapa', 'cargo' => 'Coordinadora General', 'titular' => true, 'fecha_inicio' => '2024-12-01', 'fecha_fin' => null, 'activo' => true],
+    ],
+    31 => [
+        ['id' => 13, 'nombre' => 'Teresa Ortega Luna', 'institucion' => 'UAEM - Toluca', 'cargo' => 'Coordinadora de Unidad Académica', 'titular' => false, 'fecha_inicio' => '2024-11-15', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 11, 'nombre' => 'Jorge Gómez García', 'institucion' => 'UADY - Mérida', 'cargo' => 'Coordinador de Unidad Académica', 'titular' => true, 'fecha_inicio' => '2024-08-01', 'fecha_fin' => null, 'activo' => true],
+    ],
+    33 => [
+        ['id' => 16, 'nombre' => 'Fernando Cruz Salazar', 'institucion' => 'UAQ - Querétaro', 'cargo' => 'Coordinador de Ciencias Económico Administrativas', 'titular' => true, 'fecha_inicio' => '2024-07-01', 'fecha_fin' => null, 'activo' => true],
+    ],
+    35 => [
+        ['id' => 4, 'nombre' => 'Ana Sánchez Ramírez', 'institucion' => 'UAQ - Querétaro', 'cargo' => 'Jefa de Departamento de Ciencias Administrativas', 'titular' => false, 'fecha_inicio' => '2024-06-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 1, 'nombre' => 'María González Pérez', 'institucion' => 'UNAM - Facultad de Contaduría', 'cargo' => 'Jefa de Departamento de Ciencias Administrativas', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 3, 'nombre' => 'Carlos Hernández Díaz', 'institucion' => 'UDG - Guadalajara', 'cargo' => 'Jefe de Departamento de Ciencias Administrativas', 'titular' => false, 'fecha_inicio' => '2024-02-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 6, 'nombre' => 'Patricia Flores Reyes', 'institucion' => 'UAEH - Pachuca', 'cargo' => 'Jefa de Departamento de Ciencias Administrativas', 'titular' => true, 'fecha_inicio' => '2024-04-01', 'fecha_fin' => null, 'activo' => true],
+    ],
+    37 => [
+        ['id' => 2, 'nombre' => 'Juan Martínez López', 'institucion' => 'IPN - ESCOM', 'cargo' => 'Jefe del Departamento de Contabilidad', 'titular' => true, 'fecha_inicio' => '2024-03-15', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 3, 'nombre' => 'Carlos Hernández Díaz', 'institucion' => 'UDG - Guadalajara', 'cargo' => 'Jefe del Departamento de Contabilidad', 'titular' => false, 'fecha_inicio' => '2024-02-01', 'fecha_fin' => null, 'activo' => true],
+    ],
+    39 => [
+        ['id' => 2, 'nombre' => 'Juan Martínez López', 'institucion' => 'IPN - ESCOM', 'cargo' => 'Secretario', 'titular' => true, 'fecha_inicio' => '2024-03-15', 'fecha_fin' => null, 'activo' => true],
+    ]
+];
+
+// Buscar el cargo
+$cargo = null;
+foreach ($cargos as $c) {
+    if ($c['id'] == $id) {
+        $cargo = $c;
+        break;
+    }
+}
+
+if (!$cargo) {
+    echo '<div class="main-content"><div class="dashboard-container"><div class="alert-modern alert-error"><i class="fas fa-exclamation-circle"></i><div><strong>Error</strong> No se encontró el cargo solicitado.</div></div></div></div>';
+    include 'template/footer.php';
+    exit;
+}
+
+// Obtener datos adicionales
+$nivel_nombre = $niveles_cargo[$cargo['id_nivel']] ?? 'Sin nivel';
+$estado_texto = $cargo['activo'] ? 'Activo' : 'Inactivo';
+$estado_class = $cargo['activo'] ? 'status-active' : 'status-inactive';
+$personas = $personas_asociadas[$cargo['id']] ?? [];
+$total_personas = count($personas);
+
+include 'template/header.php';
+include 'template/menu.php';
+?>
+
+<main class="main-content">
+    <div class="dashboard-container">
+        
+        <!-- Encabezado -->
+        <div class="page-header">
+            <div class="page-header-content">
+                <div class="page-header-icon">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+                <div>
+                    <h1 class="page-title">Detalle del Cargo</h1>
+                    <p class="page-subtitle">Información completa del cargo registrado en el sistema</p>
+                </div>
+            </div>
+            <div class="page-header-right">
+                <a href="cargo_edicion.php?id=<?= $cargo['id'] ?>" class="btn-primary-modern">
+                    <i class="fas fa-edit"></i> Editar
+                </a>
+                <a href="cargos.php" class="btn-outline-modern">
+                    <i class="fas fa-arrow-left"></i> Volver al listado
+                </a>
+            </div>
+        </div>
+
+        <!-- Tarjeta de información general -->
+        <div class="detail-card profile-card">
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <?php 
+                    $letras = explode(' ', $cargo['nombre_m']);
+                    $iniciales = '';
+                    foreach ($letras as $l) {
+                        if (strlen($l) > 0) {
+                            $iniciales .= substr($l, 0, 1);
+                        }
+                        if (strlen($iniciales) >= 2) break;
+                    }
+                    ?>
+                    <span><?= strtoupper($iniciales) ?></span>
+                </div>
+                <div class="profile-info">
+                    <h2><?= htmlspecialchars($cargo['nombre_m']) ?> / <?= htmlspecialchars($cargo['nombre_f']) ?></h2>
+                    <div class="profile-meta">
+                        <span class="profile-status <?= $cargo['activo'] ? 'status-active' : 'status-inactive' ?>">
+                            <span class="status-dot"></span> <?= $estado_texto ?>
+                        </span>
+                        <span class="badge-nivel 
+                            <?= $cargo['id_nivel'] == 1 ? 'badge-nacional' : '' ?>
+                            <?= $cargo['id_nivel'] == 2 ? 'badge-regional' : '' ?>
+                            <?= $cargo['id_nivel'] == 3 ? 'badge-institucional' : '' ?>">
+                            <?= htmlspecialchars($nivel_nombre) ?>
+                        </span>
+                        <span class="badge-personas <?= $total_personas > 0 ? 'badge-personas-activo' : 'badge-personas-vacio' ?>">
+                            <i class="fas fa-users"></i> <?= $total_personas ?>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="profile-body">
+                <div class="profile-item">
+                    <span class="profile-label">Nombre (Masculino)</span>
+                    <span class="profile-value"><?= htmlspecialchars($cargo['nombre_m']) ?></span>
+                </div>
+                <div class="profile-item">
+                    <span class="profile-label">Nombre (Femenino)</span>
+                    <span class="profile-value"><?= htmlspecialchars($cargo['nombre_f']) ?></span>
+                </div>
+                <div class="profile-item">
+                    <span class="profile-label">Nivel de Cargo</span>
+                    <span class="profile-value"><?= htmlspecialchars($nivel_nombre) ?></span>
+                </div>
+                <div class="profile-item">
+                    <span class="profile-label">Estado</span>
+                    <span class="profile-value <?= $cargo['activo'] ? 'text-success' : 'text-danger' ?>">
+                        <?= $estado_texto ?>
+                    </span>
+                </div>
+                <div class="profile-item">
+                    <span class="profile-label">Total de Personas Asignadas</span>
+                    <span class="profile-value">
+                        <span class="badge-personas <?= $total_personas > 0 ? 'badge-personas-activo' : 'badge-personas-vacio' ?>">
+                            <?= $total_personas ?>
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Personas Asociadas -->
+        <div class="detail-card">
+            <div class="detail-card-header">
+                <h3>Personas Asociadas</h3>
+                <span class="detail-badge"><?= $total_personas ?> persona(s)</span>
+            </div>
+            <div class="detail-card-body">
+                <?php if ($total_personas > 0): ?>
+                    <div class="table-modern-container">
+                        <div class="table-modern-wrapper">
+                            <table class="table-modern">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Cargo</th>
+                                        <th>Titular</th>
+                                        <th>Fecha Inicio</th>
+                                        <th>Fecha Fin</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($personas as $persona): 
+                                        $fecha_inicio = date('d/m/Y', strtotime($persona['fecha_inicio']));
+                                        $fecha_fin = $persona['fecha_fin'] ? date('d/m/Y', strtotime($persona['fecha_fin'])) : '---';
+                                        $estado_persona = $persona['activo'] ? 'Activo' : 'Inactivo';
+                                        $estado_persona_class = $persona['activo'] ? 'status-active' : 'status-inactive';
+                                    ?>
+                                    <tr>
+                                        <td>
+                                            <a href="persona_consulta.php?id=<?= $persona['id'] ?>" class="persona-link">
+                                                <?= htmlspecialchars($persona['nombre']) ?>
+                                            </a>
+                                        </td>
+                                        <td><?= htmlspecialchars($persona['cargo']) ?></td>
+                                        <td>
+                                            <?php if ($persona['titular']): ?>
+                                                <span class="badge-titular">Sí</span>
+                                            <?php else: ?>
+                                                <span class="badge-no-titular">No</span>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td><?= $fecha_inicio ?></td>
+                                        <td><?= $fecha_fin ?></td>
+                                        <td>
+                                            <span class="<?= $estado_persona_class ?>">
+                                                <i class="fas fa-circle"></i> <?= $estado_persona ?>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                <?php else: ?>
+                    <div class="empty-personas">
+                        <i class="fas fa-user-times"></i>
+                        <p>No hay personas asignadas con este cargo</p>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<style>
+/* ============================================================
+   ESTILOS - CONSULTA CARGO
+   ============================================================ */
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.page-header-content {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.page-header-icon {
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, #8B0000, #5C0000);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    box-shadow: 0 4px 15px rgba(139, 0, 0, 0.25);
+}
+
+.page-title {
+    font-size: 1.65rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+.page-subtitle {
+    color: #888;
+    margin: 0.1rem 0 0 0;
+    font-size: 0.92rem;
+}
+
+.page-header-right {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.btn-primary-modern {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.75rem 1.8rem;
+    background: linear-gradient(135deg, #8B0000, #5C0000);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(139, 0, 0, 0.25);
+}
+
+.btn-primary-modern:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(139, 0, 0, 0.35);
+    color: white;
+}
+
+.btn-outline-modern {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.75rem 1.5rem;
+    background: white;
+    color: #4a4a4a;
+    border: 2px solid #e8e8e8;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.btn-outline-modern:hover {
+    border-color: #8B0000;
+    color: #8B0000;
+}
+
+.detail-card {
+    background: white;
+    border-radius: 16px;
+    padding: 1.75rem;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    margin-bottom: 2rem;
+}
+
+.detail-card:last-child {
+    margin-bottom: 0;
+}
+
+.detail-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #f5f0f0;
+}
+
+.detail-card-header h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+.detail-badge {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.8rem;
+    background: #f5f0f0;
+    color: #666;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+.profile-card {
+    padding: 0;
+    overflow: hidden;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 1.75rem;
+    background: linear-gradient(135deg, #faf8f8, #f5f0f0);
+    border-bottom: 1px solid #f0ecec;
+}
+
+.profile-avatar {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #8B0000, #5C0000);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.8rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    box-shadow: 0 4px 15px rgba(139, 0, 0, 0.25);
+}
+
+.profile-info {
+    flex: 1;
+}
+
+.profile-info h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0 0 0.3rem 0;
+}
+
+.profile-meta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.profile-status {
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.status-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.profile-status.status-active .status-dot {
+    background: #2e7d32;
+}
+
+.profile-status.status-inactive .status-dot {
+    background: #c62828;
+}
+
+.profile-status.status-active {
+    color: #2e7d32;
+}
+
+.profile-status.status-inactive {
+    color: #c62828;
+}
+
+.badge-nivel {
+    display: inline-block;
+    padding: 0.2rem 0.7rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.badge-nacional {
+    background: #e3f2fd;
+    color: #0d47a1;
+}
+
+.badge-regional {
+    background: #f3e5f5;
+    color: #6a1b9a;
+}
+
+.badge-institucional {
+    background: #e8f5e9;
+    color: #1b5e20;
+}
+
+.badge-personas {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.2rem 0.7rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.badge-personas-activo {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.badge-personas-vacio {
+    background: #f5f5f5;
+    color: #999;
+}
+
+.profile-body {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    padding: 1.25rem 1.75rem;
+}
+
+.profile-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.profile-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #999;
+}
+
+.profile-value {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+.text-success {
+    color: #2e7d32;
+}
+
+.text-danger {
+    color: #c62828;
+}
+
+.persona-link {
+    color: #0d6efd;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.persona-link:hover {
+    color: #0a58ca;
+    text-decoration: underline;
+}
+
+.table-modern-container {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #f0ecec;
+}
+
+.table-modern-wrapper {
+    overflow-x: auto;
+}
+
+.table-modern {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.table-modern thead {
+    background: #faf8f8;
+}
+
+.table-modern thead th {
+    text-align: left;
+    padding: 0.7rem 1rem;
+    font-weight: 600;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #6b6b6b;
+    border-bottom: 2px solid #e8e8e8;
+}
+
+.table-modern tbody td {
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid #f0f0f0;
+    vertical-align: middle;
+}
+
+.table-modern tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.table-modern tbody tr:hover {
+    background: #faf8f8;
+}
+
+.badge-titular {
+    display: inline-block;
+    padding: 0.1rem 0.5rem;
+    background: #e8f5e9;
+    color: #2e7d32;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.badge-no-titular {
+    display: inline-block;
+    padding: 0.1rem 0.5rem;
+    background: #f5f5f5;
+    color: #999;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.status-active {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #2e7d32;
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.status-active i {
+    font-size: 0.5rem;
+}
+
+.status-inactive {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #c62828;
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.status-inactive i {
+    font-size: 0.5rem;
+}
+
+.empty-personas {
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.empty-personas i {
+    font-size: 2.5rem;
+    color: #d0d0d0;
+    display: block;
+    margin-bottom: 0.75rem;
+}
+
+.empty-personas p {
+    color: #999;
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+@media (max-width: 768px) {
+    .page-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .page-header-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .page-title {
+        font-size: 1.4rem;
+    }
+
+    .page-header-right {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .page-header-right .btn-primary-modern,
+    .page-header-right .btn-outline-modern {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .profile-meta {
+        justify-content: center;
+    }
+
+    .profile-body {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+        padding: 1rem;
+    }
+
+    .detail-card {
+        padding: 1.25rem;
+    }
+
+    .detail-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .table-modern thead th,
+    .table-modern tbody td {
+        padding: 0.5rem 0.6rem;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .page-header-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 1.2rem;
+    }
+
+    .page-title {
+        font-size: 1.2rem;
+    }
+
+    .profile-avatar {
+        width: 64px;
+        height: 64px;
+        font-size: 1.4rem;
+    }
+
+    .profile-info h2 {
+        font-size: 1.1rem;
+    }
+
+    .profile-meta {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+    }
+}
+</style>
+
+<?php include 'template/footer.php'; ?>
