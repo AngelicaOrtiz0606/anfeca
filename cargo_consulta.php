@@ -531,34 +531,6 @@ include 'template/menu.php';
                     </div>
                 </div>
             </div>
-            <div class="profile-body">
-                <div class="profile-item">
-                    <span class="profile-label">Nombre (Masculino)</span>
-                    <span class="profile-value"><?= htmlspecialchars($cargo['nombre_m']) ?></span>
-                </div>
-                <div class="profile-item">
-                    <span class="profile-label">Nombre (Femenino)</span>
-                    <span class="profile-value"><?= htmlspecialchars($cargo['nombre_f']) ?></span>
-                </div>
-                <div class="profile-item">
-                    <span class="profile-label">Nivel de Cargo</span>
-                    <span class="profile-value"><?= htmlspecialchars($nivel_nombre) ?></span>
-                </div>
-                <div class="profile-item">
-                    <span class="profile-label">Estado</span>
-                    <span class="profile-value <?= $cargo['activo'] ? 'text-success' : 'text-danger' ?>">
-                        <?= $estado_texto ?>
-                    </span>
-                </div>
-                <div class="profile-item">
-                    <span class="profile-label">Total de Personas Asignadas</span>
-                    <span class="profile-value">
-                        <span class="badge-personas <?= $total_personas > 0 ? 'badge-personas-activo' : 'badge-personas-vacio' ?>">
-                            <?= $total_personas ?>
-                        </span>
-                    </span>
-                </div>
-            </div>
         </div>
 
         <!-- Personas Asociadas -->
@@ -576,7 +548,6 @@ include 'template/menu.php';
                                     <tr>
                                         <th>Nombre</th>
                                         <th>Cargo</th>
-                                        <th>Titular</th>
                                         <th>Fecha Inicio</th>
                                         <th>Fecha Fin</th>
                                         <th>Estado</th>
@@ -596,13 +567,6 @@ include 'template/menu.php';
                                             </a>
                                         </td>
                                         <td><?= htmlspecialchars($persona['cargo']) ?></td>
-                                        <td>
-                                            <?php if ($persona['titular']): ?>
-                                                <span class="badge-titular">Sí</span>
-                                            <?php else: ?>
-                                                <span class="badge-no-titular">No</span>
-                                            <?php endif; ?>
-                                        </td>
                                         <td><?= $fecha_inicio ?></td>
                                         <td><?= $fecha_fin ?></td>
                                         <td>
@@ -884,41 +848,6 @@ include 'template/menu.php';
     color: #999;
 }
 
-.profile-body {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    padding: 1.25rem 1.75rem;
-}
-
-.profile-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-}
-
-.profile-label {
-    font-size: 0.7rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: #999;
-}
-
-.profile-value {
-    font-size: 0.95rem;
-    font-weight: 500;
-    color: #1a1a1a;
-}
-
-.text-success {
-    color: #2e7d32;
-}
-
-.text-danger {
-    color: #c62828;
-}
-
 .persona-link {
     color: #0d6efd;
     text-decoration: none;
@@ -974,26 +903,6 @@ include 'template/menu.php';
 
 .table-modern tbody tr:hover {
     background: #faf8f8;
-}
-
-.badge-titular {
-    display: inline-block;
-    padding: 0.1rem 0.5rem;
-    background: #e8f5e9;
-    color: #2e7d32;
-    border-radius: 12px;
-    font-size: 0.7rem;
-    font-weight: 600;
-}
-
-.badge-no-titular {
-    display: inline-block;
-    padding: 0.1rem 0.5rem;
-    background: #f5f5f5;
-    color: #999;
-    border-radius: 12px;
-    font-size: 0.7rem;
-    font-weight: 600;
 }
 
 .status-active {
@@ -1073,12 +982,6 @@ include 'template/menu.php';
 
     .profile-meta {
         justify-content: center;
-    }
-
-    .profile-body {
-        grid-template-columns: 1fr;
-        gap: 0.75rem;
-        padding: 1rem;
     }
 
     .detail-card {

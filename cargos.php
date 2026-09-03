@@ -648,9 +648,6 @@ include 'template/menu.php';
                 </div>
             </div>
             <div class="page-header-right">
-                <button onclick="descargarCSV()" class="btn-outline-modern">
-                    <i class="fas fa-file-csv"></i> Exportar CSV
-                </button>
                 <a href="cargo_registro.php" class="btn-primary-modern">
                     <i class="fas fa-plus-circle"></i> Nuevo Cargo
                 </a>
