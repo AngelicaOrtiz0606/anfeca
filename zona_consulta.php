@@ -182,32 +182,7 @@ include 'template/menu.php';
                         <span class="profile-status <?= $estado_class ?>">
                             <span class="status-dot"></span> <?= $estado_texto ?>
                         </span>
-                        <span class="badge-entidades <?= $total_entidades > 0 ? 'badge-entidades-activo' : 'badge-entidades-vacio' ?>">
-                             <?= $total_entidades ?> entidades
-                        </span>
-                        <span class="badge-instituciones <?= $total_instituciones > 0 ? 'badge-instituciones-activo' : 'badge-instituciones-vacio' ?>">
-                            <?= $total_instituciones ?> institución(es)
-                        </span>
-                        <!--<span class="badge-personas <?= $total_personas > 0 ? 'badge-personas-activo' : 'badge-personas-vacio' ?>">
-                            <i class="fas fa-users"></i> <?= $total_personas ?> persona(s)
-                        </span>-->
                     </div>
-                </div>
-            </div>
-            <div class="profile-body">
-                <div class="profile-item">
-                    <span class="profile-label">Número de Zona</span>
-                    <span class="profile-value"><?= $zona['numero'] ?></span>
-                </div>
-                <div class="profile-item">
-                    <span class="profile-label">Nombre</span>
-                    <span class="profile-value"><?= htmlspecialchars($zona['nombre']) ?></span>
-                </div>
-                <div class="profile-item">
-                    <span class="profile-label">Estado</span>
-                    <span class="profile-value <?= $zona['activo'] ? 'text-success' : 'text-danger' ?>">
-                        <?= $estado_texto ?>
-                    </span>
                 </div>
             </div>
         </div>
