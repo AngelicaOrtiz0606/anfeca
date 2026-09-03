@@ -651,9 +651,6 @@ include 'template/menu.php';
                                 <td>
                                     <div class="institucion-cell">
                                         <div class="institucion-nombre"><?= htmlspecialchars($institucion['nombre']) ?></div>
-                                        <?php if ($institucion['participacion'] == 'matriz'): ?>
-                                            <span class="badge-matriz-label">Matriz</span>
-                                        <?php endif; ?>
                                     </div>
                                 </td>
                                 <td><?= htmlspecialchars($tipo_nombre) ?></td>
@@ -1133,19 +1130,6 @@ include 'template/menu.php';
     font-weight: 500;
 }
 
-.badge-matriz-label {
-    display: inline-block;
-    padding: 0.1rem 0.4rem;
-    background: #e3f2fd;
-    color: #0d47a1;
-    border-radius: 4px;
-    font-size: 0.6rem;
-    font-weight: 600;
-    margin-left: 0.4rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
 .badge-zona {
     display: inline-block;
     padding: 0.25rem 0.9rem;
@@ -1416,7 +1400,7 @@ include 'template/menu.php';
 }
 
 /* ============================================================
-   MODAL DE ELIMINACIÓN (CORREGIDO)
+   MODAL DE ELIMINACIÓN
    ============================================================ */
 
 .modal-overlay {
@@ -1868,6 +1852,7 @@ const tiposInstitucion = <?= json_encode($tipos_institucion) ?>;
 const zonasRegionales = <?= json_encode($zonas_regionales) ?>;
 const entidadesFederativas = <?= json_encode($entidades_federativas) ?>;
 const tiposParticipacion = <?= json_encode($tipos_participacion) ?>;
+const universidadesNombres = <?= json_encode($universidades_nombres) ?>;
 
 // ============================================================
 // ELIMINAR INSTITUCIÓN (CON MODAL MEJORADO)
@@ -2087,34 +2072,34 @@ function mostrarMensaje(mensaje, tipo) {
 }
 
 // ============================================================
-// EXPORTAR CSV
+// EXPORTAR CSV - TODOS LOS REGISTROS FILTRADOS
 // ============================================================
 
 function descargarCSV() {
-    const filas = document.querySelectorAll('#tbodyInstituciones tr');
-    if (filas.length === 0 || (filas.length === 1 && filas[0].classList.contains('empty-row'))) {
+    // Usar los datos filtrados completos (no solo los paginados)
+    const datosFiltrados = <?= json_encode(array_values($instituciones_filtradas)) ?>;
+    
+    if (datosFiltrados.length === 0) {
         mostrarMensaje('No hay datos para exportar', 'error');
         return;
     }
     
     let csv = 'Núm. Afiliación,Institución,Tipo,Dependencia,Participación,Zona,Personas,Estado\n';
     
-    filas.forEach(fila => {
-        if (fila.classList.contains('empty-row')) return;
+    datosFiltrados.forEach(function(inst) {
+        const zonaNombre = zonasRegionales[inst.id_zona] || 'Sin zona';
+        const tipoNombre = tiposInstitucion[inst.tipo] || 'No definido';
+        const participacionNombre = tiposParticipacion[inst.participacion] || 'No definido';
+        let dependencia = '';
+        if (inst.tipo == 1) {
+            dependencia = '---';
+        } else {
+            dependencia = universidadesNombres[inst.id_universidad] || 'No especificado';
+        }
+        const estado = inst.fecha_fin === null ? 'Vigente' : 'Finalizada';
+        const numAfiliacion = inst.num_afiliacion ?? '---';
         
-        const celdas = fila.querySelectorAll('td');
-        if (celdas.length < 9) return;
-        
-        const numAfiliacion = celdas[0].textContent.trim();
-        const nombre = celdas[1].textContent.trim();
-        const tipo = celdas[2].textContent.trim();
-        const dependencia = celdas[3].textContent.trim();
-        const participacion = celdas[4].textContent.trim();
-        const zona = celdas[5].textContent.trim();
-        const personas = celdas[6].textContent.trim();
-        const estado = celdas[7].textContent.trim();
-        
-        csv += `"${numAfiliacion}","${nombre}","${tipo}","${dependencia}","${participacion}","${zona}","${personas}","${estado}"\n`;
+        csv += `"${numAfiliacion}","${inst.nombre}","${tipoNombre}","${dependencia}","${participacionNombre}","${zonaNombre}","${inst.personas_relacionadas}","${estado}"\n`;
     });
     
     const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });

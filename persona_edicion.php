@@ -22,13 +22,13 @@ $tipos_institucion = [
 ];
 
 $zonas_regionales = [
-    1 => 'Noroeste',
-    2 => 'Norte',
-    3 => 'Centro',
-    4 => 'Centro Occidente',
-    5 => 'Centro Sur',
-    6 => 'Sur',
-    7 => 'Ciudad de México'
+    1 => '1 - Noroeste',
+    2 => '2 - Norte',
+    3 => '3 - Centro',
+    4 => '4 - Centro Occidente',
+    5 => '5 - Centro Sur',
+    6 => '6 - Sur',
+    7 => '7 - Ciudad de México'
 ];
 
 $coordinaciones_nacionales = [
@@ -89,10 +89,16 @@ $num_afiliacion_por_institucion = [
     'UAM - Iztapalapa' => '9801028'
 ];
 
+// Niveles académicos - SOLO NOMBRE (sin abreviatura)
 $niveles_academicos = [
-    ['id' => 1, 'nombre' => 'Licenciatura', 'abr_m' => 'Lic.', 'abr_f' => 'Lic.'],
-    ['id' => 2, 'nombre' => 'Maestría', 'abr_m' => 'Mtro.', 'abr_f' => 'Mtra.'],
-    ['id' => 3, 'nombre' => 'Doctorado', 'abr_m' => 'Dr.', 'abr_f' => 'Dra.']
+    ['id' => 1, 'nombre' => 'Licenciatura'],
+    ['id' => 2, 'nombre' => 'Maestría'],
+    ['id' => 3, 'nombre' => 'Doctorado'],
+    ['id' => 4, 'nombre' => 'Especialidad'],
+    ['id' => 5, 'nombre' => 'Técnico Superior Universitario'],
+    ['id' => 6, 'nombre' => 'Bachillerato'],
+    ['id' => 7, 'nombre' => 'Ingeniería'],
+    ['id' => 8, 'nombre' => 'Arquitectura']
 ];
 
 $niveles_cargo = [
@@ -531,12 +537,8 @@ include 'template/menu.php';
                             <select name="nivel_academico" id="nivel_academico" class="form-control" required>
                                 <option value="">Seleccionar nivel...</option>
                                 <?php foreach ($niveles_academicos as $nivel): ?>
-                                    <?php 
-                                    $abreviatura = $persona['genero'] == 'F' ? $nivel['abr_f'] : $nivel['abr_m'];
-                                    $selected = $persona['nivel_academico'] == $nivel['id'] ? 'selected' : '';
-                                    ?>
-                                    <option value="<?= $nivel['id'] ?>" <?= $selected ?>>
-                                        <?= $nivel['nombre'] . ' (' . $abreviatura . ')' ?>
+                                    <option value="<?= $nivel['id'] ?>" <?= $persona['nivel_academico'] == $nivel['id'] ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($nivel['nombre']) ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>

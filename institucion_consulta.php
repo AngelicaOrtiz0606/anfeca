@@ -473,7 +473,10 @@ foreach ($universidades as $u) {
     $universidades_nombres[$u['id']] = $u['nombre'];
 }
 
-// Personas asociadas con IDs (coincidiendo con personas.php)
+// ============================================================
+// PERSONAS ASOCIADAS CON IDs (coincidiendo con personas.php)
+// ============================================================
+
 $personas_asociadas = [
     2 => [
         ['id' => 1, 'nombre' => 'María González Pérez', 'cargo' => 'Presidenta', 'titular' => true, 'fecha_inicio' => '2024-01-15', 'fecha_fin' => null, 'activo' => true],
@@ -615,7 +618,17 @@ include 'template/menu.php';
             <div class="detail-card profile-card">
                 <div class="profile-header">
                     <div class="profile-avatar">
-                        <i class="fas fa-university"></i>
+                        <?php 
+                        $letras = explode(' ', $institucion['nombre']);
+                        $iniciales = '';
+                        foreach ($letras as $l) {
+                            if (strlen($l) > 0) {
+                                $iniciales .= substr($l, 0, 1);
+                            }
+                            if (strlen($iniciales) >= 3) break;
+                        }
+                        ?>
+                        <span><?= strtoupper($iniciales) ?></span>
                     </div>
                     <div class="profile-info">
                         <h2><?= htmlspecialchars($institucion['nombre']) ?></h2>
@@ -1034,7 +1047,8 @@ include 'template/menu.php';
     align-items: center;
     justify-content: center;
     color: white;
-    font-size: 2rem;
+    font-size: 1.8rem;
+    font-weight: 700;
     flex-shrink: 0;
     box-shadow: 0 4px 15px rgba(139, 0, 0, 0.25);
 }
@@ -1512,7 +1526,7 @@ include 'template/menu.php';
     .profile-avatar {
         width: 64px;
         height: 64px;
-        font-size: 1.5rem;
+        font-size: 1.4rem;
     }
 
     .profile-info h2 {

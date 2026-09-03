@@ -11,159 +11,58 @@ if (!isset($_SESSION['usuario'])) {
     exit;
 }
 
+// Cargar datos desde sesión
+if (!isset($_SESSION['coordinaciones'])) {
+    header('Location: coordinaciones_nacionales.php');
+    exit;
+}
+
+$coordinaciones = $_SESSION['coordinaciones'];
+
+$zonas_regionales = [
+    1 => '1 - Noroeste',
+    2 => '2 - Norte',
+    3 => '3 - Centro',
+    4 => '4 - Centro Occidente',
+    5 => '5 - Centro Sur',
+    6 => '6 - Sur',
+    7 => '7 - Ciudad de México'
+];
+
+// Personas asociadas a coordinaciones (con zona)
+$personas_asociadas = [
+    1 => [
+        ['id' => 1, 'nombre' => 'María González Pérez', 'cargo' => 'Coordinadora Nacional', 'zona' => null, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 5, 'nombre' => 'Laura Torres Vega', 'cargo' => 'Coordinadora Regional', 'zona' => 1, 'fecha_inicio' => '2024-07-01', 'fecha_fin' => null, 'activo' => true],
+    ],
+    2 => [
+        ['id' => 2, 'nombre' => 'Juan Martínez López', 'cargo' => 'Coordinador Nacional', 'zona' => null, 'fecha_inicio' => '2024-03-15', 'fecha_fin' => null, 'activo' => true],
+    ],
+    4 => [
+        ['id' => 3, 'nombre' => 'Ana Sánchez Ramírez', 'cargo' => 'Coordinadora Nacional', 'zona' => null, 'fecha_inicio' => '2024-06-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 7, 'nombre' => 'Patricia Flores Reyes', 'cargo' => 'Coordinadora Regional', 'zona' => 5, 'fecha_inicio' => '2024-04-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 15, 'nombre' => 'Sofía Reyes Gil', 'cargo' => 'Coordinadora Regional', 'zona' => 7, 'fecha_inicio' => '2024-12-01', 'fecha_fin' => null, 'activo' => true],
+    ],
+    5 => [
+        ['id' => 8, 'nombre' => 'Jorge Gómez García', 'cargo' => 'Coordinador Nacional', 'zona' => null, 'fecha_inicio' => '2024-08-01', 'fecha_fin' => null, 'activo' => true],
+    ],
+    9 => [
+        ['id' => 9, 'nombre' => 'Carmen Rivera Morales', 'cargo' => 'Coordinadora Nacional', 'zona' => null, 'fecha_inicio' => '2024-05-01', 'fecha_fin' => null, 'activo' => true],
+    ],
+    11 => [
+        ['id' => 13, 'nombre' => 'Teresa Ortega Luna', 'cargo' => 'Coordinadora Nacional', 'zona' => null, 'fecha_inicio' => '2024-11-15', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 14, 'nombre' => 'Ricardo Peña Fuentes', 'cargo' => 'Coordinador Regional', 'zona' => 6, 'fecha_inicio' => '2023-12-01', 'fecha_fin' => '2024-11-30', 'activo' => false],
+    ],
+    13 => [
+        ['id' => 16, 'nombre' => 'Fernando Cruz Salazar', 'cargo' => 'Coordinador Nacional', 'zona' => null, 'fecha_inicio' => '2024-07-01', 'fecha_fin' => null, 'activo' => true],
+    ]
+];
+
 // ============================================================
 // OBTENER ID DE LA COORDINACIÓN
 // ============================================================
 
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 1;
-
-// ============================================================
-// DATOS SIMULADOS
-// ============================================================
-
-$coordinaciones = [
-    [
-        'id' => 1,
-        'nombre' => 'Certificación Académica',
-        'descripcion' => 'Coordinación de Certificación Académica',
-        'orden' => 1,
-        'activo' => true,
-        'personas' => 2
-    ],
-    [
-        'id' => 2,
-        'nombre' => 'Academia ANFECA',
-        'descripcion' => 'Coordinación de la Academia ANFECA',
-        'orden' => 2,
-        'activo' => true,
-        'personas' => 1
-    ],
-    [
-        'id' => 3,
-        'nombre' => 'Emprendimiento Social',
-        'descripcion' => 'Coordinación de Emprendimiento Social',
-        'orden' => 3,
-        'activo' => true,
-        'personas' => 0
-    ],
-    [
-        'id' => 4,
-        'nombre' => 'Planes y Programas de Estudio',
-        'descripcion' => 'Coordinación de Planes y Programas de Estudio',
-        'orden' => 4,
-        'activo' => true,
-        'personas' => 3
-    ],
-    [
-        'id' => 5,
-        'nombre' => 'Investigación',
-        'descripcion' => 'Coordinación de Investigación',
-        'orden' => 5,
-        'activo' => true,
-        'personas' => 1
-    ],
-    [
-        'id' => 6,
-        'nombre' => 'Posgrado',
-        'descripcion' => 'Coordinación de Posgrado',
-        'orden' => 6,
-        'activo' => true,
-        'personas' => 0
-    ],
-    [
-        'id' => 7,
-        'nombre' => 'Maratones',
-        'descripcion' => 'Coordinación de Maratones',
-        'orden' => 7,
-        'activo' => true,
-        'personas' => 0
-    ],
-    [
-        'id' => 8,
-        'nombre' => 'Historia',
-        'descripcion' => 'Coordinación de Historia',
-        'orden' => 8,
-        'activo' => true,
-        'personas' => 0
-    ],
-    [
-        'id' => 9,
-        'nombre' => 'Vinculación Nacional e Internacional',
-        'descripcion' => 'Coordinación de Vinculación Nacional e Internacional',
-        'orden' => 9,
-        'activo' => true,
-        'personas' => 1
-    ],
-    [
-        'id' => 10,
-        'nombre' => 'Universidad-Empresa',
-        'descripcion' => 'Coordinación de Universidad-Empresa',
-        'orden' => 10,
-        'activo' => true,
-        'personas' => 0
-    ],
-    [
-        'id' => 11,
-        'nombre' => 'Formación Profesional Académica',
-        'descripcion' => 'Coordinación de Formación Profesional Académica',
-        'orden' => 11,
-        'activo' => true,
-        'personas' => 2
-    ],
-    [
-        'id' => 12,
-        'nombre' => 'Responsabilidad Social Universitaria',
-        'descripcion' => 'Coordinación de Responsabilidad Social Universitaria',
-        'orden' => 12,
-        'activo' => true,
-        'personas' => 0
-    ],
-    [
-        'id' => 13,
-        'nombre' => 'Igualdad de Género',
-        'descripcion' => 'Coordinación de Igualdad de Género',
-        'orden' => 13,
-        'activo' => true,
-        'personas' => 1
-    ],
-    [
-        'id' => 14,
-        'nombre' => 'Desarrollo Académico Estudiantil',
-        'descripcion' => 'Coordinación de Desarrollo Académico Estudiantil',
-        'orden' => 14,
-        'activo' => true,
-        'personas' => 0
-    ]
-];
-
-// Personas asociadas a coordinaciones
-$personas_asociadas = [
-    1 => [
-        ['id' => 1, 'nombre' => 'María González Pérez', 'cargo' => 'Coordinadora Nacional', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 5, 'nombre' => 'Laura Torres Vega', 'cargo' => 'Coordinadora Nacional', 'titular' => false, 'fecha_inicio' => '2024-07-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    2 => [
-        ['id' => 2, 'nombre' => 'Juan Martínez López', 'cargo' => 'Coordinador Nacional', 'titular' => true, 'fecha_inicio' => '2024-03-15', 'fecha_fin' => null, 'activo' => true],
-    ],
-    4 => [
-        ['id' => 4, 'nombre' => 'Ana Sánchez Ramírez', 'cargo' => 'Coordinadora Nacional', 'titular' => true, 'fecha_inicio' => '2024-06-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 6, 'nombre' => 'Patricia Flores Reyes', 'cargo' => 'Coordinadora Nacional', 'titular' => false, 'fecha_inicio' => '2024-04-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 7, 'nombre' => 'Sofía Reyes Gil', 'cargo' => 'Coordinadora Nacional', 'titular' => false, 'fecha_inicio' => '2024-12-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    5 => [
-        ['id' => 11, 'nombre' => 'Jorge Gómez García', 'cargo' => 'Coordinador Nacional', 'titular' => true, 'fecha_inicio' => '2024-08-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    9 => [
-        ['id' => 12, 'nombre' => 'Carmen Rivera Morales', 'cargo' => 'Coordinadora Nacional', 'titular' => true, 'fecha_inicio' => '2024-05-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    11 => [
-        ['id' => 13, 'nombre' => 'Teresa Ortega Luna', 'cargo' => 'Coordinadora Nacional', 'titular' => true, 'fecha_inicio' => '2024-11-15', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 14, 'nombre' => 'Ricardo Peña Fuentes', 'cargo' => 'Coordinador Nacional', 'titular' => false, 'fecha_inicio' => '2023-12-01', 'fecha_fin' => '2024-11-30', 'activo' => false],
-    ],
-    13 => [
-        ['id' => 16, 'nombre' => 'Fernando Cruz Salazar', 'cargo' => 'Coordinador Nacional', 'titular' => true, 'fecha_inicio' => '2024-07-01', 'fecha_fin' => null, 'activo' => true],
-    ]
-];
 
 // Buscar la coordinación
 $coordinacion = null;
@@ -204,10 +103,10 @@ include 'template/menu.php';
                 </div>
             </div>
             <div class="page-header-right">
-                <a href="coordinacion_edicion.php?id=<?= $coordinacion['id'] ?>" class="btn-primary-modern">
+                <button onclick="abrirModalEdicion(<?= $coordinacion['id'] ?>)" class="btn-primary-modern">
                     <i class="fas fa-edit"></i> Editar
-                </a>
-                <a href="coordinaciones.php" class="btn-outline-modern">
+                </button>
+                <a href="coordinaciones_nacionales.php" class="btn-outline-modern">
                     <i class="fas fa-arrow-left"></i> Volver al listado
                 </a>
             </div>
@@ -236,38 +135,7 @@ include 'template/menu.php';
                             <span class="status-dot"></span> <?= $estado_texto ?>
                         </span>
                         <span class="badge-orden">Orden #<?= $coordinacion['orden'] ?></span>
-                        <span class="badge-personas <?= $total_personas > 0 ? 'badge-personas-activo' : 'badge-personas-vacio' ?>">
-                            <i class="fas fa-users"></i> <?= $total_personas ?>
-                        </span>
                     </div>
-                </div>
-            </div>
-            <div class="profile-body">
-                <div class="profile-item">
-                    <span class="profile-label">Nombre</span>
-                    <span class="profile-value"><?= htmlspecialchars($coordinacion['nombre']) ?></span>
-                </div>
-                <div class="profile-item">
-                    <span class="profile-label">Descripción</span>
-                    <span class="profile-value"><?= htmlspecialchars($coordinacion['descripcion']) ?></span>
-                </div>
-                <div class="profile-item">
-                    <span class="profile-label">Orden</span>
-                    <span class="profile-value">#<?= $coordinacion['orden'] ?></span>
-                </div>
-                <div class="profile-item">
-                    <span class="profile-label">Estado</span>
-                    <span class="profile-value <?= $coordinacion['activo'] ? 'text-success' : 'text-danger' ?>">
-                        <?= $estado_texto ?>
-                    </span>
-                </div>
-                <div class="profile-item">
-                    <span class="profile-label">Total de Personas Asignadas</span>
-                    <span class="profile-value">
-                        <span class="badge-personas <?= $total_personas > 0 ? 'badge-personas-activo' : 'badge-personas-vacio' ?>">
-                            <?= $total_personas ?>
-                        </span>
-                    </span>
                 </div>
             </div>
         </div>
@@ -287,7 +155,7 @@ include 'template/menu.php';
                                     <tr>
                                         <th>Nombre</th>
                                         <th>Cargo</th>
-                                        <th>Titular</th>
+                                        <th>Zona</th>
                                         <th>Fecha Inicio</th>
                                         <th>Fecha Fin</th>
                                         <th>Estado</th>
@@ -299,6 +167,7 @@ include 'template/menu.php';
                                         $fecha_fin = $persona['fecha_fin'] ? date('d/m/Y', strtotime($persona['fecha_fin'])) : '---';
                                         $estado_persona = $persona['activo'] ? 'Activo' : 'Inactivo';
                                         $estado_persona_class = $persona['activo'] ? 'status-active' : 'status-inactive';
+                                        $zona_texto = $persona['zona'] ? ($zonas_regionales[$persona['zona']] ?? 'Sin zona') : 'Nacional';
                                     ?>
                                     <tr>
                                         <td>
@@ -308,11 +177,9 @@ include 'template/menu.php';
                                         </td>
                                         <td><?= htmlspecialchars($persona['cargo']) ?></td>
                                         <td>
-                                            <?php if ($persona['titular']): ?>
-                                                <span class="badge-titular">Sí</span>
-                                            <?php else: ?>
-                                                <span class="badge-no-titular">No</span>
-                                            <?php endif; ?>
+                                            <span class="badge-zona <?= $persona['zona'] === null ? 'badge-nacional' : '' ?>">
+                                                <?= htmlspecialchars($zona_texto) ?>
+                                            </span>
                                         </td>
                                         <td><?= $fecha_inicio ?></td>
                                         <td><?= $fecha_fin ?></td>
@@ -338,6 +205,51 @@ include 'template/menu.php';
 
     </div>
 </main>
+
+<!-- Modal Edición -->
+<div class="modal-overlay" id="modalEdicion" style="display:none;">
+    <div class="modal-card modal-card-coordinacion">
+        <div class="modal-header">
+            <i class="fas fa-edit" id="modalIcon"></i>
+            <h3 id="modalTitulo">Editar Coordinación</h3>
+            <button onclick="cerrarModalEdicion()" style="background:none;border:none;font-size:1.5rem;cursor:pointer;color:#999;margin-left:auto;">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <form method="POST" action="coordinacion_editar.php" id="formEdicion">
+            <input type="hidden" name="editar" value="1">
+            <input type="hidden" name="id_coordinacion" id="id_coordinacion" value="0">
+            
+            <div class="modal-body">
+                <div class="form-grid-modal">
+                    <div class="form-group">
+                        <label class="form-label required">Nombre de la Coordinación</label>
+                        <input type="text" name="nombre" id="nombre_edicion" class="form-control" placeholder="Ej. Certificación Académica" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Estado</label>
+                        <div class="checkbox-container">
+                            <input type="hidden" name="activo" value="0">
+                            <div class="toggle-modern" onclick="toggleVisibility(this)">
+                                <input type="checkbox" name="activo" id="activo_edicion" value="1" checked>
+                                <span class="toggle-slider"></span>
+                            </div>
+                            <label for="activo_edicion" style="font-size:0.85rem;color:#4a4a4a;cursor:pointer;">Activo</label>
+                        </div>
+                        <small class="form-hint">Desactive para ocultar la coordinación en los listados</small>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-modal-cancel" onclick="cerrarModalEdicion()">Cancelar</button>
+                <button type="submit" class="btn-modal-primary">
+                    <i class="fas fa-save"></i> Actualizar Coordinación
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 
 <style>
 /* ============================================================
@@ -516,7 +428,7 @@ include 'template/menu.php';
 
 .profile-meta {
     display: flex;
-    gap: 1rem;
+    gap: 0.75rem;
     flex-wrap: wrap;
     align-items: center;
 }
@@ -562,61 +474,6 @@ include 'template/menu.php';
     font-weight: 600;
 }
 
-.badge-personas {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.2rem 0.7rem;
-    border-radius: 20px;
-    font-size: 0.7rem;
-    font-weight: 600;
-}
-
-.badge-personas-activo {
-    background: #e8f5e9;
-    color: #2e7d32;
-}
-
-.badge-personas-vacio {
-    background: #f5f5f5;
-    color: #999;
-}
-
-.profile-body {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    padding: 1.25rem 1.75rem;
-}
-
-.profile-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-}
-
-.profile-label {
-    font-size: 0.7rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: #999;
-}
-
-.profile-value {
-    font-size: 0.95rem;
-    font-weight: 500;
-    color: #1a1a1a;
-}
-
-.text-success {
-    color: #2e7d32;
-}
-
-.text-danger {
-    color: #c62828;
-}
-
 .persona-link {
     color: #0d6efd;
     text-decoration: none;
@@ -627,6 +484,22 @@ include 'template/menu.php';
 .persona-link:hover {
     color: #0a58ca;
     text-decoration: underline;
+}
+
+.badge-zona {
+    display: inline-block;
+    padding: 0.2rem 0.7rem;
+    background: #f0ebeb;
+    color: #5a3a3a;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.badge-nacional {
+    background: #e3f2fd;
+    color: #0d47a1;
+    font-weight: 600;
 }
 
 .table-modern-container {
@@ -674,26 +547,6 @@ include 'template/menu.php';
     background: #faf8f8;
 }
 
-.badge-titular {
-    display: inline-block;
-    padding: 0.1rem 0.5rem;
-    background: #e8f5e9;
-    color: #2e7d32;
-    border-radius: 12px;
-    font-size: 0.7rem;
-    font-weight: 600;
-}
-
-.badge-no-titular {
-    display: inline-block;
-    padding: 0.1rem 0.5rem;
-    background: #f5f5f5;
-    color: #999;
-    border-radius: 12px;
-    font-size: 0.7rem;
-    font-weight: 600;
-}
-
 .status-active {
     display: inline-flex;
     align-items: center;
@@ -738,6 +591,214 @@ include 'template/menu.php';
     font-size: 0.95rem;
 }
 
+/* Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-card-coordinacion {
+    background: white;
+    border-radius: 16px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 2rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
+}
+
+.modal-card-coordinacion .modal-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #f5f0f0;
+}
+
+.modal-card-coordinacion .modal-header i {
+    font-size: 1.5rem;
+    color: #8B0000;
+}
+
+.modal-card-coordinacion .modal-header h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+.modal-card-coordinacion .modal-body {
+    margin-bottom: 1.5rem;
+}
+
+.modal-card-coordinacion .modal-footer {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    padding-top: 1rem;
+    border-top: 1px solid #f5f0f0;
+}
+
+.form-grid-modal {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+}
+
+.form-grid-modal .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.form-label {
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: #3a3a3a;
+}
+
+.form-label.required::after {
+    content: ' *';
+    color: #c62828;
+}
+
+.form-hint {
+    font-size: 0.7rem;
+    color: #999;
+    margin-top: 0.15rem;
+}
+
+.form-control {
+    padding: 0.7rem 1rem;
+    border: 2px solid #e8e8e8;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    background: #fafafa;
+    color: #1a1a1a;
+    width: 100%;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #8B0000;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(139, 0, 0, 0.06);
+}
+
+.form-control::placeholder {
+    color: #bbb;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.4rem 0;
+}
+
+.toggle-modern {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 22px;
+    cursor: pointer;
+}
+
+.toggle-modern input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-modern .toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #ccc;
+    transition: 0.3s;
+    border-radius: 22px;
+}
+
+.toggle-modern .toggle-slider:before {
+    content: "";
+    position: absolute;
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+    background: white;
+    transition: 0.3s;
+    border-radius: 50%;
+}
+
+.toggle-modern input:checked + .toggle-slider {
+    background: #8B0000;
+}
+
+.toggle-modern input:checked + .toggle-slider:before {
+    transform: translateX(18px);
+}
+
+.modal-card-coordinacion .btn-modal-cancel {
+    padding: 0.6rem 1.5rem;
+    background: white;
+    color: #4a4a4a;
+    border: 2px solid #e8e8e8;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.modal-card-coordinacion .btn-modal-cancel:hover {
+    border-color: #8B0000;
+    color: #8B0000;
+}
+
+.modal-card-coordinacion .btn-modal-primary {
+    padding: 0.6rem 1.8rem;
+    background: linear-gradient(135deg, #8B0000, #5C0000);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.modal-card-coordinacion .btn-modal-primary:hover {
+    opacity: 0.85;
+    transform: translateY(-1px);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
 @media (max-width: 768px) {
     .page-header {
         flex-direction: column;
@@ -773,12 +834,6 @@ include 'template/menu.php';
         justify-content: center;
     }
 
-    .profile-body {
-        grid-template-columns: 1fr;
-        gap: 0.75rem;
-        padding: 1rem;
-    }
-
     .detail-card {
         padding: 1.25rem;
     }
@@ -793,6 +848,20 @@ include 'template/menu.php';
     .table-modern tbody td {
         padding: 0.5rem 0.6rem;
         font-size: 0.8rem;
+    }
+
+    .modal-card-coordinacion {
+        padding: 1.25rem;
+        margin: 1rem;
+    }
+
+    .modal-card-coordinacion .modal-footer {
+        flex-direction: column;
+    }
+
+    .modal-card-coordinacion .modal-footer button {
+        width: 100%;
+        justify-content: center;
     }
 }
 
@@ -822,7 +891,97 @@ include 'template/menu.php';
         align-items: center;
         gap: 0.5rem;
     }
+
+    .modal-card-coordinacion {
+        padding: 1rem;
+        margin: 0.5rem;
+    }
 }
 </style>
+
+<script>
+// ============================================================
+// DATOS
+// ============================================================
+
+const coordinacionesData = <?= json_encode($coordinaciones) ?>;
+
+// ============================================================
+// MODAL - EDICIÓN
+// ============================================================
+
+function abrirModalEdicion(id) {
+    const coord = coordinacionesData.find(c => c.id === id);
+    if (!coord) {
+        mostrarMensaje('No se encontró la coordinación', 'error');
+        return;
+    }
+    
+    const modal = document.getElementById('modalEdicion');
+    document.getElementById('id_coordinacion').value = coord.id;
+    document.getElementById('nombre_edicion').value = coord.nombre;
+    document.getElementById('activo_edicion').checked = coord.activo;
+    document.getElementById('modalTitulo').textContent = 'Editar Coordinación';
+    
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => document.getElementById('nombre_edicion').focus(), 100);
+}
+
+function cerrarModalEdicion() {
+    const modal = document.getElementById('modalEdicion');
+    modal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+function toggleVisibility(element) {
+    const checkbox = element.querySelector('input[type="checkbox"]');
+    if (checkbox && !checkbox.disabled) {
+        checkbox.checked = !checkbox.checked;
+        const event = new Event('change', { bubbles: true });
+        checkbox.dispatchEvent(event);
+    }
+}
+
+// Cerrar modal al hacer clic fuera
+document.addEventListener('click', function(e) {
+    const modalEdicion = document.getElementById('modalEdicion');
+    if (e.target === modalEdicion) {
+        cerrarModalEdicion();
+    }
+});
+
+// ============================================================
+// MENSAJES
+// ============================================================
+
+function mostrarMensaje(mensaje, tipo) {
+    const mensajesAnteriores = document.querySelectorAll('.mensaje-flotante');
+    mensajesAnteriores.forEach(el => el.remove());
+    
+    const div = document.createElement('div');
+    div.className = `mensaje-flotante ${tipo}`;
+    div.innerHTML = `
+        <i class="fas ${tipo === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+        <div>
+            <strong>${tipo === 'success' ? '¡Éxito!' : '¡Atención!'}</strong> ${mensaje}
+        </div>
+        <button class="btn-cerrar-mensaje" onclick="this.parentElement.remove()">
+            <i class="fas fa-times"></i>
+        </button>
+    `;
+    
+    document.body.appendChild(div);
+    
+    setTimeout(function() {
+        if (div.parentElement) {
+            div.style.animation = 'slideUpMessage 0.3s ease';
+            setTimeout(function() {
+                div.remove();
+            }, 300);
+        }
+    }, 4000);
+}
+</script>
 
 <?php include 'template/footer.php'; ?>

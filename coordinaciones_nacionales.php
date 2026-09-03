@@ -12,135 +12,141 @@ if (!isset($_SESSION['usuario'])) {
 }
 
 // ============================================================
-// DATOS SIMULADOS
+// DATOS SIMULADOS - COORDINACIONES FIJAS (se guardan en sesión)
 // ============================================================
 
-// Coordinaciones Nacionales con orden
-$coordinaciones = [
-    [
-        'id' => 1,
-        'nombre' => 'Certificación Académica',
-        'descripcion' => 'Coordinación de Certificación Académica',
-        'orden' => 1,
-        'activo' => true,
-        'personas' => 2
-    ],
-    [
-        'id' => 2,
-        'nombre' => 'Academia ANFECA',
-        'descripcion' => 'Coordinación de la Academia ANFECA',
-        'orden' => 2,
-        'activo' => true,
-        'personas' => 1
-    ],
-    [
-        'id' => 3,
-        'nombre' => 'Emprendimiento Social',
-        'descripcion' => 'Coordinación de Emprendimiento Social',
-        'orden' => 3,
-        'activo' => true,
-        'personas' => 0
-    ],
-    [
-        'id' => 4,
-        'nombre' => 'Planes y Programas de Estudio',
-        'descripcion' => 'Coordinación de Planes y Programas de Estudio',
-        'orden' => 4,
-        'activo' => true,
-        'personas' => 3
-    ],
-    [
-        'id' => 5,
-        'nombre' => 'Investigación',
-        'descripcion' => 'Coordinación de Investigación',
-        'orden' => 5,
-        'activo' => true,
-        'personas' => 1
-    ],
-    [
-        'id' => 6,
-        'nombre' => 'Posgrado',
-        'descripcion' => 'Coordinación de Posgrado',
-        'orden' => 6,
-        'activo' => true,
-        'personas' => 0
-    ],
-    [
-        'id' => 7,
-        'nombre' => 'Maratones',
-        'descripcion' => 'Coordinación de Maratones',
-        'orden' => 7,
-        'activo' => true,
-        'personas' => 0
-    ],
-    [
-        'id' => 8,
-        'nombre' => 'Historia',
-        'descripcion' => 'Coordinación de Historia',
-        'orden' => 8,
-        'activo' => true,
-        'personas' => 0
-    ],
-    [
-        'id' => 9,
-        'nombre' => 'Vinculación Nacional e Internacional',
-        'descripcion' => 'Coordinación de Vinculación Nacional e Internacional',
-        'orden' => 9,
-        'activo' => true,
-        'personas' => 1
-    ],
-    [
-        'id' => 10,
-        'nombre' => 'Universidad-Empresa',
-        'descripcion' => 'Coordinación de Universidad-Empresa',
-        'orden' => 10,
-        'activo' => true,
-        'personas' => 0
-    ],
-    [
-        'id' => 11,
-        'nombre' => 'Formación Profesional Académica',
-        'descripcion' => 'Coordinación de Formación Profesional Académica',
-        'orden' => 11,
-        'activo' => true,
-        'personas' => 2
-    ],
-    [
-        'id' => 12,
-        'nombre' => 'Responsabilidad Social Universitaria',
-        'descripcion' => 'Coordinación de Responsabilidad Social Universitaria',
-        'orden' => 12,
-        'activo' => true,
-        'personas' => 0
-    ],
-    [
-        'id' => 13,
-        'nombre' => 'Igualdad de Género',
-        'descripcion' => 'Coordinación de Igualdad de Género',
-        'orden' => 13,
-        'activo' => true,
-        'personas' => 1
-    ],
-    [
-        'id' => 14,
-        'nombre' => 'Desarrollo Académico Estudiantil',
-        'descripcion' => 'Coordinación de Desarrollo Académico Estudiantil',
-        'orden' => 14,
-        'activo' => true,
-        'personas' => 0
-    ]
-];
+// Si no existen en sesión, cargar los datos iniciales
+if (!isset($_SESSION['coordinaciones'])) {
+    $_SESSION['coordinaciones'] = [
+        [
+            'id' => 1,
+            'nombre' => 'Certificación Académica',
+            'orden' => 1,
+            'activo' => true,
+            'personas' => 2
+        ],
+        [
+            'id' => 2,
+            'nombre' => 'Academia ANFECA',
+            'orden' => 2,
+            'activo' => true,
+            'personas' => 1
+        ],
+        [
+            'id' => 3,
+            'nombre' => 'Emprendimiento Social',
+            'orden' => 3,
+            'activo' => true,
+            'personas' => 0
+        ],
+        [
+            'id' => 4,
+            'nombre' => 'Planes y Programas de Estudio',
+            'orden' => 4,
+            'activo' => true,
+            'personas' => 3
+        ],
+        [
+            'id' => 5,
+            'nombre' => 'Investigación',
+            'orden' => 5,
+            'activo' => true,
+            'personas' => 1
+        ],
+        [
+            'id' => 6,
+            'nombre' => 'Posgrado',
+            'orden' => 6,
+            'activo' => true,
+            'personas' => 0
+        ],
+        [
+            'id' => 7,
+            'nombre' => 'Maratones',
+            'orden' => 7,
+            'activo' => true,
+            'personas' => 0
+        ],
+        [
+            'id' => 8,
+            'nombre' => 'Historia',
+            'orden' => 8,
+            'activo' => true,
+            'personas' => 0
+        ],
+        [
+            'id' => 9,
+            'nombre' => 'Vinculación Nacional e Internacional',
+            'orden' => 9,
+            'activo' => true,
+            'personas' => 1
+        ],
+        [
+            'id' => 10,
+            'nombre' => 'Universidad-Empresa',
+            'orden' => 10,
+            'activo' => true,
+            'personas' => 0
+        ],
+        [
+            'id' => 11,
+            'nombre' => 'Formación Profesional Académica',
+            'orden' => 11,
+            'activo' => true,
+            'personas' => 2
+        ],
+        [
+            'id' => 12,
+            'nombre' => 'Responsabilidad Social Universitaria',
+            'orden' => 12,
+            'activo' => true,
+            'personas' => 0
+        ],
+        [
+            'id' => 13,
+            'nombre' => 'Igualdad de Género',
+            'orden' => 13,
+            'activo' => true,
+            'personas' => 1
+        ],
+        [
+            'id' => 14,
+            'nombre' => 'Desarrollo Académico Estudiantil',
+            'orden' => 14,
+            'activo' => true,
+            'personas' => 0
+        ]
+    ];
+}
+
+// Cargar datos desde sesión
+$coordinaciones = &$_SESSION['coordinaciones'];
 
 // ID máximo para nuevos registros
 $ultimo_id = count($coordinaciones);
 
 // ============================================================
-// PROCESAR ACCIONES DEL CRUD
+// PROCESAR ACCIONES
 // ============================================================
 
 $mensaje = '';
 $error = '';
 $accion = isset($_GET['accion']) ? $_GET['accion'] : '';
+
+// Función para verificar si un nombre ya existe (excluyendo un ID opcional)
+function nombreExiste($nombre, $excluir_id = null) {
+    global $coordinaciones;
+    $nombre = trim(strtolower($nombre));
+    foreach ($coordinaciones as $c) {
+        if ($excluir_id !== null && $c['id'] == $excluir_id) {
+            continue;
+        }
+        if (strtolower(trim($c['nombre'])) === $nombre) {
+            return true;
+        }
+    }
+    return false;
+}
 
 // Eliminar coordinación
 if ($accion === 'eliminar' && isset($_GET['id'])) {
@@ -156,12 +162,12 @@ if ($accion === 'eliminar' && isset($_GET['id'])) {
     }
     
     if ($tiene_personas) {
-        $error = 'No se puede eliminar la coordinación porque tiene personas asociadas.';
+        $_SESSION['error'] = 'No se puede eliminar la coordinación porque tiene personas asociadas.';
     } else {
         foreach ($coordinaciones as $key => $c) {
             if ($c['id'] == $id_eliminar) {
                 unset($coordinaciones[$key]);
-                $mensaje = 'Coordinación eliminada exitosamente';
+                $_SESSION['mensaje'] = 'Coordinación eliminada exitosamente';
                 break;
             }
         }
@@ -170,131 +176,127 @@ if ($accion === 'eliminar' && isset($_GET['id'])) {
         foreach ($coordinaciones as $index => &$c) {
             $c['orden'] = $index + 1;
         }
+        unset($c);
     }
+    header('Location: coordinaciones_nacionales.php');
+    exit;
 }
 
-// Reordenar - Subir
-if ($accion === 'subir' && isset($_GET['id'])) {
-    $id_mover = (int)$_GET['id'];
-    $index_actual = -1;
-    foreach ($coordinaciones as $i => $c) {
-        if ($c['id'] == $id_mover) {
-            $index_actual = $i;
-            break;
-        }
-    }
+// Procesar reordenamiento vía POST (AJAX - Drag & Drop)
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion']) && $_POST['accion'] == 'reordenar') {
+    $ordenes = isset($_POST['ordenes']) ? json_decode($_POST['ordenes'], true) : [];
+    $response = ['success' => false, 'message' => 'Error al reordenar'];
     
-    if ($index_actual > 0) {
-        // Intercambiar órdenes
-        $temp_orden = $coordinaciones[$index_actual]['orden'];
-        $coordinaciones[$index_actual]['orden'] = $coordinaciones[$index_actual - 1]['orden'];
-        $coordinaciones[$index_actual - 1]['orden'] = $temp_orden;
-        
-        // Reordenar array por orden
-        usort($coordinaciones, function($a, $b) {
-            return $a['orden'] <=> $b['orden'];
-        });
-        
-        $mensaje = 'Coordinación reordenada exitosamente';
-    }
-}
-
-// Reordenar - Bajar
-if ($accion === 'bajar' && isset($_GET['id'])) {
-    $id_mover = (int)$_GET['id'];
-    $index_actual = -1;
-    foreach ($coordinaciones as $i => $c) {
-        if ($c['id'] == $id_mover) {
-            $index_actual = $i;
-            break;
-        }
-    }
-    
-    if ($index_actual < count($coordinaciones) - 1) {
-        // Intercambiar órdenes
-        $temp_orden = $coordinaciones[$index_actual]['orden'];
-        $coordinaciones[$index_actual]['orden'] = $coordinaciones[$index_actual + 1]['orden'];
-        $coordinaciones[$index_actual + 1]['orden'] = $temp_orden;
-        
-        // Reordenar array por orden
-        usort($coordinaciones, function($a, $b) {
-            return $a['orden'] <=> $b['orden'];
-        });
-        
-        $mensaje = 'Coordinación reordenada exitosamente';
-    }
-}
-
-// Procesar formulario (Registro/Edición)
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $errores = [];
-    
-    $nombre = trim($_POST['nombre'] ?? '');
-    $descripcion = trim($_POST['descripcion'] ?? '');
-    $activo = isset($_POST['activo']) ? true : false;
-    $id_coordinacion = isset($_POST['id_coordinacion']) ? (int)$_POST['id_coordinacion'] : 0;
-    
-    if (empty($nombre)) $errores[] = 'Nombre de la coordinación';
-    
-    if (empty($errores)) {
-        if ($id_coordinacion > 0) {
-            // Editar coordinación existente
-            $encontrado = false;
-            foreach ($coordinaciones as $key => $c) {
-                if ($c['id'] == $id_coordinacion) {
-                    $coordinaciones[$key]['nombre'] = $nombre;
-                    $coordinaciones[$key]['descripcion'] = $descripcion;
-                    $coordinaciones[$key]['activo'] = $activo;
-                    $encontrado = true;
-                    $mensaje = 'Coordinación actualizada exitosamente';
+    if (!empty($ordenes)) {
+        // Actualizar órdenes
+        foreach ($coordinaciones as &$c) {
+            foreach ($ordenes as $item) {
+                if ($c['id'] == $item['id']) {
+                    $c['orden'] = (int)$item['orden'];
                     break;
                 }
             }
-            if (!$encontrado) {
-                $error = 'Coordinación no encontrada';
-            }
-        } else {
-            // Registrar nueva coordinación
-            $ultimo_id++;
-            $nuevo_orden = count($coordinaciones) + 1;
-            $coordinaciones[] = [
-                'id' => $ultimo_id,
-                'nombre' => $nombre,
-                'descripcion' => $descripcion,
-                'orden' => $nuevo_orden,
-                'activo' => $activo,
-                'personas' => 0
-            ];
-            $mensaje = 'Coordinación registrada exitosamente';
         }
+        unset($c);
         
-        if (empty($error)) {
-            header('Location: coordinaciones.php?mensaje=' . urlencode($mensaje));
-            exit;
-        }
+        // Reordenar array por orden
+        usort($coordinaciones, function($a, $b) {
+            return $a['orden'] <=> $b['orden'];
+        });
+        
+        $response = ['success' => true, 'message' => ''];
+    }
+    
+    header('Content-Type: application/json');
+    echo json_encode($response);
+    exit;
+}
+
+// Registrar nueva coordinación
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['registrar']) && $_POST['registrar'] == '1') {
+    $errores = [];
+    
+    $nombre = trim($_POST['nombre'] ?? '');
+    $activo = isset($_POST['activo']) ? true : false;
+    
+    if (empty($nombre)) {
+        $errores[] = 'Nombre de la coordinación';
+    } elseif (nombreExiste($nombre)) {
+        $errores[] = 'Ya existe una coordinación con ese nombre';
+    }
+    
+    if (empty($errores)) {
+        $ultimo_id++;
+        $nuevo_orden = count($coordinaciones) + 1;
+        $coordinaciones[] = [
+            'id' => $ultimo_id,
+            'nombre' => $nombre,
+            'orden' => $nuevo_orden,
+            'activo' => $activo,
+            'personas' => 0
+        ];
+        $_SESSION['mensaje'] = 'Coordinación registrada exitosamente';
+        header('Location: coordinaciones_nacionales.php');
+        exit;
     } else {
-        $error = 'Complete los campos obligatorios: ' . implode(', ', $errores);
+        $_SESSION['error'] = 'Complete los campos obligatorios: ' . implode(', ', $errores);
+        header('Location: coordinaciones_nacionales.php');
+        exit;
     }
 }
 
-// Mostrar mensaje desde URL
-if (isset($_GET['mensaje'])) {
-    $mensaje = $_GET['mensaje'];
+// Editar coordinación (solo nombre y estado)
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['editar']) && $_POST['editar'] == '1') {
+    $errores = [];
+    
+    $nombre = trim($_POST['nombre'] ?? '');
+    $activo = isset($_POST['activo']) ? true : false;
+    $id_coordinacion = isset($_POST['id_coordinacion']) ? (int)$_POST['id_coordinacion'] : 0;
+    
+    if (empty($nombre)) {
+        $errores[] = 'Nombre de la coordinación';
+    } elseif (nombreExiste($nombre, $id_coordinacion)) {
+        $errores[] = 'Ya existe una coordinación con ese nombre';
+    }
+    
+    if (empty($errores)) {
+        $encontrado = false;
+        foreach ($coordinaciones as $key => $c) {
+            if ($c['id'] == $id_coordinacion) {
+                $coordinaciones[$key]['nombre'] = $nombre;
+                $coordinaciones[$key]['activo'] = $activo;
+                $encontrado = true;
+                $_SESSION['mensaje'] = 'Coordinación actualizada exitosamente';
+                break;
+            }
+        }
+        if (!$encontrado) {
+            $_SESSION['error'] = 'Coordinación no encontrada';
+        }
+    } else {
+        $_SESSION['error'] = 'Complete los campos obligatorios: ' . implode(', ', $errores);
+    }
+    header('Location: coordinaciones_nacionales.php');
+    exit;
+}
+
+// Mostrar mensajes desde sesión
+if (isset($_SESSION['mensaje'])) {
+    $mensaje = $_SESSION['mensaje'];
+    unset($_SESSION['mensaje']);
+}
+
+if (isset($_SESSION['error'])) {
+    $error = $_SESSION['error'];
+    unset($_SESSION['error']);
 }
 
 // ============================================================
-// FILTROS Y ORDENAMIENTO
+// FILTROS
 // ============================================================
 
 $estado_filtro = isset($_GET['estado']) ? $_GET['estado'] : '';
 $busqueda = isset($_GET['buscar']) ? trim($_GET['buscar']) : '';
-
-$orden_columna = isset($_GET['orden_columna']) ? $_GET['orden_columna'] : '';
-$orden_direccion = isset($_GET['orden_direccion']) ? $_GET['orden_direccion'] : 'asc';
-
-// Paginación
-$pagina_actual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
-$registros_por_pagina = 6;
 
 $coordinaciones_filtradas = $coordinaciones;
 
@@ -302,8 +304,7 @@ $coordinaciones_filtradas = $coordinaciones;
 if (!empty($busqueda)) {
     $busqueda = strtolower($busqueda);
     $coordinaciones_filtradas = array_filter($coordinaciones_filtradas, function($c) use ($busqueda) {
-        return strpos(strtolower($c['nombre']), $busqueda) !== false ||
-               strpos(strtolower($c['descripcion']), $busqueda) !== false;
+        return strpos(strtolower($c['nombre']), $busqueda) !== false;
     });
 }
 
@@ -322,47 +323,7 @@ usort($coordinaciones_filtradas, function($a, $b) {
     return $a['orden'] <=> $b['orden'];
 });
 
-// Si se selecciona otra columna para ordenar
-if (!empty($orden_columna) && $orden_columna != 'orden') {
-    usort($coordinaciones_filtradas, function($a, $b) use ($orden_columna, $orden_direccion) {
-        $valor_a = '';
-        $valor_b = '';
-        
-        switch ($orden_columna) {
-            case 'nombre':
-                $valor_a = $a['nombre'];
-                $valor_b = $b['nombre'];
-                break;
-            case 'personas':
-                $valor_a = $a['personas'] ?? 0;
-                $valor_b = $b['personas'] ?? 0;
-                break;
-            case 'activo':
-                $valor_a = $a['activo'] ? 1 : 0;
-                $valor_b = $b['activo'] ? 1 : 0;
-                break;
-            default:
-                $valor_a = $a['orden'];
-                $valor_b = $b['orden'];
-        }
-        
-        if ($orden_direccion == 'asc') {
-            return $valor_a <=> $valor_b;
-        } else {
-            return $valor_b <=> $valor_a;
-        }
-    });
-}
-
-// Calcular total de registros
 $total_registros = count($coordinaciones_filtradas);
-$total_paginas = ceil($total_registros / $registros_por_pagina);
-
-if ($pagina_actual < 1) $pagina_actual = 1;
-if ($pagina_actual > $total_paginas && $total_paginas > 0) $pagina_actual = $total_paginas;
-
-$offset = ($pagina_actual - 1) * $registros_por_pagina;
-$coordinaciones_paginadas = array_slice($coordinaciones_filtradas, $offset, $registros_por_pagina);
 
 include 'template/header.php';
 include 'template/menu.php';
@@ -383,9 +344,6 @@ include 'template/menu.php';
                 </div>
             </div>
             <div class="page-header-right">
-                <button onclick="descargarCSV()" class="btn-outline-modern">
-                    <i class="fas fa-file-csv"></i> Exportar CSV
-                </button>
                 <button onclick="abrirModalRegistro()" class="btn-primary-modern">
                     <i class="fas fa-plus-circle"></i> Nueva Coordinación
                 </button>
@@ -435,7 +393,7 @@ include 'template/menu.php';
                         <i class="fas fa-sliders-h"></i> Aplicar
                     </button>
                     
-                    <a href="coordinaciones.php" class="btn-filter-clear <?= (empty($busqueda) && empty($estado_filtro)) ? 'disabled' : '' ?>">
+                    <a href="coordinaciones_nacionales.php" class="btn-filter-clear <?= (empty($busqueda) && empty($estado_filtro)) ? 'disabled' : '' ?>">
                         <i class="fas fa-times"></i> Limpiar
                     </a>
                 </div>
@@ -450,80 +408,38 @@ include 'template/menu.php';
             </div>
         </div>
 
-        <!-- Tabla -->
+        <!-- Tabla con Drag & Drop -->
         <div class="table-modern-container">
             <div class="table-modern-wrapper">
                 <table class="table-modern" id="tablaCoordinaciones">
                     <thead>
                         <tr>
-                            <th class="col-orden">
-                                <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'orden', 'orden_direccion' => ($orden_columna == 'orden' && $orden_direccion == 'asc') ? 'desc' : 'asc', 'pagina' => 1])) ?>" 
-                                   class="sort-link <?= $orden_columna == 'orden' || empty($orden_columna) ? 'active' : '' ?>">
-                                    <span class="sort-label">#</span>
-                                    <?php if ($orden_columna == 'orden' || empty($orden_columna)): ?>
-                                        <i class="fas fa-chevron-<?= $orden_direccion == 'asc' ? 'up' : 'down' ?>"></i>
-                                    <?php else: ?>
-                                        <i class="fas fa-sort sort-icon-inactive"></i>
-                                    <?php endif; ?>
-                                </a>
-                            </th>
-                            <th class="col-nombre">
-                                <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'nombre', 'orden_direccion' => ($orden_columna == 'nombre' && $orden_direccion == 'asc') ? 'desc' : 'asc', 'pagina' => 1])) ?>" 
-                                   class="sort-link <?= $orden_columna == 'nombre' ? 'active' : '' ?>">
-                                    <span class="sort-label">Coordinación</span>
-                                    <?php if ($orden_columna == 'nombre'): ?>
-                                        <i class="fas fa-chevron-<?= $orden_direccion == 'asc' ? 'up' : 'down' ?>"></i>
-                                    <?php else: ?>
-                                        <i class="fas fa-sort sort-icon-inactive"></i>
-                                    <?php endif; ?>
-                                </a>
-                            </th>
-                            <th class="col-descripcion">Descripción</th>
-                            <th class="col-personas">
-                                <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'personas', 'orden_direccion' => ($orden_columna == 'personas' && $orden_direccion == 'asc') ? 'desc' : 'asc', 'pagina' => 1])) ?>" 
-                                   class="sort-link <?= $orden_columna == 'personas' ? 'active' : '' ?>">
-                                    <span class="sort-label">Personas</span>
-                                    <?php if ($orden_columna == 'personas'): ?>
-                                        <i class="fas fa-chevron-<?= $orden_direccion == 'asc' ? 'up' : 'down' ?>"></i>
-                                    <?php else: ?>
-                                        <i class="fas fa-sort sort-icon-inactive"></i>
-                                    <?php endif; ?>
-                                </a>
-                            </th>
-                            <th class="col-estado">
-                                <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'activo', 'orden_direccion' => ($orden_columna == 'activo' && $orden_direccion == 'asc') ? 'desc' : 'asc', 'pagina' => 1])) ?>" 
-                                   class="sort-link <?= $orden_columna == 'activo' ? 'active' : '' ?>">
-                                    <span class="sort-label">Estado</span>
-                                    <?php if ($orden_columna == 'activo'): ?>
-                                        <i class="fas fa-chevron-<?= $orden_direccion == 'asc' ? 'up' : 'down' ?>"></i>
-                                    <?php else: ?>
-                                        <i class="fas fa-sort sort-icon-inactive"></i>
-                                    <?php endif; ?>
-                                </a>
-                            </th>
-                            <th class="col-ordenar">Orden</th>
+                            <th class="col-nombre">Coordinación</th>
+                            <th class="col-orden">#</th>
+                            <th class="col-personas">Personas</th>
+                            <th class="col-estado">Estado</th>
                             <th class="col-acciones">Acciones</th>
                         </tr>
                     </thead>
                     <tbody id="tbodyCoordinaciones">
-                        <?php if (count($coordinaciones_paginadas) > 0): ?>
-                            <?php foreach ($coordinaciones_paginadas as $coord): 
+                        <?php if (count($coordinaciones_filtradas) > 0): ?>
+                            <?php foreach ($coordinaciones_filtradas as $coord): 
                                 $estado_texto = $coord['activo'] ? 'Activo' : 'Inactivo';
                                 $estado_class = $coord['activo'] ? 'status-active' : 'status-inactive';
-                                $puede_eliminar = $coord['personas'] == 0;
-                                $es_primero = $coord['orden'] == 1;
-                                $es_ultimo = $coord['orden'] == count($coordinaciones_filtradas);
+                                $tiene_personas = $coord['personas'] > 0;
                             ?>
-                            <tr data-id="<?= $coord['id'] ?>" data-orden="<?= $coord['orden'] ?>">
-                                <td>
-                                    <span class="badge-orden"><?= $coord['orden'] ?></span>
-                                </td>
+                            <tr data-id="<?= $coord['id'] ?>" data-orden="<?= $coord['orden'] ?>" draggable="true">
                                 <td>
                                     <div class="coord-cell">
+                                        <div class="drag-handle" title="Arrastrar para reordenar">
+                                            <i class="fas fa-grip-vertical"></i>
+                                        </div>
                                         <div class="coord-nombre"><?= htmlspecialchars($coord['nombre']) ?></div>
                                     </div>
                                 </td>
-                                <td><?= htmlspecialchars($coord['descripcion']) ?></td>
+                                <td>
+                                    <span class="badge-orden"><?= $coord['orden'] ?></span>
+                                </td>
                                 <td>
                                     <span class="badge-personas <?= $coord['personas'] > 0 ? 'badge-personas-activo' : 'badge-personas-vacio' ?>">
                                         <?= $coord['personas'] ?>
@@ -535,29 +451,6 @@ include 'template/menu.php';
                                     </span>
                                 </td>
                                 <td>
-                                    <div class="orden-buttons">
-                                        <?php if (!$es_primero): ?>
-                                            <a href="coordinaciones.php?accion=subir&id=<?= $coord['id'] ?>" class="btn-orden btn-subir" title="Subir posición">
-                                                <i class="fas fa-chevron-up"></i>
-                                            </a>
-                                        <?php else: ?>
-                                            <span class="btn-orden btn-orden-disabled">
-                                                <i class="fas fa-chevron-up" style="opacity:0.3;"></i>
-                                            </span>
-                                        <?php endif; ?>
-                                        
-                                        <?php if (!$es_ultimo): ?>
-                                            <a href="coordinaciones.php?accion=bajar&id=<?= $coord['id'] ?>" class="btn-orden btn-bajar" title="Bajar posición">
-                                                <i class="fas fa-chevron-down"></i>
-                                            </a>
-                                        <?php else: ?>
-                                            <span class="btn-orden btn-orden-disabled">
-                                                <i class="fas fa-chevron-down" style="opacity:0.3;"></i>
-                                            </span>
-                                        <?php endif; ?>
-                                    </div>
-                                </td>
-                                <td>
                                     <div class="acciones-group">
                                         <a href="coordinacion_consulta.php?id=<?= $coord['id'] ?>" class="btn-accion btn-ver" title="Consultar">
                                             <i class="fas fa-eye"></i>
@@ -565,13 +458,13 @@ include 'template/menu.php';
                                         <button onclick="abrirModalEdicion(<?= $coord['id'] ?>)" class="btn-accion btn-editar" title="Editar">
                                             <i class="fas fa-pen"></i>
                                         </button>
-                                        <?php if ($puede_eliminar): ?>
-                                            <button onclick="eliminarCoordinacion(<?= $coord['id'] ?>)" class="btn-accion btn-eliminar" title="Eliminar">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        <?php else: ?>
+                                        <?php if ($tiene_personas): ?>
                                             <button class="btn-accion btn-eliminar btn-eliminar-bloqueado" title="No se puede eliminar (tiene personas asociadas)">
                                                 <i class="fas fa-lock"></i>
+                                            </button>
+                                        <?php else: ?>
+                                            <button onclick="eliminarCoordinacion(<?= $coord['id'] ?>)" class="btn-accion btn-eliminar" title="Eliminar">
+                                                <i class="fas fa-trash-alt"></i>
                                             </button>
                                         <?php endif; ?>
                                     </div>
@@ -580,7 +473,7 @@ include 'template/menu.php';
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="7" class="empty-row">
+                                <td colspan="5" class="empty-row">
                                     <i class="fas fa-sitemap"></i>
                                     <p>No se encontraron coordinaciones con los filtros aplicados</p>
                                 </td>
@@ -589,107 +482,94 @@ include 'template/menu.php';
                     </tbody>
                 </table>
             </div>
-            
-            <!-- Paginación -->
-            <?php if ($total_paginas > 1): ?>
-            <div class="pagination-container">
-                <div class="pagination-info">
-                    Mostrando <strong><?= count($coordinaciones_paginadas) ?></strong> de <strong><?= $total_registros ?></strong> registros
-                    <?php if ($total_paginas > 1): ?>
-                        (Página <?= $pagina_actual ?> de <?= $total_paginas ?>)
-                    <?php endif; ?>
-                </div>
-                <div class="pagination-controls">
-                    <?php if ($pagina_actual > 1): ?>
-                        <a href="?<?= http_build_query(array_merge($_GET, ['pagina' => $pagina_actual - 1])) ?>" class="pagination-btn">
-                            <i class="fas fa-chevron-left"></i> Anterior
-                        </a>
-                    <?php else: ?>
-                        <span class="pagination-btn disabled">
-                            <i class="fas fa-chevron-left"></i> Anterior
-                        </span>
-                    <?php endif; ?>
-                    
-                    <?php
-                    $rango = 2;
-                    $inicio = max(1, $pagina_actual - $rango);
-                    $fin = min($total_paginas, $pagina_actual + $rango);
-                    
-                    if ($inicio > 1) {
-                        echo '<a href="?' . http_build_query(array_merge($_GET, ['pagina' => 1])) . '" class="pagination-num">1</a>';
-                        if ($inicio > 2) echo '<span class="pagination-dots">...</span>';
-                    }
-                    
-                    for ($i = $inicio; $i <= $fin; $i++) {
-                        $active = $i == $pagina_actual ? 'active' : '';
-                        echo '<a href="?' . http_build_query(array_merge($_GET, ['pagina' => $i])) . '" class="pagination-num ' . $active . '">' . $i . '</a>';
-                    }
-                    
-                    if ($fin < $total_paginas) {
-                        if ($fin < $total_paginas - 1) echo '<span class="pagination-dots">...</span>';
-                        echo '<a href="?' . http_build_query(array_merge($_GET, ['pagina' => $total_paginas])) . '" class="pagination-num">' . $total_paginas . '</a>';
-                    }
-                    ?>
-                    
-                    <?php if ($pagina_actual < $total_paginas): ?>
-                        <a href="?<?= http_build_query(array_merge($_GET, ['pagina' => $pagina_actual + 1])) ?>" class="pagination-btn">
-                            Siguiente <i class="fas fa-chevron-right"></i>
-                        </a>
-                    <?php else: ?>
-                        <span class="pagination-btn disabled">
-                            Siguiente <i class="fas fa-chevron-right"></i>
-                        </span>
-                    <?php endif; ?>
-                </div>
-            </div>
-            <?php endif; ?>
         </div>
 
     </div>
 </main>
 
-<!-- Modal Registro/Edición -->
-<div class="modal-overlay" id="modalCoordinacion" style="display:none;">
+<!-- Modal Registro -->
+<div class="modal-overlay" id="modalRegistro" style="display:none;">
     <div class="modal-card modal-card-coordinacion">
         <div class="modal-header">
-            <i class="fas fa-sitemap" id="modalIcon"></i>
-            <h3 id="modalTitulo">Registrar Nueva Coordinación</h3>
-            <button onclick="cerrarModal()" style="background:none;border:none;font-size:1.5rem;cursor:pointer;color:#999;margin-left:auto;">
+            <i class="fas fa-plus-circle"></i>
+            <h3>Registrar Nueva Coordinación</h3>
+            <button onclick="cerrarModalRegistro()" style="background:none;border:none;font-size:1.5rem;cursor:pointer;color:#999;margin-left:auto;">
                 <i class="fas fa-times"></i>
             </button>
         </div>
-        <form method="POST" id="formCoordinacion">
-            <input type="hidden" name="id_coordinacion" id="id_coordinacion" value="0">
+        <form method="POST" action="coordinaciones_nacionales.php" id="formRegistro">
+            <input type="hidden" name="registrar" value="1">
             
             <div class="modal-body">
                 <div class="form-grid-modal">
                     <div class="form-group">
                         <label class="form-label required">Nombre de la Coordinación</label>
-                        <input type="text" name="nombre" id="nombre" class="form-control" placeholder="Ej. Certificación Académica" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Descripción</label>
-                        <input type="text" name="descripcion" id="descripcion" class="form-control" placeholder="Descripción de la coordinación">
+                        <input type="text" name="nombre" id="nombre_registro" class="form-control" placeholder="Ej. Certificación Académica" required>
                     </div>
                     
                     <div class="form-group">
                         <label class="form-label">Estado</label>
                         <div class="checkbox-container">
+                            <input type="hidden" name="activo" value="0">
                             <div class="toggle-modern" onclick="toggleVisibility(this)">
-                                <input type="checkbox" name="activo" id="activo" value="1" checked>
+                                <input type="checkbox" name="activo" id="activo_registro" value="1" checked>
                                 <span class="toggle-slider"></span>
                             </div>
-                            <label for="activo" style="font-size:0.85rem;color:#4a4a4a;cursor:pointer;">Activo</label>
+                            <label for="activo_registro" style="font-size:0.85rem;color:#4a4a4a;cursor:pointer;">Activo</label>
                         </div>
                         <small class="form-hint">Desactive para ocultar la coordinación en los listados</small>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn-modal-cancel" onclick="cerrarModal()">Cancelar</button>
-                <button type="submit" class="btn-modal-primary" id="btnGuardar">
+                <button type="button" class="btn-modal-cancel" onclick="cerrarModalRegistro()">Cancelar</button>
+                <button type="submit" class="btn-modal-primary">
                     <i class="fas fa-save"></i> Guardar Coordinación
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Edición (solo nombre y estado) -->
+<div class="modal-overlay" id="modalEdicion" style="display:none;">
+    <div class="modal-card modal-card-coordinacion">
+        <div class="modal-header">
+            <i class="fas fa-edit" id="modalIcon"></i>
+            <h3 id="modalTitulo">Editar Coordinación</h3>
+            <button onclick="cerrarModalEdicion()" style="background:none;border:none;font-size:1.5rem;cursor:pointer;color:#999;margin-left:auto;">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <form method="POST" action="coordinaciones_nacionales.php" id="formEdicion">
+            <input type="hidden" name="editar" value="1">
+            <input type="hidden" name="id_coordinacion" id="id_coordinacion" value="0">
+            
+            <div class="modal-body">
+                <div class="form-grid-modal">
+                    <div class="form-group">
+                        <label class="form-label required">Nombre de la Coordinación</label>
+                        <input type="text" name="nombre" id="nombre_edicion" class="form-control" placeholder="Ej. Certificación Académica" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Estado</label>
+                        <div class="checkbox-container">
+                            <input type="hidden" name="activo" value="0">
+                            <div class="toggle-modern" onclick="toggleVisibility(this)">
+                                <input type="checkbox" name="activo" id="activo_edicion" value="1" checked>
+                                <span class="toggle-slider"></span>
+                            </div>
+                            <label for="activo_edicion" style="font-size:0.85rem;color:#4a4a4a;cursor:pointer;">Activo</label>
+                        </div>
+                        <small class="form-hint">Desactive para ocultar la coordinación en los listados</small>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-modal-cancel" onclick="cerrarModalEdicion()">Cancelar</button>
+                <button type="submit" class="btn-modal-primary">
+                    <i class="fas fa-save"></i> Actualizar Coordinación
                 </button>
             </div>
         </form>
@@ -771,27 +651,6 @@ include 'template/menu.php';
     transform: translateY(-2px);
     box-shadow: 0 6px 25px rgba(139, 0, 0, 0.35);
     color: white;
-}
-
-.btn-outline-modern {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    padding: 0.75rem 1.5rem;
-    background: white;
-    color: #4a4a4a;
-    border: 2px solid #e8e8e8;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
-}
-
-.btn-outline-modern:hover {
-    border-color: #8B0000;
-    color: #8B0000;
 }
 
 .alert-modern {
@@ -994,7 +853,7 @@ include 'template/menu.php';
     border-collapse: collapse;
     font-size: 0.9rem;
     table-layout: fixed;
-    min-width: 850px;
+    min-width: 600px;
 }
 
 .table-modern thead {
@@ -1015,33 +874,25 @@ include 'template/menu.php';
     text-overflow: ellipsis;
 }
 
+.col-nombre {
+    width: 38%;
+    min-width: 180px;
+}
 .col-orden {
-    width: 6%;
+    width: 10%;
     min-width: 50px;
 }
-.col-nombre {
-    width: 22%;
-    min-width: 140px;
-}
-.col-descripcion {
-    width: 25%;
-    min-width: 150px;
-}
 .col-personas {
-    width: 8%;
+    width: 12%;
     min-width: 70px;
 }
 .col-estado {
-    width: 10%;
-    min-width: 80px;
-}
-.col-ordenar {
-    width: 10%;
+    width: 15%;
     min-width: 80px;
 }
 .col-acciones {
-    width: 16%;
-    min-width: 110px;
+    width: 25%;
+    min-width: 130px;
 }
 
 .table-modern tbody td {
@@ -1061,40 +912,43 @@ include 'template/menu.php';
     background: #faf8f8;
 }
 
-.sort-link {
-    color: #6b6b6b;
-    text-decoration: none;
+.table-modern tbody tr.dragging {
+    opacity: 0.5;
+}
+
+.table-modern tbody tr.drag-over {
+    border-bottom: 3px solid #8B0000;
+}
+
+.drag-handle {
     display: inline-flex;
     align-items: center;
-    gap: 0.3rem;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    color: #bbb;
+    cursor: grab;
     transition: color 0.2s ease;
-    cursor: pointer;
-    white-space: nowrap;
+    flex-shrink: 0;
 }
 
-.sort-link .sort-label {
-    display: inline-block;
-}
-
-.sort-link .sort-icon-inactive {
-    color: #c0c0c0;
-    font-size: 0.6rem;
-}
-
-.sort-link:hover {
+.drag-handle:hover {
     color: #8B0000;
 }
 
-.sort-link.active {
-    color: #8B0000;
+.drag-handle:active {
+    cursor: grabbing;
 }
 
-.sort-link.active .sort-icon-inactive {
-    display: none;
+.coord-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
-.sort-link i {
-    font-size: 0.6rem;
+.coord-nombre {
+    font-weight: 600;
+    color: #1a1a1a;
 }
 
 .badge-orden {
@@ -1108,11 +962,6 @@ include 'template/menu.php';
     font-family: monospace;
     text-align: center;
     min-width: 24px;
-}
-
-.coord-nombre {
-    font-weight: 600;
-    color: #1a1a1a;
 }
 
 .badge-personas {
@@ -1159,53 +1008,6 @@ include 'template/menu.php';
 
 .status-inactive i {
     font-size: 0.5rem;
-}
-
-.orden-buttons {
-    display: flex;
-    gap: 0.25rem;
-    align-items: center;
-}
-
-.btn-orden {
-    width: 28px;
-    height: 28px;
-    border-radius: 6px;
-    border: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.7rem;
-    transition: all 0.2s ease;
-    cursor: pointer;
-    text-decoration: none;
-}
-
-.btn-subir {
-    background: #e8f5e9;
-    color: #2e7d32;
-}
-
-.btn-subir:hover {
-    background: #2e7d32;
-    color: white;
-}
-
-.btn-bajar {
-    background: #e3f2fd;
-    color: #0d47a1;
-}
-
-.btn-bajar:hover {
-    background: #0d47a1;
-    color: white;
-}
-
-.btn-orden-disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-    background: #f5f5f5;
-    color: #999;
 }
 
 .acciones-group {
@@ -1287,92 +1089,6 @@ include 'template/menu.php';
     font-size: 0.95rem;
 }
 
-.pagination-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.8rem 1.25rem;
-    border-top: 1px solid #f0f0f0;
-    background: #fafafa;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-}
-
-.pagination-info {
-    font-size: 0.85rem;
-    color: #6b6b6b;
-}
-
-.pagination-controls {
-    display: flex;
-    gap: 0.35rem;
-    align-items: center;
-    flex-wrap: wrap;
-}
-
-.pagination-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.4rem 0.8rem;
-    background: white;
-    color: #4a4a4a;
-    border: 1px solid #e0e0e0;
-    border-radius: 6px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    text-decoration: none;
-}
-
-.pagination-btn:hover:not(.disabled) {
-    background: #f5edec;
-    border-color: #8B0000;
-    color: #8B0000;
-}
-
-.pagination-btn.disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.pagination-num {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 6px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: #4a4a4a;
-    text-decoration: none;
-    transition: all 0.2s ease;
-    border: 1px solid transparent;
-}
-
-.pagination-num:hover:not(.active) {
-    background: #f5edec;
-    border-color: #e0d6d6;
-}
-
-.pagination-num.active {
-    background: #8B0000;
-    color: white;
-    border-color: #8B0000;
-}
-
-.pagination-dots {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    color: #999;
-    font-size: 0.8rem;
-}
-
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -1390,7 +1106,7 @@ include 'template/menu.php';
 .modal-card-coordinacion {
     background: white;
     border-radius: 16px;
-    max-width: 580px;
+    max-width: 500px;
     width: 90%;
     max-height: 80vh;
     overflow-y: auto;
@@ -1434,7 +1150,7 @@ include 'template/menu.php';
 
 .form-grid-modal {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 1.25rem;
 }
 
@@ -1656,12 +1372,6 @@ include 'template/menu.php';
         width: 100%;
         justify-content: center;
     }
-    
-    .pagination-container {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-    }
 
     .form-grid-modal {
         grid-template-columns: 1fr;
@@ -1688,8 +1398,7 @@ include 'template/menu.php';
         align-items: stretch;
     }
 
-    .page-header-right .btn-primary-modern,
-    .page-header-right .btn-outline-modern {
+    .page-header-right .btn-primary-modern {
         width: 100%;
         justify-content: center;
     }
@@ -1699,7 +1408,7 @@ include 'template/menu.php';
     }
 
     .table-modern {
-        min-width: 750px;
+        min-width: 550px;
         font-size: 0.8rem;
     }
 
@@ -1745,7 +1454,7 @@ include 'template/menu.php';
     }
 
     .table-modern {
-        min-width: 650px;
+        min-width: 480px;
         font-size: 0.7rem;
     }
 
@@ -1766,10 +1475,10 @@ include 'template/menu.php';
         margin: 0.5rem;
     }
 
-    .btn-orden {
-        width: 24px;
-        height: 24px;
-        font-size: 0.6rem;
+    .drag-handle {
+        width: 20px;
+        height: 20px;
+        font-size: 0.7rem;
     }
 }
 </style>
@@ -1822,31 +1531,27 @@ function toggleVisibility(element) {
 }
 
 // ============================================================
-// MODAL - REGISTRO/EDICIÓN
+// MODAL - REGISTRO
 // ============================================================
 
 function abrirModalRegistro() {
-    const modal = document.getElementById('modalCoordinacion');
-    const titulo = document.getElementById('modalTitulo');
-    const icon = document.getElementById('modalIcon');
-    const btnGuardar = document.getElementById('btnGuardar');
-    const idCoord = document.getElementById('id_coordinacion');
-    const nombre = document.getElementById('nombre');
-    const descripcion = document.getElementById('descripcion');
-    const activo = document.getElementById('activo');
-    
-    titulo.textContent = 'Registrar Nueva Coordinación';
-    icon.className = 'fas fa-sitemap';
-    btnGuardar.innerHTML = '<i class="fas fa-save"></i> Guardar Coordinación';
-    idCoord.value = '0';
-    nombre.value = '';
-    descripcion.value = '';
-    activo.checked = true;
-    
+    const modal = document.getElementById('modalRegistro');
+    document.getElementById('nombre_registro').value = '';
+    document.getElementById('activo_registro').checked = true;
     modal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
-    setTimeout(() => nombre.focus(), 100);
+    setTimeout(() => document.getElementById('nombre_registro').focus(), 100);
 }
+
+function cerrarModalRegistro() {
+    const modal = document.getElementById('modalRegistro');
+    modal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+// ============================================================
+// MODAL - EDICIÓN
+// ============================================================
 
 function abrirModalEdicion(id) {
     const coord = coordinacionesData.find(c => c.id === id);
@@ -1855,43 +1560,37 @@ function abrirModalEdicion(id) {
         return;
     }
     
-    const modal = document.getElementById('modalCoordinacion');
-    const titulo = document.getElementById('modalTitulo');
-    const icon = document.getElementById('modalIcon');
-    const btnGuardar = document.getElementById('btnGuardar');
-    const idCoord = document.getElementById('id_coordinacion');
-    const nombre = document.getElementById('nombre');
-    const descripcion = document.getElementById('descripcion');
-    const activo = document.getElementById('activo');
-    
-    titulo.textContent = 'Editar Coordinación';
-    icon.className = 'fas fa-edit';
-    btnGuardar.innerHTML = '<i class="fas fa-save"></i> Actualizar Coordinación';
-    idCoord.value = coord.id;
-    nombre.value = coord.nombre;
-    descripcion.value = coord.descripcion || '';
-    activo.checked = coord.activo;
+    const modal = document.getElementById('modalEdicion');
+    document.getElementById('id_coordinacion').value = coord.id;
+    document.getElementById('nombre_edicion').value = coord.nombre;
+    document.getElementById('activo_edicion').checked = coord.activo;
+    document.getElementById('modalTitulo').textContent = 'Editar Coordinación';
     
     modal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
-    setTimeout(() => nombre.focus(), 100);
+    setTimeout(() => document.getElementById('nombre_edicion').focus(), 100);
 }
 
-function cerrarModal() {
-    const modal = document.getElementById('modalCoordinacion');
+function cerrarModalEdicion() {
+    const modal = document.getElementById('modalEdicion');
     modal.style.display = 'none';
     document.body.style.overflow = 'auto';
 }
 
+// Cerrar modales al hacer clic fuera
 document.addEventListener('click', function(e) {
-    const modal = document.getElementById('modalCoordinacion');
-    if (e.target === modal) {
-        cerrarModal();
+    const modalRegistro = document.getElementById('modalRegistro');
+    if (e.target === modalRegistro) {
+        cerrarModalRegistro();
+    }
+    const modalEdicion = document.getElementById('modalEdicion');
+    if (e.target === modalEdicion) {
+        cerrarModalEdicion();
     }
 });
 
 // ============================================================
-// ELIMINAR COORDINACIÓN
+// ELIMINAR COORDINACIÓN (solo si no tiene personas)
 // ============================================================
 
 function eliminarCoordinacion(id) {
@@ -1901,25 +1600,27 @@ function eliminarCoordinacion(id) {
         return;
     }
     
+    const tienePersonas = coord.personas > 0;
+    
     const modal = document.createElement('div');
     modal.className = 'modal-overlay';
     modal.id = 'modalEliminar';
     
     let contenidoBody = '';
-    if (coord.personas > 0) {
+    if (tienePersonas) {
         contenidoBody = `
             <p style="color:#c62828;font-weight:600;">
                 <i class="fas fa-exclamation-circle"></i> 
                 Esta coordinación tiene <strong>${coord.personas} persona(s)</strong> asociada(s).
             </p>
-            <p>Para poder eliminar esta coordinación, primero debe eliminar o reasignar todas las personas asociadas.</p>
+            <p>No se puede eliminar porque tiene personas relacionadas.</p>
             <div style="background:#faf8f8;padding:1rem;border-radius:10px;border:1px solid #f0ecec;margin:0.75rem 0;">
                 <div style="display:flex;padding:0.3rem 0;border-bottom:1px solid #f0ecec;">
                     <span style="font-weight:600;color:#666;width:120px;">Coordinación</span>
                     <span style="color:#1a1a1a;">${coord.nombre}</span>
                 </div>
                 <div style="display:flex;padding:0.3rem 0;">
-                    <span style="font-weight:600;color:#666;width:120px;">Personas asociadas</span>
+                    <span style="font-weight:600;color:#666;width:120px;">Personas</span>
                     <span style="color:#c62828;font-weight:600;">${coord.personas}</span>
                 </div>
             </div>
@@ -1953,8 +1654,8 @@ function eliminarCoordinacion(id) {
     modal.innerHTML = `
         <div class="modal-card modal-card-coordinacion">
             <div class="modal-header">
-                <i class="fas fa-exclamation-triangle" style="color:${coord.personas > 0 ? '#e65100' : '#dc3545'};"></i>
-                <h3>${coord.personas > 0 ? 'No se puede eliminar' : '¿Eliminar coordinación?'}</h3>
+                <i class="fas fa-exclamation-triangle" style="color:${tienePersonas ? '#e65100' : '#dc3545'};"></i>
+                <h3>${tienePersonas ? 'No se puede eliminar' : '¿Eliminar coordinación?'}</h3>
                 <button onclick="cerrarModalEliminar()" style="background:none;border:none;font-size:1.5rem;cursor:pointer;color:#999;margin-left:auto;">
                     <i class="fas fa-times"></i>
                 </button>
@@ -1963,8 +1664,8 @@ function eliminarCoordinacion(id) {
                 ${contenidoBody}
             </div>
             <div class="modal-footer">
-                <button class="btn-modal-cancel" onclick="cerrarModalEliminar()">${coord.personas > 0 ? 'Entendido' : 'Cancelar'}</button>
-                ${coord.personas > 0 ? `
+                <button class="btn-modal-cancel" onclick="cerrarModalEliminar()">${tienePersonas ? 'Entendido' : 'Cancelar'}</button>
+                ${tienePersonas ? `
                     <button class="btn-modal-primary" style="background:#e65100;cursor:not-allowed;opacity:0.6;" disabled>
                         <i class="fas fa-lock"></i> No se puede eliminar
                     </button>
@@ -1990,7 +1691,125 @@ function cerrarModalEliminar() {
 }
 
 function confirmarEliminar(id) {
-    window.location.href = `coordinaciones.php?accion=eliminar&id=${id}`;
+    window.location.href = `coordinaciones_nacionales.php?accion=eliminar&id=${id}`;
+}
+
+// ============================================================
+// DRAG & DROP - REORDENAR
+// ============================================================
+
+let draggedRow = null;
+let draggedId = null;
+
+document.addEventListener('DOMContentLoaded', function() {
+    const tbody = document.getElementById('tbodyCoordinaciones');
+    const filas = tbody.querySelectorAll('tr[data-id]');
+    
+    filas.forEach(fila => {
+        fila.addEventListener('dragstart', handleDragStart);
+        fila.addEventListener('dragend', handleDragEnd);
+        fila.addEventListener('dragover', handleDragOver);
+        fila.addEventListener('dragenter', handleDragEnter);
+        fila.addEventListener('dragleave', handleDragLeave);
+        fila.addEventListener('drop', handleDrop);
+    });
+});
+
+function handleDragStart(e) {
+    draggedRow = this;
+    draggedId = parseInt(this.dataset.id);
+    this.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', this.dataset.id);
+}
+
+function handleDragEnd(e) {
+    this.classList.remove('dragging');
+    document.querySelectorAll('#tbodyCoordinaciones tr.drag-over').forEach(el => {
+        el.classList.remove('drag-over');
+    });
+}
+
+function handleDragOver(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+}
+
+function handleDragEnter(e) {
+    e.preventDefault();
+    if (this !== draggedRow) {
+        this.classList.add('drag-over');
+    }
+}
+
+function handleDragLeave(e) {
+    this.classList.remove('drag-over');
+}
+
+function handleDrop(e) {
+    e.preventDefault();
+    this.classList.remove('drag-over');
+    
+    if (this === draggedRow) return;
+    
+    const targetId = parseInt(this.dataset.id);
+    if (draggedId === targetId) return;
+    
+    const tbody = document.getElementById('tbodyCoordinaciones');
+    const filas = tbody.querySelectorAll('tr[data-id]');
+    
+    let draggedIndex = -1;
+    let targetIndex = -1;
+    filas.forEach((fila, index) => {
+        if (parseInt(fila.dataset.id) === draggedId) draggedIndex = index;
+        if (parseInt(fila.dataset.id) === targetId) targetIndex = index;
+    });
+    
+    if (draggedIndex === -1 || targetIndex === -1) return;
+    
+    if (draggedIndex < targetIndex) {
+        tbody.insertBefore(draggedRow, filas[targetIndex + 1]);
+    } else {
+        tbody.insertBefore(draggedRow, filas[targetIndex]);
+    }
+    
+    actualizarOrdenes();
+}
+
+function actualizarOrdenes() {
+    const tbody = document.getElementById('tbodyCoordinaciones');
+    const filas = tbody.querySelectorAll('tr[data-id]');
+    const ordenes = [];
+    
+    filas.forEach((fila, index) => {
+        const nuevoOrden = index + 1;
+        const badge = fila.querySelector('.badge-orden');
+        if (badge) {
+            badge.textContent = nuevoOrden;
+        }
+        fila.dataset.orden = nuevoOrden;
+        ordenes.push({
+            id: parseInt(fila.dataset.id),
+            orden: nuevoOrden
+        });
+    });
+    
+    fetch('coordinaciones_nacionales.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: 'accion=reordenar&ordenes=' + encodeURIComponent(JSON.stringify(ordenes))
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (!data.success) {
+            console.error('Error al reordenar:', data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
 }
 
 // ============================================================
@@ -2023,43 +1842,6 @@ function mostrarMensaje(mensaje, tipo) {
             }, 300);
         }
     }, 4000);
-}
-
-// ============================================================
-// EXPORTAR CSV
-// ============================================================
-
-function descargarCSV() {
-    const filas = document.querySelectorAll('#tbodyCoordinaciones tr');
-    if (filas.length === 0 || (filas.length === 1 && filas[0].classList.contains('empty-row'))) {
-        mostrarMensaje('No hay datos para exportar', 'error');
-        return;
-    }
-    
-    let csv = 'Orden,Nombre,Descripción,Personas,Estado\n';
-    
-    filas.forEach(fila => {
-        if (fila.classList.contains('empty-row')) return;
-        
-        const celdas = fila.querySelectorAll('td');
-        if (celdas.length < 7) return;
-        
-        const orden = celdas[0].textContent.trim();
-        const nombre = celdas[1].textContent.trim();
-        const descripcion = celdas[2].textContent.trim();
-        const personas = celdas[3].textContent.trim();
-        const estado = celdas[4].textContent.trim();
-        
-        csv += `"${orden}","${nombre}","${descripcion}","${personas}","${estado}"\n`;
-    });
-    
-    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = `coordinaciones_${new Date().toISOString().slice(0,10)}.csv`;
-    link.click();
-    
-    mostrarMensaje('CSV exportado exitosamente', 'success');
 }
 </script>
 

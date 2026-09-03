@@ -222,10 +222,18 @@ $tipos_institucion = [
     3 => 'Campus'
 ];
 
+// Niveles académicos desde el catálogo
 $niveles_academicos = [
-    ['id' => 1, 'nombre' => 'Licenciatura', 'abr_m' => 'Lic.', 'abr_f' => 'Lic.'],
-    ['id' => 2, 'nombre' => 'Maestría', 'abr_m' => 'Mtro.', 'abr_f' => 'Mtra.'],
-    ['id' => 3, 'nombre' => 'Doctorado', 'abr_m' => 'Dr.', 'abr_f' => 'Dra.']
+    ['id' => 1, 'nombre' => 'Licenciatura', 'abreviatura' => 'Lic.'],
+    ['id' => 2, 'nombre' => 'Maestría', 'abreviatura' => 'Mtra.'],
+    ['id' => 3, 'nombre' => 'Maestría', 'abreviatura' => 'Mtro.'],
+    ['id' => 4, 'nombre' => 'Doctorado', 'abreviatura' => 'Dra.'],
+    ['id' => 5, 'nombre' => 'Doctorado', 'abreviatura' => 'Dr.'],
+    ['id' => 6, 'nombre' => 'Especialidad', 'abreviatura' => 'Esp.'],
+    ['id' => 7, 'nombre' => 'Técnico Superior Universitario', 'abreviatura' => 'TSU'],
+    ['id' => 8, 'nombre' => 'Bachillerato', 'abreviatura' => 'Bach.'],
+    ['id' => 9, 'nombre' => 'Ingeniería', 'abreviatura' => 'Ing.'],
+    ['id' => 10, 'nombre' => 'Arquitectura', 'abreviatura' => 'Arq.']
 ];
 
 $niveles_cargo = [
@@ -339,7 +347,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($_POST['tipo_institucion'])) $errores[] = 'Tipo de Institución';
     if (empty($_POST['zona'])) $errores[] = 'Zona Regional';
     if (empty($_POST['institucion'])) $errores[] = 'Institución';
-    if (empty($_POST['nivel_academico'])) $errores[] = 'Nivel Académico';
+    if (empty($_POST['niveles_academicos'])) $errores[] = 'Nivel Académico';
     if (empty($_POST['cargos'])) $errores[] = 'Al menos un cargo';
     if (empty($_POST['telefono_numero']) || empty(array_filter($_POST['telefono_numero']))) $errores[] = 'Teléfono';
     if (empty($_POST['correo_valor']) || empty(array_filter($_POST['correo_valor']))) $errores[] = 'Correo Electrónico';
@@ -501,10 +509,16 @@ include 'template/menu.php';
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label required">Nivel Académico</label>
-                            <select name="nivel_academico" id="nivel_academico" class="form-control" required>
-                                <option value="">Primero seleccione un género</option>
+                            <label class="form-label required">Nivel(es) Académico(s)</label>
+                            <select name="niveles_academicos[]" id="niveles_academicos" class="form-control" multiple size="4" required>
+                                <option value="">Seleccione uno o más niveles...</option>
+                                <?php foreach ($niveles_academicos as $nivel): ?>
+                                    <option value="<?= $nivel['id'] ?>">
+                                        <?= htmlspecialchars($nivel['nombre']) ?> (<?= htmlspecialchars($nivel['abreviatura']) ?>)
+                                    </option>
+                                <?php endforeach; ?>
                             </select>
+                            <small class="form-hint">Presione Ctrl (Windows) o Cmd (Mac) para seleccionar múltiples niveles</small>
                         </div>
                     </div>
                 </div>
@@ -1000,6 +1014,27 @@ include 'template/menu.php';
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1.25rem;
+}
+
+/* Select múltiple */
+select[multiple] {
+    min-height: 100px;
+    padding: 0.5rem;
+}
+
+select[multiple] option {
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    margin: 2px 0;
+}
+
+select[multiple] option:checked {
+    background: #8B0000 linear-gradient(0deg, #8B0000 0%, #8B0000 100%);
+    color: white;
+}
+
+select[multiple] option:hover {
+    background: #f5edec;
 }
 
 .cargo-grid-base {
@@ -1577,7 +1612,6 @@ include 'template/menu.php';
 const coordinacionesNacionales = <?= json_encode($coordinaciones_nacionales) ?>;
 const cargosPorNivel = <?= json_encode($cargos_por_nivel) ?>;
 const zonasRegionales = <?= json_encode($zonas_regionales) ?>;
-const nivelesAcademicos = <?= json_encode($niveles_academicos) ?>;
 const universidadesPorZona = <?= json_encode($universidades_por_zona) ?>;
 const facultadesPorUniversidad = <?= json_encode($facultades_por_universidad) ?>;
 const campusPorUniversidad = <?= json_encode($campus_por_universidad) ?>;
@@ -1632,40 +1666,6 @@ function cerrarModalTitular(accion) {
         mostrarMensaje('Persona registrada sin rol de titular', 'success');
     }
 }
-
-// ============================================================
-// NIVEL ACADÉMICO SEGÚN GÉNERO
-// ============================================================
-
-document.addEventListener('DOMContentLoaded', function() {
-    const generoSelect = document.getElementById('genero');
-    const nivelSelect = document.getElementById('nivel_academico');
-    
-    if (generoSelect && nivelSelect) {
-        generoSelect.addEventListener('change', function() {
-            const genero = this.value;
-            nivelSelect.innerHTML = '<option value="">Seleccionar nivel...</option>';
-            
-            if (genero) {
-                nivelesAcademicos.forEach(function(nivel) {
-                    const option = document.createElement('option');
-                    option.value = nivel.id;
-                    const abreviatura = genero === 'F' ? nivel.abr_f : nivel.abr_m;
-                    option.textContent = nivel.nombre + ' (' + abreviatura + ')';
-                    option.dataset.abrM = nivel.abr_m;
-                    option.dataset.abrF = nivel.abr_f;
-                    nivelSelect.appendChild(option);
-                });
-                nivelSelect.disabled = false;
-            } else {
-                nivelSelect.innerHTML = '<option value="">Primero seleccione un género</option>';
-                nivelSelect.disabled = true;
-            }
-        });
-        
-        nivelSelect.disabled = true;
-    }
-});
 
 // ============================================================
 // INSTITUCIONES POR ZONA Y TIPO

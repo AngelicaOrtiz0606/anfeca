@@ -622,7 +622,7 @@ include 'template/menu.php';
                                 <td><?= htmlspecialchars($persona['institucion']) ?></td>
                                 <td><?= htmlspecialchars($persona['cargo']) ?></td>
                                 <td><span class="badge-zona"><?= htmlspecialchars($zona_nombre) ?></span></td>
-                                <td><a href="mailto:<?= htmlspecialchars($persona['correo']) ?>" class="correo-link"><?= htmlspecialchars($persona['correo']) ?></a></td>
+                                <td><?= htmlspecialchars($persona['correo']) ?></td>
                                 <td><?= htmlspecialchars($persona['telefono']) ?></td>
                                 <td>
                                     <?php if ($persona['activo']): ?>
@@ -1076,16 +1076,6 @@ include 'template/menu.php';
 .persona-nombre {
     font-weight: 600;
     color: #1a1a1a;
-}
-
-.correo-link {
-    color: #0d6efd;
-    text-decoration: none;
-    font-size: 0.85rem;
-}
-
-.correo-link:hover {
-    text-decoration: underline;
 }
 
 /* Estados */
@@ -1802,38 +1792,27 @@ function mostrarMensaje(mensaje, tipo) {
 }
 
 // ============================================================
-// EXPORTAR CSV
+// EXPORTAR CSV - TODOS LOS REGISTROS FILTRADOS
 // ============================================================
 
 function descargarCSV() {
-    const filas = document.querySelectorAll('#tbodyPersonas tr');
-    if (filas.length === 0 || (filas.length === 1 && filas[0].classList.contains('empty-row'))) {
+    // Usar los datos filtrados completos (no solo los paginados)
+    const datosFiltrados = <?= json_encode(array_values($personas_filtradas)) ?>;
+    
+    if (datosFiltrados.length === 0) {
         mostrarMensaje('No hay datos para exportar', 'error');
         return;
     }
     
     let csv = 'Núm. Afiliación,Nombre,Institución,Cargo,Zona,Correo,Teléfono,Estado,Directorios\n';
     
-    filas.forEach(fila => {
-        if (fila.classList.contains('empty-row')) return;
+    datosFiltrados.forEach(function(p) {
+        const nombreCompleto = p.nombre + ' ' + p.apellido_paterno + (p.apellido_materno ? ' ' + p.apellido_materno : '');
+        const zonaNombre = zonasRegionales[p.id_zona] || 'Sin zona';
+        const directorios = p.directorios ? p.directorios.join('; ') : '';
+        const estado = p.activo ? 'Activo' : 'Inactivo';
         
-        const celdas = fila.querySelectorAll('td');
-        if (celdas.length < 10) return;
-        
-        const numAfiliacion = celdas[0].textContent.trim();
-        const nombre = celdas[1].textContent.trim();
-        const institucion = celdas[2].textContent.trim();
-        const cargo = celdas[3].textContent.trim();
-        const zona = celdas[4].textContent.trim();
-        const correo = celdas[5].textContent.trim();
-        const telefono = celdas[6].textContent.trim();
-        const estado = celdas[7].textContent.trim();
-        
-        const id = parseInt(fila.dataset.id);
-        const persona = personasData.find(p => p.id === id);
-        const directorios = persona && persona.directorios ? persona.directorios.join('; ') : '';
-        
-        csv += `"${numAfiliacion}","${nombre}","${institucion}","${cargo}","${zona}","${correo}","${telefono}","${estado}","${directorios}"\n`;
+        csv += `"${p.num_afiliacion}","${nombreCompleto}","${p.institucion}","${p.cargo}","${zonaNombre}","${p.correo}","${p.telefono}","${estado}","${directorios}"\n`;
     });
     
     const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
