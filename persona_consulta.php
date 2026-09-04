@@ -18,7 +18,7 @@ if (!isset($_SESSION['usuario'])) {
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 1;
 
 // ============================================================
-// DATOS SIMULADOS DE LAS PERSONAS (mismos que en personas.php)
+// DATOS SIMULADOS DE LAS PERSONAS
 // ============================================================
 
 $zonas_regionales = [
@@ -37,32 +37,43 @@ $tipos_institucion = [
     3 => 'Campus'
 ];
 
-$niveles_cargo = [
-    1 => 'Nacional',
-    2 => 'Regional',
-    3 => 'Institucional'
+// Mapeo de abreviaturas por género y nivel académico
+$abreviaturas = [
+    'F' => [
+        'Licenciatura' => 'Lic.',
+        'Maestría' => 'Mtra.',
+        'Doctorado' => 'Dra.',
+        'Especialidad' => 'Esp.',
+        'Técnico Superior Universitario' => 'TSU',
+        'Bachillerato' => 'Bach.',
+        'Ingeniería' => 'Ing.',
+        'Arquitectura' => 'Arq.'
+    ],
+    'M' => [
+        'Licenciatura' => 'Lic.',
+        'Maestría' => 'Mtro.',
+        'Doctorado' => 'Dr.',
+        'Especialidad' => 'Esp.',
+        'Técnico Superior Universitario' => 'TSU',
+        'Bachillerato' => 'Bach.',
+        'Ingeniería' => 'Ing.',
+        'Arquitectura' => 'Arq.'
+    ]
 ];
 
-$tipos_directorio = [
-    1 => 'Consejo Nacional Directivo',
-    2 => 'Consejos Regionales',
-    3 => 'Coordinaciones Nacionales',
-    4 => 'Instituciones'
-];
-
-// Datos de todas las personas (mismos que en personas.php)
+// Datos de todas las personas
 $personas_data = [
     [
         'id' => 1,
-        'num_afiliacion' => '9801001',
+        'num_afiliacion' => '2607002',
         'nombre' => 'María',
         'apellido_paterno' => 'González',
         'apellido_materno' => 'Pérez',
         'genero' => 'F',
         'id_zona' => 7,
-        'institucion' => 'UNAM - Facultad de Contaduría',
+        'institucion' => 'Facultad de Contaduría y Administración (UNAM)',
         'tipo_institucion' => 2,
-        'nivel_academico' => 'Maestría (Mtra.)',
+        'nivel_academico' => 'Maestría',
         'telefonos' => [
             ['lada' => '55', 'numero' => '1234 5678', 'extension' => '123', 'visible' => true]
         ],
@@ -87,15 +98,15 @@ $personas_data = [
     ],
     [
         'id' => 2,
-        'num_afiliacion' => '9801002',
+        'num_afiliacion' => '2607004',
         'nombre' => 'Juan',
         'apellido_paterno' => 'Martínez',
         'apellido_materno' => 'López',
         'genero' => 'M',
         'id_zona' => 7,
-        'institucion' => 'IPN - ESCOM',
+        'institucion' => 'ESCOM (IPN)',
         'tipo_institucion' => 2,
-        'nivel_academico' => 'Doctorado (Dr.)',
+        'nivel_academico' => 'Doctorado',
         'telefonos' => [
             ['lada' => '55', 'numero' => '9876 5432', 'extension' => '', 'visible' => true]
         ],
@@ -120,23 +131,23 @@ $personas_data = [
     ],
     [
         'id' => 3,
-        'num_afiliacion' => '9801003',
+        'num_afiliacion' => '2601005',
         'nombre' => 'Ana',
         'apellido_paterno' => 'Sánchez',
         'apellido_materno' => 'Ramírez',
         'genero' => 'F',
-        'id_zona' => 3,
-        'institucion' => 'UAQ - Querétaro',
+        'id_zona' => 4,
+        'institucion' => 'Universidad de Guadalajara',
         'tipo_institucion' => 1,
-        'nivel_academico' => 'Licenciatura (Lic.)',
+        'nivel_academico' => 'Licenciatura',
         'telefonos' => [
-            ['lada' => '44', 'numero' => '1234 5678', 'extension' => '', 'visible' => true]
+            ['lada' => '33', 'numero' => '1234 5678', 'extension' => '', 'visible' => true]
         ],
         'correos' => [
             ['valor' => 'ana.sanchez@example.com', 'visible' => true]
         ],
         'celulares' => [
-            ['lada' => '44', 'numero' => '9876 5432', 'visible' => false]
+            ['lada' => '33', 'numero' => '9876 5432', 'visible' => false]
         ],
         'cargos' => [
             [
@@ -153,7 +164,7 @@ $personas_data = [
                 'nivel' => 2,
                 'nivel_nombre' => 'Regional',
                 'nombre' => 'Coordinadora Regional',
-                'zona' => 'Centro',
+                'zona' => 'Centro Occidente',
                 'coordinacion' => 'Academia ANFECA',
                 'fecha_inicio' => '01/01/2023',
                 'fecha_fin' => '31/12/2023',
@@ -163,15 +174,15 @@ $personas_data = [
     ],
     [
         'id' => 4,
-        'num_afiliacion' => '9801004',
+        'num_afiliacion' => '2604006',
         'nombre' => 'Carlos',
         'apellido_paterno' => 'Hernández',
         'apellido_materno' => 'Díaz',
         'genero' => 'M',
         'id_zona' => 4,
-        'institucion' => 'UDG - Guadalajara',
-        'tipo_institucion' => 1,
-        'nivel_academico' => 'Maestría (Mtro.)',
+        'institucion' => 'Facultad de Contaduría y Administración (UDG)',
+        'tipo_institucion' => 2,
+        'nivel_academico' => 'Maestría',
         'telefonos' => [
             ['lada' => '33', 'numero' => '1234 5678', 'extension' => '', 'visible' => true]
         ],
@@ -196,15 +207,15 @@ $personas_data = [
     ],
     [
         'id' => 5,
-        'num_afiliacion' => '9801005',
+        'num_afiliacion' => '2601007',
         'nombre' => 'Laura',
         'apellido_paterno' => 'Torres',
         'apellido_materno' => 'Vega',
         'genero' => 'F',
         'id_zona' => 1,
-        'institucion' => 'UABC - Mexicali',
-        'tipo_institucion' => 2,
-        'nivel_academico' => 'Licenciatura (Lic.)',
+        'institucion' => 'Universidad Autónoma de Baja California',
+        'tipo_institucion' => 1,
+        'nivel_academico' => 'Licenciatura',
         'telefonos' => [
             ['lada' => '66', 'numero' => '1234 5678', 'extension' => '', 'visible' => true]
         ],
@@ -229,15 +240,15 @@ $personas_data = [
     ],
     [
         'id' => 6,
-        'num_afiliacion' => '9801006',
+        'num_afiliacion' => '2602009',
         'nombre' => 'Roberto',
         'apellido_paterno' => 'Mendoza',
         'apellido_materno' => 'Cruz',
         'genero' => 'M',
         'id_zona' => 2,
-        'institucion' => 'UANL - San Nicolás',
+        'institucion' => 'Universidad Autónoma de Nuevo León',
         'tipo_institucion' => 1,
-        'nivel_academico' => 'Maestría (Mtro.)',
+        'nivel_academico' => 'Maestría',
         'telefonos' => [
             ['lada' => '81', 'numero' => '1234 5678', 'extension' => '', 'visible' => true]
         ],
@@ -262,7 +273,7 @@ $personas_data = [
     ],
     [
         'id' => 7,
-        'num_afiliacion' => '9801007',
+        'num_afiliacion' => '2601007',
         'nombre' => 'Patricia',
         'apellido_paterno' => 'Flores',
         'apellido_materno' => 'Reyes',
@@ -270,7 +281,7 @@ $personas_data = [
         'id_zona' => 5,
         'institucion' => 'UAEH - Pachuca',
         'tipo_institucion' => 2,
-        'nivel_academico' => 'Doctorado (Dra.)',
+        'nivel_academico' => 'Doctorado',
         'telefonos' => [
             ['lada' => '77', 'numero' => '1234 5678', 'extension' => '', 'visible' => true]
         ],
@@ -327,6 +338,12 @@ $persona['zona_nombre'] = $zonas_regionales[$persona['id_zona']] ?? 'Sin zona';
 // Agregar tipo_institucion_nombre
 $persona['tipo_institucion_nombre'] = $tipos_institucion[$persona['tipo_institucion']] ?? 'No especificado';
 
+// Obtener abreviatura según género y nivel académico
+$abreviatura = '';
+if (isset($abreviaturas[$persona['genero']][$persona['nivel_academico']])) {
+    $abreviatura = $abreviaturas[$persona['genero']][$persona['nivel_academico']];
+}
+
 include 'template/header.php';
 include 'template/menu.php';
 ?>
@@ -368,12 +385,8 @@ include 'template/menu.php';
                         <span><?= $iniciales ?></span>
                     </div>
                     <div class="profile-info">
-                        <h2><?= htmlspecialchars($persona['nombre'] . ' ' . $persona['apellido_paterno'] . ' ' . $persona['apellido_materno']) ?></h2>
+                        <h2><?= htmlspecialchars($abreviatura . ' ' . $persona['nombre'] . ' ' . $persona['apellido_paterno'] . ' ' . $persona['apellido_materno']) ?></h2>
                         <div class="profile-meta">
-                            <span class="profile-afiliacion">
-                                <span class="afiliacion-label">Núm. Afiliación:</span>
-                                <span class="afiliacion-value"><?= htmlspecialchars($persona['num_afiliacion']) ?></span>
-                            </span>
                             <span class="profile-status <?= $persona['activo'] ? 'status-active' : 'status-inactive' ?>">
                                 <span class="status-dot"></span> <?= $persona['activo'] ? 'Activo' : 'Inactivo' ?>
                             </span>
@@ -381,12 +394,13 @@ include 'template/menu.php';
                                 <?= $persona['genero'] == 'F' ? 'Femenino' : 'Masculino' ?>
                             </span>
                         </div>
-                        <div class="profile-details">
-                            <span><?= htmlspecialchars($persona['nivel_academico']) ?></span>
-                        </div>
                     </div>
                 </div>
                 <div class="profile-body">
+                    <div class="profile-item">
+                        <span class="profile-label">Núm. Afiliación</span>
+                        <span class="profile-value"><?= htmlspecialchars($persona['num_afiliacion']) ?></span>
+                    </div>
                     <div class="profile-item">
                         <span class="profile-label">Institución</span>
                         <span class="profile-value"><?= htmlspecialchars($persona['institucion']) ?></span>
@@ -400,6 +414,10 @@ include 'template/menu.php';
                         <span class="profile-value">
                             <span class="badge-zona"><?= htmlspecialchars($persona['zona_nombre']) ?></span>
                         </span>
+                    </div>
+                    <div class="profile-item">
+                        <span class="profile-label">Nivel Académico</span>
+                        <span class="profile-value"><?= htmlspecialchars($persona['nivel_academico']) ?></span>
                     </div>
                 </div>
             </div>
@@ -475,53 +493,58 @@ include 'template/menu.php';
                 </div>
             </div>
 
-            <!-- Cargos -->
+            <!-- Cargos (tabla) -->
             <div class="detail-card">
                 <div class="detail-card-header">
-                    <h3>Cargos y Designaciones</h3>
+                    <h3>Cargos</h3>
+                    <span class="detail-badge"><?= count($persona['cargos']) ?> cargo(s)</span>
                 </div>
                 <div class="detail-card-body">
                     <?php if (!empty($persona['cargos'])): ?>
-                        <div class="cargos-grid-detail">
-                            <?php foreach ($persona['cargos'] as $cargo): 
-                                $es_activo = $cargo['fecha_fin'] === null;
-                            ?>
-                                <div class="cargo-detail-card <?= $es_activo ? 'cargo-activo' : 'cargo-inactivo' ?>">
-                                    <div class="cargo-detail-header">
-                                        <span class="cargo-detail-nivel"><?= htmlspecialchars($cargo['nivel_nombre']) ?></span>
-                                        <span class="cargo-detail-nombre"><?= htmlspecialchars($cargo['nombre']) ?></span>
-                                        <?php if ($es_activo): ?>
-                                            <span class="cargo-status-activo">Activo</span>
-                                        <?php else: ?>
-                                            <span class="cargo-status-inactivo">Finalizado</span>
-                                        <?php endif; ?>
-                                    </div>
-                                    <div class="cargo-detail-body">
-                                        <div class="cargo-detail-fechas">
-                                            <span><strong>Inicio:</strong> <?= $cargo['fecha_inicio'] ?></span>
-                                            <span><strong>Fin:</strong> <?= $cargo['fecha_fin'] ?? 'Actual' ?></span>
-                                        </div>
-                                        <?php if ($cargo['zona']): ?>
-                                            <div class="cargo-detail-extra">
-                                                <span><strong>Zona:</strong> <?= htmlspecialchars($cargo['zona']) ?></span>
-                                            </div>
-                                        <?php endif; ?>
-                                        <?php if ($cargo['coordinacion']): ?>
-                                            <div class="cargo-detail-extra">
-                                                <span><strong>Coordinación:</strong> <?= htmlspecialchars($cargo['coordinacion']) ?></span>
-                                            </div>
-                                        <?php endif; ?>
-                                        <div class="cargo-detail-directorios">
-                                            <strong>Directorios:</strong>
-                                            <div class="directorios-tags">
-                                                <?php foreach ($cargo['directorios'] as $directorio): ?>
-                                                    <span class="tag-directorio"><?= htmlspecialchars($directorio) ?></span>
-                                                <?php endforeach; ?>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
+                        <div class="table-modern-container">
+                            <div class="table-modern-wrapper">
+                                <table class="table-modern">
+                                    <thead>
+                                        <tr>
+                                            <th>Nivel</th>
+                                            <th>Cargo</th>
+                                            <th>Zona</th>
+                                            <th>Coordinación</th>
+                                            <th>Fecha Inicio</th>
+                                            <th>Fecha Fin</th>
+                                            <th>Estado</th>
+                                            <th>Directorios</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($persona['cargos'] as $cargo): 
+                                            $es_activo = $cargo['fecha_fin'] === null;
+                                            $estado_cargo = $es_activo ? 'Activo' : 'Finalizado';
+                                            $estado_cargo_class = $es_activo ? 'status-active' : 'status-inactive';
+                                            $zona_texto = $cargo['zona'] ?? '---';
+                                            $coordinacion_texto = $cargo['coordinacion'] ?? '---';
+                                            $directorios_texto = implode(', ', $cargo['directorios'] ?? []);
+                                        ?>
+                                        <tr>
+                                            <td>
+                                                <span class="badge-nivel"><?= htmlspecialchars($cargo['nivel_nombre']) ?></span>
+                                            </td>
+                                            <td><?= htmlspecialchars($cargo['nombre']) ?></td>
+                                            <td><?= htmlspecialchars($zona_texto) ?></td>
+                                            <td><?= htmlspecialchars($coordinacion_texto) ?></td>
+                                            <td><?= $cargo['fecha_inicio'] ?></td>
+                                            <td><?= $cargo['fecha_fin'] ?? '---' ?></td>
+                                            <td>
+                                                <span class="<?= $estado_cargo_class ?>">
+                                                    <i class="fas fa-circle"></i> <?= $estado_cargo ?>
+                                                </span>
+                                            </td>
+                                            <td><?= htmlspecialchars($directorios_texto) ?></td>
+                                        </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     <?php else: ?>
                         <p class="text-muted text-center py-3">No hay cargos asignados</p>
@@ -651,7 +674,7 @@ include 'template/menu.php';
 .detail-card-header {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    justify-content: space-between;
     margin-bottom: 1.25rem;
     padding-bottom: 0.75rem;
     border-bottom: 2px solid #f5f0f0;
@@ -662,6 +685,15 @@ include 'template/menu.php';
     font-weight: 700;
     color: #1a1a1a;
     margin: 0;
+}
+
+.detail-badge {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.8rem;
+    background: #f5f0f0;
+    color: #666;
+    border-radius: 20px;
+    font-weight: 600;
 }
 
 .detail-card-body {
@@ -717,27 +749,6 @@ include 'template/menu.php';
     margin-bottom: 0.3rem;
 }
 
-.profile-afiliacion {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.8rem;
-}
-
-.afiliacion-label {
-    color: #888;
-    font-weight: 500;
-}
-
-.afiliacion-value {
-    font-weight: 600;
-    color: #1a1a1a;
-    font-family: monospace;
-    background: #f0ecec;
-    padding: 0.1rem 0.5rem;
-    border-radius: 4px;
-}
-
 .profile-status {
     font-size: 0.8rem;
     font-weight: 600;
@@ -771,11 +782,6 @@ include 'template/menu.php';
 
 .profile-gender {
     font-size: 0.8rem;
-    color: #666;
-}
-
-.profile-details {
-    font-size: 0.85rem;
     color: #666;
 }
 
@@ -815,6 +821,17 @@ include 'template/menu.php';
     border-radius: 20px;
     font-size: 0.75rem;
     font-weight: 500;
+}
+
+/* Badge Nivel en tabla */
+.badge-nivel {
+    display: inline-block;
+    padding: 0.15rem 0.6rem;
+    background: #f5edec;
+    color: #8B0000;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 600;
 }
 
 /* Contactos Grid */
@@ -862,130 +879,76 @@ include 'template/menu.php';
     font-weight: 600;
 }
 
-/* Cargos Grid */
-.cargos-grid-detail {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 1rem;
-}
-
-.cargo-detail-card {
-    background: #faf8f8;
+/* Tabla moderna */
+.table-modern-container {
     border-radius: 12px;
-    padding: 1.25rem;
+    overflow: hidden;
     border: 1px solid #f0ecec;
-    transition: all 0.2s ease;
 }
 
-.cargo-detail-card:hover {
-    border-color: #d4c5c4;
+.table-modern-wrapper {
+    overflow-x: auto;
 }
 
-.cargo-detail-card.cargo-activo {
-    border-left: 4px solid #2e7d32;
+.table-modern {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
 }
 
-.cargo-detail-card.cargo-inactivo {
-    border-left: 4px solid #c62828;
+.table-modern thead {
+    background: #faf8f8;
 }
 
-.cargo-detail-header {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0.75rem;
-    flex-wrap: wrap;
-}
-
-.cargo-detail-nivel {
-    font-size: 0.6rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: #8B0000;
-    background: #f5edec;
-    padding: 0.2rem 0.6rem;
-    border-radius: 4px;
-}
-
-.cargo-detail-nombre {
-    font-size: 1rem;
+.table-modern thead th {
+    text-align: left;
+    padding: 0.7rem 1rem;
     font-weight: 600;
-    color: #1a1a1a;
-}
-
-.cargo-status-activo {
-    font-size: 0.6rem;
-    font-weight: 700;
-    padding: 0.15rem 0.6rem;
-    border-radius: 20px;
-    background: #e8f5e9;
-    color: #2e7d32;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.cargo-status-inactivo {
-    font-size: 0.6rem;
-    font-weight: 700;
-    padding: 0.15rem 0.6rem;
-    border-radius: 20px;
-    background: #fce4ec;
-    color: #c62828;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.cargo-detail-body {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.cargo-detail-fechas {
-    display: flex;
-    gap: 1.5rem;
-    font-size: 0.85rem;
-    color: #666;
-}
-
-.cargo-detail-fechas strong {
-    color: #4a4a4a;
-}
-
-.cargo-detail-extra {
-    font-size: 0.85rem;
-    color: #666;
-}
-
-.cargo-detail-extra strong {
-    color: #4a4a4a;
-}
-
-.cargo-detail-directorios {
-    margin-top: 0.3rem;
-    font-size: 0.85rem;
-}
-
-.cargo-detail-directorios strong {
-    color: #4a4a4a;
-}
-
-.directorios-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.3rem;
-    margin-top: 0.3rem;
-}
-
-.tag-directorio {
-    display: inline-block;
-    padding: 0.15rem 0.6rem;
-    background: white;
-    border: 1px solid #e8e8e8;
-    border-radius: 4px;
     font-size: 0.7rem;
-    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #6b6b6b;
+    border-bottom: 2px solid #e8e8e8;
+}
+
+.table-modern tbody td {
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid #f0f0f0;
+    vertical-align: middle;
+}
+
+.table-modern tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.table-modern tbody tr:hover {
+    background: #faf8f8;
+}
+
+.status-active {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #2e7d32;
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.status-active i {
+    font-size: 0.5rem;
+}
+
+.status-inactive {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #c62828;
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.status-inactive i {
+    font-size: 0.5rem;
 }
 
 .text-muted {
@@ -1037,10 +1000,6 @@ include 'template/menu.php';
         justify-content: center;
     }
 
-    .profile-details {
-        justify-content: center;
-    }
-
     .profile-body {
         grid-template-columns: 1fr;
         gap: 0.75rem;
@@ -1051,17 +1010,20 @@ include 'template/menu.php';
         grid-template-columns: 1fr;
     }
 
-    .cargos-grid-detail {
-        grid-template-columns: 1fr;
-    }
-
-    .cargo-detail-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
     .detail-card {
         padding: 1.25rem;
+    }
+
+    .table-modern thead th,
+    .table-modern tbody td {
+        padding: 0.5rem 0.6rem;
+        font-size: 0.8rem;
+    }
+
+    .detail-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
     }
 }
 </style>

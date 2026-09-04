@@ -516,9 +516,7 @@ include 'template/menu.php';
                         </select>
                     </div>
                     
-                    <button type="submit" class="btn-filter-apply">
-                        <i class="fas fa-sliders-h"></i> Aplicar
-                    </button>
+                    
                     
                     <a href="personas.php" class="btn-filter-clear <?= (empty($busqueda) && $zona_filtro == 0 && empty($cargo_filtro) && empty($estado_filtro)) ? 'disabled' : '' ?>">
                         <i class="fas fa-times"></i> Limpiar

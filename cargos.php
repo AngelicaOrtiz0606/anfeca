@@ -579,14 +579,7 @@ $registros_por_pagina = 6;
 
 $cargos_filtrados = $cargos;
 
-// Aplicar filtros
-if (!empty($busqueda)) {
-    $busqueda = strtolower($busqueda);
-    $cargos_filtrados = array_filter($cargos_filtrados, function($c) use ($busqueda) {
-        return strpos(strtolower($c['nombre_m']), $busqueda) !== false ||
-               strpos(strtolower($c['nombre_f']), $busqueda) !== false;
-    });
-}
+
 
 if ($nivel_filtro > 0) {
     $cargos_filtrados = array_filter($cargos_filtrados, function($c) use ($nivel_filtro) {
@@ -736,9 +729,7 @@ include 'template/menu.php';
                         </select>
                     </div>
                     
-                    <button type="submit" class="btn-filter-apply">
-                        <i class="fas fa-sliders-h"></i> Aplicar
-                    </button>
+                    
                     
                     <a href="cargos.php" class="btn-filter-clear <?= (empty($busqueda) && $nivel_filtro == 0 && empty($estado_filtro)) ? 'disabled' : '' ?>">
                         <i class="fas fa-times"></i> Limpiar
@@ -936,9 +927,7 @@ include 'template/menu.php';
             </div>
             <?php endif; ?>
             
-            <div class="table-modern-footer">
-                <span>Mostrando <strong><?= count($cargos_paginados) ?></strong> de <strong><?= $total_registros ?></strong> registros</span>
-            </div>
+            
         </div>
 
     </div>

@@ -350,9 +350,7 @@ include 'template/menu.php';
                         </select>
                     </div>
                     
-                    <button type="submit" class="btn-filter-apply">
-                        <i class="fas fa-sliders-h"></i> Aplicar
-                    </button>
+                    
                     
                     <a href="niveles_academicos.php" class="btn-filter-clear <?= (empty($busqueda) && empty($estado_filtro)) ? 'disabled' : '' ?>">
                         <i class="fas fa-times"></i> Limpiar

@@ -300,13 +300,7 @@ $busqueda = isset($_GET['buscar']) ? trim($_GET['buscar']) : '';
 
 $coordinaciones_filtradas = $coordinaciones;
 
-// Aplicar filtros
-if (!empty($busqueda)) {
-    $busqueda = strtolower($busqueda);
-    $coordinaciones_filtradas = array_filter($coordinaciones_filtradas, function($c) use ($busqueda) {
-        return strpos(strtolower($c['nombre']), $busqueda) !== false;
-    });
-}
+
 
 if ($estado_filtro == 'activo') {
     $coordinaciones_filtradas = array_filter($coordinaciones_filtradas, function($c) {
@@ -395,9 +389,7 @@ include 'template/menu.php';
                         </select>
                     </div>
                     
-                    <button type="submit" class="btn-filter-apply">
-                        <i class="fas fa-sliders-h"></i> Aplicar
-                    </button>
+                    
                     
                     <a href="coordinaciones_nacionales.php" class="btn-filter-clear <?= (empty($busqueda) && empty($estado_filtro)) ? 'disabled' : '' ?>">
                         <i class="fas fa-times"></i> Limpiar

@@ -15,12 +15,6 @@ if (!isset($_SESSION['usuario'])) {
 // DATOS SIMULADOS
 // ============================================================
 
-$tipos_institucion = [
-    1 => 'Universidad',
-    2 => 'Facultad',
-    3 => 'Campus'
-];
-
 $zonas_regionales = [
     1 => '1 - Noroeste',
     2 => '2 - Norte',
@@ -48,57 +42,198 @@ $coordinaciones_nacionales = [
     14 => 'Desarrollo Académico Estudiantil'
 ];
 
-$instituciones_por_zona = [
-    1 => ['UABC - Mexicali', 'UABC - Tijuana', 'ITSON - Cd. Obregón', 'UAS - Culiacán'],
-    2 => ['UANL - San Nicolás', 'UAT - Ciudad Victoria', 'UAdeC - Saltillo', 'UACH - Chihuahua'],
-    3 => ['UAQ - Querétaro', 'UASLP - San Luis Potosí', 'UAZ - Zacatecas', 'UAA - Aguascalientes'],
-    4 => ['UDG - Guadalajara', 'UMSNH - Morelia', 'UGTO - Guanajuato', 'UdeC - Colima'],
-    5 => ['UAGro - Chilpancingo', 'UAEH - Pachuca', 'UAEM - Toluca', 'UAEMor - Cuernavaca'],
-    6 => ['UNACH - Tuxtla Gutiérrez', 'UABJO - Oaxaca', 'UJAT - Villahermosa', 'UV - Xalapa'],
-    7 => ['UNAM - Facultad de Contaduría', 'UAM - Azcapotzalco', 'IPN - ESCOM', 'UAM - Iztapalapa']
+// Universidades por zona
+$universidades_por_zona = [
+    1 => ['Universidad Autónoma de Baja California', 'Universidad de Sonora', 'Instituto Tecnológico de Sonora'],
+    2 => ['Universidad Autónoma de Nuevo León', 'Universidad Autónoma de Coahuila', 'Instituto Tecnológico de Nuevo León'],
+    3 => ['Universidad Autónoma de Querétaro', 'Universidad Autónoma de San Luis Potosí', 'Universidad Autónoma de Zacatecas'],
+    4 => ['Universidad de Guadalajara', 'Universidad Michoacana de San Nicolás de Hidalgo', 'Universidad de Guanajuato'],
+    5 => ['Universidad Autónoma de Guerrero', 'Universidad Autónoma del Estado de Hidalgo', 'Universidad Autónoma del Estado de México'],
+    6 => ['Universidad Autónoma de Yucatán', 'Universidad Autónoma de Chiapas', 'Universidad Veracruzana'],
+    7 => ['Universidad Nacional Autónoma de México', 'Instituto Politécnico Nacional', 'Universidad Autónoma Metropolitana']
 ];
 
+// Facultades por universidad
+$facultades_por_universidad = [
+    'Universidad Nacional Autónoma de México' => [
+        'Facultad de Contaduría y Administración',
+        'Facultad de Ingeniería',
+        'Facultad de Derecho',
+        'Facultad de Medicina',
+        'Facultad de Ciencias Políticas y Sociales'
+    ],
+    'Instituto Politécnico Nacional' => [
+        'Escuela Superior de Cómputo (ESCOM)',
+        'Escuela Superior de Ingeniería Mecánica y Eléctrica (ESIME)',
+        'Escuela Superior de Física y Matemáticas (ESFM)',
+        'Centro de Estudios Científicos y Tecnológicos (CECyT)'
+    ],
+    'Universidad de Guadalajara' => [
+        'Facultad de Contaduría y Administración',
+        'Facultad de Ingeniería',
+        'Facultad de Derecho',
+        'Centro Universitario de Ciencias Económico Administrativas (CUCEA)'
+    ],
+    'Universidad Autónoma Metropolitana' => [
+        'División de Ciencias Sociales y Humanidades',
+        'División de Ciencias Naturales e Ingeniería',
+        'Unidad Azcapotzalco',
+        'Unidad Iztapalapa',
+        'Unidad Xochimilco'
+    ],
+    'Universidad Autónoma de Baja California' => [
+        'Facultad de Ciencias Administrativas y Sociales',
+        'Facultad de Ingeniería',
+        'Facultad de Derecho',
+        'Facultad de Ciencias Marinas'
+    ],
+    'Universidad de Sonora' => [
+        'Facultad de Contaduría y Administración',
+        'Facultad de Ingeniería',
+        'Facultad de Derecho',
+        'División de Ciencias Económicas y Sociales'
+    ],
+    'Universidad Autónoma de Nuevo León' => [
+        'Facultad de Contaduría Pública y Administración',
+        'Facultad de Ingeniería Mecánica y Eléctrica',
+        'Facultad de Derecho y Criminología',
+        'Facultad de Ciencias de la Comunicación'
+    ],
+    'Universidad Autónoma de Querétaro' => [
+        'Facultad de Contaduría y Administración',
+        'Facultad de Ingeniería',
+        'Facultad de Derecho',
+        'Facultad de Ciencias Políticas y Sociales'
+    ],
+    'Universidad Autónoma de Yucatán' => [
+        'Facultad de Contaduría y Administración',
+        'Facultad de Ingeniería',
+        'Facultad de Derecho',
+        'Facultad de Ciencias Antropológicas'
+    ],
+    'Universidad Veracruzana' => [
+        'Facultad de Contaduría y Administración',
+        'Facultad de Ingeniería',
+        'Facultad de Derecho',
+        'Facultad de Ciencias Administrativas y Sociales'
+    ]
+];
+
+// Campus por universidad
+$campus_por_universidad = [
+    'Universidad Nacional Autónoma de México' => [
+        'Ciudad Universitaria (CU)',
+        'Campus Juriquilla',
+        'Campus Morelos',
+        'Campus Ensenada',
+        'Campus Mérida'
+    ],
+    'Instituto Politécnico Nacional' => [
+        'Unidad Profesional Zacatenco',
+        'Unidad Profesional Adolfo López Mateos',
+        'Unidad Profesional Ticomán',
+        'Unidad Profesional Santo Tomás'
+    ],
+    'Universidad de Guadalajara' => [
+        'Campus Centro',
+        'Campus CUCEA',
+        'Campus CUCBA',
+        'Campus CUCSH'
+    ],
+    'Universidad Autónoma Metropolitana' => [
+        'Unidad Azcapotzalco',
+        'Unidad Iztapalapa',
+        'Unidad Xochimilco',
+        'Unidad Cuajimalpa'
+    ],
+    'Universidad Autónoma de Baja California' => [
+        'Campus Mexicali',
+        'Campus Tijuana',
+        'Campus Ensenada',
+        'Campus San Quintín',
+        'Campus Tecate'
+    ],
+    'Universidad de Sonora' => [
+        'Campus Hermosillo',
+        'Campus Cajeme',
+        'Campus Navojoa',
+        'Campus Caborca'
+    ],
+    'Universidad Autónoma de Nuevo León' => [
+        'Ciudad Universitaria',
+        'Campus Mederos',
+        'Campus Escobedo',
+        'Campus Linares'
+    ],
+    'Universidad Autónoma de Querétaro' => [
+        'Campus Centro',
+        'Campus Juriquilla',
+        'Campus Aeropuerto',
+        'Campus San Juan del Río'
+    ],
+    'Universidad Autónoma de Yucatán' => [
+        'Campus Ciencias Sociales',
+        'Campus Ciencias Biológicas',
+        'Campus Ciencias de la Salud',
+        'Campus Norte'
+    ],
+    'Universidad Veracruzana' => [
+        'Campus Xalapa',
+        'Campus Veracruz',
+        'Campus Orizaba',
+        'Campus Poza Rica',
+        'Campus Coatzacoalcos'
+    ]
+];
+
+// Números de afiliación por institución
 $num_afiliacion_por_institucion = [
-    'UABC - Mexicali' => '9801001',
-    'UABC - Tijuana' => '9801002',
-    'ITSON - Cd. Obregón' => '9801003',
-    'UAS - Culiacán' => '9801004',
-    'UANL - San Nicolás' => '9801005',
-    'UAT - Ciudad Victoria' => '9801006',
-    'UAdeC - Saltillo' => '9801007',
-    'UACH - Chihuahua' => '9801008',
-    'UAQ - Querétaro' => '9801009',
-    'UASLP - San Luis Potosí' => '9801010',
-    'UAZ - Zacatecas' => '9801011',
-    'UAA - Aguascalientes' => '9801012',
-    'UDG - Guadalajara' => '9801013',
-    'UMSNH - Morelia' => '9801014',
-    'UGTO - Guanajuato' => '9801015',
-    'UdeC - Colima' => '9801016',
-    'UAGro - Chilpancingo' => '9801017',
-    'UAEH - Pachuca' => '9801018',
-    'UAEM - Toluca' => '9801019',
-    'UAEMor - Cuernavaca' => '9801020',
-    'UNACH - Tuxtla Gutiérrez' => '9801021',
-    'UABJO - Oaxaca' => '9801022',
-    'UJAT - Villahermosa' => '9801023',
-    'UV - Xalapa' => '9801024',
-    'UNAM - Facultad de Contaduría' => '9801025',
-    'UAM - Azcapotzalco' => '9801026',
-    'IPN - ESCOM' => '9801027',
-    'UAM - Iztapalapa' => '9801028'
+    'Universidad Nacional Autónoma de México' => '2601001',
+    'Instituto Politécnico Nacional' => '2601003',
+    'Universidad de Guadalajara' => '2601005',
+    'Universidad Autónoma Metropolitana' => '2601008',
+    'Universidad Autónoma de Baja California' => '2601007',
+    'Universidad de Sonora' => '2601013',
+    'Instituto Tecnológico de Sonora' => '2601015',
+    'Universidad Autónoma de Nuevo León' => '2602009',
+    'Universidad Autónoma de Coahuila' => '2602010',
+    'Instituto Tecnológico de Nuevo León' => '2602011',
+    'Universidad Autónoma de Querétaro' => '2603011',
+    'Universidad Autónoma de San Luis Potosí' => '2603012',
+    'Universidad Autónoma de Zacatecas' => '2603013',
+    'Universidad Michoacana de San Nicolás de Hidalgo' => '2604007',
+    'Universidad de Guanajuato' => '2604008',
+    'Universidad Autónoma de Guerrero' => '2605014',
+    'Universidad Autónoma del Estado de Hidalgo' => '2605015',
+    'Universidad Autónoma del Estado de México' => '2605016',
+    'Universidad Autónoma de Yucatán' => '2606012',
+    'Universidad Autónoma de Chiapas' => '2606016',
+    'Universidad Veracruzana' => '2606017',
+    'Facultad de Contaduría y Administración (UNAM)' => '2607002',
+    'Escuela Superior de Cómputo (ESCOM)' => '2607004',
+    'Facultad de Contaduría y Administración (UDG)' => '2604006',
+    'Campus UABC - Mexicali' => '2601008',
+    'Campus UANL - San Nicolás' => '2605010'
 ];
 
-// Niveles académicos - SOLO NOMBRE (sin abreviatura)
+$tipos_institucion = [
+    1 => 'Universidad',
+    2 => 'Facultad',
+    3 => 'Campus'
+];
+
+// Niveles académicos desde el catálogo (simplificado para edición)
 $niveles_academicos = [
     ['id' => 1, 'nombre' => 'Licenciatura'],
     ['id' => 2, 'nombre' => 'Maestría'],
-    ['id' => 3, 'nombre' => 'Doctorado'],
-    ['id' => 4, 'nombre' => 'Especialidad'],
-    ['id' => 5, 'nombre' => 'Técnico Superior Universitario'],
-    ['id' => 6, 'nombre' => 'Bachillerato'],
-    ['id' => 7, 'nombre' => 'Ingeniería'],
-    ['id' => 8, 'nombre' => 'Arquitectura']
+    ['id' => 3, 'nombre' => 'Maestría'],
+    ['id' => 4, 'nombre' => 'Doctorado'],
+    ['id' => 5, 'nombre' => 'Doctorado'],
+    ['id' => 6, 'nombre' => 'Especialidad'],
+    ['id' => 7, 'nombre' => 'Técnico Superior Universitario'],
+    ['id' => 8, 'nombre' => 'Bachillerato'],
+    ['id' => 9, 'nombre' => 'Ingeniería'],
+    ['id' => 10, 'nombre' => 'Arquitectura']
 ];
 
 $niveles_cargo = [
@@ -107,50 +242,59 @@ $niveles_cargo = [
     3 => 'Institucional'
 ];
 
+// Cargos por nivel y género (simplificado)
 $cargos_por_nivel = [
-    1 => [ // Nacional
-        'Presidente', 'Presidenta',
-        'Vicepresidente', 'Vicepresidenta',
-        'Secretario General', 'Secretaria General',
-        'Director Ejecutivo', 'Directora Ejecutiva',
-        'Coordinador Nacional', 'Coordinadora Nacional',
-        'Secretario Técnico General', 'Secretaria Técnica General',
-        'Representante de ANFECA ante ALAFEC'
+    1 => [ // Nacional - Femenino
+        'Presidenta',
+        'Vicepresidenta',
+        'Secretaria General',
+        'Directora Ejecutiva',
+        'Coordinadora Nacional',
+        'Secretaria Técnica General'
     ],
-    2 => [ // Regional
-        'Director Regional', 'Directora Regional',
-        'Secretario Regional', 'Secretaria Regional',
-        'Coordinador Regional', 'Coordinadora Regional',
-        'Secretario Técnico', 'Secretaria Técnica'
+    '1m' => [ // Nacional - Masculino
+        'Presidente',
+        'Vicepresidente',
+        'Secretario General',
+        'Director Ejecutivo',
+        'Coordinador Nacional',
+        'Secretario Técnico General'
     ],
-    3 => [ // Institucional
-        'Director', 'Directora',
-        'Director Académico', 'Directora Académica',
-        'Director de Área', 'Directora de Área',
-        'Director General', 'Directora General',
-        'Director de Contaduría', 'Directora de Contaduría',
-        'Director de División', 'Directora de División',
-        'Director de División Económico-Administrativa', 'Directora de División Económico-Administrativa',
-        'Director de Carrera de LIN', 'Directora de Carrera de LIN',
-        'Coordinador Académico', 'Coordinadora Académica',
-        'Coordinador de Licenciatura en Administración', 'Coordinadora de Licenciatura en Administración',
-        'Coordinador de Contaduría y Administración', 'Coordinadora de Contaduría y Administración',
-        'Coordinador de Licenciatura en Contaduría Pública', 'Coordinadora de Licenciatura en Contaduría Pública',
-        'Coordinador de la Facultad', 'Coordinadora de la Facultad',
-        'Coordinador General', 'Coordinadora General',
-        'Coordinador de Negocios', 'Coordinadora de Negocios',
-        'Coordinador de Proyectos y Vinculación Institucional', 'Coordinadora de Proyectos y Vinculación Institucional',
-        'Coordinador de Unidad Académica', 'Coordinadora de Unidad Académica',
-        'Coordinador de Área Económico-Administrativa', 'Coordinadora de Área Económico-Administrativa',
-        'Coordinador de Ciencias Económico Administrativas', 'Coordinadora de Ciencias Económico Administrativas',
-        'Coordinador de Contaduría', 'Coordinadora de Contaduría',
-        'Jefe de Departamento', 'Jefa de Departamento',
-        'Jefe de Departamento de Ciencias Administrativas', 'Jefa de Departamento de Ciencias Administrativas',
-        'Jefe de Departamento de Ciencias Económico Administrativas', 'Jefa de Departamento de Ciencias Económico Administrativas',
-        'Jefe del Departamento de Contabilidad', 'Jefa del Departamento de Contabilidad',
-        'Rector', 'Rectora',
-        'Encargado de la Dirección', 'Encargada de la Dirección',
-        'Secretario', 'Secretaria'
+    2 => [ // Regional - Femenino
+        'Directora Regional',
+        'Secretaria Regional',
+        'Coordinadora Regional',
+        'Secretaria Técnica'
+    ],
+    '2m' => [ // Regional - Masculino
+        'Director Regional',
+        'Secretario Regional',
+        'Coordinador Regional',
+        'Secretario Técnico'
+    ],
+    3 => [ // Institucional - Femenino
+        'Directora',
+        'Directora Académica',
+        'Directora de Área',
+        'Directora General',
+        'Coordinadora Académica',
+        'Coordinadora de la Facultad',
+        'Coordinadora General',
+        'Jefa de Departamento',
+        'Rectora',
+        'Secretaria'
+    ],
+    '3m' => [ // Institucional - Masculino
+        'Director',
+        'Director Académico',
+        'Director de Área',
+        'Director General',
+        'Coordinador Académico',
+        'Coordinador de la Facultad',
+        'Coordinador General',
+        'Jefe de Departamento',
+        'Rector',
+        'Secretario'
     ]
 ];
 
@@ -168,21 +312,22 @@ $tipos_directorio = [
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 1;
 
 // ============================================================
-// DATOS DE LA PERSONA (simulados con los mismos datos que en consulta)
+// DATOS DE LA PERSONA
 // ============================================================
 
 $personas_data = [
     [
         'id' => 1,
-        'num_afiliacion' => '9801001',
+        'num_afiliacion' => '2607002',
         'nombre' => 'María',
         'apellido_paterno' => 'González',
         'apellido_materno' => 'Pérez',
         'genero' => 'F',
         'id_zona' => 7,
-        'institucion' => 'UNAM - Facultad de Contaduría',
+        'institucion' => 'Facultad de Contaduría y Administración',
         'tipo_institucion' => 2,
-        'nivel_academico' => 2,
+        'id_universidad' => 'Universidad Nacional Autónoma de México',
+        'niveles_academicos' => [2, 3],
         'telefonos' => [
             ['lada' => '55', 'numero' => '1234 5678', 'extension' => '123', 'visible' => true]
         ],
@@ -200,21 +345,33 @@ $personas_data = [
                 'coordinacion' => null,
                 'fecha_inicio' => '2024-01-01',
                 'fecha_fin' => null,
+                'titular' => false,
                 'directorios' => [1, 3]
+            ],
+            [
+                'nivel' => 2,
+                'nombre' => 'Coordinadora Regional',
+                'zona' => 7,
+                'coordinacion' => 1,
+                'fecha_inicio' => '2024-07-01',
+                'fecha_fin' => null,
+                'titular' => false,
+                'directorios' => [2]
             ]
         ]
     ],
     [
         'id' => 2,
-        'num_afiliacion' => '9801002',
+        'num_afiliacion' => '2607004',
         'nombre' => 'Juan',
         'apellido_paterno' => 'Martínez',
         'apellido_materno' => 'López',
         'genero' => 'M',
         'id_zona' => 7,
-        'institucion' => 'IPN - ESCOM',
+        'institucion' => 'Escuela Superior de Cómputo (ESCOM)',
         'tipo_institucion' => 2,
-        'nivel_academico' => 3,
+        'id_universidad' => 'Instituto Politécnico Nacional',
+        'niveles_academicos' => [4, 5],
         'telefonos' => [
             ['lada' => '55', 'numero' => '9876 5432', 'extension' => '', 'visible' => true]
         ],
@@ -232,62 +389,57 @@ $personas_data = [
                 'coordinacion' => null,
                 'fecha_inicio' => '2024-03-15',
                 'fecha_fin' => null,
+                'titular' => false,
                 'directorios' => [1]
             ]
         ]
     ],
     [
         'id' => 3,
-        'num_afiliacion' => '9801003',
+        'num_afiliacion' => '2601005',
         'nombre' => 'Ana',
         'apellido_paterno' => 'Sánchez',
         'apellido_materno' => 'Ramírez',
         'genero' => 'F',
-        'id_zona' => 3,
-        'institucion' => 'UAQ - Querétaro',
+        'id_zona' => 4,
+        'institucion' => 'Universidad de Guadalajara',
         'tipo_institucion' => 1,
-        'nivel_academico' => 1,
+        'id_universidad' => null,
+        'niveles_academicos' => [1],
         'telefonos' => [
-            ['lada' => '44', 'numero' => '1234 5678', 'extension' => '', 'visible' => true]
+            ['lada' => '33', 'numero' => '1234 5678', 'extension' => '', 'visible' => true]
         ],
         'correos' => [
             ['valor' => 'ana.sanchez@example.com', 'visible' => true]
         ],
         'celulares' => [
-            ['lada' => '44', 'numero' => '9876 5432', 'visible' => false]
+            ['lada' => '33', 'numero' => '9876 5432', 'visible' => false]
         ],
         'cargos' => [
             [
-                'nivel' => 1,
-                'nombre' => 'Secretaria General',
-                'zona' => null,
-                'coordinacion' => null,
-                'fecha_inicio' => '2024-06-01',
-                'fecha_fin' => null,
-                'directorios' => [2, 3]
-            ],
-            [
                 'nivel' => 2,
                 'nombre' => 'Coordinadora Regional',
-                'zona' => 3,
+                'zona' => 4,
                 'coordinacion' => 2,
-                'fecha_inicio' => '2023-01-01',
-                'fecha_fin' => '2023-12-31',
-                'directorios' => [2]
+                'fecha_inicio' => '2024-06-01',
+                'fecha_fin' => null,
+                'titular' => false,
+                'directorios' => [2, 3]
             ]
         ]
     ],
     [
         'id' => 4,
-        'num_afiliacion' => '9801004',
+        'num_afiliacion' => '2604006',
         'nombre' => 'Carlos',
         'apellido_paterno' => 'Hernández',
         'apellido_materno' => 'Díaz',
         'genero' => 'M',
         'id_zona' => 4,
-        'institucion' => 'UDG - Guadalajara',
-        'tipo_institucion' => 1,
-        'nivel_academico' => 2,
+        'institucion' => 'Facultad de Contaduría y Administración',
+        'tipo_institucion' => 2,
+        'id_universidad' => 'Universidad de Guadalajara',
+        'niveles_academicos' => [2, 3],
         'telefonos' => [
             ['lada' => '33', 'numero' => '1234 5678', 'extension' => '', 'visible' => true]
         ],
@@ -305,21 +457,23 @@ $personas_data = [
                 'coordinacion' => null,
                 'fecha_inicio' => '2024-02-01',
                 'fecha_fin' => null,
+                'titular' => false,
                 'directorios' => [2]
             ]
         ]
     ],
     [
         'id' => 5,
-        'num_afiliacion' => '9801005',
+        'num_afiliacion' => '2601007',
         'nombre' => 'Laura',
         'apellido_paterno' => 'Torres',
         'apellido_materno' => 'Vega',
         'genero' => 'F',
         'id_zona' => 1,
-        'institucion' => 'UABC - Mexicali',
-        'tipo_institucion' => 2,
-        'nivel_academico' => 1,
+        'institucion' => 'Universidad Autónoma de Baja California',
+        'tipo_institucion' => 1,
+        'id_universidad' => null,
+        'niveles_academicos' => [1],
         'telefonos' => [
             ['lada' => '66', 'numero' => '1234 5678', 'extension' => '', 'visible' => true]
         ],
@@ -337,21 +491,23 @@ $personas_data = [
                 'coordinacion' => 1,
                 'fecha_inicio' => '2024-07-01',
                 'fecha_fin' => null,
+                'titular' => false,
                 'directorios' => [3]
             ]
         ]
     ],
     [
         'id' => 6,
-        'num_afiliacion' => '9801006',
+        'num_afiliacion' => '2602009',
         'nombre' => 'Roberto',
         'apellido_paterno' => 'Mendoza',
         'apellido_materno' => 'Cruz',
         'genero' => 'M',
         'id_zona' => 2,
-        'institucion' => 'UANL - San Nicolás',
+        'institucion' => 'Universidad Autónoma de Nuevo León',
         'tipo_institucion' => 1,
-        'nivel_academico' => 2,
+        'id_universidad' => null,
+        'niveles_academicos' => [2],
         'telefonos' => [
             ['lada' => '81', 'numero' => '1234 5678', 'extension' => '', 'visible' => true]
         ],
@@ -369,13 +525,14 @@ $personas_data = [
                 'coordinacion' => null,
                 'fecha_inicio' => '2023-01-01',
                 'fecha_fin' => '2024-01-01',
+                'titular' => false,
                 'directorios' => [4]
             ]
         ]
     ],
     [
         'id' => 7,
-        'num_afiliacion' => '9801007',
+        'num_afiliacion' => '2601007',
         'nombre' => 'Patricia',
         'apellido_paterno' => 'Flores',
         'apellido_materno' => 'Reyes',
@@ -383,7 +540,8 @@ $personas_data = [
         'id_zona' => 5,
         'institucion' => 'UAEH - Pachuca',
         'tipo_institucion' => 2,
-        'nivel_academico' => 3,
+        'id_universidad' => 'Universidad Autónoma del Estado de Hidalgo',
+        'niveles_academicos' => [4, 5],
         'telefonos' => [
             ['lada' => '77', 'numero' => '1234 5678', 'extension' => '', 'visible' => true]
         ],
@@ -401,6 +559,7 @@ $personas_data = [
                 'coordinacion' => 5,
                 'fecha_inicio' => '2024-04-01',
                 'fecha_fin' => null,
+                'titular' => false,
                 'directorios' => [3, 4]
             ]
         ]
@@ -434,7 +593,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($_POST['tipo_institucion'])) $errores[] = 'Tipo de Institución';
     if (empty($_POST['zona'])) $errores[] = 'Zona Regional';
     if (empty($_POST['institucion'])) $errores[] = 'Institución';
-    if (empty($_POST['nivel_academico'])) $errores[] = 'Nivel Académico';
+    if (empty($_POST['niveles_academicos']) || !is_array($_POST['niveles_academicos']) || count(array_filter($_POST['niveles_academicos'])) == 0) {
+        $errores[] = 'Nivel(es) Académico(s)';
+    }
     if (empty($_POST['cargos'])) $errores[] = 'Al menos un cargo';
     if (empty($_POST['telefono_numero']) || empty(array_filter($_POST['telefono_numero']))) $errores[] = 'Teléfono';
     if (empty($_POST['correo_valor']) || empty(array_filter($_POST['correo_valor']))) $errores[] = 'Correo Electrónico';
@@ -525,7 +686,7 @@ include 'template/menu.php';
 
                         <div class="form-group">
                             <label class="form-label required">Género</label>
-                            <select name="genero" id="genero" class="form-control" required>
+                            <select name="genero" id="genero_edicion" class="form-control" required>
                                 <option value="">Seleccionar...</option>
                                 <option value="F" <?= $persona['genero'] == 'F' ? 'selected' : '' ?>>Femenino</option>
                                 <option value="M" <?= $persona['genero'] == 'M' ? 'selected' : '' ?>>Masculino</option>
@@ -533,15 +694,43 @@ include 'template/menu.php';
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label required">Nivel Académico</label>
-                            <select name="nivel_academico" id="nivel_academico" class="form-control" required>
-                                <option value="">Seleccionar nivel...</option>
-                                <?php foreach ($niveles_academicos as $nivel): ?>
-                                    <option value="<?= $nivel['id'] ?>" <?= $persona['nivel_academico'] == $nivel['id'] ? 'selected' : '' ?>>
-                                        <?= htmlspecialchars($nivel['nombre']) ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
+                            <label class="form-label required">Nivel(es) Académico(s)</label>
+                            <div class="niveles-container">
+                                <div class="niveles-select-group">
+                                    <select name="nivel_select" id="nivel_select" class="form-control">
+                                        <option value="">Seleccionar nivel académico...</option>
+                                        <?php foreach ($niveles_academicos as $nivel): ?>
+                                            <option value="<?= $nivel['id'] ?>" data-nombre="<?= htmlspecialchars($nivel['nombre']) ?>">
+                                                <?= htmlspecialchars($nivel['nombre']) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                    <button type="button" class="btn-add-nivel" onclick="agregarNivel()">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div id="niveles_seleccionados" class="niveles-tags">
+                                    <?php 
+                                    $niveles_ids = $persona['niveles_academicos'] ?? [];
+                                    foreach ($niveles_ids as $nivel_id):
+                                        foreach ($niveles_academicos as $nivel):
+                                            if ($nivel['id'] == $nivel_id):
+                                    ?>
+                                        <span class="nivel-tag" data-id="<?= $nivel['id'] ?>">
+                                            <span class="nivel-tag-nombre"><?= htmlspecialchars($nivel['nombre']) ?></span>
+                                            <button type="button" class="btn-remove-tag" onclick="eliminarNivel(<?= $nivel['id'] ?>)">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </span>
+                                    <?php 
+                                            endif;
+                                        endforeach;
+                                    endforeach; 
+                                    ?>
+                                </div>
+                                <input type="hidden" name="niveles_academicos[]" id="niveles_academicos_hidden" value="<?= implode(',', $niveles_ids) ?>">
+                            </div>
+                            <small class="form-hint">Seleccione un nivel y presione el botón + para agregarlo</small>
                         </div>
                     </div>
                 </div>
@@ -557,7 +746,7 @@ include 'template/menu.php';
                     <div class="form-grid">
                         <div class="form-group">
                             <label class="form-label required">Tipo de Institución</label>
-                            <select name="tipo_institucion" id="tipo_institucion" class="form-control" required>
+                            <select name="tipo_institucion" id="tipo_institucion_edicion" class="form-control" required>
                                 <option value="">Seleccionar tipo...</option>
                                 <?php foreach ($tipos_institucion as $id => $nombre): ?>
                                     <option value="<?= $id ?>" <?= $persona['tipo_institucion'] == $id ? 'selected' : '' ?>>
@@ -569,7 +758,7 @@ include 'template/menu.php';
 
                         <div class="form-group">
                             <label class="form-label required">Zona Regional</label>
-                            <select name="zona" id="zona" class="form-control" required>
+                            <select name="zona" id="zona_edicion" class="form-control" required>
                                 <option value="">Seleccionar zona...</option>
                                 <?php foreach ($zonas_regionales as $id => $nombre): ?>
                                     <option value="<?= $id ?>" <?= $persona['id_zona'] == $id ? 'selected' : '' ?>>
@@ -579,19 +768,67 @@ include 'template/menu.php';
                             </select>
                         </div>
 
+                        <div class="form-group" id="universidad_container_edicion" style="<?= $persona['tipo_institucion'] != 1 ? 'display:block;' : 'display:none;' ?>">
+                            <label class="form-label required">Universidad</label>
+                            <select name="universidad" id="universidad_edicion" class="form-control" <?= $persona['tipo_institucion'] != 1 ? 'required' : '' ?>>
+                                <option value="">Seleccionar universidad...</option>
+                                <?php 
+                                $zona_id = $persona['id_zona'];
+                                if (isset($universidades_por_zona[$zona_id])):
+                                    foreach ($universidades_por_zona[$zona_id] as $uni):
+                                ?>
+                                    <option value="<?= htmlspecialchars($uni) ?>" <?= $uni == $persona['id_universidad'] ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($uni) ?>
+                                    </option>
+                                <?php 
+                                    endforeach;
+                                endif; 
+                                ?>
+                            </select>
+                            <small class="form-hint">Seleccione la universidad a la que pertenece</small>
+                        </div>
+
                         <div class="form-group">
                             <label class="form-label required">Institución</label>
-                            <select name="institucion" id="institucion" class="form-control" required>
+                            <select name="institucion" id="institucion_edicion" class="form-control" required>
                                 <option value="">Seleccionar institución...</option>
                                 <?php 
-                                $inst_seleccionada = $persona['institucion'];
-                                if (isset($instituciones_por_zona[$persona['id_zona']])): 
-                                    foreach ($instituciones_por_zona[$persona['id_zona']] as $inst): 
+                                $tipo = $persona['tipo_institucion'];
+                                $zona_id = $persona['id_zona'];
+                                $universidad = $persona['id_universidad'];
+                                
+                                if ($tipo == 1):
+                                    if (isset($universidades_por_zona[$zona_id])):
+                                        foreach ($universidades_por_zona[$zona_id] as $inst):
                                 ?>
-                                    <option value="<?= htmlspecialchars($inst) ?>" <?= $inst == $inst_seleccionada ? 'selected' : '' ?>>
+                                    <option value="<?= htmlspecialchars($inst) ?>" <?= $inst == $persona['institucion'] ? 'selected' : '' ?>>
                                         <?= htmlspecialchars($inst) ?>
                                     </option>
-                                <?php endforeach; endif; ?>
+                                <?php 
+                                        endforeach;
+                                    endif;
+                                elseif ($tipo == 2):
+                                    if ($universidad && isset($facultades_por_universidad[$universidad])):
+                                        foreach ($facultades_por_universidad[$universidad] as $facultad):
+                                ?>
+                                    <option value="<?= htmlspecialchars($facultad) ?>" <?= $facultad == $persona['institucion'] ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($facultad) ?>
+                                    </option>
+                                <?php 
+                                        endforeach;
+                                    endif;
+                                elseif ($tipo == 3):
+                                    if ($universidad && isset($campus_por_universidad[$universidad])):
+                                        foreach ($campus_por_universidad[$universidad] as $campus):
+                                ?>
+                                    <option value="<?= htmlspecialchars($campus) ?>" <?= $campus == $persona['institucion'] ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($campus) ?>
+                                    </option>
+                                <?php 
+                                        endforeach;
+                                    endif;
+                                endif; 
+                                ?>
                             </select>
                         </div>
 
@@ -600,9 +837,9 @@ include 'template/menu.php';
                             <label class="form-label">Núm. Afiliación</label>
                             <div class="afiliacion-display">
                                 <span class="afiliacion-value" id="num_afiliacion_mostrado"><?= htmlspecialchars($persona['num_afiliacion']) ?></span>
-                                <span class="afiliacion-hint">(Asignado por la institución)</span>
                             </div>
                             <input type="hidden" name="num_afiliacion" id="num_afiliacion" value="<?= htmlspecialchars($persona['num_afiliacion']) ?>">
+                            <small class="form-hint">Asignado por la institución</small>
                         </div>
                     </div>
                 </div>
@@ -634,22 +871,31 @@ include 'template/menu.php';
                                     <div class="form-group">
                                         <label class="form-label required">Cargo</label>
                                         <select name="cargo_nombre[]" class="form-control select-cargo-nombre" required>
-                                            <option value="">Primero seleccione un nivel</option>
-                                            <?php if (isset($cargos_por_nivel[$cargo['nivel']])): ?>
-                                                <?php foreach ($cargos_por_nivel[$cargo['nivel']] as $nombre_cargo): ?>
-                                                    <option value="<?= htmlspecialchars($nombre_cargo) ?>" <?= $cargo['nombre'] == $nombre_cargo ? 'selected' : '' ?>>
-                                                        <?= htmlspecialchars($nombre_cargo) ?>
-                                                    </option>
-                                                <?php endforeach; ?>
-                                            <?php endif; ?>
+                                            <option value="">Primero seleccione un nivel y género</option>
+                                            <?php 
+                                            $genero = $persona['genero'];
+                                            $key = $cargo['nivel'];
+                                            if ($genero === 'M') {
+                                                $key = $cargo['nivel'] . 'm';
+                                            }
+                                            if (isset($cargos_por_nivel[$key])):
+                                                foreach ($cargos_por_nivel[$key] as $cargo_nombre):
+                                            ?>
+                                                <option value="<?= htmlspecialchars($cargo_nombre) ?>" <?= $cargo['nombre'] == $cargo_nombre ? 'selected' : '' ?>>
+                                                    <?= htmlspecialchars($cargo_nombre) ?>
+                                                </option>
+                                            <?php 
+                                                endforeach;
+                                            endif; 
+                                            ?>
                                         </select>
                                     </div>
                                     
-                                    <!-- Campos dinámicos para Regional -->
-                                    <div class="cargo-detalle-regional" style="<?= $cargo['nivel'] == 2 ? 'display:block;' : 'display:none;' ?> grid-column: span 2;">
+                                    <!-- Campos dinámicos para Nacional y Regional -->
+                                    <div class="cargo-detalle-zona-coordinacion" style="<?= ($cargo['nivel'] == 1 || $cargo['nivel'] == 2) ? 'display:block; grid-column: span 2;' : 'display:none;' ?>">
                                         <div class="cargo-grid-detalle">
                                             <div class="form-group">
-                                                <label class="form-label required">Zona</label>
+                                                <label class="form-label <?= $cargo['nivel'] == 2 ? 'required' : '' ?>">Zona</label>
                                                 <select name="cargo_zona[]" class="form-control" <?= $cargo['nivel'] == 2 ? 'required' : '' ?>>
                                                     <option value="">Seleccionar zona...</option>
                                                     <?php foreach ($zonas_regionales as $id => $nombre): ?>
@@ -658,6 +904,7 @@ include 'template/menu.php';
                                                         </option>
                                                     <?php endforeach; ?>
                                                 </select>
+                                                <small class="form-hint"><?= $cargo['nivel'] == 2 ? 'Obligatorio' : 'Opcional' ?></small>
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">Coordinación</label>
@@ -669,7 +916,16 @@ include 'template/menu.php';
                                                         </option>
                                                     <?php endforeach; ?>
                                                 </select>
+                                                <small class="form-hint">Opcional</small>
                                             </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Titular de institución (solo para cargos institucionales) -->
+                                    <div class="form-group cargo-titular" style="<?= $cargo['nivel'] == 3 ? 'display:flex; align-self:flex-end; padding-bottom:0;' : 'display:none;' ?>">
+                                        <div class="checkbox-titular">
+                                            <input type="checkbox" name="cargo_titular[]" value="1" id="titular_<?= $index ?>" <?= isset($cargo['titular']) && $cargo['titular'] ? 'checked' : '' ?>>
+                                            <label for="titular_<?= $index ?>">Titular</label>
                                         </div>
                                     </div>
                                     
@@ -856,12 +1112,14 @@ include 'template/menu.php';
     </div>
 </main>
 
+<!-- El CSS y JavaScript son los mismos que en el archivo de registro, 
+     por lo que se omiten para no repetir el código aquí -->
+
 <style>
 /* ============================================================
-   ESTILOS - EDICIÓN (mismos que registro)
+   ESTILOS MODERNOS - EDICIÓN (mismos que registro)
    ============================================================ */
 
-/* Page Header */
 .page-header {
     display: flex;
     justify-content: space-between;
@@ -910,7 +1168,6 @@ include 'template/menu.php';
     align-items: center;
 }
 
-/* Botones */
 .btn-primary-modern {
     display: inline-flex;
     align-items: center;
@@ -955,7 +1212,6 @@ include 'template/menu.php';
     color: #8B0000;
 }
 
-/* Alertas */
 .alert-modern {
     display: flex;
     align-items: flex-start;
@@ -991,7 +1247,6 @@ include 'template/menu.php';
     color: #c62828;
 }
 
-/* Formulario */
 .form-container {
     background: white;
     border-radius: 16px;
@@ -1070,41 +1325,112 @@ include 'template/menu.php';
     font-weight: 700;
 }
 
-/* Grids */
 .form-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1.25rem;
 }
 
-.cargo-grid-base {
-    display: grid;
-    grid-template-columns: 1fr 1.2fr 1fr 1fr auto;
-    gap: 1rem;
-    align-items: start;
-}
-
-.cargo-grid-base .cargo-detalle-regional {
-    grid-column: span 2;
-}
-
-.cargo-grid-detalle {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-}
-
-.directorios-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+/* Niveles Académicos - Select con botón + */
+.niveles-container {
+    display: flex;
+    flex-direction: column;
     gap: 0.5rem;
 }
 
-/* Afiliación (solo lectura) */
+.niveles-select-group {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.niveles-select-group .form-control {
+    flex: 1;
+}
+
+.btn-add-nivel {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: #8B0000;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.btn-add-nivel:hover {
+    background: #5C0000;
+    transform: scale(1.05);
+}
+
+.btn-add-nivel:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.niveles-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    min-height: 32px;
+    padding: 0.25rem 0;
+}
+
+.nivel-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.25rem 0.6rem 0.25rem 0.8rem;
+    background: #f5edec;
+    border: 1px solid #d4c5c4;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    color: #4a3a3a;
+    animation: fadeInTag 0.3s ease;
+}
+
+.nivel-tag .nivel-tag-nombre {
+    font-weight: 500;
+}
+
+.nivel-tag .btn-remove-tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    background: #c62828;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 0.6rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0;
+    line-height: 1;
+}
+
+.nivel-tag .btn-remove-tag:hover {
+    background: #8B0000;
+    transform: scale(1.1);
+}
+
+@keyframes fadeInTag {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* Afiliación Display */
 .afiliacion-display {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
     padding: 0.7rem 1rem;
     background: #f8f6f6;
     border: 2px solid #e8e8e8;
@@ -1119,9 +1445,68 @@ include 'template/menu.php';
     font-size: 1rem;
 }
 
-.afiliacion-hint {
+/* Cargos */
+.cargo-grid-base {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 0.7fr 1fr 1fr auto;
+    gap: 1rem;
+    align-items: start;
+}
+
+.cargo-grid-base .cargo-detalle-zona-coordinacion {
+    grid-column: span 2;
+}
+
+.cargo-grid-detalle {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.cargo-grid-detalle .form-hint {
+    font-size: 0.65rem;
     color: #999;
-    font-size: 0.7rem;
+}
+
+/* Checkbox Titular */
+.cargo-titular {
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 0;
+}
+
+.checkbox-titular {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1rem;
+    background: #faf8f8;
+    border-radius: 10px;
+    border: 2px solid #e8e8e8;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 46px;
+    width: 100%;
+}
+
+.checkbox-titular:hover {
+    background: #f5edec;
+    border-color: #d4c5c4;
+}
+
+.checkbox-titular input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #8B0000;
+    cursor: pointer;
+}
+
+.checkbox-titular label {
+    font-size: 0.85rem;
+    color: #4a4a4a;
+    cursor: pointer;
+    margin: 0;
+    font-weight: 500;
 }
 
 /* Contactos */
@@ -1225,7 +1610,7 @@ include 'template/menu.php';
     border-color: #8B0000;
 }
 
-/* Toggle Modern - FUNCIONAL */
+/* Toggle Modern */
 .toggle-modern {
     position: relative;
     display: inline-block;
@@ -1277,7 +1662,6 @@ include 'template/menu.php';
     cursor: not-allowed;
 }
 
-/* Form groups */
 .form-group {
     display: flex;
     flex-direction: column;
@@ -1293,6 +1677,12 @@ include 'template/menu.php';
 .form-label.required::after {
     content: ' *';
     color: #c62828;
+}
+
+.form-hint {
+    font-size: 0.7rem;
+    color: #999;
+    margin-top: 0.15rem;
 }
 
 .form-control {
@@ -1317,7 +1707,12 @@ include 'template/menu.php';
     color: #bbb;
 }
 
-/* Checkbox Directorios */
+.directorios-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+}
+
 .checkbox-directorio {
     display: flex;
     align-items: center;
@@ -1403,7 +1798,6 @@ include 'template/menu.php';
     border-color: #8B0000;
 }
 
-/* Form actions */
 .form-actions {
     display: flex;
     gap: 1rem;
@@ -1423,7 +1817,7 @@ include 'template/menu.php';
         grid-template-columns: 1fr 1fr;
     }
     
-    .cargo-grid-base .cargo-detalle-regional {
+    .cargo-grid-base .cargo-detalle-zona-coordinacion {
         grid-column: span 2;
     }
     
@@ -1469,7 +1863,7 @@ include 'template/menu.php';
         grid-template-columns: 1fr;
     }
     
-    .cargo-grid-base .cargo-detalle-regional {
+    .cargo-grid-base .cargo-detalle-zona-coordinacion {
         grid-column: span 1;
     }
 
@@ -1517,9 +1911,12 @@ include 'template/menu.php';
 const coordinacionesNacionales = <?= json_encode($coordinaciones_nacionales) ?>;
 const cargosPorNivel = <?= json_encode($cargos_por_nivel) ?>;
 const zonasRegionales = <?= json_encode($zonas_regionales) ?>;
-const nivelesAcademicos = <?= json_encode($niveles_academicos) ?>;
-const institucionesPorZona = <?= json_encode($instituciones_por_zona) ?>;
+const universidadesPorZona = <?= json_encode($universidades_por_zona) ?>;
+const facultadesPorUniversidad = <?= json_encode($facultades_por_universidad) ?>;
+const campusPorUniversidad = <?= json_encode($campus_por_universidad) ?>;
+const nivelesCargo = <?= json_encode($niveles_cargo) ?>;
 const numAfiliacionPorInstitucion = <?= json_encode($num_afiliacion_por_institucion) ?>;
+const nivelesAcademicos = <?= json_encode($niveles_academicos) ?>;
 
 // ============================================================
 // FUNCIÓN PARA ALTERNAR VISIBILIDAD DEL TOGGLE
@@ -1535,62 +1932,66 @@ function toggleVisibility(element) {
 }
 
 // ============================================================
-// INSTITUCIONES POR ZONA Y NÚMERO DE AFILIACIÓN
+// CARGOS DINÁMICOS POR NIVEL Y GÉNERO
 // ============================================================
 
-document.addEventListener('DOMContentLoaded', function() {
-    const zonaSelect = document.getElementById('zona');
-    const institucionSelect = document.getElementById('institucion');
-    const numAfiliacionDisplay = document.getElementById('num_afiliacion_mostrado');
-    const numAfiliacionInput = document.getElementById('num_afiliacion');
+function cargarCargos(selectNivel, selectCargo, container, genero) {
+    const nivelId = parseInt(selectNivel.value);
+    const detalleZona = container.querySelector('.cargo-detalle-zona-coordinacion');
+    const titularContainer = container.querySelector('.cargo-titular');
     
-    if (zonaSelect && institucionSelect) {
-        zonaSelect.addEventListener('change', function() {
-            const zonaId = parseInt(this.value);
-            institucionSelect.innerHTML = '<option value="">Seleccionar institución...</option>';
-            
-            const instActual = institucionSelect.value;
-            if (instActual && numAfiliacionPorInstitucion[instActual]) {
-                numAfiliacionDisplay.textContent = numAfiliacionPorInstitucion[instActual];
-                numAfiliacionInput.value = numAfiliacionPorInstitucion[instActual];
-            } else {
-                numAfiliacionDisplay.textContent = '- - - -';
-                numAfiliacionInput.value = '';
-            }
-            
-            if (zonaId && institucionesPorZona[zonaId]) {
-                institucionesPorZona[zonaId].forEach(function(inst) {
-                    const option = document.createElement('option');
-                    option.value = inst;
-                    option.textContent = inst;
-                    if (inst === instActual) {
-                        option.selected = true;
-                    }
-                    institucionSelect.appendChild(option);
-                });
-                institucionSelect.disabled = false;
-            } else {
-                institucionSelect.disabled = true;
-            }
-        });
-    }
+    selectCargo.innerHTML = '<option value="">Primero seleccione un nivel y género</option>';
+    selectCargo.disabled = true;
+    detalleZona.style.display = 'none';
+    titularContainer.style.display = 'none';
     
-    if (institucionSelect) {
-        institucionSelect.addEventListener('change', function() {
-            const institucion = this.value;
-            if (institucion && numAfiliacionPorInstitucion[institucion]) {
-                numAfiliacionDisplay.textContent = numAfiliacionPorInstitucion[institucion];
-                numAfiliacionInput.value = numAfiliacionPorInstitucion[institucion];
-            } else {
-                numAfiliacionDisplay.textContent = '- - - -';
-                numAfiliacionInput.value = '';
-            }
-        });
+    const zonaSelect = detalleZona.querySelector('select[name="cargo_zona[]"]');
+    const coordSelect = detalleZona.querySelector('select[name="cargo_coordinacion[]"]');
+    if (zonaSelect) zonaSelect.removeAttribute('required');
+    if (coordSelect) coordSelect.removeAttribute('required');
+    
+    if (nivelId && genero) {
+        let key = nivelId;
+        if (genero === 'M') {
+            key = nivelId + 'm';
+        }
+        
+        if (cargosPorNivel[key]) {
+            cargosPorNivel[key].forEach(function(cargo) {
+                const option = document.createElement('option');
+                option.value = cargo;
+                option.textContent = cargo;
+                selectCargo.appendChild(option);
+            });
+            selectCargo.disabled = false;
+        }
+        
+        if (nivelId === 1) {
+            detalleZona.style.display = 'block';
+            if (zonaSelect) zonaSelect.removeAttribute('required');
+            if (coordSelect) coordSelect.removeAttribute('required');
+            const hints = detalleZona.querySelectorAll('.form-hint');
+            hints.forEach(h => h.textContent = 'Opcional');
+        }
+        
+        if (nivelId === 2) {
+            detalleZona.style.display = 'block';
+            if (zonaSelect) zonaSelect.setAttribute('required', 'required');
+            if (coordSelect) coordSelect.removeAttribute('required');
+            const hints = detalleZona.querySelectorAll('.form-hint');
+            if (hints.length > 0) hints[0].textContent = 'Obligatorio';
+            if (hints.length > 1) hints[1].textContent = 'Opcional';
+        }
+        
+        if (nivelId === 3) {
+            detalleZona.style.display = 'none';
+            titularContainer.style.display = 'flex';
+        }
     }
-});
+}
 
 // ============================================================
-// CARGOS DINÁMICOS POR NIVEL
+// EVENTOS DE CARGOS
 // ============================================================
 
 document.addEventListener('change', function(e) {
@@ -1598,42 +1999,129 @@ document.addEventListener('change', function(e) {
         const selectNivel = e.target;
         const container = selectNivel.closest('.cargo-item');
         const selectCargo = container.querySelector('.select-cargo-nombre');
-        const detalleRegional = container.querySelector('.cargo-detalle-regional');
-        const nivelId = parseInt(selectNivel.value);
+        const generoSelect = document.getElementById('genero_edicion');
+        const genero = generoSelect ? generoSelect.value : '';
         
-        selectCargo.innerHTML = '<option value="">Primero seleccione un nivel</option>';
-        selectCargo.disabled = true;
-        detalleRegional.style.display = 'none';
-        
-        const selectsDetalle = detalleRegional.querySelectorAll('select');
-        selectsDetalle.forEach(sel => sel.removeAttribute('required'));
-        
-        if (nivelId && cargosPorNivel[nivelId]) {
-            cargosPorNivel[nivelId].forEach(function(cargo) {
-                const option = document.createElement('option');
-                option.value = cargo;
-                option.textContent = cargo;
-                selectCargo.appendChild(option);
-            });
-            selectCargo.disabled = false;
-            
-            if (nivelId === 2) {
-                detalleRegional.style.display = 'block';
-                const zonaSelect = detalleRegional.querySelector('select[name="cargo_zona[]"]');
-                if (zonaSelect) zonaSelect.setAttribute('required', 'required');
-            }
-        }
+        cargarCargos(selectNivel, selectCargo, container, genero);
     }
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const generoSelect = document.getElementById('genero_edicion');
+    if (generoSelect) {
+        generoSelect.addEventListener('change', function() {
+            const genero = this.value;
+            const cargosItems = document.querySelectorAll('.cargo-item');
+            cargosItems.forEach(function(item) {
+                const selectNivel = item.querySelector('.select-cargo-nivel');
+                const selectCargo = item.querySelector('.select-cargo-nombre');
+                if (selectNivel && selectCargo) {
+                    cargarCargos(selectNivel, selectCargo, item, genero);
+                }
+            });
+        });
+    }
+});
+
+// ============================================================
+// NIVELES ACADÉMICOS
+// ============================================================
+
+let nivelesSeleccionados = [];
+
+function initNiveles() {
+    const hidden = document.getElementById('niveles_academicos_hidden');
+    if (hidden && hidden.value) {
+        const ids = hidden.value.split(',').map(Number).filter(n => n > 0);
+        ids.forEach(id => {
+            const nivel = nivelesAcademicos.find(n => n.id === id);
+            if (nivel && !nivelesSeleccionados.some(n => n.id === id)) {
+                nivelesSeleccionados.push({ id: nivel.id, nombre: nivel.nombre });
+            }
+        });
+        renderizarTags();
+    }
+}
+
+function agregarNivel() {
+    const select = document.getElementById('nivel_select');
+    const valor = select.value;
+    
+    if (!valor) {
+        mostrarMensaje('Seleccione un nivel académico', 'error');
+        return;
+    }
+    
+    const option = select.options[select.selectedIndex];
+    const id = parseInt(valor);
+    const nombre = option.dataset.nombre;
+    
+    if (nivelesSeleccionados.some(n => n.id === id)) {
+        mostrarMensaje('Este nivel ya ha sido agregado', 'error');
+        return;
+    }
+    
+    nivelesSeleccionados.push({ id: id, nombre: nombre });
+    renderizarTags();
+    select.selectedIndex = 0;
+    select.focus();
+    actualizarHiddenInput();
+}
+
+function eliminarNivel(id) {
+    nivelesSeleccionados = nivelesSeleccionados.filter(n => n.id !== id);
+    renderizarTags();
+    actualizarHiddenInput();
+}
+
+function renderizarTags() {
+    const container = document.getElementById('niveles_seleccionados');
+    container.innerHTML = '';
+    
+    nivelesSeleccionados.forEach(nivel => {
+        const tag = document.createElement('span');
+        tag.className = 'nivel-tag';
+        tag.setAttribute('data-id', nivel.id);
+        tag.innerHTML = `
+            <span class="nivel-tag-nombre">${nivel.nombre}</span>
+            <button type="button" class="btn-remove-tag" onclick="eliminarNivel(${nivel.id})">
+                <i class="fas fa-times"></i>
+            </button>
+        `;
+        container.appendChild(tag);
+    });
+}
+
+function actualizarHiddenInput() {
+    const hidden = document.getElementById('niveles_academicos_hidden');
+    const ids = nivelesSeleccionados.map(n => n.id);
+    hidden.value = ids.join(',');
+}
 
 // ============================================================
 // CARGOS - AGREGAR / ELIMINAR
 // ============================================================
 
+let cargoCounter = <?= count($persona['cargos']) ?>;
+
 function agregarCargo() {
+    cargoCounter++;
     const container = document.getElementById('cargos-container');
     const primerCargo = container.querySelector('.cargo-item');
     const nuevoCargo = primerCargo.cloneNode(true);
+    
+    nuevoCargo.querySelectorAll('[id]').forEach(el => {
+        const id = el.id;
+        if (id) {
+            const parts = id.split('_');
+            if (parts.length > 1) {
+                parts[parts.length - 1] = cargoCounter;
+                el.id = parts.join('_');
+            } else {
+                el.id = id + '_' + cargoCounter;
+            }
+        }
+    });
     
     nuevoCargo.querySelectorAll('select').forEach(select => {
         select.selectedIndex = 0;
@@ -1650,17 +2138,58 @@ function agregarCargo() {
         cb.checked = false;
     });
     
-    const detalleRegional = nuevoCargo.querySelector('.cargo-detalle-regional');
-    detalleRegional.style.display = 'none';
-    detalleRegional.querySelectorAll('select').forEach(sel => {
+    const detalleZona = nuevoCargo.querySelector('.cargo-detalle-zona-coordinacion');
+    detalleZona.style.display = 'none';
+    detalleZona.querySelectorAll('select').forEach(sel => {
         sel.selectedIndex = 0;
         sel.removeAttribute('required');
     });
     
+    const titularContainer = nuevoCargo.querySelector('.cargo-titular');
+    titularContainer.style.display = 'none';
+    const titularCheckbox = titularContainer.querySelector('input[type="checkbox"]');
+    if (titularCheckbox) titularCheckbox.checked = true;
+    
     const btnEliminar = nuevoCargo.querySelector('.btn-remove');
     if (btnEliminar) btnEliminar.style.display = 'flex';
     
+    nuevoCargo.querySelectorAll('.checkbox-directorio label').forEach(label => {
+        const forAttr = label.getAttribute('for');
+        if (forAttr) {
+            const parts = forAttr.split('_');
+            if (parts.length > 1) {
+                parts[parts.length - 1] = cargoCounter;
+                label.setAttribute('for', parts.join('_'));
+            } else {
+                label.setAttribute('for', forAttr + '_' + cargoCounter);
+            }
+        }
+    });
+    
+    nuevoCargo.querySelectorAll('.checkbox-directorio input[type="checkbox"]').forEach(input => {
+        const id = input.id;
+        if (id) {
+            const parts = id.split('_');
+            if (parts.length > 1) {
+                parts[parts.length - 1] = cargoCounter;
+                input.id = parts.join('_');
+            } else {
+                input.id = id + '_' + cargoCounter;
+            }
+        }
+    });
+    
     container.appendChild(nuevoCargo);
+    
+    const generoSelect = document.getElementById('genero_edicion');
+    if (generoSelect) {
+        const genero = generoSelect.value;
+        const selectNivel = nuevoCargo.querySelector('.select-cargo-nivel');
+        const selectCargo = nuevoCargo.querySelector('.select-cargo-nombre');
+        if (selectNivel && selectCargo) {
+            cargarCargos(selectNivel, selectCargo, nuevoCargo, genero);
+        }
+    }
 }
 
 function eliminarCargo(btn) {
@@ -1673,7 +2202,7 @@ function eliminarCargo(btn) {
 }
 
 // ============================================================
-// CONTACTOS - AGREGAR / ELIMINAR
+// CONTACTOS
 // ============================================================
 
 function agregarContacto(containerId, tipo) {
@@ -1715,10 +2244,6 @@ function eliminarContacto(btn, containerId) {
     }
 }
 
-// ============================================================
-// CELULARES - AGREGAR / ELIMINAR
-// ============================================================
-
 function agregarCelular() {
     const container = document.getElementById('celulares-container');
     
@@ -1758,6 +2283,213 @@ function eliminarCelular(btn) {
 }
 
 // ============================================================
+// INSTITUCIONES POR ZONA Y TIPO (Edición)
+// ============================================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    const zonaSelect = document.getElementById('zona_edicion');
+    const tipoSelect = document.getElementById('tipo_institucion_edicion');
+    const institucionSelect = document.getElementById('institucion_edicion');
+    const universidadContainer = document.getElementById('universidad_container_edicion');
+    const universidadSelect = document.getElementById('universidad_edicion');
+    const institucionActual = '<?= htmlspecialchars($persona['institucion']) ?>';
+    const universidadActual = <?= json_encode($persona['id_universidad'] ?? null) ?>;
+    
+    function cargarUniversidades() {
+        const zonaId = parseInt(zonaSelect.value);
+        universidadSelect.innerHTML = '<option value="">Seleccionar universidad...</option>';
+        
+        if (zonaId && universidadesPorZona[zonaId]) {
+            universidadesPorZona[zonaId].forEach(function(uni) {
+                const option = document.createElement('option');
+                option.value = uni;
+                option.textContent = uni;
+                if (uni === universidadActual) option.selected = true;
+                universidadSelect.appendChild(option);
+            });
+            universidadSelect.disabled = false;
+        } else {
+            universidadSelect.disabled = true;
+        }
+    }
+    
+    function cargarInstituciones() {
+        const tipo = parseInt(tipoSelect.value);
+        const universidad = universidadSelect.value;
+        
+        institucionSelect.innerHTML = '<option value="">Seleccionar institución...</option>';
+        
+        if (tipo === 1) {
+            const zonaId = parseInt(zonaSelect.value);
+            if (zonaId && universidadesPorZona[zonaId]) {
+                universidadesPorZona[zonaId].forEach(function(uni) {
+                    const option = document.createElement('option');
+                    option.value = uni;
+                    option.textContent = uni;
+                    if (uni === institucionActual) option.selected = true;
+                    institucionSelect.appendChild(option);
+                });
+                institucionSelect.disabled = false;
+            } else {
+                institucionSelect.disabled = true;
+            }
+        } else if (tipo === 2) {
+            if (universidad && facultadesPorUniversidad[universidad]) {
+                facultadesPorUniversidad[universidad].forEach(function(facultad) {
+                    const option = document.createElement('option');
+                    option.value = facultad;
+                    option.textContent = facultad;
+                    if (facultad === institucionActual) option.selected = true;
+                    institucionSelect.appendChild(option);
+                });
+                institucionSelect.disabled = false;
+            } else {
+                institucionSelect.disabled = true;
+            }
+        } else if (tipo === 3) {
+            if (universidad && campusPorUniversidad[universidad]) {
+                campusPorUniversidad[universidad].forEach(function(campus) {
+                    const option = document.createElement('option');
+                    option.value = campus;
+                    option.textContent = campus;
+                    if (campus === institucionActual) option.selected = true;
+                    institucionSelect.appendChild(option);
+                });
+                institucionSelect.disabled = false;
+            } else {
+                institucionSelect.disabled = true;
+            }
+        } else {
+            institucionSelect.disabled = true;
+        }
+        
+        actualizarNumeroAfiliacion();
+    }
+    
+    function actualizarNumeroAfiliacion() {
+        const institucion = institucionSelect.value;
+        const numDisplay = document.getElementById('num_afiliacion_mostrado');
+        const numInput = document.getElementById('num_afiliacion');
+        
+        if (institucion && numAfiliacionPorInstitucion[institucion]) {
+            numDisplay.textContent = numAfiliacionPorInstitucion[institucion];
+            numInput.value = numAfiliacionPorInstitucion[institucion];
+        } else {
+            numDisplay.textContent = '- - - - - - -';
+            numInput.value = '';
+        }
+    }
+    
+    if (zonaSelect) {
+        zonaSelect.addEventListener('change', function() {
+            cargarUniversidades();
+            cargarInstituciones();
+        });
+    }
+    
+    if (tipoSelect) {
+        tipoSelect.addEventListener('change', function() {
+            const tipo = parseInt(this.value);
+            
+            if (tipo === 1) {
+                universidadContainer.style.display = 'none';
+                universidadSelect.removeAttribute('required');
+                universidadSelect.value = '';
+                cargarInstituciones();
+            } else if (tipo === 2 || tipo === 3) {
+                universidadContainer.style.display = 'block';
+                universidadSelect.setAttribute('required', 'required');
+                cargarUniversidades();
+                cargarInstituciones();
+            } else {
+                universidadContainer.style.display = 'none';
+                universidadSelect.removeAttribute('required');
+                universidadSelect.value = '';
+                institucionSelect.innerHTML = '<option value="">Primero seleccione tipo</option>';
+                institucionSelect.disabled = true;
+            }
+        });
+    }
+    
+    if (universidadSelect) {
+        universidadSelect.addEventListener('change', function() {
+            cargarInstituciones();
+        });
+    }
+    
+    if (institucionSelect) {
+        institucionSelect.addEventListener('change', function() {
+            actualizarNumeroAfiliacion();
+        });
+    }
+    
+    // Inicializar
+    setTimeout(function() {
+        if (tipoSelect.value == 2 || tipoSelect.value == 3) {
+            universidadContainer.style.display = 'block';
+            universidadSelect.setAttribute('required', 'required');
+            cargarUniversidades();
+            if (universidadActual) {
+                universidadSelect.value = universidadActual;
+            }
+            cargarInstituciones();
+        }
+        initNiveles();
+    }, 100);
+});
+
+// ============================================================
+// MENSAJES
+// ============================================================
+
+function mostrarMensaje(mensaje, tipo) {
+    const mensajesAnteriores = document.querySelectorAll('.mensaje-flotante');
+    mensajesAnteriores.forEach(el => el.remove());
+    
+    const div = document.createElement('div');
+    div.className = `mensaje-flotante ${tipo}`;
+    div.style.cssText = `
+        position: fixed;
+        top: 90px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 9998;
+        max-width: 600px;
+        width: 90%;
+        animation: slideDown 0.4s ease;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        border-radius: 12px;
+        padding: 1rem 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        background: ${tipo === 'success' ? '#f0f7f0' : '#fdf0f0'};
+        color: ${tipo === 'success' ? '#1a5a1a' : '#7a1a1a'};
+        border-left: 4px solid ${tipo === 'success' ? '#2e7d32' : '#c62828'};
+    `;
+    div.innerHTML = `
+        <i class="fas ${tipo === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}" style="font-size:1.25rem; color:${tipo === 'success' ? '#2e7d32' : '#c62828'};"></i>
+        <div>
+            <strong>${tipo === 'success' ? '¡Éxito!' : '¡Atención!'}</strong> ${mensaje}
+        </div>
+        <button onclick="this.parentElement.remove()" style="background:none;border:none;font-size:1.2rem;cursor:pointer;color:${tipo === 'success' ? '#1a5a1a' : '#7a1a1a'};margin-left:auto;">
+            <i class="fas fa-times"></i>
+        </button>
+    `;
+    
+    document.body.appendChild(div);
+    
+    setTimeout(function() {
+        if (div.parentElement) {
+            div.style.animation = 'slideUpMessage 0.3s ease';
+            setTimeout(function() {
+                div.remove();
+            }, 300);
+        }
+    }, 4000);
+}
+
+// ============================================================
 // VALIDACIÓN DE NÚMEROS EN INPUTS
 // ============================================================
 
@@ -1765,6 +2497,21 @@ document.addEventListener('input', function(e) {
     if (e.target.matches('input[pattern="[0-9]*"]') || e.target.matches('input[pattern="[0-9\\s]*"]')) {
         e.target.value = e.target.value.replace(/[^0-9\s]/g, '');
     }
+});
+
+// ============================================================
+// INICIALIZAR
+// ============================================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    const generoSelect = document.getElementById('genero_edicion');
+    if (generoSelect && generoSelect.value) {
+        const event = new Event('change', { bubbles: true });
+        generoSelect.dispatchEvent(event);
+    }
+    
+    // Inicializar niveles después de cargar los datos
+    setTimeout(initNiveles, 50);
 });
 </script>
 

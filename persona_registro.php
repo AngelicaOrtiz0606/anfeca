@@ -224,16 +224,16 @@ $tipos_institucion = [
 
 // Niveles académicos desde el catálogo
 $niveles_academicos = [
-    ['id' => 1, 'nombre' => 'Licenciatura', 'abreviatura' => 'Lic.'],
-    ['id' => 2, 'nombre' => 'Maestría', 'abreviatura' => 'Mtra.'],
-    ['id' => 3, 'nombre' => 'Maestría', 'abreviatura' => 'Mtro.'],
-    ['id' => 4, 'nombre' => 'Doctorado', 'abreviatura' => 'Dra.'],
-    ['id' => 5, 'nombre' => 'Doctorado', 'abreviatura' => 'Dr.'],
-    ['id' => 6, 'nombre' => 'Especialidad', 'abreviatura' => 'Esp.'],
-    ['id' => 7, 'nombre' => 'Técnico Superior Universitario', 'abreviatura' => 'TSU'],
-    ['id' => 8, 'nombre' => 'Bachillerato', 'abreviatura' => 'Bach.'],
-    ['id' => 9, 'nombre' => 'Ingeniería', 'abreviatura' => 'Ing.'],
-    ['id' => 10, 'nombre' => 'Arquitectura', 'abreviatura' => 'Arq.']
+    ['id' => 1, 'nombre' => 'Licenciatura'],
+    ['id' => 2, 'nombre' => 'Maestría'],
+    ['id' => 3, 'nombre' => 'Maestría'],
+    ['id' => 4, 'nombre' => 'Doctorado'],
+    ['id' => 5, 'nombre' => 'Doctorado'],
+    ['id' => 6, 'nombre' => 'Especialidad'],
+    ['id' => 7, 'nombre' => 'Técnico Superior Universitario'],
+    ['id' => 8, 'nombre' => 'Bachillerato'],
+    ['id' => 9, 'nombre' => 'Ingeniería'],
+    ['id' => 10, 'nombre' => 'Arquitectura']
 ];
 
 $niveles_cargo = [
@@ -242,50 +242,95 @@ $niveles_cargo = [
     3 => 'Institucional'
 ];
 
+// Cargos por nivel y género
 $cargos_por_nivel = [
-    1 => [ // Nacional
-        'Presidente', 'Presidenta',
-        'Vicepresidente', 'Vicepresidenta',
-        'Secretario General', 'Secretaria General',
-        'Director Ejecutivo', 'Directora Ejecutiva',
-        'Coordinador Nacional', 'Coordinadora Nacional',
-        'Secretario Técnico General', 'Secretaria Técnica General',
+    1 => [ // Nacional - Femenino
+        'Presidenta',
+        'Vicepresidenta',
+        'Secretaria General',
+        'Directora Ejecutiva',
+        'Coordinadora Nacional',
+        'Secretaria Técnica General',
         'Representante de ANFECA ante ALAFEC'
     ],
-    2 => [ // Regional
-        'Director Regional', 'Directora Regional',
-        'Secretario Regional', 'Secretaria Regional',
-        'Coordinador Regional', 'Coordinadora Regional',
-        'Secretario Técnico', 'Secretaria Técnica'
+    '1m' => [ // Nacional - Masculino
+        'Presidente',
+        'Vicepresidente',
+        'Secretario General',
+        'Director Ejecutivo',
+        'Coordinador Nacional',
+        'Secretario Técnico General',
+        'Representante de ANFECA ante ALAFEC'
     ],
-    3 => [ // Institucional
-        'Director', 'Directora',
-        'Director Académico', 'Directora Académica',
-        'Director de Área', 'Directora de Área',
-        'Director General', 'Directora General',
-        'Director de Contaduría', 'Directora de Contaduría',
-        'Director de División', 'Directora de División',
-        'Director de División Económico-Administrativa', 'Directora de División Económico-Administrativa',
-        'Director de Carrera de LIN', 'Directora de Carrera de LIN',
-        'Coordinador Académico', 'Coordinadora Académica',
-        'Coordinador de Licenciatura en Administración', 'Coordinadora de Licenciatura en Administración',
-        'Coordinador de Contaduría y Administración', 'Coordinadora de Contaduría y Administración',
-        'Coordinador de Licenciatura en Contaduría Pública', 'Coordinadora de Licenciatura en Contaduría Pública',
-        'Coordinador de la Facultad', 'Coordinadora de la Facultad',
-        'Coordinador General', 'Coordinadora General',
-        'Coordinador de Negocios', 'Coordinadora de Negocios',
-        'Coordinador de Proyectos y Vinculación Institucional', 'Coordinadora de Proyectos y Vinculación Institucional',
-        'Coordinador de Unidad Académica', 'Coordinadora de Unidad Académica',
-        'Coordinador de Área Económico-Administrativa', 'Coordinadora de Área Económico-Administrativa',
-        'Coordinador de Ciencias Económico Administrativas', 'Coordinadora de Ciencias Económico Administrativas',
-        'Coordinador de Contaduría', 'Coordinadora de Contaduría',
-        'Jefe de Departamento', 'Jefa de Departamento',
-        'Jefe de Departamento de Ciencias Administrativas', 'Jefa de Departamento de Ciencias Administrativas',
-        'Jefe de Departamento de Ciencias Económico Administrativas', 'Jefa de Departamento de Ciencias Económico Administrativas',
-        'Jefe del Departamento de Contabilidad', 'Jefa del Departamento de Contabilidad',
-        'Rector', 'Rectora',
-        'Encargado de la Dirección', 'Encargada de la Dirección',
-        'Secretario', 'Secretaria'
+    2 => [ // Regional - Femenino
+        'Directora Regional',
+        'Secretaria Regional',
+        'Coordinadora Regional',
+        'Secretaria Técnica'
+    ],
+    '2m' => [ // Regional - Masculino
+        'Director Regional',
+        'Secretario Regional',
+        'Coordinador Regional',
+        'Secretario Técnico'
+    ],
+    3 => [ // Institucional - Femenino
+        'Directora',
+        'Directora Académica',
+        'Directora de Área',
+        'Directora General',
+        'Directora de Contaduría',
+        'Directora de División',
+        'Directora de División Económico-Administrativa',
+        'Directora de Carrera de LIN',
+        'Coordinadora Académica',
+        'Coordinadora de Licenciatura en Administración',
+        'Coordinadora de Contaduría y Administración',
+        'Coordinadora de Licenciatura en Contaduría Pública',
+        'Coordinadora de la Facultad',
+        'Coordinadora General',
+        'Coordinadora de Negocios',
+        'Coordinadora de Proyectos y Vinculación Institucional',
+        'Coordinadora de Unidad Académica',
+        'Coordinadora de Área Económico-Administrativa',
+        'Coordinadora de Ciencias Económico Administrativas',
+        'Coordinadora de Contaduría',
+        'Jefa de Departamento',
+        'Jefa de Departamento de Ciencias Administrativas',
+        'Jefa de Departamento de Ciencias Económico Administrativas',
+        'Jefa del Departamento de Contabilidad',
+        'Rectora',
+        'Encargada de la Dirección',
+        'Secretaria'
+    ],
+    '3m' => [ // Institucional - Masculino
+        'Director',
+        'Director Académico',
+        'Director de Área',
+        'Director General',
+        'Director de Contaduría',
+        'Director de División',
+        'Director de División Económico-Administrativa',
+        'Director de Carrera de LIN',
+        'Coordinador Académico',
+        'Coordinador de Licenciatura en Administración',
+        'Coordinador de Contaduría y Administración',
+        'Coordinador de Licenciatura en Contaduría Pública',
+        'Coordinador de la Facultad',
+        'Coordinador General',
+        'Coordinador de Negocios',
+        'Coordinador de Proyectos y Vinculación Institucional',
+        'Coordinador de Unidad Académica',
+        'Coordinador de Área Económico-Administrativa',
+        'Coordinador de Ciencias Económico Administrativas',
+        'Coordinador de Contaduría',
+        'Jefe de Departamento',
+        'Jefe de Departamento de Ciencias Administrativas',
+        'Jefe de Departamento de Ciencias Económico Administrativas',
+        'Jefe del Departamento de Contabilidad',
+        'Rector',
+        'Encargado de la Dirección',
+        'Secretario'
     ]
 ];
 
@@ -347,7 +392,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($_POST['tipo_institucion'])) $errores[] = 'Tipo de Institución';
     if (empty($_POST['zona'])) $errores[] = 'Zona Regional';
     if (empty($_POST['institucion'])) $errores[] = 'Institución';
-    if (empty($_POST['niveles_academicos'])) $errores[] = 'Nivel Académico';
+    if (empty($_POST['niveles_academicos']) || !is_array($_POST['niveles_academicos']) || count(array_filter($_POST['niveles_academicos'])) == 0) {
+        $errores[] = 'Nivel(es) Académico(s)';
+    }
     if (empty($_POST['cargos'])) $errores[] = 'Al menos un cargo';
     if (empty($_POST['telefono_numero']) || empty(array_filter($_POST['telefono_numero']))) $errores[] = 'Teléfono';
     if (empty($_POST['correo_valor']) || empty(array_filter($_POST['correo_valor']))) $errores[] = 'Correo Electrónico';
@@ -510,15 +557,26 @@ include 'template/menu.php';
 
                         <div class="form-group">
                             <label class="form-label required">Nivel(es) Académico(s)</label>
-                            <select name="niveles_academicos[]" id="niveles_academicos" class="form-control" multiple size="4" required>
-                                <option value="">Seleccione uno o más niveles...</option>
-                                <?php foreach ($niveles_academicos as $nivel): ?>
-                                    <option value="<?= $nivel['id'] ?>">
-                                        <?= htmlspecialchars($nivel['nombre']) ?> (<?= htmlspecialchars($nivel['abreviatura']) ?>)
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                            <small class="form-hint">Presione Ctrl (Windows) o Cmd (Mac) para seleccionar múltiples niveles</small>
+                            <div class="niveles-container">
+                                <div class="niveles-select-group">
+                                    <select name="nivel_select" id="nivel_select" class="form-control">
+                                        <option value="">Seleccionar nivel académico...</option>
+                                        <?php foreach ($niveles_academicos as $nivel): ?>
+                                            <option value="<?= $nivel['id'] ?>" data-nombre="<?= htmlspecialchars($nivel['nombre']) ?>">
+                                                <?= htmlspecialchars($nivel['nombre']) ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                    <button type="button" class="btn-add-nivel" onclick="agregarNivel()">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div id="niveles_seleccionados" class="niveles-tags">
+                                    <!-- Las tags se agregan aquí dinámicamente -->
+                                </div>
+                                <input type="hidden" name="niveles_academicos[]" id="niveles_academicos_hidden" value="">
+                            </div>
+                            <small class="form-hint">Seleccione un nivel y presione el botón + para agregarlo</small>
                         </div>
                     </div>
                 </div>
@@ -593,7 +651,7 @@ include 'template/menu.php';
                             <div class="cargo-grid-base">
                                 <div class="form-group">
                                     <label class="form-label required">Nivel</label>
-                                    <select name="cargo_nivel[]" class="form-control select-cargo-nivel" required>
+                                    <select name="cargo_nivel[]" id="cargo_nivel_0" class="form-control select-cargo-nivel" required>
                                         <option value="">Seleccionar nivel...</option>
                                         <?php foreach ($niveles_cargo as $id => $nombre): ?>
                                             <option value="<?= $id ?>"><?= htmlspecialchars($nombre) ?></option>
@@ -602,22 +660,23 @@ include 'template/menu.php';
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label required">Cargo</label>
-                                    <select name="cargo_nombre[]" class="form-control select-cargo-nombre" required>
-                                        <option value="">Primero seleccione un nivel</option>
+                                    <select name="cargo_nombre[]" id="cargo_nombre_0" class="form-control select-cargo-nombre" required>
+                                        <option value="">Primero seleccione un nivel y género</option>
                                     </select>
                                 </div>
                                 
-                                <!-- Campos dinámicos para Regional -->
-                                <div class="cargo-detalle-regional" style="display:none; grid-column: span 2;">
+                                <!-- Campos dinámicos para Nacional y Regional -->
+                                <div class="cargo-detalle-zona-coordinacion" style="display:none; grid-column: span 2;">
                                     <div class="cargo-grid-detalle">
                                         <div class="form-group">
-                                            <label class="form-label required">Zona</label>
+                                            <label class="form-label">Zona</label>
                                             <select name="cargo_zona[]" class="form-control">
                                                 <option value="">Seleccionar zona...</option>
                                                 <?php foreach ($zonas_regionales as $id => $nombre): ?>
                                                     <option value="<?= $id ?>"><?= htmlspecialchars($nombre) ?></option>
                                                 <?php endforeach; ?>
                                             </select>
+                                            <small class="form-hint">Opcional</small>
                                         </div>
                                         <div class="form-group">
                                             <label class="form-label">Coordinación</label>
@@ -627,6 +686,7 @@ include 'template/menu.php';
                                                     <option value="<?= $id ?>"><?= htmlspecialchars($nombre) ?></option>
                                                 <?php endforeach; ?>
                                             </select>
+                                            <small class="form-hint">Opcional</small>
                                         </div>
                                     </div>
                                 </div>
@@ -661,8 +721,8 @@ include 'template/menu.php';
                                 <div class="directorios-grid">
                                     <?php foreach ($tipos_directorio as $id => $nombre): ?>
                                         <div class="checkbox-directorio">
-                                            <input type="checkbox" name="cargo_directorios[<?= $id ?>][]" value="<?= $id ?>" id="directorio_<?= $id ?>">
-                                            <label for="directorio_<?= $id ?>"><?= htmlspecialchars($nombre) ?></label>
+                                            <input type="checkbox" name="cargo_directorios[<?= $id ?>][]" value="<?= $id ?>" id="directorio_<?= $id ?>_0">
+                                            <label for="directorio_<?= $id ?>_0"><?= htmlspecialchars($nombre) ?></label>
                                         </div>
                                     <?php endforeach; ?>
                                 </div>
@@ -1016,48 +1076,100 @@ include 'template/menu.php';
     gap: 1.25rem;
 }
 
-/* Select múltiple */
-select[multiple] {
-    min-height: 100px;
-    padding: 0.5rem;
-}
-
-select[multiple] option {
-    padding: 0.4rem 0.8rem;
-    border-radius: 4px;
-    margin: 2px 0;
-}
-
-select[multiple] option:checked {
-    background: #8B0000 linear-gradient(0deg, #8B0000 0%, #8B0000 100%);
-    color: white;
-}
-
-select[multiple] option:hover {
-    background: #f5edec;
-}
-
-.cargo-grid-base {
-    display: grid;
-    grid-template-columns: 1fr 1.2fr 0.7fr 1fr 1fr auto;
-    gap: 1rem;
-    align-items: start;
-}
-
-.cargo-grid-base .cargo-detalle-regional {
-    grid-column: span 2;
-}
-
-.cargo-grid-detalle {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-}
-
-.directorios-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+/* Niveles Académicos - Select con botón + */
+.niveles-container {
+    display: flex;
+    flex-direction: column;
     gap: 0.5rem;
+}
+
+.niveles-select-group {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.niveles-select-group .form-control {
+    flex: 1;
+}
+
+.btn-add-nivel {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: #8B0000;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.btn-add-nivel:hover {
+    background: #5C0000;
+    transform: scale(1.05);
+}
+
+.btn-add-nivel:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.niveles-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    min-height: 32px;
+    padding: 0.25rem 0;
+}
+
+.nivel-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.25rem 0.6rem 0.25rem 0.8rem;
+    background: #f5edec;
+    border: 1px solid #d4c5c4;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    color: #4a3a3a;
+    animation: fadeInTag 0.3s ease;
+}
+
+.nivel-tag .nivel-tag-nombre {
+    font-weight: 500;
+}
+
+.nivel-tag .btn-remove-tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    background: #c62828;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 0.6rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0;
+    line-height: 1;
+}
+
+.nivel-tag .btn-remove-tag:hover {
+    background: #8B0000;
+    transform: scale(1.1);
+}
+
+@keyframes fadeInTag {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
 }
 
 /* Afiliación Display */
@@ -1076,6 +1188,29 @@ select[multiple] option:hover {
     color: #1a1a1a;
     font-family: monospace;
     font-size: 1rem;
+}
+
+/* Cargos */
+.cargo-grid-base {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 0.7fr 1fr 1fr auto;
+    gap: 1rem;
+    align-items: start;
+}
+
+.cargo-grid-base .cargo-detalle-zona-coordinacion {
+    grid-column: span 2;
+}
+
+.cargo-grid-detalle {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.cargo-grid-detalle .form-hint {
+    font-size: 0.65rem;
+    color: #999;
 }
 
 /* Checkbox Titular */
@@ -1412,7 +1547,12 @@ select[multiple] option:hover {
     color: #bbb;
 }
 
-/* Checkbox Directorios */
+.directorios-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+}
+
 .checkbox-directorio {
     display: flex;
     align-items: center;
@@ -1518,7 +1658,7 @@ select[multiple] option:hover {
         grid-template-columns: 1fr 1fr;
     }
     
-    .cargo-grid-base .cargo-detalle-regional {
+    .cargo-grid-base .cargo-detalle-zona-coordinacion {
         grid-column: span 2;
     }
     
@@ -1564,7 +1704,7 @@ select[multiple] option:hover {
         grid-template-columns: 1fr;
     }
     
-    .cargo-grid-base .cargo-detalle-regional {
+    .cargo-grid-base .cargo-detalle-zona-coordinacion {
         grid-column: span 1;
     }
 
@@ -1617,6 +1757,7 @@ const facultadesPorUniversidad = <?= json_encode($facultades_por_universidad) ?>
 const campusPorUniversidad = <?= json_encode($campus_por_universidad) ?>;
 const nivelesCargo = <?= json_encode($niveles_cargo) ?>;
 const numAfiliacionPorInstitucion = <?= json_encode($num_afiliacion_por_institucion) ?>;
+const nivelesAcademicos = <?= json_encode($niveles_academicos) ?>;
 
 // ============================================================
 // FUNCIÓN PARA ALTERNAR VISIBILIDAD DEL TOGGLE
@@ -1803,56 +1944,186 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ============================================================
-// CARGOS DINÁMICOS POR NIVEL (con Titular)
+// CARGOS DINÁMICOS POR NIVEL Y GÉNERO
 // ============================================================
 
-document.addEventListener('change', function(e) {
-    if (e.target.classList.contains('select-cargo-nivel')) {
-        const selectNivel = e.target;
-        const container = selectNivel.closest('.cargo-item');
-        const selectCargo = container.querySelector('.select-cargo-nombre');
-        const detalleRegional = container.querySelector('.cargo-detalle-regional');
-        const titularContainer = container.querySelector('.cargo-titular');
-        const nivelId = parseInt(selectNivel.value);
+function cargarCargos(selectNivel, selectCargo, container, genero) {
+    const nivelId = parseInt(selectNivel.value);
+    const detalleZona = container.querySelector('.cargo-detalle-zona-coordinacion');
+    const titularContainer = container.querySelector('.cargo-titular');
+    
+    selectCargo.innerHTML = '<option value="">Primero seleccione un nivel y género</option>';
+    selectCargo.disabled = true;
+    detalleZona.style.display = 'none';
+    titularContainer.style.display = 'none';
+    
+    // Limpiar requeridos de zona y coordinación
+    const zonaSelect = detalleZona.querySelector('select[name="cargo_zona[]"]');
+    const coordSelect = detalleZona.querySelector('select[name="cargo_coordinacion[]"]');
+    if (zonaSelect) zonaSelect.removeAttribute('required');
+    if (coordSelect) coordSelect.removeAttribute('required');
+    
+    if (nivelId && genero) {
+        let key = nivelId;
+        if (genero === 'M') {
+            key = nivelId + 'm';
+        }
         
-        selectCargo.innerHTML = '<option value="">Primero seleccione un nivel</option>';
-        selectCargo.disabled = true;
-        detalleRegional.style.display = 'none';
-        titularContainer.style.display = 'none';
-        
-        const selectsDetalle = detalleRegional.querySelectorAll('select');
-        selectsDetalle.forEach(sel => sel.removeAttribute('required'));
-        
-        if (nivelId && cargosPorNivel[nivelId]) {
-            cargosPorNivel[nivelId].forEach(function(cargo) {
+        if (cargosPorNivel[key]) {
+            cargosPorNivel[key].forEach(function(cargo) {
                 const option = document.createElement('option');
                 option.value = cargo;
                 option.textContent = cargo;
                 selectCargo.appendChild(option);
             });
             selectCargo.disabled = false;
-            
-            if (nivelId === 2) {
-                detalleRegional.style.display = 'block';
-                const zonaSelect = detalleRegional.querySelector('select[name="cargo_zona[]"]');
-                if (zonaSelect) zonaSelect.setAttribute('required', 'required');
-            }
-            
-            if (nivelId === 3) {
-                titularContainer.style.display = 'flex';
-            }
+        }
+        
+        // Nacional (1) - zona y coordinación opcionales
+        if (nivelId === 1) {
+            detalleZona.style.display = 'block';
+            if (zonaSelect) zonaSelect.removeAttribute('required');
+            if (coordSelect) coordSelect.removeAttribute('required');
+            // Actualizar hint
+            const hints = detalleZona.querySelectorAll('.form-hint');
+            hints.forEach(h => h.textContent = 'Opcional');
+        }
+        
+        // Regional (2) - zona requerida, coordinación opcional
+        if (nivelId === 2) {
+            detalleZona.style.display = 'block';
+            if (zonaSelect) zonaSelect.setAttribute('required', 'required');
+            if (coordSelect) coordSelect.removeAttribute('required');
+            // Actualizar hint
+            const hints = detalleZona.querySelectorAll('.form-hint');
+            if (hints.length > 0) hints[0].textContent = 'Obligatorio';
+            if (hints.length > 1) hints[1].textContent = 'Opcional';
+        }
+        
+        // Institucional (3) - sin zona ni coordinación
+        if (nivelId === 3) {
+            detalleZona.style.display = 'none';
+            titularContainer.style.display = 'flex';
         }
     }
+}
+
+// Evento: cambio de nivel
+document.addEventListener('change', function(e) {
+    if (e.target.classList.contains('select-cargo-nivel')) {
+        const selectNivel = e.target;
+        const container = selectNivel.closest('.cargo-item');
+        const selectCargo = container.querySelector('.select-cargo-nombre');
+        const generoSelect = document.getElementById('genero');
+        const genero = generoSelect ? generoSelect.value : '';
+        
+        cargarCargos(selectNivel, selectCargo, container, genero);
+    }
 });
+
+// Evento: cambio de género (actualiza todos los cargos)
+document.addEventListener('DOMContentLoaded', function() {
+    const generoSelect = document.getElementById('genero');
+    if (generoSelect) {
+        generoSelect.addEventListener('change', function() {
+            const genero = this.value;
+            const cargosItems = document.querySelectorAll('.cargo-item');
+            cargosItems.forEach(function(item, index) {
+                const selectNivel = item.querySelector('.select-cargo-nivel');
+                const selectCargo = item.querySelector('.select-cargo-nombre');
+                if (selectNivel && selectCargo) {
+                    cargarCargos(selectNivel, selectCargo, item, genero);
+                }
+            });
+        });
+    }
+});
+
+// ============================================================
+// NIVELES ACADÉMICOS - SELECT CON BOTÓN +
+// ============================================================
+
+let nivelesSeleccionados = [];
+
+function agregarNivel() {
+    const select = document.getElementById('nivel_select');
+    const valor = select.value;
+    
+    if (!valor) {
+        mostrarMensaje('Seleccione un nivel académico', 'error');
+        return;
+    }
+    
+    const option = select.options[select.selectedIndex];
+    const id = parseInt(valor);
+    const nombre = option.dataset.nombre;
+    
+    if (nivelesSeleccionados.some(n => n.id === id)) {
+        mostrarMensaje('Este nivel ya ha sido agregado', 'error');
+        return;
+    }
+    
+    nivelesSeleccionados.push({ id: id, nombre: nombre });
+    renderizarTags();
+    select.selectedIndex = 0;
+    select.focus();
+    actualizarHiddenInput();
+}
+
+function eliminarNivel(id) {
+    nivelesSeleccionados = nivelesSeleccionados.filter(n => n.id !== id);
+    renderizarTags();
+    actualizarHiddenInput();
+}
+
+function renderizarTags() {
+    const container = document.getElementById('niveles_seleccionados');
+    container.innerHTML = '';
+    
+    nivelesSeleccionados.forEach(nivel => {
+        const tag = document.createElement('span');
+        tag.className = 'nivel-tag';
+        tag.innerHTML = `
+            <span class="nivel-tag-nombre">${nivel.nombre}</span>
+            <button type="button" class="btn-remove-tag" onclick="eliminarNivel(${nivel.id})" title="Eliminar">
+                <i class="fas fa-times"></i>
+            </button>
+        `;
+        container.appendChild(tag);
+    });
+}
+
+function actualizarHiddenInput() {
+    const hidden = document.getElementById('niveles_academicos_hidden');
+    const ids = nivelesSeleccionados.map(n => n.id);
+    hidden.value = ids.join(',');
+}
 
 // ============================================================
 // CARGOS - AGREGAR / ELIMINAR
 // ============================================================
 
+let cargoCounter = 0;
+
 function agregarCargo() {
+    cargoCounter++;
     const container = document.getElementById('cargos-container');
     const primerCargo = container.querySelector('.cargo-item');
     const nuevoCargo = primerCargo.cloneNode(true);
+    
+    // Actualizar IDs
+    nuevoCargo.querySelectorAll('[id]').forEach(el => {
+        const id = el.id;
+        if (id) {
+            const parts = id.split('_');
+            if (parts.length > 1) {
+                parts[parts.length - 1] = cargoCounter;
+                el.id = parts.join('_');
+            } else {
+                el.id = id + '_' + cargoCounter;
+            }
+        }
+    });
     
     nuevoCargo.querySelectorAll('select').forEach(select => {
         select.selectedIndex = 0;
@@ -1869,9 +2140,9 @@ function agregarCargo() {
         cb.checked = false;
     });
     
-    const detalleRegional = nuevoCargo.querySelector('.cargo-detalle-regional');
-    detalleRegional.style.display = 'none';
-    detalleRegional.querySelectorAll('select').forEach(sel => {
+    const detalleZona = nuevoCargo.querySelector('.cargo-detalle-zona-coordinacion');
+    detalleZona.style.display = 'none';
+    detalleZona.querySelectorAll('select').forEach(sel => {
         sel.selectedIndex = 0;
         sel.removeAttribute('required');
     });
@@ -1884,7 +2155,45 @@ function agregarCargo() {
     const btnEliminar = nuevoCargo.querySelector('.btn-remove');
     if (btnEliminar) btnEliminar.style.display = 'flex';
     
+    // Actualizar for de labels en directorios
+    nuevoCargo.querySelectorAll('.checkbox-directorio label').forEach(label => {
+        const forAttr = label.getAttribute('for');
+        if (forAttr) {
+            const parts = forAttr.split('_');
+            if (parts.length > 1) {
+                parts[parts.length - 1] = cargoCounter;
+                label.setAttribute('for', parts.join('_'));
+            } else {
+                label.setAttribute('for', forAttr + '_' + cargoCounter);
+            }
+        }
+    });
+    
+    nuevoCargo.querySelectorAll('.checkbox-directorio input[type="checkbox"]').forEach(input => {
+        const id = input.id;
+        if (id) {
+            const parts = id.split('_');
+            if (parts.length > 1) {
+                parts[parts.length - 1] = cargoCounter;
+                input.id = parts.join('_');
+            } else {
+                input.id = id + '_' + cargoCounter;
+            }
+        }
+    });
+    
     container.appendChild(nuevoCargo);
+    
+    // Aplicar género actual
+    const generoSelect = document.getElementById('genero');
+    if (generoSelect) {
+        const genero = generoSelect.value;
+        const selectNivel = nuevoCargo.querySelector('.select-cargo-nivel');
+        const selectCargo = nuevoCargo.querySelector('.select-cargo-nombre');
+        if (selectNivel && selectCargo) {
+            cargarCargos(selectNivel, selectCargo, nuevoCargo, genero);
+        }
+    }
 }
 
 function eliminarCargo(btn) {
@@ -2039,6 +2348,18 @@ function mostrarMensaje(mensaje, tipo) {
 document.addEventListener('input', function(e) {
     if (e.target.matches('input[pattern="[0-9]*"]') || e.target.matches('input[pattern="[0-9\\s]*"]')) {
         e.target.value = e.target.value.replace(/[^0-9\s]/g, '');
+    }
+});
+
+// ============================================================
+// INICIALIZAR CON GÉNERO POR DEFECTO
+// ============================================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    const generoSelect = document.getElementById('genero');
+    if (generoSelect && generoSelect.value) {
+        const event = new Event('change', { bubbles: true });
+        generoSelect.dispatchEvent(event);
     }
 });
 </script>

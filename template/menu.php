@@ -56,13 +56,13 @@ SIDEBAR
             </li>
             <li class="menu-divider">DIRECTORIOS</li>
             <li class="menu-item">
-                <a href="consultar_directorio.php">
+                <a href="directorios.php">
                     <i class="fas fa-book"></i>
                     <span>Consultar Directorios</span>
                 </a>
             </li>
             <li class="menu-item">
-                <a href="odernar_cargos.php">
+                <a href="orden_cargo.php">
                     <i class="fas fa-arrows-alt-v"></i>
                     <span>Ordenar Cargos</span>
                 </a>
