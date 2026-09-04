@@ -12,7 +12,7 @@ if (!isset($_SESSION['usuario'])) {
 }
 
 // ============================================================
-// DATOS SIMULADOS PARA DEMOSTRACIÓN
+// DATOS DE REFERENCIA (coinciden con directorios.php)
 // ============================================================
 
 $zonas_regionales = [
@@ -25,318 +25,868 @@ $zonas_regionales = [
     7 => '7 - Ciudad de México'
 ];
 
-// Personas simuladas
-// activo = true si tiene al menos un cargo sin fecha_fin
+// ============================================================
+// DATOS DE PERSONAS (tomados de directorios.php)
+// ============================================================
+
 $personas = [
+    // ============ CND - Consejo Nacional Directivo ============
     [
         'id' => 1,
-        'num_afiliacion' => '2601001',
-        'nombre' => 'María',
-        'apellido_paterno' => 'González',
-        'apellido_materno' => 'Pérez',
-        'genero' => 'F',
+        'num_afiliacion' => '9807033',
+        'nombre' => 'Armando',
+        'apellido_paterno' => 'Tomé',
+        'apellido_materno' => 'González',
+        'genero' => 'M',
+        'grado' => 'Dr.',
         'id_zona' => 7,
-        'institucion' => 'UNAM - Facultad de Contaduría',
-        'cargo' => 'Presidenta',
+        'institucion' => 'Universidad Nacional Autónoma de México',
+        'facultad' => 'Facultad de Contaduría y Administración',
+        'cargo' => 'Presidente',
         'cargo_nivel' => 'Nacional',
         'fecha_inicio' => '2024-01-01',
         'fecha_fin' => null,
-        'correo' => 'maria.gonzalez@example.com',
-        'telefono' => '55 1234 5678',
-        'directorios' => ['Consejo Nacional Directivo', 'Coordinaciones Nacionales'],
+        'correo' => 'direccion@fca.unam.mx',
+        'telefono' => '55 56161561',
+        'telefonos' => ['55 56161561'],
+        'emails' => ['direccion@fca.unam.mx'],
+        'directorios' => ['Consejo Nacional Directivo'],
         'activo' => true
     ],
     [
         'id' => 2,
-        'num_afiliacion' => '2601002',
-        'nombre' => 'Juan',
-        'apellido_paterno' => 'Martínez',
-        'apellido_materno' => 'López',
-        'genero' => 'M',
-        'id_zona' => 7,
-        'institucion' => 'IPN - ESCOM',
-        'cargo' => 'Coordinador Nacional',
+        'num_afiliacion' => '9802008',
+        'nombre' => 'Adriana',
+        'apellido_paterno' => 'Garza',
+        'apellido_materno' => 'Elizondo',
+        'genero' => 'F',
+        'grado' => 'Dra.',
+        'id_zona' => 2,
+        'institucion' => 'Universidad Autónoma de Nuevo León',
+        'facultad' => 'Facultad de Contaduría Pública y Administración',
+        'cargo' => 'Vicepresidenta',
         'cargo_nivel' => 'Nacional',
-        'fecha_inicio' => '2024-03-15',
+        'fecha_inicio' => '2024-01-01',
         'fecha_fin' => null,
-        'correo' => 'juan.martinez@example.com',
-        'telefono' => '55 9876 5432',
+        'correo' => 'adriana.garzae@uanl.mx',
+        'telefono' => '81 83294080 ext.5500',
+        'telefonos' => ['81 83294080 ext.5500'],
+        'emails' => ['adriana.garzae@uanl.mx'],
         'directorios' => ['Consejo Nacional Directivo'],
         'activo' => true
     ],
     [
         'id' => 3,
-        'num_afiliacion' => '2601003',
-        'nombre' => 'Ana',
-        'apellido_paterno' => 'Sánchez',
-        'apellido_materno' => 'Ramírez',
-        'genero' => 'F',
-        'id_zona' => 3,
-        'institucion' => 'UAQ - Querétaro',
-        'cargo' => 'Secretaria General',
-        'cargo_nivel' => 'Nacional',
-        'fecha_inicio' => '2024-06-01',
-        'fecha_fin' => null,
-        'correo' => 'ana.sanchez@example.com',
-        'telefono' => '44 1234 5678',
-        'directorios' => ['Consejos Regionales', 'Coordinaciones Nacionales'],
-        'activo' => true
-    ],
-    [
-        'id' => 4,
-        'num_afiliacion' => '2601004',
+        'num_afiliacion' => '9807033',
         'nombre' => 'Carlos',
-        'apellido_paterno' => 'Hernández',
-        'apellido_materno' => 'Díaz',
+        'apellido_paterno' => 'Lobo',
+        'apellido_materno' => 'Sánchez',
         'genero' => 'M',
-        'id_zona' => 4,
-        'institucion' => 'UDG - Guadalajara',
-        'cargo' => 'Director Regional',
-        'cargo_nivel' => 'Regional',
-        'fecha_inicio' => '2024-02-01',
-        'fecha_fin' => null,
-        'correo' => 'carlos.hernandez@example.com',
-        'telefono' => '33 1234 5678',
-        'directorios' => ['Consejos Regionales'],
-        'activo' => true
-    ],
-    [
-        'id' => 5,
-        'num_afiliacion' => '2601005',
-        'nombre' => 'Laura',
-        'apellido_paterno' => 'Torres',
-        'apellido_materno' => 'Vega',
-        'genero' => 'F',
-        'id_zona' => 1,
-        'institucion' => 'UABC - Mexicali',
-        'cargo' => 'Coordinadora Regional',
-        'cargo_nivel' => 'Regional',
-        'fecha_inicio' => '2024-07-01',
-        'fecha_fin' => null,
-        'correo' => 'laura.torres@example.com',
-        'telefono' => '66 1234 5678',
-        'directorios' => ['Coordinaciones Nacionales'],
-        'activo' => true
-    ],
-    [
-        'id' => 6,
-        'num_afiliacion' => '2601006',
-        'nombre' => 'Roberto',
-        'apellido_paterno' => 'Mendoza',
-        'apellido_materno' => 'Cruz',
-        'genero' => 'M',
-        'id_zona' => 2,
-        'institucion' => 'UANL - San Nicolás',
-        'cargo' => 'Secretario Regional',
-        'cargo_nivel' => 'Regional',
-        'fecha_inicio' => '2023-01-01',
-        'fecha_fin' => '2024-01-01',
-        'correo' => 'roberto.mendoza@example.com',
-        'telefono' => '81 1234 5678',
-        'directorios' => ['Instituciones'],
-        'activo' => false
-    ],
-    [
-        'id' => 7,
-        'num_afiliacion' => '2601007',
-        'nombre' => 'Patricia',
-        'apellido_paterno' => 'Flores',
-        'apellido_materno' => 'Reyes',
-        'genero' => 'F',
-        'id_zona' => 5,
-        'institucion' => 'UAEH - Pachuca',
-        'cargo' => 'Coordinadora Regional',
-        'cargo_nivel' => 'Regional',
-        'fecha_inicio' => '2024-04-01',
-        'fecha_fin' => null,
-        'correo' => 'patricia.flores@example.com',
-        'telefono' => '77 1234 5678',
-        'directorios' => ['Coordinaciones Nacionales', 'Instituciones'],
-        'activo' => true
-    ],
-    [
-        'id' => 8,
-        'num_afiliacion' => '2601008',
-        'nombre' => 'Jorge',
-        'apellido_paterno' => 'Gómez',
-        'apellido_materno' => 'García',
-        'genero' => 'M',
-        'id_zona' => 6,
-        'institucion' => 'UADY - Mérida',
-        'cargo' => 'Director Académico',
-        'cargo_nivel' => 'Institucional',
-        'fecha_inicio' => '2024-08-01',
-        'fecha_fin' => null,
-        'correo' => 'jorge.gomez@example.com',
-        'telefono' => '99 1234 5678',
-        'directorios' => ['Instituciones'],
-        'activo' => true
-    ],
-    [
-        'id' => 9,
-        'num_afiliacion' => '2601009',
-        'nombre' => 'Carmen',
-        'apellido_paterno' => 'Rivera',
-        'apellido_materno' => 'Morales',
-        'genero' => 'F',
-        'id_zona' => 4,
-        'institucion' => 'UDG - Guadalajara',
-        'cargo' => 'Coordinadora Académica',
-        'cargo_nivel' => 'Institucional',
-        'fecha_inicio' => '2024-05-01',
-        'fecha_fin' => null,
-        'correo' => 'carmen.rivera@example.com',
-        'telefono' => '33 9876 5432',
-        'directorios' => ['Instituciones'],
-        'activo' => true
-    ],
-    [
-        'id' => 10,
-        'num_afiliacion' => '2601010',
-        'nombre' => 'Luis',
-        'apellido_paterno' => 'Méndez',
-        'apellido_materno' => 'Vargas',
-        'genero' => 'M',
-        'id_zona' => 1,
-        'institucion' => 'UABC - Tijuana',
-        'cargo' => 'Secretario Técnico',
-        'cargo_nivel' => 'Regional',
-        'fecha_inicio' => '2023-06-01',
-        'fecha_fin' => '2024-05-31',
-        'correo' => 'luis.mendez@example.com',
-        'telefono' => '66 9876 5432',
-        'directorios' => ['Consejos Regionales'],
-        'activo' => false
-    ],
-    [
-        'id' => 11,
-        'num_afiliacion' => '2601011',
-        'nombre' => 'Elena',
-        'apellido_paterno' => 'Castro',
-        'apellido_materno' => 'Ramos',
-        'genero' => 'F',
-        'id_zona' => 3,
-        'institucion' => 'UASLP - San Luis Potosí',
-        'cargo' => 'Directora General',
-        'cargo_nivel' => 'Institucional',
-        'fecha_inicio' => '2024-09-01',
-        'fecha_fin' => null,
-        'correo' => 'elena.castro@example.com',
-        'telefono' => '44 9876 5432',
-        'directorios' => ['Instituciones', 'Coordinaciones Nacionales'],
-        'activo' => true
-    ],
-    [
-        'id' => 12,
-        'num_afiliacion' => '2601012',
-        'nombre' => 'Andrés',
-        'apellido_paterno' => 'Moreno',
-        'apellido_materno' => 'Rojas',
-        'genero' => 'M',
-        'id_zona' => 2,
-        'institucion' => 'UANL - San Nicolás',
-        'cargo' => 'Coordinador Regional',
-        'cargo_nivel' => 'Regional',
-        'fecha_inicio' => '2024-10-01',
-        'fecha_fin' => null,
-        'correo' => 'andres.moreno@example.com',
-        'telefono' => '81 9876 5432',
-        'directorios' => ['Consejos Regionales'],
-        'activo' => true
-    ],
-    [
-        'id' => 13,
-        'num_afiliacion' => '2601013',
-        'nombre' => 'Teresa',
-        'apellido_paterno' => 'Ortega',
-        'apellido_materno' => 'Luna',
-        'genero' => 'F',
-        'id_zona' => 5,
-        'institucion' => 'UAEM - Toluca',
-        'cargo' => 'Director de División',
-        'cargo_nivel' => 'Institucional',
-        'fecha_inicio' => '2024-11-15',
-        'fecha_fin' => null,
-        'correo' => 'teresa.ortega@example.com',
-        'telefono' => '72 1234 5678',
-        'directorios' => ['Instituciones'],
-        'activo' => true
-    ],
-    [
-        'id' => 14,
-        'num_afiliacion' => '2601014',
-        'nombre' => 'Ricardo',
-        'apellido_paterno' => 'Peña',
-        'apellido_materno' => 'Fuentes',
-        'genero' => 'M',
-        'id_zona' => 6,
-        'institucion' => 'UABJO - Oaxaca',
-        'cargo' => 'Jefe de Departamento',
-        'cargo_nivel' => 'Institucional',
-        'fecha_inicio' => '2023-12-01',
-        'fecha_fin' => '2024-11-30',
-        'correo' => 'ricardo.pena@example.com',
-        'telefono' => '95 1234 5678',
-        'directorios' => ['Instituciones'],
-        'activo' => false
-    ],
-    [
-        'id' => 15,
-        'num_afiliacion' => '2601015',
-        'nombre' => 'Sofía',
-        'apellido_paterno' => 'Reyes',
-        'apellido_materno' => 'Gil',
-        'genero' => 'F',
+        'grado' => 'M.A.',
         'id_zona' => 7,
-        'institucion' => 'UAM - Iztapalapa',
-        'cargo' => 'Coordinadora General',
+        'institucion' => 'Universidad Nacional Autónoma de México',
+        'facultad' => 'Facultad de Contaduría y Administración',
+        'cargo' => 'Secretario General',
         'cargo_nivel' => 'Nacional',
-        'fecha_inicio' => '2024-12-01',
+        'fecha_inicio' => '2024-01-01',
         'fecha_fin' => null,
-        'correo' => 'sofia.reyes@example.com',
-        'telefono' => '55 5678 1234',
-        'directorios' => ['Consejo Nacional Directivo', 'Coordinaciones Nacionales'],
-        'activo' => true
-    ],
-    [
-        'id' => 16,
-        'num_afiliacion' => '2601016',
-        'nombre' => 'Fernando',
-        'apellido_paterno' => 'Cruz',
-        'apellido_materno' => 'Salazar',
-        'genero' => 'M',
-        'id_zona' => 3,
-        'institucion' => 'UAQ - Querétaro',
-        'cargo' => 'Secretario Técnico General',
-        'cargo_nivel' => 'Nacional',
-        'fecha_inicio' => '2024-07-01',
-        'fecha_fin' => null,
-        'correo' => 'fernando.cruz@example.com',
-        'telefono' => '44 5678 1234',
+        'correo' => 'anfeca.sec.general@fca.unam.mx',
+        'telefono' => '55 56161519',
+        'telefonos' => ['55 56161519', '55 56161919'],
+        'emails' => ['anfeca.sec.general@fca.unam.mx'],
         'directorios' => ['Consejo Nacional Directivo'],
         'activo' => true
     ],
     [
-        'id' => 17,
-        'num_afiliacion' => '2601017',
-        'nombre' => 'Gabriela',
-        'apellido_paterno' => 'Mendoza',
-        'apellido_materno' => 'Soto',
+        'id' => 4,
+        'num_afiliacion' => '9807033',
+        'nombre' => 'Lourdes',
+        'apellido_paterno' => 'Mata',
+        'apellido_materno' => 'Romero',
         'genero' => 'F',
-        'id_zona' => 4,
-        'institucion' => 'UDG - Guadalajara',
-        'cargo' => 'Directora Regional',
-        'cargo_nivel' => 'Regional',
-        'fecha_inicio' => '2024-08-15',
+        'grado' => 'Mtra.',
+        'id_zona' => 7,
+        'institucion' => 'Universidad Nacional Autónoma de México',
+        'facultad' => 'Facultad de Contaduría y Administración',
+        'cargo' => 'Directora Ejecutiva',
+        'cargo_nivel' => 'Nacional',
+        'fecha_inicio' => '2024-01-01',
         'fecha_fin' => null,
-        'correo' => 'gabriela.mendoza@example.com',
-        'telefono' => '33 5678 1234',
+        'correo' => 'anfeca.dir.ejecutiva@fca.unam.mx',
+        'telefono' => '55 56162209 ext.146',
+        'telefonos' => ['55 56162209 ext.146', '55 56228380', '55 56161919'],
+        'emails' => ['anfeca.dir.ejecutiva@fca.unam.mx', 'loromero@fca.unam.mx'],
+        'directorios' => ['Consejo Nacional Directivo'],
+        'activo' => true
+    ],
+    [
+        'id' => 5,
+        'num_afiliacion' => '9801018',
+        'nombre' => 'Leobardo',
+        'apellido_paterno' => 'Berrelleza',
+        'apellido_materno' => 'Reyes',
+        'genero' => 'M',
+        'grado' => 'Dr.',
+        'id_zona' => 1,
+        'institucion' => 'Universidad Autónoma de Sinaloa',
+        'facultad' => 'Facultad de Contaduría y Administración',
+        'cargo' => 'Director Regional Zona 1',
+        'cargo_nivel' => 'Regional',
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null,
+        'correo' => 'leobardobr37@fca.uas.edu.mx',
+        'telefono' => '667 7160303 ext.108',
+        'telefonos' => ['667 7160303 ext.108'],
+        'emails' => ['leobardobr37@fca.uas.edu.mx'],
+        'directorios' => ['Consejo Nacional Directivo', 'Consejos Regionales'],
+        'activo' => true
+    ],
+    [
+        'id' => 6,
+        'num_afiliacion' => '9802020',
+        'nombre' => 'Laura María del Pilar',
+        'apellido_paterno' => 'Macías',
+        'apellido_materno' => 'Amozurrutia',
+        'genero' => 'F',
+        'grado' => 'Dra.',
+        'id_zona' => 2,
+        'institucion' => 'Universidad Iberoamericana Torreón',
+        'facultad' => 'Departamento de Negocios',
+        'cargo' => 'Directora Regional Zona 2',
+        'cargo_nivel' => 'Regional',
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null,
+        'correo' => 'laura.macias@iberotorreon.edu.mx',
+        'telefono' => '871 705 1010 ext.1031',
+        'telefonos' => ['871 705 1010 ext.1031'],
+        'emails' => ['laura.macias@iberotorreon.edu.mx'],
+        'directorios' => ['Consejo Nacional Directivo', 'Consejos Regionales'],
+        'activo' => true
+    ],
+    [
+        'id' => 7,
+        'num_afiliacion' => '9803004',
+        'nombre' => 'Ismael Manuel',
+        'apellido_paterno' => 'Rodríguez',
+        'apellido_materno' => 'Herrera',
+        'genero' => 'M',
+        'grado' => 'Dr.',
+        'id_zona' => 3,
+        'institucion' => 'Universidad Autónoma de Aguascalientes',
+        'facultad' => 'Centro de Ciencias Económicas y Administrativas',
+        'cargo' => 'Director Regional Zona 3',
+        'cargo_nivel' => 'Regional',
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null,
+        'correo' => 'ismael.rodriguez@edu.uaa.mx',
+        'telefono' => '449 910 7400',
+        'telefonos' => ['449 910 7400'],
+        'emails' => ['ismael.rodriguez@edu.uaa.mx'],
+        'directorios' => ['Consejo Nacional Directivo', 'Consejos Regionales'],
+        'activo' => true
+    ],
+    [
+        'id' => 8,
+        'num_afiliacion' => '9804001',
+        'nombre' => 'Cristian Omar',
+        'apellido_paterno' => 'Alcantar',
+        'apellido_materno' => 'López',
+        'genero' => 'M',
+        'grado' => 'Dr.',
+        'id_zona' => 4,
+        'institucion' => 'Universidad de Guadalajara',
+        'facultad' => 'División de Contaduría',
+        'cargo' => 'Director Regional Zona 4',
+        'cargo_nivel' => 'Regional',
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null,
+        'correo' => 'cristian_alcantar@hotmail.com',
+        'telefono' => '33 3770 3300',
+        'telefonos' => ['33 3770 3300'],
+        'emails' => ['cristian_alcantar@hotmail.com'],
+        'directorios' => ['Consejo Nacional Directivo', 'Consejos Regionales', 'Instituciones'],
+        'activo' => true
+    ],
+    [
+        'id' => 9,
+        'num_afiliacion' => '9805012',
+        'nombre' => 'Mario Franz',
+        'apellido_paterno' => 'Subieta',
+        'apellido_materno' => 'Zecua',
+        'genero' => 'M',
+        'grado' => 'M.A.',
+        'id_zona' => 5,
+        'institucion' => 'Universidad Autónoma de Tlaxcala',
+        'facultad' => 'Facultad de Ciencias Económico Administrativas',
+        'cargo' => 'Director Regional Zona 5',
+        'cargo_nivel' => 'Regional',
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null,
+        'correo' => 'subietamario@hotmail.com',
+        'telefono' => '246 2464643308',
+        'telefonos' => ['246 2464643308'],
+        'emails' => ['subietamario@hotmail.com'],
+        'directorios' => ['Consejo Nacional Directivo', 'Consejos Regionales'],
+        'activo' => true
+    ],
+    [
+        'id' => 10,
+        'num_afiliacion' => '9806023',
+        'nombre' => 'Anabel',
+        'apellido_paterno' => 'Galván',
+        'apellido_materno' => 'Sarabia',
+        'genero' => 'F',
+        'grado' => 'Dra.',
+        'id_zona' => 6,
+        'institucion' => 'Universidad Veracruzana',
+        'facultad' => 'Facultad de Contaduría y Administración',
+        'cargo' => 'Directora Regional Zona 6',
+        'cargo_nivel' => 'Regional',
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null,
+        'correo' => 'angalvan@uv.mx',
+        'telefono' => '228 228 842 1742 ext.11611',
+        'telefonos' => ['228 228 842 1742 ext.11611'],
+        'emails' => ['angalvan@uv.mx'],
+        'directorios' => ['Consejo Nacional Directivo', 'Consejos Regionales'],
+        'activo' => true
+    ],
+    [
+        'id' => 11,
+        'num_afiliacion' => '9807025',
+        'nombre' => 'Giannina',
+        'apellido_paterno' => 'Sampieri',
+        'apellido_materno' => 'Laguna',
+        'genero' => 'F',
+        'grado' => 'Mtra.',
+        'id_zona' => 7,
+        'institucion' => 'Universidad Intercontinental',
+        'facultad' => 'División de Negocios',
+        'cargo' => 'Directora Regional Zona 7',
+        'cargo_nivel' => 'Regional',
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null,
+        'correo' => 'giannina.sampieri@universidad-uic.edu.mx',
+        'telefono' => '55 54871412',
+        'telefonos' => ['55 54871412', '55 54871413'],
+        'emails' => ['giannina.sampieri@universidad-uic.edu.mx'],
+        'directorios' => ['Consejo Nacional Directivo', 'Consejos Regionales'],
+        'activo' => true
+    ],
+
+    // ============ COORDINACIONES NACIONALES ============
+    [
+        'id' => 12,
+        'num_afiliacion' => '9806012',
+        'nombre' => 'David Roberto',
+        'apellido_paterno' => 'Suárez',
+        'apellido_materno' => 'Pacheco',
+        'genero' => 'M',
+        'grado' => 'M.F.',
+        'id_zona' => 6,
+        'institucion' => 'Universidad Autónoma de Yucatán',
+        'facultad' => 'Facultad de Contaduría y Administración',
+        'cargo' => 'Coordinador Nacional de Certificación Académica',
+        'cargo_nivel' => 'Nacional',
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null,
+        'correo' => 'david.suarez@correo.uady.mx',
+        'telefono' => '999 9810926',
+        'telefonos' => ['999 9810926', '999 9810932', '999 9810975'],
+        'emails' => ['david.suarez@correo.uady.mx'],
+        'directorios' => ['Coordinaciones Nacionales'],
+        'activo' => true
+    ],
+    [
+        'id' => 13,
+        'num_afiliacion' => '9806018',
+        'nombre' => 'José Juan',
+        'apellido_paterno' => 'Paz',
+        'apellido_materno' => 'Reyes',
+        'genero' => 'M',
+        'grado' => 'Mtro.',
+        'id_zona' => 6,
+        'institucion' => 'Universidad Juárez Autónoma de Tabasco',
+        'facultad' => 'División Académica de Ciencias Económico Administrativas',
+        'cargo' => 'Coordinador Nacional de la Academia ANFECA',
+        'cargo_nivel' => 'Nacional',
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null,
+        'correo' => 'direccion.dacea@ujat.mx',
+        'telefono' => '993 3581500 ext.6201',
+        'telefonos' => ['993 3581500 ext.6201'],
+        'emails' => ['direccion.dacea@ujat.mx'],
+        'directorios' => ['Coordinaciones Nacionales'],
+        'activo' => true
+    ],
+    [
+        'id' => 14,
+        'num_afiliacion' => '9802009',
+        'nombre' => 'Mónica',
+        'apellido_paterno' => 'Sánchez',
+        'apellido_materno' => 'Limón',
+        'genero' => 'F',
+        'grado' => 'Dra.',
+        'id_zona' => 2,
+        'institucion' => 'Universidad Autónoma de Tamaulipas',
+        'facultad' => 'Facultad de Comercio y Administración Victoria',
+        'cargo' => 'Coordinador Nacional de Emprendimiento Social',
+        'cargo_nivel' => 'Nacional',
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null,
+        'correo' => 'msanchel@docentes.uat.edu.mx',
+        'telefono' => '834 3181800 ext.103',
+        'telefonos' => ['834 3181800 ext.103'],
+        'emails' => ['msanchel@docentes.uat.edu.mx'],
+        'directorios' => ['Coordinaciones Nacionales'],
+        'activo' => true
+    ],
+    [
+        'id' => 15,
+        'num_afiliacion' => '1906067',
+        'nombre' => 'Lenin',
+        'apellido_paterno' => 'Martínez',
+        'apellido_materno' => 'Pérez',
+        'genero' => 'M',
+        'grado' => 'Dr.',
+        'id_zona' => 6,
+        'institucion' => 'Universidad Tecnológica de Tabasco',
+        'facultad' => '',
+        'cargo' => 'Coordinador Nacional de Planes y Programas de Estudio',
+        'cargo_nivel' => 'Nacional',
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null,
+        'correo' => 'leninmartinez@outlook.com',
+        'telefono' => '993 9931471704',
+        'telefonos' => ['993 9931471704'],
+        'emails' => ['leninmartinez@outlook.com', 'secretariatecnica@uttab.edu.mx'],
+        'directorios' => ['Coordinaciones Nacionales'],
+        'activo' => true
+    ],
+    [
+        'id' => 16,
+        'num_afiliacion' => '9807012',
+        'nombre' => 'Ivett',
+        'apellido_paterno' => 'Guillén',
+        'apellido_materno' => 'Morales',
+        'genero' => 'F',
+        'grado' => 'Dra.',
+        'id_zona' => 7,
+        'institucion' => 'Instituto Politécnico Nacional',
+        'facultad' => 'Escuela Superior de Comercio y Administración Unidad Tepepan',
+        'cargo' => 'Coordinador Nacional de Investigación',
+        'cargo_nivel' => 'Nacional',
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null,
+        'correo' => 'direcciontep@ipn.mx',
+        'telefono' => '55 56242000 ext.73500',
+        'telefonos' => ['55 56242000 ext.73500', '55 56242000 ext.73502'],
+        'emails' => ['direcciontep@ipn.mx'],
+        'directorios' => ['Coordinaciones Nacionales'],
+        'activo' => true
+    ],
+    [
+        'id' => 17,
+        'num_afiliacion' => '407049',
+        'nombre' => 'José Ernesto',
+        'apellido_paterno' => 'Amorós',
+        'apellido_materno' => 'Espinosa',
+        'genero' => 'M',
+        'grado' => 'Dr.',
+        'id_zona' => 7,
+        'institucion' => 'Tecnológico de Monterrey',
+        'facultad' => 'División de Negocios Campus Ciudad de México',
+        'cargo' => 'Coordinador Nacional de Posgrado',
+        'cargo_nivel' => 'Nacional',
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null,
+        'correo' => 'amoros@itesm.mx',
+        'telefono' => '55 91778000 ext.7997',
+        'telefonos' => ['55 91778000 ext.7997'],
+        'emails' => ['amoros@itesm.mx'],
+        'directorios' => ['Coordinaciones Nacionales'],
+        'activo' => true
+    ],
+    [
+        'id' => 18,
+        'num_afiliacion' => '9801017',
+        'nombre' => 'Cristina',
+        'apellido_paterno' => 'Cabrera',
+        'apellido_materno' => 'Ramos',
+        'genero' => 'F',
+        'grado' => 'Dra.',
+        'id_zona' => 1,
+        'institucion' => 'Universidad Autónoma de Chihuahua',
+        'facultad' => 'Facultad de Contaduría y Administración',
+        'cargo' => 'Coordinador Nacional de Maratones',
+        'cargo_nivel' => 'Nacional',
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null,
+        'correo' => 'cristycabrera85@gmail.com',
+        'telefono' => '614 4420010',
+        'telefonos' => ['614 4420010', '614 4420011'],
+        'emails' => ['cristycabrera85@gmail.com', 'ccabrera@uach.mx'],
+        'directorios' => ['Coordinaciones Nacionales'],
+        'activo' => true
+    ],
+    [
+        'id' => 19,
+        'num_afiliacion' => '9806012',
+        'nombre' => 'Aureliano',
+        'apellido_paterno' => 'Martínez',
+        'apellido_materno' => 'Castillo',
+        'genero' => 'M',
+        'grado' => 'M.F.',
+        'id_zona' => 6,
+        'institucion' => 'Universidad Autónoma de Yucatán',
+        'facultad' => 'Facultad de Contaduría y Administración',
+        'cargo' => 'Coordinador Nacional de Historia',
+        'cargo_nivel' => 'Nacional',
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null,
+        'correo' => 'aureliano.martinez@correo.uady.mx',
+        'telefono' => '999 95519339',
+        'telefonos' => ['999 95519339'],
+        'emails' => ['aureliano.martinez@correo.uady.mx'],
+        'directorios' => ['Coordinaciones Nacionales'],
+        'activo' => true
+    ],
+    [
+        'id' => 20,
+        'num_afiliacion' => '9803007',
+        'nombre' => 'Juan Antonio',
+        'apellido_paterno' => 'Zapata',
+        'apellido_materno' => 'Zapata',
+        'genero' => 'M',
+        'grado' => 'C.P. C.',
+        'id_zona' => 3,
+        'institucion' => 'Universidad Autónoma de San Luis Potosí',
+        'facultad' => 'Facultad de Contaduría y Administración',
+        'cargo' => 'Coordinador Nacional de Vinculación Nacional e Internacional',
+        'cargo_nivel' => 'Nacional',
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null,
+        'correo' => 'direccion@fca.uaslp.mx',
+        'telefono' => '444 814 9380',
+        'telefonos' => ['444 814 9380', '444 188 4509'],
+        'emails' => ['direccion@fca.uaslp.mx'],
+        'directorios' => ['Coordinaciones Nacionales'],
+        'activo' => true
+    ],
+    [
+        'id' => 21,
+        'num_afiliacion' => '904065',
+        'nombre' => 'Laura Ofelia',
+        'apellido_paterno' => 'Robles',
+        'apellido_materno' => 'Sahagún',
+        'genero' => 'F',
+        'grado' => 'Mtra.',
+        'id_zona' => 4,
+        'institucion' => 'Universidad del Valle de Atemajac',
+        'facultad' => 'Campus Puerto Vallarta',
+        'cargo' => 'Coordinador Nacional de Universidad Empresa',
+        'cargo_nivel' => 'Nacional',
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null,
+        'correo' => 'laura.robles@univa.mx',
+        'telefono' => '322 2261212 ext.3401',
+        'telefonos' => ['322 2261212 ext.3401'],
+        'emails' => ['laura.robles@univa.mx'],
+        'directorios' => ['Coordinaciones Nacionales'],
+        'activo' => true
+    ],
+    [
+        'id' => 22,
+        'num_afiliacion' => '9802016',
+        'nombre' => 'Cecilia',
+        'apellido_paterno' => 'Morales',
+        'apellido_materno' => 'del Río',
+        'genero' => 'F',
+        'grado' => 'Dra.',
+        'id_zona' => 2,
+        'institucion' => 'Universidad de Monterrey',
+        'facultad' => 'División de Negocios',
+        'cargo' => 'Coordinador Nacional de Formación Profesional y Académica',
+        'cargo_nivel' => 'Nacional',
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null,
+        'correo' => 'cecilia.moralesd@udem.edu',
+        'telefono' => '81 8215 1000 ext.1230',
+        'telefonos' => ['81 8215 1000 ext.1230'],
+        'emails' => ['cecilia.moralesd@udem.edu'],
+        'directorios' => ['Coordinaciones Nacionales'],
+        'activo' => true
+    ],
+    [
+        'id' => 23,
+        'num_afiliacion' => '9805002',
+        'nombre' => 'María Antonieta Monserrat',
+        'apellido_paterno' => 'Vera',
+        'apellido_materno' => 'Muñoz',
+        'genero' => 'F',
+        'grado' => 'Dra.',
+        'id_zona' => 5,
+        'institucion' => 'Benemérita Universidad Autónoma de Puebla',
+        'facultad' => 'Facultad de Contaduría Pública',
+        'cargo' => 'Coordinador Nacional de Responsabilidad Social Universitaria',
+        'cargo_nivel' => 'Nacional',
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null,
+        'correo' => 'monseveram@hotmail.com',
+        'telefono' => '222 465 2475',
+        'telefonos' => ['222 465 2475'],
+        'emails' => ['monseveram@hotmail.com', 'monserrat.vera@correo.buap.mx'],
+        'directorios' => ['Coordinaciones Nacionales'],
+        'activo' => true
+    ],
+    [
+        'id' => 24,
+        'num_afiliacion' => '9802001',
+        'nombre' => 'Lorena Argentina',
+        'apellido_paterno' => 'Medina',
+        'apellido_materno' => 'Bocanegra',
+        'genero' => 'F',
+        'grado' => 'Dra.',
+        'id_zona' => 2,
+        'institucion' => 'Universidad Autónoma de Coahuila',
+        'facultad' => 'Facultad de Contaduría y Administración',
+        'cargo' => 'Coordinador Nacional de Igualdad de Género',
+        'cargo_nivel' => 'Nacional',
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null,
+        'correo' => 'lorena_medina@uadec.edu.mx',
+        'telefono' => '87 17122383',
+        'telefonos' => ['87 17122383'],
+        'emails' => ['lorena_medina@uadec.edu.mx'],
+        'directorios' => ['Coordinaciones Nacionales'],
+        'activo' => true
+    ],
+    [
+        'id' => 25,
+        'num_afiliacion' => '9804009',
+        'nombre' => 'Idi Amin',
+        'apellido_paterno' => 'Germán Silva',
+        'apellido_materno' => 'Jug',
+        'genero' => 'M',
+        'grado' => 'Dr.',
+        'id_zona' => 4,
+        'institucion' => 'Universidad Autónoma de Nayarit',
+        'facultad' => 'Unidad Académica de Contaduría y Administración',
+        'cargo' => 'Coordinador Nacional de Desarrollo Académico Estudiantil',
+        'cargo_nivel' => 'Nacional',
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null,
+        'correo' => 'idiamin@uan.edu.mx',
+        'telefono' => '311 211 8818',
+        'telefonos' => ['311 211 8818'],
+        'emails' => ['idiamin@uan.edu.mx'],
+        'directorios' => ['Coordinaciones Nacionales'],
+        'activo' => true
+    ],
+
+    // ============ REGIONALES ============
+    [
+        'id' => 26,
+        'num_afiliacion' => '9801020',
+        'nombre' => 'Leticia María',
+        'apellido_paterno' => 'González',
+        'apellido_materno' => 'Velásquez',
+        'genero' => 'F',
+        'grado' => 'Dra.',
+        'id_zona' => 1,
+        'institucion' => 'Universidad de Sonora',
+        'facultad' => 'División de Ciencias Económicas y Sociales',
+        'cargo' => 'Coordinador Regional Zona 1 de Certificación Académica',
+        'cargo_nivel' => 'Regional',
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null,
+        'correo' => 'leticiamaria.gonzale@unison.mx',
+        'telefono' => '642 425 9968',
+        'telefonos' => ['642 425 9968'],
+        'emails' => ['leticiamaria.gonzale@unison.mx'],
         'directorios' => ['Consejos Regionales'],
+        'activo' => true
+    ],
+    [
+        'id' => 27,
+        'num_afiliacion' => '9803007',
+        'nombre' => 'Patricia',
+        'apellido_paterno' => 'Hernández',
+        'apellido_materno' => 'García',
+        'genero' => 'F',
+        'grado' => 'Dra.',
+        'id_zona' => 3,
+        'institucion' => 'Universidad Autónoma de San Luis Potosí',
+        'facultad' => 'Facultad de Contaduría y Administración',
+        'cargo' => 'Coordinador Regional Zona 3 de Certificación Académica',
+        'cargo_nivel' => 'Regional',
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null,
+        'correo' => 'patricia.hernandez@uaslp.mx',
+        'telefono' => '444 8262300 ext.3427',
+        'telefonos' => ['444 8262300 ext.3427', '444 1887093'],
+        'emails' => ['patricia.hernandez@uaslp.mx'],
+        'directorios' => ['Consejos Regionales'],
+        'activo' => true
+    ],
+    [
+        'id' => 28,
+        'num_afiliacion' => '9802008',
+        'nombre' => 'Mónica',
+        'apellido_paterno' => 'Blanco',
+        'apellido_materno' => 'Jiménez',
+        'genero' => 'F',
+        'grado' => 'Dra.',
+        'id_zona' => 2,
+        'institucion' => 'Universidad Autónoma de Nuevo León',
+        'facultad' => 'Facultad de Contaduría Pública y Administración',
+        'cargo' => 'Coordinador Regional Zona 2 de Certificación Académica',
+        'cargo_nivel' => 'Regional',
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null,
+        'correo' => 'monica.blancojm@uanl.edu.mx',
+        'telefono' => '81 83171697 ext.5550',
+        'telefonos' => ['81 83171697 ext.5550', '81 83294080 ext.551'],
+        'emails' => ['monica.blancojm@uanl.edu.mx'],
+        'directorios' => ['Consejos Regionales'],
+        'activo' => true
+    ],
+    [
+        'id' => 29,
+        'num_afiliacion' => '9804001',
+        'nombre' => 'José',
+        'apellido_paterno' => 'Sánchez',
+        'apellido_materno' => 'Gutiérrez',
+        'genero' => 'M',
+        'grado' => 'Dr.',
+        'id_zona' => 4,
+        'institucion' => 'Universidad de Guadalajara',
+        'facultad' => 'Departamento de Mercadotécnia y Negocios Internacionales',
+        'cargo' => 'Coordinador Regional Zona 4 de Investigación',
+        'cargo_nivel' => 'Regional',
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null,
+        'correo' => 'jsanchez0202@hotmail.com',
+        'telefono' => '33 3337703343 ext.5190',
+        'telefonos' => ['33 3337703343 ext.5190'],
+        'emails' => ['jsanchez0202@hotmail.com', 'jsanchez@cucea.udg.mx'],
+        'directorios' => ['Consejos Regionales'],
+        'activo' => true
+    ],
+    [
+        'id' => 30,
+        'num_afiliacion' => '9803004',
+        'nombre' => 'Alfonso Martin',
+        'apellido_paterno' => 'Rodríguez',
+        'apellido_materno' => '',
+        'genero' => 'M',
+        'grado' => 'Dr.',
+        'id_zona' => 3,
+        'institucion' => 'Universidad Autónoma de Aguascalientes',
+        'facultad' => 'Centro de Ciencias Económicas y Administrativas',
+        'cargo' => 'Coordinador Regional Zona 3 de Responsabilidad Social Universitaria',
+        'cargo_nivel' => 'Regional',
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null,
+        'correo' => 'alfonso.martin@edu.uaa.mx',
+        'telefono' => '449 4491396552 ext.8465',
+        'telefonos' => ['449 4491396552 ext.8465'],
+        'emails' => ['alfonso.martin@edu.uaa.mx'],
+        'directorios' => ['Consejos Regionales'],
+        'activo' => true
+    ],
+    [
+        'id' => 31,
+        'num_afiliacion' => '9805011',
+        'nombre' => 'Emigdio',
+        'apellido_paterno' => 'Larios',
+        'apellido_materno' => 'Gómez',
+        'genero' => 'M',
+        'grado' => 'Dr.',
+        'id_zona' => 5,
+        'institucion' => 'Benemérita Universidad Autónoma de Puebla',
+        'facultad' => 'Facultad de Administración',
+        'cargo' => 'Coordinador Regional Zona 5 de Posgrado',
+        'cargo_nivel' => 'Regional',
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null,
+        'correo' => 'herr.larios@gmail.com',
+        'telefono' => '222 2223250711',
+        'telefonos' => ['222 2223250711'],
+        'emails' => ['herr.larios@gmail.com'],
+        'directorios' => ['Consejos Regionales'],
+        'activo' => true
+    ],
+
+    // ============ INSTITUCIONES (cargos de nivel 3) ============
+    [
+        'id' => 32,
+        'num_afiliacion' => '9804001',
+        'nombre' => 'Cristian Omar',
+        'apellido_paterno' => 'Alcantar',
+        'apellido_materno' => 'López',
+        'genero' => 'M',
+        'grado' => 'Dr.',
+        'id_zona' => 4,
+        'institucion' => 'Universidad de Guadalajara',
+        'facultad' => 'División de Contaduría',
+        'cargo' => 'Director de División',
+        'cargo_nivel' => 'Institucional',
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null,
+        'correo' => 'cristian_alcantar@hotmail.com',
+        'telefono' => '33 3770 3300',
+        'telefonos' => ['33 3770 3300'],
+        'emails' => ['cristian_alcantar@hotmail.com'],
+        'directorios' => ['Instituciones'],
+        'activo' => true
+    ],
+    [
+        'id' => 33,
+        'num_afiliacion' => '9804005',
+        'nombre' => 'Luis Edmundo',
+        'apellido_paterno' => 'Garrido',
+        'apellido_materno' => 'Sánchez',
+        'genero' => 'M',
+        'grado' => 'Dr.',
+        'id_zona' => 4,
+        'institucion' => 'Instituto Tecnológico y de Estudios Superiores de Occidente',
+        'facultad' => 'Departamento de Economía, Administración y Finanzas',
+        'cargo' => 'Jefe de Departamento',
+        'cargo_nivel' => 'Institucional',
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null,
+        'correo' => 'dcastaneda@iteso.mx',
+        'telefono' => '33 36693516',
+        'telefonos' => ['33 36693516'],
+        'emails' => ['dcastaneda@iteso.mx'],
+        'directorios' => ['Instituciones'],
+        'activo' => true
+    ],
+    [
+        'id' => 34,
+        'num_afiliacion' => '9804006',
+        'nombre' => 'Maria Margarita',
+        'apellido_paterno' => 'Villareal',
+        'apellido_materno' => 'Treviño',
+        'genero' => 'F',
+        'grado' => 'Mtra.',
+        'id_zona' => 4,
+        'institucion' => 'Instituto Tecnológico y de Estudios Superiores de Occidente',
+        'facultad' => 'Escuela de Contaduría Pública',
+        'cargo' => 'Directora',
+        'cargo_nivel' => 'Institucional',
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null,
+        'correo' => 'marymar@iteso.mx',
+        'telefono' => '33 36693434',
+        'telefonos' => ['33 36693434'],
+        'emails' => ['marymar@iteso.mx'],
+        'directorios' => ['Instituciones'],
+        'activo' => true
+    ],
+    [
+        'id' => 35,
+        'num_afiliacion' => '9804007',
+        'nombre' => 'Esmeralda',
+        'apellido_paterno' => 'Brito',
+        'apellido_materno' => 'Cervantes',
+        'genero' => 'F',
+        'grado' => 'Dra.',
+        'id_zona' => 4,
+        'institucion' => 'Universidad Autónoma de Guadalajara',
+        'facultad' => 'Facultad de Administración',
+        'cargo' => 'Directora del Programa de Administración',
+        'cargo_nivel' => 'Institucional',
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null,
+        'correo' => 'esmeralda.brito@edu.uag.mx',
+        'telefono' => '33 36488824 ext.32235',
+        'telefonos' => ['33 36488824 ext.32235'],
+        'emails' => ['esmeralda.brito@edu.uag.mx'],
+        'directorios' => ['Instituciones'],
+        'activo' => true
+    ],
+    [
+        'id' => 36,
+        'num_afiliacion' => '9804014',
+        'nombre' => 'Nadia Natasha',
+        'apellido_paterno' => 'Reus',
+        'apellido_materno' => 'González',
+        'genero' => 'F',
+        'grado' => 'Dra.',
+        'id_zona' => 4,
+        'institucion' => 'Universidad de Guadalajara',
+        'facultad' => 'Centro Universitario de los Altos',
+        'cargo' => 'Secretario de la División de Ciencias Sociales y de la Cultura',
+        'cargo_nivel' => 'Institucional',
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null,
+        'correo' => 'nreus@hotmail.com',
+        'telefono' => '378 3781091005 ext.56943',
+        'telefonos' => ['378 3781091005 ext.56943'],
+        'emails' => ['nreus@hotmail.com'],
+        'directorios' => ['Instituciones'],
+        'activo' => true
+    ],
+    [
+        'id' => 37,
+        'num_afiliacion' => '9804019',
+        'nombre' => 'Salvador',
+        'apellido_paterno' => 'Cervantes',
+        'apellido_materno' => 'Cervantes',
+        'genero' => 'M',
+        'grado' => 'Dr.',
+        'id_zona' => 4,
+        'institucion' => 'Universidad del Valle de Atemajac',
+        'facultad' => 'Dirección General Académica',
+        'cargo' => 'Director General Académico',
+        'cargo_nivel' => 'Institucional',
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null,
+        'correo' => 'salvador.servantes@univa.mx',
+        'telefono' => '33 31340800 ext.1205',
+        'telefonos' => ['33 31340800 ext.1205'],
+        'emails' => ['salvador.servantes@univa.mx'],
+        'directorios' => ['Instituciones'],
+        'activo' => true
+    ],
+    [
+        'id' => 38,
+        'num_afiliacion' => '9804024',
+        'nombre' => 'María Guadalupe',
+        'apellido_paterno' => 'Jiménez',
+        'apellido_materno' => 'Hernández',
+        'genero' => 'F',
+        'grado' => 'Mtra.',
+        'id_zona' => 4,
+        'institucion' => 'Universidad del Valle de Atemajac',
+        'facultad' => 'Departamento de Administración y Contaduría Plantel Vallarta',
+        'cargo' => 'Director General de Plantel',
+        'cargo_nivel' => 'Institucional',
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null,
+        'correo' => 'mguadalupe.jimenez@univa.mx',
+        'telefono' => '313 40800 ext.1312',
+        'telefonos' => ['313 40800 ext.1312'],
+        'emails' => ['mguadalupe.jimenez@univa.mx'],
+        'directorios' => ['Instituciones'],
         'activo' => true
     ]
 ];
 
-// Procesar filtros
+// ============================================================
+// FUNCIÓN PARA VERIFICAR VIGENCIA DE CARGO
+// ============================================================
+
+function estaActivo($persona) {
+    return $persona['fecha_fin'] === null;
+}
+
+// ============================================================
+// PROCESAR FILTROS
+// ============================================================
+
 $zona_filtro = isset($_GET['zona']) ? (int)$_GET['zona'] : 0;
 $estado_filtro = isset($_GET['estado']) ? $_GET['estado'] : '';
 $cargo_filtro = isset($_GET['cargo']) ? trim($_GET['cargo']) : '';
@@ -355,12 +905,13 @@ $personas_filtradas = $personas;
 if (!empty($busqueda)) {
     $busqueda = strtolower($busqueda);
     $personas_filtradas = array_filter($personas_filtradas, function($p) use ($busqueda) {
-        $nombre_completo = strtolower($p['nombre'] . ' ' . $p['apellido_paterno'] . ' ' . $p['apellido_materno']);
+        $nombre_completo = strtolower($p['nombre'] . ' ' . $p['apellido_paterno'] . ' ' . ($p['apellido_materno'] ?? ''));
         return strpos($nombre_completo, $busqueda) !== false || 
                strpos(strtolower($p['institucion']), $busqueda) !== false ||
                strpos(strtolower($p['cargo']), $busqueda) !== false ||
                strpos(strtolower($p['correo']), $busqueda) !== false ||
-               strpos(strtolower($p['num_afiliacion']), $busqueda) !== false;
+               strpos(strtolower($p['num_afiliacion']), $busqueda) !== false ||
+               strpos(strtolower($p['facultad'] ?? ''), $busqueda) !== false;
     });
 }
 
@@ -379,11 +930,11 @@ if (!empty($cargo_filtro)) {
 
 if ($estado_filtro == 'activo') {
     $personas_filtradas = array_filter($personas_filtradas, function($p) {
-        return $p['activo'] == true;
+        return estaActivo($p);
     });
 } elseif ($estado_filtro == 'inactivo') {
     $personas_filtradas = array_filter($personas_filtradas, function($p) {
-        return $p['activo'] == false;
+        return !estaActivo($p);
     });
 }
 
@@ -399,8 +950,8 @@ if (!empty($orden_columna)) {
                 $valor_b = $b['num_afiliacion'];
                 break;
             case 'nombre':
-                $valor_a = $a['nombre'] . ' ' . $a['apellido_paterno'] . ' ' . $a['apellido_materno'];
-                $valor_b = $b['nombre'] . ' ' . $b['apellido_paterno'] . ' ' . $b['apellido_materno'];
+                $valor_a = $a['nombre'] . ' ' . $a['apellido_paterno'] . ' ' . ($a['apellido_materno'] ?? '');
+                $valor_b = $b['nombre'] . ' ' . $b['apellido_paterno'] . ' ' . ($b['apellido_materno'] ?? '');
                 break;
             case 'institucion':
                 $valor_a = $a['institucion'];
@@ -458,7 +1009,7 @@ include 'template/menu.php';
                 </div>
             </div>
             <div class="page-header-right">
-                <button onclick="descargarCSV()" class="btn-outline-modern">
+                <button onclick="descargarCSV()" class="btn-outline-modern" <?= empty($personas_filtradas) ? 'disabled' : '' ?>>
                     <i class="fas fa-file-csv"></i> Exportar CSV
                 </button>
                 <a href="persona_registro.php" class="btn-primary-modern">
@@ -515,8 +1066,6 @@ include 'template/menu.php';
                             <option value="inactivo" <?= $estado_filtro == 'inactivo' ? 'selected' : '' ?>>Inactivos</option>
                         </select>
                     </div>
-                    
-                    
                     
                     <a href="personas.php" class="btn-filter-clear <?= (empty($busqueda) && $zona_filtro == 0 && empty($cargo_filtro) && empty($estado_filtro)) ? 'disabled' : '' ?>">
                         <i class="fas fa-times"></i> Limpiar
@@ -608,22 +1157,32 @@ include 'template/menu.php';
                                     $nombre_completo .= ' ' . $persona['apellido_materno'];
                                 }
                                 $zona_nombre = $zonas_regionales[$persona['id_zona']] ?? 'Sin zona';
-                                $puede_eliminar = true; // Las personas siempre se pueden eliminar
+                                $activo = estaActivo($persona);
                             ?>
-                            <tr data-id="<?= $persona['id'] ?>" data-activo="<?= $persona['activo'] ? 'true' : 'false' ?>">
+                            <tr data-id="<?= $persona['id'] ?>" data-activo="<?= $activo ? 'true' : 'false' ?>">
                                 <td><span class="badge-afiliacion"><?= htmlspecialchars($persona['num_afiliacion']) ?></span></td>
                                 <td>
                                     <div class="persona-cell">
                                         <div class="persona-nombre"><?= htmlspecialchars($nombre_completo) ?></div>
+                                        <?php if (!empty($persona['grado'])): ?>
+                                            <div class="persona-grado"><?= htmlspecialchars($persona['grado']) ?></div>
+                                        <?php endif; ?>
                                     </div>
                                 </td>
-                                <td><?= htmlspecialchars($persona['institucion']) ?></td>
+                                <td>
+                                    <div class="institucion-cell">
+                                        <div><?= htmlspecialchars($persona['institucion']) ?></div>
+                                        <?php if (!empty($persona['facultad'])): ?>
+                                            <div class="facultad-nombre"><?= htmlspecialchars($persona['facultad']) ?></div>
+                                        <?php endif; ?>
+                                    </div>
+                                </td>
                                 <td><?= htmlspecialchars($persona['cargo']) ?></td>
                                 <td><span class="badge-zona"><?= htmlspecialchars($zona_nombre) ?></span></td>
                                 <td><?= htmlspecialchars($persona['correo']) ?></td>
                                 <td><?= htmlspecialchars($persona['telefono']) ?></td>
                                 <td>
-                                    <?php if ($persona['activo']): ?>
+                                    <?php if ($activo): ?>
                                         <span class="status-active"><i class="fas fa-circle"></i> Activo</span>
                                     <?php else: ?>
                                         <span class="status-inactive"><i class="fas fa-circle"></i> Inactivo</span>
@@ -814,6 +1373,11 @@ include 'template/menu.php';
     color: #8B0000;
 }
 
+.btn-outline-modern:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 /* Filtros */
 .filters-container {
     background: white;
@@ -903,24 +1467,6 @@ include 'template/menu.php';
     box-shadow: 0 0 0 4px rgba(139, 0, 0, 0.06);
 }
 
-.btn-filter-apply {
-    padding: 0.5rem 1.25rem;
-    background: #8B0000;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    white-space: nowrap;
-}
-
-.btn-filter-apply:hover {
-    background: #5C0000;
-    transform: translateY(-1px);
-}
-
 .btn-filter-clear {
     padding: 0.5rem 1.25rem;
     background: transparent;
@@ -980,7 +1526,7 @@ include 'template/menu.php';
     width: 100%;
     border-collapse: collapse;
     font-size: 0.9rem;
-    min-width: 1050px;
+    min-width: 1100px;
 }
 
 .table-modern thead {
@@ -1074,6 +1620,22 @@ include 'template/menu.php';
 .persona-nombre {
     font-weight: 600;
     color: #1a1a1a;
+}
+
+.persona-grado {
+    font-size: 0.7rem;
+    color: #888;
+    margin-top: 0.1rem;
+}
+
+.institucion-cell {
+    font-size: 0.85rem;
+}
+
+.facultad-nombre {
+    font-size: 0.7rem;
+    color: #888;
+    margin-top: 0.1rem;
 }
 
 /* Estados */
@@ -1490,7 +2052,6 @@ include 'template/menu.php';
         max-width: none;
     }
 
-    .btn-filter-apply,
     .btn-filter-clear {
         width: 100%;
         justify-content: center;
@@ -1683,6 +2244,10 @@ function eliminarPersona(id) {
                         <span class="info-value">${persona.institucion}</span>
                     </div>
                     <div class="info-item">
+                        <span class="info-label">Facultad</span>
+                        <span class="info-value">${persona.facultad || 'No especificada'}</span>
+                    </div>
+                    <div class="info-item">
                         <span class="info-label">Zona</span>
                         <span class="info-value">${zonaNombre}</span>
                     </div>
@@ -1802,15 +2367,16 @@ function descargarCSV() {
         return;
     }
     
-    let csv = 'Núm. Afiliación,Nombre,Institución,Cargo,Zona,Correo,Teléfono,Estado,Directorios\n';
+    let csv = 'Núm. Afiliación,Nombre,Institución,Facultad,Cargo,Zona,Correo,Teléfono,Estado,Directorios\n';
     
     datosFiltrados.forEach(function(p) {
         const nombreCompleto = p.nombre + ' ' + p.apellido_paterno + (p.apellido_materno ? ' ' + p.apellido_materno : '');
         const zonaNombre = zonasRegionales[p.id_zona] || 'Sin zona';
         const directorios = p.directorios ? p.directorios.join('; ') : '';
         const estado = p.activo ? 'Activo' : 'Inactivo';
+        const facultad = p.facultad || '';
         
-        csv += `"${p.num_afiliacion}","${nombreCompleto}","${p.institucion}","${p.cargo}","${zonaNombre}","${p.correo}","${p.telefono}","${estado}","${directorios}"\n`;
+        csv += `"${p.num_afiliacion}","${nombreCompleto}","${p.institucion}","${facultad}","${p.cargo}","${zonaNombre}","${p.correo}","${p.telefono}","${estado}","${directorios}"\n`;
     });
     
     const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
