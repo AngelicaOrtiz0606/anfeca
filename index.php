@@ -19,22 +19,27 @@ $_SESSION['nombre'] = 'Admin ANFECA';
 $_SESSION['rol'] = 'Administrador';
 
 // ============================================================
-// DATOS ESTADÍSTICOS
+// DATOS ESTADÍSTICOS (actualizados con datos reales)
 // ============================================================
+
+// Personas: 38 registros (IDs 1-38)
+// Activos: 37 (todos excepto quienes tienen fecha_fin)
+// Inactivos: 0
 
 $stats = [
     'personas' => [
-        'total' => 7,
-        'activas' => 6,
+        'total' => 38,
+        'activas' => 37,
         'inactivas' => 1
     ],
     'instituciones' => [
-        'total' => 17,
-        'afiliadas' => 14,
-        'observadoras' => 3
+        'total' => 38,
+        'afiliadas' => 31,
+        'observadoras' => 4,
+        'matrices' => 3
     ],
     'cargos' => [
-        'total' => 14
+        'total' => 45
     ],
     'coordinaciones' => [
         'total' => 14,
@@ -54,37 +59,37 @@ $acciones_map = [
 ];
 
 // ============================================================
-// BITÁCORA RECIENTE (con la acción de la BD)
+// BITÁCORA RECIENTE - ÚLTIMOS 6 MOVIMIENTOS
 // ============================================================
 
 $bitacora_reciente = [
     [
         'fecha_hora' => '2026-08-15 09:30:00',
-        'usuario' => 'María González',
+        'usuario' => 'Armando Tomé González',
         'accion' => 'Registro',
-        'descripcion' => 'a Patricia Flores Reyes'
+        'descripcion' => 'a la Facultad de Contaduría y Administración (UNAM)'
     ],
     [
         'fecha_hora' => '2026-08-15 09:15:00',
-        'usuario' => 'Juan Pérez',
+        'usuario' => 'Adriana Garza Elizondo',
         'accion' => 'Modificacion',
-        'descripcion' => 'los datos de UNAM'
+        'descripcion' => 'los datos de la Universidad Autónoma de Nuevo León'
     ],
     [
         'fecha_hora' => '2026-08-14 16:45:00',
-        'usuario' => 'Carlos López',
+        'usuario' => 'Carlos Lobo Sánchez',
         'accion' => 'Modificacion',
-        'descripcion' => 'cargo a Laura Torres Vega'
+        'descripcion' => 'el cargo a Leobardo Berrelleza Reyes'
     ],
     [
         'fecha_hora' => '2026-08-14 14:20:00',
-        'usuario' => 'Roberto Mendoza',
+        'usuario' => 'Lourdes Mata Romero',
         'accion' => 'Desactivacion',
-        'descripcion' => 'a Roberto Mendoza Cruz'
+        'descripcion' => 'a la Especialidad (Esp.)'
     ],
     [
         'fecha_hora' => '2026-08-14 11:00:00',
-        'usuario' => 'Ana Sánchez',
+        'usuario' => 'Cristian Omar Alcantar López',
         'accion' => 'Registro',
         'descripcion' => 'Instituto Tecnológico de los Mochis'
     ],
@@ -92,21 +97,12 @@ $bitacora_reciente = [
         'fecha_hora' => '2026-08-13 17:30:00',
         'usuario' => 'Admin ANFECA',
         'accion' => 'Registro',
-        'descripcion' => 'Responsabilidad Social Universitaria'
-    ],
-    [
-        'fecha_hora' => '2026-08-13 15:00:00',
-        'usuario' => 'María González',
-        'accion' => 'Modificacion',
-        'descripcion' => 'datos de Juan Martínez López'
-    ],
-    [
-        'fecha_hora' => '2026-08-13 12:30:00',
-        'usuario' => 'Admin ANFECA',
-        'accion' => 'Activacion',
-        'descripcion' => 'a Ana Sánchez Ramírez'
+        'descripcion' => 'la Coordinación Nacional de Responsabilidad Social Universitaria'
     ]
 ];
+
+// Limitar a los últimos 6 registros
+$bitacora_reciente = array_slice($bitacora_reciente, 0, 6);
 
 include 'template/header.php';
 include 'template/menu.php';
@@ -153,6 +149,7 @@ include 'template/menu.php';
                     <div class="stat-detail">
                         <span><span class="dot" style="background:#2e7d32;"></span> Afiliadas: <?= number_format($stats['instituciones']['afiliadas']) ?></span>
                         <span><span class="dot" style="background:#e65100;"></span> Observadoras: <?= number_format($stats['instituciones']['observadoras']) ?></span>
+                        <span><span class="dot" style="background:#0d47a1;"></span> Matrices: <?= number_format($stats['instituciones']['matrices']) ?></span>
                     </div>
                 </div>
             </div>
