@@ -113,6 +113,87 @@ if ($accion === 'eliminar' && isset($_GET['id'])) {
     }
 }
 
+// Procesar formulario (Registro/Edición)
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $errores = [];
+    
+    $nombre = trim($_POST['nombre'] ?? '');
+    $abr_m = trim($_POST['abr_m'] ?? '');
+    $abr_f = trim($_POST['abr_f'] ?? '');
+    $id_nivel = isset($_POST['id_nivel']) ? (int)$_POST['id_nivel'] : 0;
+    
+    if (empty($nombre)) $errores[] = 'Nombre del nivel académico';
+    if (empty($abr_m)) $errores[] = 'Abreviatura en masculino';
+    if (empty($abr_f)) $errores[] = 'Abreviatura en femenino';
+    
+    if (empty($errores)) {
+        if ($id_nivel > 0) {
+            // Editar nivel existente
+            $encontrado = false;
+            foreach ($niveles_academicos as $key => $n) {
+                if ($n['id'] == $id_nivel) {
+                    // Validar duplicados (excepto el mismo)
+                    $duplicado = false;
+                    foreach ($niveles_academicos as $otro) {
+                        if ($otro['id'] != $id_nivel && strtolower($otro['nombre']) == strtolower($nombre)) {
+                            $duplicado = true;
+                            break;
+                        }
+                    }
+                    if ($duplicado) {
+                        $error = 'El nombre "' . $nombre . '" ya está registrado como nivel académico';
+                    } else {
+                        $niveles_academicos[$key]['nombre'] = $nombre;
+                        $niveles_academicos[$key]['abr_m'] = $abr_m;
+                        $niveles_academicos[$key]['abr_f'] = $abr_f;
+                        $encontrado = true;
+                        $mensaje = 'Nivel académico actualizado exitosamente';
+                    }
+                    break;
+                }
+            }
+            if (!$encontrado && empty($error)) {
+                $error = 'Nivel académico no encontrado';
+            }
+        } else {
+            // Registrar nuevo nivel
+            $duplicado = false;
+            foreach ($niveles_academicos as $n) {
+                if (strtolower($n['nombre']) == strtolower($nombre)) {
+                    $duplicado = true;
+                    break;
+                }
+            }
+            if ($duplicado) {
+                $error = 'El nombre "' . $nombre . '" ya está registrado como nivel académico';
+            } else {
+                $ultimo_id++;
+                $niveles_academicos[] = [
+                    'id' => $ultimo_id,
+                    'nombre' => $nombre,
+                    'abr_m' => $abr_m,
+                    'abr_f' => $abr_f,
+                    'personas' => 0
+                ];
+                $personas_por_nivel[$ultimo_id] = 0;
+                $mensaje = 'Nivel académico registrado exitosamente';
+            }
+        }
+        
+        if (empty($error)) {
+            header('Location: niveles_academicos.php?mensaje=' . urlencode($mensaje));
+            exit;
+        }
+    } else {
+        $error = 'Complete los campos obligatorios: ' . implode(', ', $errores);
+    }
+}
+
+// Mostrar mensaje desde URL
+if (isset($_GET['mensaje'])) {
+    $mensaje = $_GET['mensaje'];
+}
+
 // ============================================================
 // FILTROS Y ORDENAMIENTO
 // ============================================================
@@ -191,9 +272,9 @@ include 'template/menu.php';
                 </div>
             </div>
             <div class="page-header-right">
-                <a href="nivel_academico_registro.php" class="btn-primary-modern">
+                <button onclick="abrirModalRegistro()" class="btn-primary-modern">
                     <i class="fas fa-plus-circle"></i> Nuevo Nivel
-                </a>
+                </button>
             </div>
         </div>
 
@@ -259,7 +340,7 @@ include 'template/menu.php';
                     <thead>
                         <tr>
                             <th class="col-nombre">
-                                <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'nombre', 'orden_direccion' => ($orden_columna == 'nombre' && $orden_direccion == 'asc') ? 'desc' : 'asc', 'pagina' => 1])) ?>" 
+                                <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'nombre', 'orden_direccion' => ($orden_columna == 'nombre' && $orden_direccion == 'asc') ? 'desc' : 'asc'])) ?>" 
                                    class="sort-link <?= $orden_columna == 'nombre' ? 'active' : '' ?>">
                                     <span class="sort-label">Nombre</span>
                                     <?php if ($orden_columna == 'nombre'): ?>
@@ -270,7 +351,7 @@ include 'template/menu.php';
                                 </a>
                             </th>
                             <th class="col-abr-m">
-                                <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'abr_m', 'orden_direccion' => ($orden_columna == 'abr_m' && $orden_direccion == 'asc') ? 'desc' : 'asc', 'pagina' => 1])) ?>" 
+                                <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'abr_m', 'orden_direccion' => ($orden_columna == 'abr_m' && $orden_direccion == 'asc') ? 'desc' : 'asc'])) ?>" 
                                    class="sort-link <?= $orden_columna == 'abr_m' ? 'active' : '' ?>">
                                     <span class="sort-label">Abrev. M</span>
                                     <?php if ($orden_columna == 'abr_m'): ?>
@@ -281,7 +362,7 @@ include 'template/menu.php';
                                 </a>
                             </th>
                             <th class="col-abr-f">
-                                <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'abr_f', 'orden_direccion' => ($orden_columna == 'abr_f' && $orden_direccion == 'asc') ? 'desc' : 'asc', 'pagina' => 1])) ?>" 
+                                <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'abr_f', 'orden_direccion' => ($orden_columna == 'abr_f' && $orden_direccion == 'asc') ? 'desc' : 'asc'])) ?>" 
                                    class="sort-link <?= $orden_columna == 'abr_f' ? 'active' : '' ?>">
                                     <span class="sort-label">Abrev. F</span>
                                     <?php if ($orden_columna == 'abr_f'): ?>
@@ -292,7 +373,7 @@ include 'template/menu.php';
                                 </a>
                             </th>
                             <th class="col-personas">
-                                <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'personas', 'orden_direccion' => ($orden_columna == 'personas' && $orden_direccion == 'asc') ? 'desc' : 'asc', 'pagina' => 1])) ?>" 
+                                <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'personas', 'orden_direccion' => ($orden_columna == 'personas' && $orden_direccion == 'asc') ? 'desc' : 'asc'])) ?>" 
                                    class="sort-link <?= $orden_columna == 'personas' ? 'active' : '' ?>">
                                     <span class="sort-label">Personas</span>
                                     <?php if ($orden_columna == 'personas'): ?>
@@ -330,9 +411,9 @@ include 'template/menu.php';
                                         <a href="nivel_academico_consulta.php?id=<?= $nivel['id'] ?>" class="btn-accion btn-ver" title="Consultar">
                                             <i class="fas fa-eye"></i>
                                         </a>
-                                        <a href="nivel_academico_edicion.php?id=<?= $nivel['id'] ?>" class="btn-accion btn-editar" title="Editar">
+                                        <button onclick="abrirModalEdicion(<?= $nivel['id'] ?>)" class="btn-accion btn-editar" title="Editar">
                                             <i class="fas fa-pen"></i>
-                                        </a>
+                                        </button>
                                         <?php if ($puede_eliminar): ?>
                                             <button onclick="eliminarNivel(<?= $nivel['id'] ?>)" class="btn-accion btn-eliminar" title="Eliminar">
                                                 <i class="fas fa-trash-alt"></i>
@@ -367,19 +448,62 @@ include 'template/menu.php';
     </div>
 </main>
 
-<!-- Modal para eliminar -->
-<div class="modal-overlay" id="modalEliminar" style="display:none;">
-    <div class="modal-card">
+<!-- Modal Registro/Edición -->
+<div class="modal-overlay" id="modalNivel" style="display:none;">
+    <div class="modal-card modal-card-nivel">
         <div class="modal-header">
-            <i class="fas fa-exclamation-triangle" id="modalIcon"></i>
-            <h3 id="modalTitulo">Confirmar eliminación</h3>
-            <button class="modal-close" onclick="cerrarModalEliminar()">
+            <i class="fas fa-graduation-cap" id="modalIcon"></i>
+            <h3 id="modalTitulo">Registrar Nuevo Nivel Académico</h3>
+            <button onclick="cerrarModal()" style="background:none;border:none;font-size:1.5rem;cursor:pointer;color:#999;margin-left:auto;">
                 <i class="fas fa-times"></i>
             </button>
         </div>
-        <div class="modal-body" id="modalBody">
+        <form method="POST" id="formNivel">
+            <input type="hidden" name="id_nivel" id="id_nivel" value="0">
+            
+            <div class="modal-body">
+                <div class="form-grid-modal">
+                    <div class="form-group">
+                        <label class="form-label required">Nombre del Nivel</label>
+                        <input type="text" name="nombre" id="nombre" class="form-control" placeholder="Ej. Licenciatura" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required">Abreviatura (Masculino)</label>
+                        <input type="text" name="abr_m" id="abr_m" class="form-control" placeholder="Ej. Lic." required>
+                        <small class="form-hint">Ejemplo: Lic., Mtro., Dr., etc.</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required">Abreviatura (Femenino)</label>
+                        <input type="text" name="abr_f" id="abr_f" class="form-control" placeholder="Ej. Lic." required>
+                        <small class="form-hint">Ejemplo: Lic., Mtra., Dra., etc.</small>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-modal-cancel" onclick="cerrarModal()">Cancelar</button>
+                <button type="submit" class="btn-modal-primary" id="btnGuardar">
+                    <i class="fas fa-save"></i> Guardar Nivel
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Eliminar -->
+<div class="modal-overlay" id="modalEliminar" style="display:none;">
+    <div class="modal-card modal-card-nivel">
+        <div class="modal-header">
+            <i class="fas fa-exclamation-triangle" id="modalIconEliminar"></i>
+            <h3 id="modalTituloEliminar">Confirmar eliminación</h3>
+            <button onclick="cerrarModalEliminar()" style="background:none;border:none;font-size:1.5rem;cursor:pointer;color:#999;margin-left:auto;">
+                <i class="fas fa-times"></i>
+            </button>
         </div>
-        <div class="modal-footer" id="modalFooter">
+        <div class="modal-body" id="modalBodyEliminar">
+        </div>
+        <div class="modal-footer" id="modalFooterEliminar">
         </div>
     </div>
 </div>
@@ -894,7 +1018,7 @@ include 'template/menu.php';
 }
 
 /* ============================================================
-   MODAL DE ELIMINACIÓN
+   MODALES
    ============================================================ */
 
 .modal-overlay {
@@ -911,10 +1035,10 @@ include 'template/menu.php';
     animation: fadeIn 0.3s ease;
 }
 
-.modal-card {
+.modal-card-nivel {
     background: white;
     border-radius: 16px;
-    max-width: 600px;
+    max-width: 580px;
     width: 90%;
     max-height: 80vh;
     overflow-y: auto;
@@ -923,52 +1047,32 @@ include 'template/menu.php';
     animation: slideUp 0.3s ease;
 }
 
-.modal-header {
+.modal-card-nivel .modal-header {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     padding-bottom: 0.75rem;
     border-bottom: 2px solid #f5f0f0;
 }
 
-.modal-header i {
+.modal-card-nivel .modal-header i {
     font-size: 1.5rem;
+    color: #8B0000;
 }
 
-.modal-header h3 {
+.modal-card-nivel .modal-header h3 {
     font-size: 1.2rem;
     font-weight: 700;
     color: #1a1a1a;
     margin: 0;
 }
 
-.modal-close {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: #999;
-    margin-left: auto;
-    padding: 0 0.25rem;
-    transition: color 0.2s ease;
-}
-
-.modal-close:hover {
-    color: #1a1a1a;
-}
-
-.modal-body {
+.modal-card-nivel .modal-body {
     margin-bottom: 1.5rem;
 }
 
-.modal-body p {
-    color: #4a4a4a;
-    margin-bottom: 0.5rem;
-    line-height: 1.6;
-}
-
-.modal-footer {
+.modal-card-nivel .modal-footer {
     display: flex;
     gap: 0.75rem;
     justify-content: flex-end;
@@ -976,7 +1080,59 @@ include 'template/menu.php';
     border-top: 1px solid #f5f0f0;
 }
 
-.btn-modal-cancel {
+/* Formulario en modal */
+.form-grid-modal {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+}
+
+.form-grid-modal .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.form-label {
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: #3a3a3a;
+}
+
+.form-label.required::after {
+    content: ' *';
+    color: #c62828;
+}
+
+.form-hint {
+    font-size: 0.7rem;
+    color: #999;
+    margin-top: 0.15rem;
+}
+
+.form-control {
+    padding: 0.7rem 1rem;
+    border: 2px solid #e8e8e8;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    background: #fafafa;
+    color: #1a1a1a;
+    width: 100%;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #8B0000;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(139, 0, 0, 0.06);
+}
+
+.form-control::placeholder {
+    color: #bbb;
+}
+
+.modal-card-nivel .btn-modal-cancel {
     padding: 0.6rem 1.5rem;
     background: white;
     color: #4a4a4a;
@@ -988,12 +1144,30 @@ include 'template/menu.php';
     transition: all 0.3s ease;
 }
 
-.btn-modal-cancel:hover {
+.modal-card-nivel .btn-modal-cancel:hover {
     border-color: #8B0000;
     color: #8B0000;
 }
 
-.btn-modal-danger {
+.modal-card-nivel .btn-modal-primary {
+    padding: 0.6rem 1.8rem;
+    background: linear-gradient(135deg, #8B0000, #5C0000);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.modal-card-nivel .btn-modal-primary:hover {
+    opacity: 0.85;
+    transform: translateY(-1px);
+}
+
+/* Botón peligroso en modal */
+.modal-card-nivel .btn-modal-danger {
     padding: 0.6rem 1.5rem;
     background: #dc3545;
     color: white;
@@ -1005,11 +1179,11 @@ include 'template/menu.php';
     transition: all 0.3s ease;
 }
 
-.btn-modal-danger:hover {
+.modal-card-nivel .btn-modal-danger:hover {
     background: #c62828;
 }
 
-.btn-modal-danger:disabled {
+.modal-card-nivel .btn-modal-danger:disabled {
     background: #cccccc;
     color: #666666;
     cursor: not-allowed;
@@ -1024,6 +1198,67 @@ include 'template/menu.php';
 @keyframes slideUp {
     from { transform: translateY(30px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideUpMessage {
+    from { transform: translateX(-50%) translateY(0); opacity: 1; }
+    to { transform: translateX(-50%) translateY(-20px); opacity: 0; }
+}
+
+/* Mensajes flotantes */
+.mensaje-flotante {
+    position: fixed;
+    top: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9998;
+    max-width: 600px;
+    width: 90%;
+    animation: slideDown 0.4s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.mensaje-flotante.success {
+    background: #f0f7f0;
+    color: #1a5a1a;
+    border-left: 4px solid #2e7d32;
+}
+
+.mensaje-flotante.success i {
+    color: #2e7d32;
+}
+
+.mensaje-flotante.error {
+    background: #fdf0f0;
+    color: #7a1a1a;
+    border-left: 4px solid #c62828;
+}
+
+.mensaje-flotante.error i {
+    color: #c62828;
+}
+
+.mensaje-flotante i {
+    font-size: 1.25rem;
+}
+
+.mensaje-flotante .btn-cerrar-mensaje {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-left: auto;
+    padding: 0 0.25rem;
+}
+
+@keyframes slideDown {
+    from { transform: translateX(-50%) translateY(-20px); opacity: 0; }
+    to { transform: translateX(-50%) translateY(0); opacity: 1; }
 }
 
 /* Responsive */
@@ -1091,16 +1326,16 @@ include 'template/menu.php';
         font-size: 0.65rem;
     }
 
-    .modal-card {
+    .modal-card-nivel {
         padding: 1.25rem;
         margin: 1rem;
     }
 
-    .modal-footer {
+    .modal-card-nivel .modal-footer {
         flex-direction: column;
     }
 
-    .modal-footer button {
+    .modal-card-nivel .modal-footer button {
         width: 100%;
         justify-content: center;
     }
@@ -1165,6 +1400,76 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ============================================================
+// MODAL - REGISTRO/EDICIÓN
+// ============================================================
+
+function abrirModalRegistro() {
+    const modal = document.getElementById('modalNivel');
+    const titulo = document.getElementById('modalTitulo');
+    const icon = document.getElementById('modalIcon');
+    const btnGuardar = document.getElementById('btnGuardar');
+    const idNivel = document.getElementById('id_nivel');
+    const nombre = document.getElementById('nombre');
+    const abrM = document.getElementById('abr_m');
+    const abrF = document.getElementById('abr_f');
+    
+    titulo.textContent = 'Registrar Nuevo Nivel Académico';
+    icon.className = 'fas fa-graduation-cap';
+    btnGuardar.innerHTML = '<i class="fas fa-save"></i> Guardar Nivel';
+    idNivel.value = '0';
+    nombre.value = '';
+    abrM.value = '';
+    abrF.value = '';
+    
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => nombre.focus(), 100);
+}
+
+function abrirModalEdicion(id) {
+    const nivel = nivelesData.find(n => n.id === id);
+    if (!nivel) {
+        mostrarMensaje('No se encontró el nivel académico', 'error');
+        return;
+    }
+    
+    const modal = document.getElementById('modalNivel');
+    const titulo = document.getElementById('modalTitulo');
+    const icon = document.getElementById('modalIcon');
+    const btnGuardar = document.getElementById('btnGuardar');
+    const idNivel = document.getElementById('id_nivel');
+    const nombre = document.getElementById('nombre');
+    const abrM = document.getElementById('abr_m');
+    const abrF = document.getElementById('abr_f');
+    
+    titulo.textContent = 'Editar Nivel Académico';
+    icon.className = 'fas fa-edit';
+    btnGuardar.innerHTML = '<i class="fas fa-save"></i> Actualizar Nivel';
+    idNivel.value = nivel.id;
+    nombre.value = nivel.nombre;
+    abrM.value = nivel.abr_m;
+    abrF.value = nivel.abr_f;
+    
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => nombre.focus(), 100);
+}
+
+function cerrarModal() {
+    const modal = document.getElementById('modalNivel');
+    modal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+// Cerrar modal al hacer clic fuera
+document.addEventListener('click', function(e) {
+    const modal = document.getElementById('modalNivel');
+    if (modal && e.target === modal) {
+        cerrarModal();
+    }
+});
+
+// ============================================================
 // ELIMINAR NIVEL ACADÉMICO
 // ============================================================
 
@@ -1177,10 +1482,10 @@ function eliminarNivel(id) {
     
     const totalPersonas = personasPorNivel[id] || 0;
     const modal = document.getElementById('modalEliminar');
-    const modalIcon = document.getElementById('modalIcon');
-    const modalTitulo = document.getElementById('modalTitulo');
-    const modalBody = document.getElementById('modalBody');
-    const modalFooter = document.getElementById('modalFooter');
+    const modalIcon = document.getElementById('modalIconEliminar');
+    const modalTitulo = document.getElementById('modalTituloEliminar');
+    const modalBody = document.getElementById('modalBodyEliminar');
+    const modalFooter = document.getElementById('modalFooterEliminar');
     
     if (totalPersonas > 0) {
         modalIcon.style.color = '#e65100';
@@ -1268,7 +1573,7 @@ function confirmarEliminar(id) {
     window.location.href = `niveles_academicos.php?accion=eliminar&id=${id}`;
 }
 
-// Cerrar modal al hacer clic fuera
+// Cerrar modal de eliminar al hacer clic fuera
 document.addEventListener('click', function(e) {
     const modal = document.getElementById('modalEliminar');
     if (modal && e.target === modal) {
@@ -1345,4 +1650,4 @@ function descargarCSV() {
 }
 </script>
 
-<?php include 'template/footer.php'; ?>
+<?php include 'template/footer.php'; ?> 
