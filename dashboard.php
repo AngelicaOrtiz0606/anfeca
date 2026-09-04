@@ -4,19 +4,19 @@
 // Sistema Integral de Directorios ANFECA
 // ============================================================
 
-// Configuración básica
 session_start();
+
+// Verificar sesión - Si no está logueado, redirigir al login
+if (!isset($_SESSION['usuario'])) {
+    header('Location: index.php');
+    exit;
+}
 
 // Configurar zona horaria CDMX
 date_default_timezone_set('America/Mexico_City');
 
 // Configurar locale para español
 setlocale(LC_TIME, 'es_ES.UTF-8', 'spanish');
-
-// Simulación de sesión
-$_SESSION['usuario'] = 'Administrador';
-$_SESSION['nombre'] = 'Admin ANFECA';
-$_SESSION['rol'] = 'Administrador';
 
 // ============================================================
 // DATOS ESTADÍSTICOS (actualizados con datos reales)

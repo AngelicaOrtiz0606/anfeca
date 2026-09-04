@@ -31,11 +31,11 @@ HEADER (CON IMAGEN DE FONDO)
             <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
                 <i class="fas fa-bars"></i>
             </button>
-            <img src="img/logo_anfeca.png" alt="ANFECA" class="logo-img">
+            <img src="img/logo_anfeca.png" alt="ANFECA" class="logo-img" onerror="this.style.display='none'">
             <div class="logo-divider"></div>
-            <a href="index.php" class="logo-text" style="text-decoration: none;">
+            <a href="dashboard.php" class="logo-text" style="text-decoration: none;">
                 <span class="logo-title">SIDEANFECA</span>
-                <span class="logo-subtitle">SISTEMA INTEGRAL DE DIRECTORIOS ANFECA</span>
+                <span class="logo-subtitle">SISTEMA DE ANFECA</span>
             </a>
         </div>
         <div class="header-actions">
@@ -43,9 +43,40 @@ HEADER (CON IMAGEN DE FONDO)
                 <span class="user-name"><?= htmlspecialchars($_SESSION['nombre'] ?? 'Administrador') ?></span>
                 <span class="user-role"><?= htmlspecialchars($_SESSION['rol'] ?? 'Administrador') ?></span>
             </div>
-            <button class="btn-logout" title="Cerrar sesión" onclick="confirmarLogout()">
+            <a href="logout.php" class="btn-logout" title="Cerrar sesión" onclick="return confirmarLogout()">
                 <i class="fas fa-sign-out-alt"></i>
-            </button>
+            </a>
         </div>
     </div>
 </header>
+
+<script>
+// ============================================================
+// FUNCIONES DEL HEADER
+// ============================================================
+
+function confirmarLogout() {
+    return confirm('¿Estás seguro de que deseas cerrar sesión?');
+}
+
+// Toggle del menú móvil
+document.addEventListener('DOMContentLoaded', function() {
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    
+    if (menuToggle && sidebar) {
+        menuToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('active');
+        });
+        
+        // Cerrar menú al hacer clic fuera
+        document.addEventListener('click', function(e) {
+            if (window.innerWidth <= 768) {
+                if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+                    sidebar.classList.remove('active');
+                }
+            }
+        });
+    }
+});
+</script>
