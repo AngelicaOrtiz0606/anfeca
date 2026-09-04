@@ -356,6 +356,9 @@ include 'template/menu.php';
                 <div>
                     <strong>¡Excelente!</strong> <?= htmlspecialchars($mensaje) ?>
                 </div>
+                <button class="alert-close" onclick="this.parentElement.remove()">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
         <?php endif; ?>
 
@@ -365,6 +368,9 @@ include 'template/menu.php';
                 <div>
                     <strong>Por favor revise</strong> <?= htmlspecialchars($error) ?>
                 </div>
+                <button class="alert-close" onclick="this.parentElement.remove()">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
         <?php endif; ?>
 
@@ -458,15 +464,9 @@ include 'template/menu.php';
                                         <button onclick="abrirModalEdicion(<?= $coord['id'] ?>)" class="btn-accion btn-editar" title="Editar">
                                             <i class="fas fa-pen"></i>
                                         </button>
-                                        <?php if ($tiene_personas): ?>
-                                            <button class="btn-accion btn-eliminar btn-eliminar-bloqueado" title="No se puede eliminar (tiene personas asociadas)">
-                                                <i class="fas fa-lock"></i>
-                                            </button>
-                                        <?php else: ?>
-                                            <button onclick="eliminarCoordinacion(<?= $coord['id'] ?>)" class="btn-accion btn-eliminar" title="Eliminar">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        <?php endif; ?>
+                                        <button onclick="eliminarCoordinacion(<?= $coord['id'] ?>)" class="btn-accion btn-eliminar <?= $tiene_personas ? 'btn-eliminar-bloqueado' : '' ?>" title="<?= $tiene_personas ? 'No se puede eliminar (tiene personas asociadas)' : 'Eliminar' ?>">
+                                            <i class="fas <?= $tiene_personas ? 'fa-trash-alt' : 'fa-trash-alt' ?>"></i>
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
@@ -576,6 +576,23 @@ include 'template/menu.php';
     </div>
 </div>
 
+<!-- Modal Eliminar -->
+<div class="modal-overlay" id="modalEliminar" style="display:none;">
+    <div class="modal-card modal-card-coordinacion">
+        <div class="modal-header">
+            <i class="fas fa-exclamation-triangle" id="modalIconEliminar"></i>
+            <h3 id="modalTituloEliminar">Confirmar eliminación</h3>
+            <button onclick="cerrarModalEliminar()" style="background:none;border:none;font-size:1.5rem;cursor:pointer;color:#999;margin-left:auto;">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body" id="modalBodyEliminar">
+        </div>
+        <div class="modal-footer" id="modalFooterEliminar">
+        </div>
+    </div>
+</div>
+
 <style>
 /* ============================================================
    ESTILOS - COORDINACIONES NACIONALES
@@ -653,6 +670,27 @@ include 'template/menu.php';
     color: white;
 }
 
+.btn-outline-modern {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.75rem 1.5rem;
+    background: white;
+    color: #4a4a4a;
+    border: 2px solid #e8e8e8;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.btn-outline-modern:hover {
+    border-color: #8B0000;
+    color: #8B0000;
+}
+
 .alert-modern {
     display: flex;
     align-items: flex-start;
@@ -661,6 +699,7 @@ include 'template/menu.php';
     border-radius: 12px;
     margin-bottom: 1.5rem;
     font-size: 0.95rem;
+    position: relative;
 }
 
 .alert-modern i {
@@ -686,6 +725,22 @@ include 'template/menu.php';
 
 .alert-error i {
     color: #c62828;
+}
+
+.alert-close {
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin-left: auto;
+    padding: 0.2rem 0.5rem;
+    color: inherit;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+}
+
+.alert-close:hover {
+    opacity: 1;
 }
 
 .filters-container {
@@ -1089,6 +1144,10 @@ include 'template/menu.php';
     font-size: 0.95rem;
 }
 
+/* ============================================================
+   MODALES
+   ============================================================ */
+
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -1148,6 +1207,7 @@ include 'template/menu.php';
     border-top: 1px solid #f5f0f0;
 }
 
+/* Formulario en modal */
 .form-grid-modal {
     display: grid;
     grid-template-columns: 1fr;
@@ -1199,6 +1259,7 @@ include 'template/menu.php';
     color: #bbb;
 }
 
+/* Toggle Switch en modal */
 .checkbox-container {
     display: flex;
     align-items: center;
@@ -1286,6 +1347,29 @@ include 'template/menu.php';
     transform: translateY(-1px);
 }
 
+.modal-card-coordinacion .btn-modal-danger {
+    padding: 0.6rem 1.5rem;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.modal-card-coordinacion .btn-modal-danger:hover {
+    background: #c62828;
+}
+
+.modal-card-coordinacion .btn-modal-danger:disabled {
+    background: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
+}
+
+/* Mensajes flotantes */
 .mensaje-flotante {
     position: fixed;
     top: 90px;
@@ -1336,6 +1420,7 @@ include 'template/menu.php';
     padding: 0 0.25rem;
 }
 
+/* Animaciones */
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -1356,6 +1441,7 @@ include 'template/menu.php';
     to { transform: translateX(-50%) translateY(-20px); opacity: 0; }
 }
 
+/* Responsive */
 @media (max-width: 992px) {
     .filters-row {
         flex-direction: column;
@@ -1549,6 +1635,14 @@ function cerrarModalRegistro() {
     document.body.style.overflow = 'auto';
 }
 
+// Cerrar modal de registro al hacer clic fuera
+document.addEventListener('click', function(e) {
+    const modalRegistro = document.getElementById('modalRegistro');
+    if (modalRegistro && e.target === modalRegistro) {
+        cerrarModalRegistro();
+    }
+});
+
 // ============================================================
 // MODAL - EDICIÓN
 // ============================================================
@@ -1577,20 +1671,16 @@ function cerrarModalEdicion() {
     document.body.style.overflow = 'auto';
 }
 
-// Cerrar modales al hacer clic fuera
+// Cerrar modal de edición al hacer clic fuera
 document.addEventListener('click', function(e) {
-    const modalRegistro = document.getElementById('modalRegistro');
-    if (e.target === modalRegistro) {
-        cerrarModalRegistro();
-    }
     const modalEdicion = document.getElementById('modalEdicion');
-    if (e.target === modalEdicion) {
+    if (modalEdicion && e.target === modalEdicion) {
         cerrarModalEdicion();
     }
 });
 
 // ============================================================
-// ELIMINAR COORDINACIÓN (solo si no tiene personas)
+// ELIMINAR COORDINACIÓN
 // ============================================================
 
 function eliminarCoordinacion(id) {
@@ -1602,31 +1692,51 @@ function eliminarCoordinacion(id) {
     
     const tienePersonas = coord.personas > 0;
     
-    const modal = document.createElement('div');
-    modal.className = 'modal-overlay';
-    modal.id = 'modalEliminar';
+    const modal = document.getElementById('modalEliminar');
+    const modalIcon = document.getElementById('modalIconEliminar');
+    const modalTitulo = document.getElementById('modalTituloEliminar');
+    const modalBody = document.getElementById('modalBodyEliminar');
+    const modalFooter = document.getElementById('modalFooterEliminar');
     
-    let contenidoBody = '';
     if (tienePersonas) {
-        contenidoBody = `
-            <p style="color:#c62828;font-weight:600;">
+        modalIcon.style.color = '#e65100';
+        modalIcon.className = 'fas fa-lock';
+        modalTitulo.textContent = 'No se puede eliminar';
+        
+        modalBody.innerHTML = `
+            <p style="color:#e65100;font-weight:600;">
                 <i class="fas fa-exclamation-circle"></i> 
                 Esta coordinación tiene <strong>${coord.personas} persona(s)</strong> asociada(s).
             </p>
-            <p>No se puede eliminar porque tiene personas relacionadas.</p>
+            <p>Para poder eliminar esta coordinación, primero debe eliminar o reasignar todas las personas asociadas.</p>
             <div style="background:#faf8f8;padding:1rem;border-radius:10px;border:1px solid #f0ecec;margin:0.75rem 0;">
                 <div style="display:flex;padding:0.3rem 0;border-bottom:1px solid #f0ecec;">
                     <span style="font-weight:600;color:#666;width:120px;">Coordinación</span>
                     <span style="color:#1a1a1a;">${coord.nombre}</span>
                 </div>
+                <div style="display:flex;padding:0.3rem 0;border-bottom:1px solid #f0ecec;">
+                    <span style="font-weight:600;color:#666;width:120px;">Orden</span>
+                    <span style="color:#1a1a1a;">${coord.orden}</span>
+                </div>
                 <div style="display:flex;padding:0.3rem 0;">
-                    <span style="font-weight:600;color:#666;width:120px;">Personas</span>
-                    <span style="color:#c62828;font-weight:600;">${coord.personas}</span>
+                    <span style="font-weight:600;color:#666;width:120px;">Personas asociadas</span>
+                    <span style="color:#e65100;font-weight:600;">${coord.personas}</span>
                 </div>
             </div>
         `;
+        
+        modalFooter.innerHTML = `
+            <button class="btn-modal-cancel" onclick="cerrarModalEliminar()">Entendido</button>
+            <button class="btn-modal-danger" disabled>
+                <i class="fas fa-lock"></i> No se puede eliminar
+            </button>
+        `;
     } else {
-        contenidoBody = `
+        modalIcon.style.color = '#dc3545';
+        modalIcon.className = 'fas fa-exclamation-triangle';
+        modalTitulo.textContent = '¿Eliminar coordinación?';
+        
+        modalBody.innerHTML = `
             <p><strong>¡Advertencia!</strong> Esta acción eliminará la coordinación del sistema. Esta operación <strong>no se puede deshacer</strong>.</p>
             
             <div style="background:#faf8f8;padding:1rem;border-radius:10px;border:1px solid #f0ecec;margin:0.75rem 0;">
@@ -1644,48 +1754,28 @@ function eliminarCoordinacion(id) {
                 </div>
             </div>
             
-            <p style="color:#c62828;font-weight:600;margin-top:0.75rem;">
+            <p style="color:#dc3545;font-weight:600;margin-top:0.75rem;">
                 <i class="fas fa-exclamation-circle"></i> 
                 Se perderá toda la información asociada a esta coordinación.
             </p>
         `;
+        
+        modalFooter.innerHTML = `
+            <button class="btn-modal-cancel" onclick="cerrarModalEliminar()">Cancelar</button>
+            <button class="btn-modal-danger" onclick="confirmarEliminar(${id})">
+                <i class="fas fa-trash-alt"></i> Eliminar permanentemente
+            </button>
+        `;
     }
     
-    modal.innerHTML = `
-        <div class="modal-card modal-card-coordinacion">
-            <div class="modal-header">
-                <i class="fas fa-exclamation-triangle" style="color:${tienePersonas ? '#e65100' : '#dc3545'};"></i>
-                <h3>${tienePersonas ? 'No se puede eliminar' : '¿Eliminar coordinación?'}</h3>
-                <button onclick="cerrarModalEliminar()" style="background:none;border:none;font-size:1.5rem;cursor:pointer;color:#999;margin-left:auto;">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                ${contenidoBody}
-            </div>
-            <div class="modal-footer">
-                <button class="btn-modal-cancel" onclick="cerrarModalEliminar()">${tienePersonas ? 'Entendido' : 'Cancelar'}</button>
-                ${tienePersonas ? `
-                    <button class="btn-modal-primary" style="background:#e65100;cursor:not-allowed;opacity:0.6;" disabled>
-                        <i class="fas fa-lock"></i> No se puede eliminar
-                    </button>
-                ` : `
-                    <button class="btn-modal-primary" style="background:#dc3545;" onclick="confirmarEliminar(${id})">
-                        <i class="fas fa-trash-alt"></i> Eliminar permanentemente
-                    </button>
-                `}
-            </div>
-        </div>
-    `;
-    
-    document.body.appendChild(modal);
+    modal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 }
 
 function cerrarModalEliminar() {
     const modal = document.getElementById('modalEliminar');
     if (modal) {
-        modal.remove();
+        modal.style.display = 'none';
         document.body.style.overflow = 'auto';
     }
 }
@@ -1693,6 +1783,14 @@ function cerrarModalEliminar() {
 function confirmarEliminar(id) {
     window.location.href = `coordinaciones_nacionales.php?accion=eliminar&id=${id}`;
 }
+
+// Cerrar modal de eliminar al hacer clic fuera
+document.addEventListener('click', function(e) {
+    const modalEliminar = document.getElementById('modalEliminar');
+    if (modalEliminar && e.target === modalEliminar) {
+        cerrarModalEliminar();
+    }
+});
 
 // ============================================================
 // DRAG & DROP - REORDENAR

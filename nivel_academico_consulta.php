@@ -49,7 +49,7 @@ $niveles_academicos = [
         'nombre' => 'Especialidad',
         'abr_m' => 'Esp.',
         'abr_f' => 'Esp.',
-        'activo' => true
+        'activo' => false
     ],
     [
         'id' => 5,
@@ -271,6 +271,18 @@ include 'template/menu.php';
                         <label class="form-label required">Abreviatura (Femenino)</label>
                         <input type="text" name="abr_f" id="abr_f" class="form-control" placeholder="Ej. Lic." required>
                         <small class="form-hint">Ejemplo: Lic., Mtra., Dra., etc.</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Estado</label>
+                        <div class="checkbox-container">
+                            <div class="toggle-modern" onclick="toggleVisibility(this)">
+                                <input type="checkbox" name="activo" id="activo" value="1">
+                                <span class="toggle-slider"></span>
+                            </div>
+                            <label for="activo" style="font-size:0.85rem;color:#4a4a4a;cursor:pointer;">Activo</label>
+                        </div>
+                        <small class="form-hint">Desactive para ocultar el nivel en los listados</small>
                     </div>
                 </div>
             </div>
@@ -767,6 +779,60 @@ include 'template/menu.php';
     color: #bbb;
 }
 
+/* Toggle Switch en modal */
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.4rem 0;
+}
+
+.toggle-modern {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 22px;
+    cursor: pointer;
+}
+
+.toggle-modern input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-modern .toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #ccc;
+    transition: 0.3s;
+    border-radius: 22px;
+}
+
+.toggle-modern .toggle-slider:before {
+    content: "";
+    position: absolute;
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+    background: white;
+    transition: 0.3s;
+    border-radius: 50%;
+}
+
+.toggle-modern input:checked + .toggle-slider {
+    background: #8B0000;
+}
+
+.toggle-modern input:checked + .toggle-slider:before {
+    transform: translateX(18px);
+}
+
 .modal-card-nivel .btn-modal-cancel {
     padding: 0.6rem 1.5rem;
     background: white;
@@ -810,11 +876,6 @@ include 'template/menu.php';
 @keyframes slideUp {
     from { transform: translateY(30px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
-}
-
-@keyframes slideDown {
-    from { transform: translateX(-50%) translateY(-20px); opacity: 0; }
-    to { transform: translateX(-50%) translateY(0); opacity: 1; }
 }
 
 /* Responsive */
@@ -927,6 +988,19 @@ include 'template/menu.php';
 const nivelesData = <?= json_encode($niveles_academicos) ?>;
 
 // ============================================================
+// TOGGLE VISIBILITY
+// ============================================================
+
+function toggleVisibility(element) {
+    const checkbox = element.querySelector('input[type="checkbox"]');
+    if (checkbox && !checkbox.disabled) {
+        checkbox.checked = !checkbox.checked;
+        const event = new Event('change', { bubbles: true });
+        checkbox.dispatchEvent(event);
+    }
+}
+
+// ============================================================
 // MODAL - EDICIÓN
 // ============================================================
 
@@ -945,6 +1019,7 @@ function abrirModalEdicion(id) {
     const nombre = document.getElementById('nombre');
     const abrM = document.getElementById('abr_m');
     const abrF = document.getElementById('abr_f');
+    const activo = document.getElementById('activo');
     
     titulo.textContent = 'Editar Nivel Académico';
     icon.className = 'fas fa-edit';
@@ -953,6 +1028,7 @@ function abrirModalEdicion(id) {
     nombre.value = nivel.nombre;
     abrM.value = nivel.abr_m;
     abrF.value = nivel.abr_f;
+    activo.checked = nivel.activo;
     
     modal.style.display = 'flex';
     document.body.style.overflow = 'hidden';

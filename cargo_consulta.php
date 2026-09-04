@@ -488,9 +488,9 @@ include 'template/menu.php';
                 </div>
             </div>
             <div class="page-header-right">
-                <a href="cargo_edicion.php?id=<?= $cargo['id'] ?>" class="btn-primary-modern">
+                <button onclick="abrirModalEdicion(<?= $cargo['id'] ?>)" class="btn-primary-modern">
                     <i class="fas fa-edit"></i> Editar
-                </a>
+                </button>
                 <a href="cargos.php" class="btn-outline-modern">
                     <i class="fas fa-arrow-left"></i> Volver al listado
                 </a>
@@ -591,6 +591,64 @@ include 'template/menu.php';
 
     </div>
 </main>
+
+<!-- Modal Edición (mismo que en cargos.php) -->
+<div class="modal-overlay" id="modalCargo" style="display:none;">
+    <div class="modal-card modal-card-cargo">
+        <div class="modal-header">
+            <i class="fas fa-edit" id="modalIcon"></i>
+            <h3 id="modalTitulo">Editar Cargo</h3>
+            <button onclick="cerrarModal()" style="background:none;border:none;font-size:1.5rem;cursor:pointer;color:#999;margin-left:auto;">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <form method="POST" action="cargos.php" id="formCargo">
+            <input type="hidden" name="id_cargo" id="id_cargo" value="0">
+            
+            <div class="modal-body">
+                <div class="form-grid-modal">
+                    <div class="form-group">
+                        <label class="form-label required">Nombre (Masculino)</label>
+                        <input type="text" name="nombre_m" id="nombre_m" class="form-control" placeholder="Ej. Presidente" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required">Nombre (Femenino)</label>
+                        <input type="text" name="nombre_f" id="nombre_f" class="form-control" placeholder="Ej. Presidenta" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required">Nivel de Cargo</label>
+                        <select name="id_nivel" id="id_nivel" class="form-control" required>
+                            <option value="">Seleccionar nivel...</option>
+                            <?php foreach ($niveles_cargo as $id => $nombre): ?>
+                                <option value="<?= $id ?>"><?= htmlspecialchars($nombre) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Estado</label>
+                        <div class="checkbox-container">
+                            <div class="toggle-modern" onclick="toggleVisibility(this)">
+                                <input type="checkbox" name="activo" id="activo" value="1" checked>
+                                <span class="toggle-slider"></span>
+                            </div>
+                            <label for="activo" style="font-size:0.85rem;color:#4a4a4a;cursor:pointer;">Activo</label>
+                        </div>
+                        <small class="form-hint">Desactive para ocultar el cargo en los listados</small>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-modal-cancel" onclick="cerrarModal()">Cancelar</button>
+                <button type="submit" class="btn-modal-primary" id="btnGuardar">
+                    <i class="fas fa-save"></i> Actualizar Cargo
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 
 <style>
 /* ============================================================
@@ -949,6 +1007,219 @@ include 'template/menu.php';
     font-size: 0.95rem;
 }
 
+/* ============================================================
+   ESTILOS - MODAL EDICIÓN
+   ============================================================ */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-card-cargo {
+    background: white;
+    border-radius: 16px;
+    max-width: 580px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 2rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
+}
+
+.modal-card-cargo .modal-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #f5f0f0;
+}
+
+.modal-card-cargo .modal-header i {
+    font-size: 1.5rem;
+    color: #8B0000;
+}
+
+.modal-card-cargo .modal-header h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+.modal-card-cargo .modal-body {
+    margin-bottom: 1.5rem;
+}
+
+.modal-card-cargo .modal-footer {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    padding-top: 1rem;
+    border-top: 1px solid #f5f0f0;
+}
+
+.form-grid-modal {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+}
+
+.form-grid-modal .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.form-label {
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: #3a3a3a;
+}
+
+.form-label.required::after {
+    content: ' *';
+    color: #c62828;
+}
+
+.form-hint {
+    font-size: 0.7rem;
+    color: #999;
+    margin-top: 0.15rem;
+}
+
+.form-control {
+    padding: 0.7rem 1rem;
+    border: 2px solid #e8e8e8;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    background: #fafafa;
+    color: #1a1a1a;
+    width: 100%;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #8B0000;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(139, 0, 0, 0.06);
+}
+
+.form-control::placeholder {
+    color: #bbb;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.4rem 0;
+}
+
+.toggle-modern {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 22px;
+    cursor: pointer;
+}
+
+.toggle-modern input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-modern .toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #ccc;
+    transition: 0.3s;
+    border-radius: 22px;
+}
+
+.toggle-modern .toggle-slider:before {
+    content: "";
+    position: absolute;
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+    background: white;
+    transition: 0.3s;
+    border-radius: 50%;
+}
+
+.toggle-modern input:checked + .toggle-slider {
+    background: #8B0000;
+}
+
+.toggle-modern input:checked + .toggle-slider:before {
+    transform: translateX(18px);
+}
+
+.btn-modal-cancel {
+    padding: 0.6rem 1.5rem;
+    background: white;
+    color: #4a4a4a;
+    border: 2px solid #e8e8e8;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-modal-cancel:hover {
+    border-color: #8B0000;
+    color: #8B0000;
+}
+
+.btn-modal-primary {
+    padding: 0.6rem 1.8rem;
+    background: linear-gradient(135deg, #8B0000, #5C0000);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-modal-primary:hover {
+    opacity: 0.85;
+    transform: translateY(-1px);
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Responsive */
 @media (max-width: 768px) {
     .page-header {
         flex-direction: column;
@@ -999,6 +1270,20 @@ include 'template/menu.php';
         padding: 0.5rem 0.6rem;
         font-size: 0.8rem;
     }
+
+    .modal-card-cargo {
+        padding: 1.25rem;
+        margin: 1rem;
+    }
+
+    .modal-card-cargo .modal-footer {
+        flex-direction: column;
+    }
+
+    .modal-card-cargo .modal-footer button {
+        width: 100%;
+        justify-content: center;
+    }
 }
 
 @media (max-width: 480px) {
@@ -1029,5 +1314,108 @@ include 'template/menu.php';
     }
 }
 </style>
+
+<script>
+// ============================================================
+// DATOS
+// ============================================================
+
+const nivelesCargo = <?= json_encode($niveles_cargo) ?>;
+const cargosData = <?= json_encode($cargos) ?>;
+
+// ============================================================
+// TOGGLE VISIBILITY
+// ============================================================
+
+function toggleVisibility(element) {
+    const checkbox = element.querySelector('input[type="checkbox"]');
+    if (checkbox && !checkbox.disabled) {
+        checkbox.checked = !checkbox.checked;
+        const event = new Event('change', { bubbles: true });
+        checkbox.dispatchEvent(event);
+    }
+}
+
+// ============================================================
+// MODAL - EDICIÓN
+// ============================================================
+
+function abrirModalEdicion(id) {
+    const cargo = cargosData.find(c => c.id === id);
+    if (!cargo) {
+        mostrarMensaje('No se encontró el cargo', 'error');
+        return;
+    }
+    
+    const modal = document.getElementById('modalCargo');
+    const titulo = document.getElementById('modalTitulo');
+    const icon = document.getElementById('modalIcon');
+    const btnGuardar = document.getElementById('btnGuardar');
+    const idCargo = document.getElementById('id_cargo');
+    const nombreM = document.getElementById('nombre_m');
+    const nombreF = document.getElementById('nombre_f');
+    const idNivel = document.getElementById('id_nivel');
+    const activo = document.getElementById('activo');
+    
+    titulo.textContent = 'Editar Cargo';
+    icon.className = 'fas fa-edit';
+    btnGuardar.innerHTML = '<i class="fas fa-save"></i> Actualizar Cargo';
+    idCargo.value = cargo.id;
+    nombreM.value = cargo.nombre_m;
+    nombreF.value = cargo.nombre_f;
+    idNivel.value = cargo.id_nivel;
+    activo.checked = cargo.activo;
+    
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => nombreM.focus(), 100);
+}
+
+function cerrarModal() {
+    const modal = document.getElementById('modalCargo');
+    modal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+// Cerrar modal al hacer clic fuera
+document.addEventListener('click', function(e) {
+    const modal = document.getElementById('modalCargo');
+    if (modal && e.target === modal) {
+        cerrarModal();
+    }
+});
+
+// ============================================================
+// MENSAJES FLOTANTES
+// ============================================================
+
+function mostrarMensaje(mensaje, tipo) {
+    const mensajesAnteriores = document.querySelectorAll('.mensaje-flotante');
+    mensajesAnteriores.forEach(el => el.remove());
+    
+    const div = document.createElement('div');
+    div.className = `mensaje-flotante ${tipo}`;
+    div.innerHTML = `
+        <i class="fas ${tipo === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+        <div>
+            <strong>${tipo === 'success' ? '¡Éxito!' : '¡Atención!'}</strong> ${mensaje}
+        </div>
+        <button class="btn-cerrar-mensaje" onclick="this.parentElement.remove()">
+            <i class="fas fa-times"></i>
+        </button>
+    `;
+    
+    document.body.appendChild(div);
+    
+    setTimeout(function() {
+        if (div.parentElement) {
+            div.style.animation = 'slideUpMessage 0.3s ease';
+            setTimeout(function() {
+                div.remove();
+            }, 300);
+        }
+    }, 4000);
+}
+</script>
 
 <?php include 'template/footer.php'; ?>

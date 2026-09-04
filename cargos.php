@@ -453,39 +453,29 @@ $ultimo_id = count($cargos);
 $mensaje = '';
 $error = '';
 $accion = isset($_GET['accion']) ? $_GET['accion'] : '';
-$id_editar = isset($_GET['editar']) ? (int)$_GET['editar'] : 0;
-$cargo_editar = null;
 
 // Eliminar cargo
 if ($accion === 'eliminar' && isset($_GET['id'])) {
     $id_eliminar = (int)$_GET['id'];
     $en_uso = [1, 2, 3];
+    $personas_asociadas_cargo = $personas_asociadas[$id_eliminar] ?? [];
     
     if (in_array($id_eliminar, $en_uso)) {
         $error = 'No se puede eliminar el cargo porque está siendo utilizado en puestos.';
+    } elseif (count($personas_asociadas_cargo) > 0) {
+        $error = 'No se puede eliminar el cargo porque tiene ' . count($personas_asociadas_cargo) . ' persona(s) asociada(s).';
     } else {
-        if (isset($personas_asociadas[$id_eliminar]) && count($personas_asociadas[$id_eliminar]) > 0) {
-            $error = 'No se puede eliminar el cargo porque tiene ' . count($personas_asociadas[$id_eliminar]) . ' persona(s) asociada(s).';
-        } else {
-            foreach ($cargos as $key => $c) {
-                if ($c['id'] == $id_eliminar) {
-                    unset($cargos[$key]);
-                    $mensaje = 'Cargo eliminado exitosamente';
-                    break;
-                }
+        foreach ($cargos as $key => $c) {
+            if ($c['id'] == $id_eliminar) {
+                unset($cargos[$key]);
+                $mensaje = 'Cargo eliminado exitosamente';
+                break;
             }
-            $cargos = array_values($cargos);
         }
-    }
-}
-
-// Obtener cargo para editar
-if ($id_editar > 0) {
-    foreach ($cargos as $c) {
-        if ($c['id'] == $id_editar) {
-            $cargo_editar = $c;
-            break;
-        }
+        $cargos = array_values($cargos);
+        // Actualizar el array para el modal (se recarga la página)
+        header('Location: cargos.php?mensaje=' . urlencode($mensaje));
+        exit;
     }
 }
 
@@ -505,36 +495,71 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     if (empty($errores)) {
         if ($id_cargo > 0) {
-            $cargo_encontrado = false;
-            foreach ($cargos as $key => $c) {
-                if ($c['id'] == $id_cargo) {
-                    $cargos[$key]['nombre_m'] = $nombre_m;
-                    $cargos[$key]['nombre_f'] = $nombre_f;
-                    $cargos[$key]['id_nivel'] = $id_nivel;
-                    $cargos[$key]['activo'] = $activo;
-                    $cargo_encontrado = true;
-                    $mensaje = 'Cargo actualizado exitosamente';
+            // Editar cargo existente
+            // Validar duplicados (excepto el mismo)
+            $duplicado = false;
+            foreach ($cargos as $c) {
+                if ($c['id'] != $id_cargo && strtolower($c['nombre_m']) == strtolower($nombre_m)) {
+                    $duplicado = true;
                     break;
                 }
             }
-            if (!$cargo_encontrado) {
-                $error = 'Cargo no encontrado';
+            if ($duplicado) {
+                $error = 'El nombre "' . $nombre_m . '" ya está registrado como cargo';
+            } else {
+                $encontrado = false;
+                foreach ($cargos as $key => $c) {
+                    if ($c['id'] == $id_cargo) {
+                        $cargos[$key]['nombre_m'] = $nombre_m;
+                        $cargos[$key]['nombre_f'] = $nombre_f;
+                        $cargos[$key]['id_nivel'] = $id_nivel;
+                        $cargos[$key]['activo'] = $activo;
+                        $encontrado = true;
+                        $mensaje = 'Cargo actualizado exitosamente';
+                        break;
+                    }
+                }
+                if (!$encontrado) {
+                    $error = 'Cargo no encontrado';
+                }
             }
         } else {
-            $ultimo_id++;
-            $cargos[] = [
-                'id' => $ultimo_id,
-                'nombre_m' => $nombre_m,
-                'nombre_f' => $nombre_f,
-                'id_nivel' => $id_nivel,
-                'activo' => $activo,
-                'personas' => 0
-            ];
-            $mensaje = 'Cargo registrado exitosamente';
+            // Registrar nuevo cargo
+            $duplicado = false;
+            foreach ($cargos as $c) {
+                if (strtolower($c['nombre_m']) == strtolower($nombre_m)) {
+                    $duplicado = true;
+                    break;
+                }
+            }
+            if ($duplicado) {
+                $error = 'El nombre "' . $nombre_m . '" ya está registrado como cargo';
+            } else {
+                $ultimo_id++;
+                $cargos[] = [
+                    'id' => $ultimo_id,
+                    'nombre_m' => $nombre_m,
+                    'nombre_f' => $nombre_f,
+                    'id_nivel' => $id_nivel,
+                    'activo' => $activo,
+                    'personas' => 0
+                ];
+                $mensaje = 'Cargo registrado exitosamente';
+            }
+        }
+        
+        if (empty($error)) {
+            header('Location: cargos.php?mensaje=' . urlencode($mensaje));
+            exit;
         }
     } else {
         $error = 'Complete los campos obligatorios: ' . implode(', ', $errores);
     }
+}
+
+// Mostrar mensaje desde URL
+if (isset($_GET['mensaje'])) {
+    $mensaje = $_GET['mensaje'];
 }
 
 // ============================================================
@@ -648,9 +673,9 @@ include 'template/menu.php';
                 </div>
             </div>
             <div class="page-header-right">
-                <a href="cargo_registro.php" class="btn-primary-modern">
+                <button onclick="abrirModalRegistro()" class="btn-primary-modern">
                     <i class="fas fa-plus-circle"></i> Nuevo Cargo
-                </a>
+                </button>
             </div>
         </div>
 
@@ -660,6 +685,9 @@ include 'template/menu.php';
                 <div>
                     <strong>¡Excelente!</strong> <?= htmlspecialchars($mensaje) ?>
                 </div>
+                <button class="alert-close" onclick="this.parentElement.remove()">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
         <?php endif; ?>
 
@@ -669,6 +697,9 @@ include 'template/menu.php';
                 <div>
                     <strong>Por favor revise</strong> <?= htmlspecialchars($error) ?>
                 </div>
+                <button class="alert-close" onclick="this.parentElement.remove()">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
         <?php endif; ?>
 
@@ -794,11 +825,12 @@ include 'template/menu.php';
                                 $nivel_nombre = $niveles_cargo[$cargo['id_nivel']] ?? 'Sin nivel';
                                 $estado_texto = $cargo['activo'] ? 'Activo' : 'Inactivo';
                                 $estado_class = $cargo['activo'] ? 'status-active' : 'status-inactive';
-                                $puede_eliminar = !in_array($cargo['id'], [1, 2, 3]);
                                 $personas = $cargo['personas'] ?? 0;
                                 $personas_class = $personas > 0 ? 'badge-personas-activo' : 'badge-personas-vacio';
+                                $personas_asociadas_cargo = $personas_asociadas[$cargo['id']] ?? [];
+                                $puede_eliminar = !in_array($cargo['id'], [1, 2, 3]) && count($personas_asociadas_cargo) == 0;
                             ?>
-                            <tr data-id="<?= $cargo['id'] ?>">
+                            <tr data-id="<?= $cargo['id'] ?>" data-personas="<?= count($personas_asociadas_cargo) ?>">
                                 <td>
                                     <div class="cargo-cell">
                                         <div class="cargo-nombre"><?= htmlspecialchars($cargo['nombre_m']) ?></div>
@@ -828,18 +860,12 @@ include 'template/menu.php';
                                         <a href="cargo_consulta.php?id=<?= $cargo['id'] ?>" class="btn-accion btn-ver" title="Consultar">
                                             <i class="fas fa-eye"></i>
                                         </a>
-                                        <a href="cargo_edicion.php?id=<?= $cargo['id'] ?>" class="btn-accion btn-editar" title="Editar">
+                                        <button onclick="abrirModalEdicion(<?= $cargo['id'] ?>)" class="btn-accion btn-editar" title="Editar">
                                             <i class="fas fa-pen"></i>
-                                        </a>
-                                        <?php if ($puede_eliminar): ?>
-                                            <button onclick="eliminarCargo(<?= $cargo['id'] ?>)" class="btn-accion btn-eliminar" title="Eliminar">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        <?php else: ?>
-                                            <button class="btn-accion btn-eliminar btn-eliminar-bloqueado" title="No se puede eliminar (en uso)">
-                                                <i class="fas fa-lock"></i>
-                                            </button>
-                                        <?php endif; ?>
+                                        </button>
+                                        <button onclick="eliminarCargo(<?= $cargo['id'] ?>)" class="btn-accion btn-eliminar <?= !$puede_eliminar ? 'btn-eliminar-bloqueado' : '' ?>" title="<?= !$puede_eliminar ? 'No se puede eliminar (tiene personas asociadas o está en uso)' : 'Eliminar' ?>">
+                                            <i class="fas <?= !$puede_eliminar ? 'fa-trash-alt' : 'fa-trash-alt' ?>"></i>
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
@@ -917,6 +943,81 @@ include 'template/menu.php';
 
     </div>
 </main>
+
+<!-- Modal Registro/Edición -->
+<div class="modal-overlay" id="modalCargo" style="display:none;">
+    <div class="modal-card modal-card-cargo">
+        <div class="modal-header">
+            <i class="fas fa-briefcase" id="modalIcon"></i>
+            <h3 id="modalTitulo">Registrar Nuevo Cargo</h3>
+            <button onclick="cerrarModal()" style="background:none;border:none;font-size:1.5rem;cursor:pointer;color:#999;margin-left:auto;">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <form method="POST" id="formCargo">
+            <input type="hidden" name="id_cargo" id="id_cargo" value="0">
+            
+            <div class="modal-body">
+                <div class="form-grid-modal">
+                    <div class="form-group">
+                        <label class="form-label required">Nombre (Masculino)</label>
+                        <input type="text" name="nombre_m" id="nombre_m" class="form-control" placeholder="Ej. Presidente" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required">Nombre (Femenino)</label>
+                        <input type="text" name="nombre_f" id="nombre_f" class="form-control" placeholder="Ej. Presidenta" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required">Nivel de Cargo</label>
+                        <select name="id_nivel" id="id_nivel" class="form-control" required>
+                            <option value="">Seleccionar nivel...</option>
+                            <?php foreach ($niveles_cargo as $id => $nombre): ?>
+                                <option value="<?= $id ?>"><?= htmlspecialchars($nombre) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Estado</label>
+                        <div class="checkbox-container">
+                            <div class="toggle-modern" onclick="toggleVisibility(this)">
+                                <input type="checkbox" name="activo" id="activo" value="1" checked>
+                                <span class="toggle-slider"></span>
+                            </div>
+                            <label for="activo" style="font-size:0.85rem;color:#4a4a4a;cursor:pointer;">Activo</label>
+                        </div>
+                        <small class="form-hint">Desactive para ocultar el cargo en los listados</small>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-modal-cancel" onclick="cerrarModal()">Cancelar</button>
+                <button type="submit" class="btn-modal-primary" id="btnGuardar">
+                    <i class="fas fa-save"></i> Guardar Cargo
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Eliminar -->
+<div class="modal-overlay" id="modalEliminar" style="display:none;">
+    <div class="modal-card modal-card-cargo">
+        <div class="modal-header">
+            <i class="fas fa-exclamation-triangle" id="modalIconEliminar"></i>
+            <h3 id="modalTituloEliminar">Confirmar eliminación</h3>
+            <button onclick="cerrarModalEliminar()" style="background:none;border:none;font-size:1.5rem;cursor:pointer;color:#999;margin-left:auto;">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body" id="modalBodyEliminar">
+        </div>
+        <div class="modal-footer" id="modalFooterEliminar">
+        </div>
+    </div>
+</div>
 
 <style>
 /* ============================================================
@@ -1024,6 +1125,7 @@ include 'template/menu.php';
     border-radius: 12px;
     margin-bottom: 1.5rem;
     font-size: 0.95rem;
+    position: relative;
 }
 
 .alert-modern i {
@@ -1049,6 +1151,22 @@ include 'template/menu.php';
 
 .alert-error i {
     color: #c62828;
+}
+
+.alert-close {
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin-left: auto;
+    padding: 0.2rem 0.5rem;
+    color: inherit;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+}
+
+.alert-close:hover {
+    opacity: 1;
 }
 
 .filters-container {
@@ -1567,9 +1685,234 @@ include 'template/menu.php';
     background: #fafafa;
     font-size: 0.85rem;
     color: #6b6b6b;
-    display: none;
 }
 
+/* ============================================================
+   ESTILOS - MODALES
+   ============================================================ */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-card-cargo {
+    background: white;
+    border-radius: 16px;
+    max-width: 580px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 2rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
+}
+
+.modal-card-cargo .modal-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #f5f0f0;
+}
+
+.modal-card-cargo .modal-header i {
+    font-size: 1.5rem;
+    color: #8B0000;
+}
+
+.modal-card-cargo .modal-header h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+.modal-card-cargo .modal-body {
+    margin-bottom: 1.5rem;
+}
+
+.modal-card-cargo .modal-footer {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    padding-top: 1rem;
+    border-top: 1px solid #f5f0f0;
+}
+
+/* Formulario en modal */
+.form-grid-modal {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+}
+
+.form-grid-modal .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.form-label {
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: #3a3a3a;
+}
+
+.form-label.required::after {
+    content: ' *';
+    color: #c62828;
+}
+
+.form-hint {
+    font-size: 0.7rem;
+    color: #999;
+    margin-top: 0.15rem;
+}
+
+.form-control {
+    padding: 0.7rem 1rem;
+    border: 2px solid #e8e8e8;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    background: #fafafa;
+    color: #1a1a1a;
+    width: 100%;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #8B0000;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(139, 0, 0, 0.06);
+}
+
+.form-control::placeholder {
+    color: #bbb;
+}
+
+/* Toggle Switch en modal */
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.4rem 0;
+}
+
+.toggle-modern {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 22px;
+    cursor: pointer;
+}
+
+.toggle-modern input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-modern .toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #ccc;
+    transition: 0.3s;
+    border-radius: 22px;
+}
+
+.toggle-modern .toggle-slider:before {
+    content: "";
+    position: absolute;
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+    background: white;
+    transition: 0.3s;
+    border-radius: 50%;
+}
+
+.toggle-modern input:checked + .toggle-slider {
+    background: #8B0000;
+}
+
+.toggle-modern input:checked + .toggle-slider:before {
+    transform: translateX(18px);
+}
+
+.modal-card-cargo .btn-modal-cancel {
+    padding: 0.6rem 1.5rem;
+    background: white;
+    color: #4a4a4a;
+    border: 2px solid #e8e8e8;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.modal-card-cargo .btn-modal-cancel:hover {
+    border-color: #8B0000;
+    color: #8B0000;
+}
+
+.modal-card-cargo .btn-modal-primary {
+    padding: 0.6rem 1.8rem;
+    background: linear-gradient(135deg, #8B0000, #5C0000);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.modal-card-cargo .btn-modal-primary:hover {
+    opacity: 0.85;
+    transform: translateY(-1px);
+}
+
+.modal-card-cargo .btn-modal-danger {
+    padding: 0.6rem 1.5rem;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.modal-card-cargo .btn-modal-danger:hover {
+    background: #c62828;
+}
+
+.modal-card-cargo .btn-modal-danger:disabled {
+    background: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
+}
+
+/* Animaciones */
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -1590,6 +1933,7 @@ include 'template/menu.php';
     to { transform: translateX(-50%) translateY(-20px); opacity: 0; }
 }
 
+/* Mensajes flotantes */
 .mensaje-flotante {
     position: fixed;
     top: 90px;
@@ -1640,14 +1984,7 @@ include 'template/menu.php';
     padding: 0 0.25rem;
 }
 
-.mensaje-flotante.success .btn-cerrar-mensaje {
-    color: #1a5a1a;
-}
-
-.mensaje-flotante.error .btn-cerrar-mensaje {
-    color: #7a1a1a;
-}
-
+/* Responsive */
 @media (max-width: 992px) {
     .filters-row {
         flex-direction: column;
@@ -1716,6 +2053,20 @@ include 'template/menu.php';
         width: 28px;
         height: 28px;
         font-size: 0.65rem;
+    }
+
+    .modal-card-cargo {
+        padding: 1.25rem;
+        margin: 1rem;
+    }
+
+    .modal-card-cargo .modal-footer {
+        flex-direction: column;
+    }
+
+    .modal-card-cargo .modal-footer button {
+        width: 100%;
+        justify-content: center;
     }
 }
 
@@ -1817,6 +2168,93 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ============================================================
+// TOGGLE VISIBILITY
+// ============================================================
+
+function toggleVisibility(element) {
+    const checkbox = element.querySelector('input[type="checkbox"]');
+    if (checkbox && !checkbox.disabled) {
+        checkbox.checked = !checkbox.checked;
+        const event = new Event('change', { bubbles: true });
+        checkbox.dispatchEvent(event);
+    }
+}
+
+// ============================================================
+// MODAL - REGISTRO/EDICIÓN
+// ============================================================
+
+function abrirModalRegistro() {
+    const modal = document.getElementById('modalCargo');
+    const titulo = document.getElementById('modalTitulo');
+    const icon = document.getElementById('modalIcon');
+    const btnGuardar = document.getElementById('btnGuardar');
+    const idCargo = document.getElementById('id_cargo');
+    const nombreM = document.getElementById('nombre_m');
+    const nombreF = document.getElementById('nombre_f');
+    const idNivel = document.getElementById('id_nivel');
+    const activo = document.getElementById('activo');
+    
+    titulo.textContent = 'Registrar Nuevo Cargo';
+    icon.className = 'fas fa-briefcase';
+    btnGuardar.innerHTML = '<i class="fas fa-save"></i> Guardar Cargo';
+    idCargo.value = '0';
+    nombreM.value = '';
+    nombreF.value = '';
+    idNivel.value = '';
+    activo.checked = true;
+    
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => nombreM.focus(), 100);
+}
+
+function abrirModalEdicion(id) {
+    const cargo = cargosData.find(c => c.id === id);
+    if (!cargo) {
+        mostrarMensaje('No se encontró el cargo', 'error');
+        return;
+    }
+    
+    const modal = document.getElementById('modalCargo');
+    const titulo = document.getElementById('modalTitulo');
+    const icon = document.getElementById('modalIcon');
+    const btnGuardar = document.getElementById('btnGuardar');
+    const idCargo = document.getElementById('id_cargo');
+    const nombreM = document.getElementById('nombre_m');
+    const nombreF = document.getElementById('nombre_f');
+    const idNivel = document.getElementById('id_nivel');
+    const activo = document.getElementById('activo');
+    
+    titulo.textContent = 'Editar Cargo';
+    icon.className = 'fas fa-edit';
+    btnGuardar.innerHTML = '<i class="fas fa-save"></i> Actualizar Cargo';
+    idCargo.value = cargo.id;
+    nombreM.value = cargo.nombre_m;
+    nombreF.value = cargo.nombre_f;
+    idNivel.value = cargo.id_nivel;
+    activo.checked = cargo.activo;
+    
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => nombreM.focus(), 100);
+}
+
+function cerrarModal() {
+    const modal = document.getElementById('modalCargo');
+    modal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+// Cerrar modal al hacer clic fuera
+document.addEventListener('click', function(e) {
+    const modal = document.getElementById('modalCargo');
+    if (modal && e.target === modal) {
+        cerrarModal();
+    }
+});
+
+// ============================================================
 // ELIMINAR CARGO
 // ============================================================
 
@@ -1829,17 +2267,30 @@ function eliminarCargo(id) {
     
     const personas = personasAsociadas[id] || [];
     const totalPersonas = personas.length;
+    const enUso = [1, 2, 3].includes(id);
     
-    const modal = document.createElement('div');
-    modal.className = 'modal-overlay';
-    modal.id = 'modalEliminar';
+    const modal = document.getElementById('modalEliminar');
+    const modalIcon = document.getElementById('modalIconEliminar');
+    const modalTitulo = document.getElementById('modalTituloEliminar');
+    const modalBody = document.getElementById('modalBodyEliminar');
+    const modalFooter = document.getElementById('modalFooterEliminar');
     
-    let contenidoBody = '';
-    if (totalPersonas > 0) {
-        contenidoBody = `
-            <p style="color:#c62828;font-weight:600;">
+    if (enUso || totalPersonas > 0) {
+        modalIcon.style.color = '#e65100';
+        modalIcon.className = 'fas fa-lock';
+        modalTitulo.textContent = 'No se puede eliminar';
+        
+        let razon = '';
+        if (enUso) {
+            razon = 'Este cargo está siendo utilizado en puestos.';
+        } else if (totalPersonas > 0) {
+            razon = 'Este cargo tiene <strong>' + totalPersonas + ' persona(s)</strong> asociada(s).';
+        }
+        
+        modalBody.innerHTML = `
+            <p style="color:#e65100;font-weight:600;">
                 <i class="fas fa-exclamation-circle"></i> 
-                Este cargo tiene <strong>${totalPersonas} persona(s)</strong> asociada(s).
+                ${razon}
             </p>
             <p>Para poder eliminar este cargo, primero debe eliminar o reasignar todas las personas asociadas.</p>
             <div style="background:#faf8f8;padding:1rem;border-radius:10px;border:1px solid #f0ecec;margin:0.75rem 0;">
@@ -1847,14 +2298,35 @@ function eliminarCargo(id) {
                     <span style="font-weight:600;color:#666;width:120px;">Cargo</span>
                     <span style="color:#1a1a1a;">${cargo.nombre_m} / ${cargo.nombre_f}</span>
                 </div>
-                <div style="display:flex;padding:0.3rem 0;">
-                    <span style="font-weight:600;color:#666;width:120px;">Personas asociadas</span>
-                    <span style="color:#c62828;font-weight:600;">${totalPersonas}</span>
+                <div style="display:flex;padding:0.3rem 0;border-bottom:1px solid #f0ecec;">
+                    <span style="font-weight:600;color:#666;width:120px;">Nivel</span>
+                    <span style="color:#1a1a1a;">${nivelesCargo[cargo.id_nivel] || 'Sin nivel'}</span>
                 </div>
+                <div style="display:flex;padding:0.3rem 0;">
+                    <span style="font-weight:600;color:#666;width:120px;">Estado</span>
+                    <span style="color:#1a1a1a;">${cargo.activo ? 'Activo' : 'Inactivo'}</span>
+                </div>
+                ${totalPersonas > 0 ? `
+                <div style="display:flex;padding:0.3rem 0;border-top:1px solid #f0ecec;margin-top:0.3rem;padding-top:0.3rem;">
+                    <span style="font-weight:600;color:#666;width:120px;">Personas asociadas</span>
+                    <span style="color:#e65100;font-weight:600;">${totalPersonas}</span>
+                </div>
+                ` : ''}
             </div>
         `;
+        
+        modalFooter.innerHTML = `
+            <button class="btn-modal-cancel" onclick="cerrarModalEliminar()">Entendido</button>
+            <button class="btn-modal-danger" disabled>
+                <i class="fas fa-lock"></i> No se puede eliminar
+            </button>
+        `;
     } else {
-        contenidoBody = `
+        modalIcon.style.color = '#dc3545';
+        modalIcon.className = 'fas fa-exclamation-triangle';
+        modalTitulo.textContent = '¿Eliminar cargo?';
+        
+        modalBody.innerHTML = `
             <p><strong>¡Advertencia!</strong> Esta acción eliminará el cargo del sistema. Esta operación <strong>no se puede deshacer</strong>.</p>
             
             <div style="background:#faf8f8;padding:1rem;border-radius:10px;border:1px solid #f0ecec;margin:0.75rem 0;">
@@ -1872,48 +2344,28 @@ function eliminarCargo(id) {
                 </div>
             </div>
             
-            <p style="color:#c62828;font-weight:600;margin-top:0.75rem;">
+            <p style="color:#dc3545;font-weight:600;margin-top:0.75rem;">
                 <i class="fas fa-exclamation-circle"></i> 
                 Se perderá toda la información asociada a este cargo.
             </p>
         `;
+        
+        modalFooter.innerHTML = `
+            <button class="btn-modal-cancel" onclick="cerrarModalEliminar()">Cancelar</button>
+            <button class="btn-modal-danger" onclick="confirmarEliminar(${id})">
+                <i class="fas fa-trash-alt"></i> Eliminar permanentemente
+            </button>
+        `;
     }
     
-    modal.innerHTML = `
-        <div class="modal-card modal-card-cargo">
-            <div class="modal-header">
-                <i class="fas fa-exclamation-triangle" style="color:${totalPersonas > 0 ? '#e65100' : '#dc3545'};"></i>
-                <h3>${totalPersonas > 0 ? 'No se puede eliminar' : '¿Eliminar cargo?'}</h3>
-                <button onclick="cerrarModalEliminar()" style="background:none;border:none;font-size:1.5rem;cursor:pointer;color:#999;margin-left:auto;">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                ${contenidoBody}
-            </div>
-            <div class="modal-footer">
-                <button class="btn-modal-cancel" onclick="cerrarModalEliminar()">${totalPersonas > 0 ? 'Entendido' : 'Cancelar'}</button>
-                ${totalPersonas > 0 ? `
-                    <button class="btn-modal-primary" style="background:#e65100;cursor:not-allowed;opacity:0.6;" disabled>
-                        <i class="fas fa-lock"></i> No se puede eliminar
-                    </button>
-                ` : `
-                    <button class="btn-modal-primary" style="background:#dc3545;" onclick="confirmarEliminar(${id})">
-                        <i class="fas fa-trash-alt"></i> Eliminar permanentemente
-                    </button>
-                `}
-            </div>
-        </div>
-    `;
-    
-    document.body.appendChild(modal);
+    modal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
 }
 
 function cerrarModalEliminar() {
     const modal = document.getElementById('modalEliminar');
     if (modal) {
-        modal.remove();
+        modal.style.display = 'none';
         document.body.style.overflow = 'auto';
     }
 }
@@ -1922,8 +2374,16 @@ function confirmarEliminar(id) {
     window.location.href = `cargos.php?accion=eliminar&id=${id}`;
 }
 
+// Cerrar modal de eliminar al hacer clic fuera
+document.addEventListener('click', function(e) {
+    const modal = document.getElementById('modalEliminar');
+    if (modal && e.target === modal) {
+        cerrarModalEliminar();
+    }
+});
+
 // ============================================================
-// MENSAJES
+// MENSAJES FLOTANTES
 // ============================================================
 
 function mostrarMensaje(mensaje, tipo) {
@@ -1952,43 +2412,6 @@ function mostrarMensaje(mensaje, tipo) {
             }, 300);
         }
     }, 4000);
-}
-
-// ============================================================
-// EXPORTAR CSV
-// ============================================================
-
-function descargarCSV() {
-    const filas = document.querySelectorAll('#tbodyCargos tr');
-    if (filas.length === 0 || (filas.length === 1 && filas[0].classList.contains('empty-row'))) {
-        mostrarMensaje('No hay datos para exportar', 'error');
-        return;
-    }
-    
-    let csv = 'Nombre (Masculino),Nombre (Femenino),Nivel,Personas,Estado\n';
-    
-    filas.forEach(fila => {
-        if (fila.classList.contains('empty-row')) return;
-        
-        const celdas = fila.querySelectorAll('td');
-        if (celdas.length < 6) return;
-        
-        const nombreM = celdas[0].textContent.trim();
-        const nombreF = celdas[1].textContent.trim();
-        const nivel = celdas[2].textContent.trim();
-        const personas = celdas[3].textContent.trim();
-        const estado = celdas[4].textContent.trim();
-        
-        csv += `"${nombreM}","${nombreF}","${nivel}","${personas}","${estado}"\n`;
-    });
-    
-    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = `cargos_${new Date().toISOString().slice(0,10)}.csv`;
-    link.click();
-    
-    mostrarMensaje('CSV exportado exitosamente', 'success');
 }
 </script>
 

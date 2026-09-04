@@ -15,13 +15,14 @@ if (!isset($_SESSION['usuario'])) {
 // DATOS SIMULADOS
 // ============================================================
 
-// Niveles Académicos con personas asociadas (hardcodeados)
+// Niveles Académicos con personas asociadas y activo
 $niveles_academicos = [
     [
         'id' => 1,
         'nombre' => 'Licenciatura',
         'abr_m' => 'Lic.',
         'abr_f' => 'Lic.',
+        'activo' => true,
         'personas' => 8
     ],
     [
@@ -29,6 +30,7 @@ $niveles_academicos = [
         'nombre' => 'Maestría',
         'abr_m' => 'Mtro.',
         'abr_f' => 'Mtra.',
+        'activo' => true,
         'personas' => 4
     ],
     [
@@ -36,6 +38,7 @@ $niveles_academicos = [
         'nombre' => 'Doctorado',
         'abr_m' => 'Dr.',
         'abr_f' => 'Dra.',
+        'activo' => true,
         'personas' => 2
     ],
     [
@@ -43,6 +46,7 @@ $niveles_academicos = [
         'nombre' => 'Especialidad',
         'abr_m' => 'Esp.',
         'abr_f' => 'Esp.',
+        'activo' => false,
         'personas' => 0
     ],
     [
@@ -50,6 +54,7 @@ $niveles_academicos = [
         'nombre' => 'Técnico Superior Universitario',
         'abr_m' => 'T.S.U.',
         'abr_f' => 'T.S.U.',
+        'activo' => true,
         'personas' => 0
     ],
     [
@@ -57,6 +62,7 @@ $niveles_academicos = [
         'nombre' => 'Ingeniería',
         'abr_m' => 'Ing.',
         'abr_f' => 'Ing.',
+        'activo' => true,
         'personas' => 3
     ]
 ];
@@ -120,6 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nombre = trim($_POST['nombre'] ?? '');
     $abr_m = trim($_POST['abr_m'] ?? '');
     $abr_f = trim($_POST['abr_f'] ?? '');
+    $activo = isset($_POST['activo']) ? true : false;
     $id_nivel = isset($_POST['id_nivel']) ? (int)$_POST['id_nivel'] : 0;
     
     if (empty($nombre)) $errores[] = 'Nombre del nivel académico';
@@ -146,6 +153,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         $niveles_academicos[$key]['nombre'] = $nombre;
                         $niveles_academicos[$key]['abr_m'] = $abr_m;
                         $niveles_academicos[$key]['abr_f'] = $abr_f;
+                        $niveles_academicos[$key]['activo'] = $activo;
                         $encontrado = true;
                         $mensaje = 'Nivel académico actualizado exitosamente';
                     }
@@ -173,6 +181,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     'nombre' => $nombre,
                     'abr_m' => $abr_m,
                     'abr_f' => $abr_f,
+                    'activo' => $activo,
                     'personas' => 0
                 ];
                 $personas_por_nivel[$ultimo_id] = 0;
@@ -199,6 +208,7 @@ if (isset($_GET['mensaje'])) {
 // ============================================================
 
 $busqueda = isset($_GET['buscar']) ? trim($_GET['buscar']) : '';
+$estado_filtro = isset($_GET['estado']) ? $_GET['estado'] : '';
 
 $orden_columna = isset($_GET['orden_columna']) ? $_GET['orden_columna'] : '';
 $orden_direccion = isset($_GET['orden_direccion']) ? $_GET['orden_direccion'] : 'asc';
@@ -212,6 +222,16 @@ if (!empty($busqueda)) {
         return strpos(strtolower($n['nombre']), $busqueda) !== false ||
                strpos(strtolower($n['abr_m']), $busqueda) !== false ||
                strpos(strtolower($n['abr_f']), $busqueda) !== false;
+    });
+}
+
+if ($estado_filtro == 'activo') {
+    $niveles_filtrados = array_filter($niveles_filtrados, function($n) {
+        return $n['activo'] == true;
+    });
+} elseif ($estado_filtro == 'inactivo') {
+    $niveles_filtrados = array_filter($niveles_filtrados, function($n) {
+        return $n['activo'] == false;
     });
 }
 
@@ -237,6 +257,10 @@ if (!empty($orden_columna)) {
             case 'personas':
                 $valor_a = $a['personas'] ?? 0;
                 $valor_b = $b['personas'] ?? 0;
+                break;
+            case 'activo':
+                $valor_a = $a['activo'] ? 1 : 0;
+                $valor_b = $b['activo'] ? 1 : 0;
                 break;
             default:
                 $valor_a = $a['id'];
@@ -272,6 +296,9 @@ include 'template/menu.php';
                 </div>
             </div>
             <div class="page-header-right">
+                <button onclick="descargarCSV()" class="btn-outline-modern">
+                    <i class="fas fa-file-csv"></i> Exportar CSV
+                </button>
                 <button onclick="abrirModalRegistro()" class="btn-primary-modern">
                     <i class="fas fa-plus-circle"></i> Nuevo Nivel
                 </button>
@@ -314,11 +341,20 @@ include 'template/menu.php';
                                autocomplete="off">
                     </div>
                     
+                    <div class="filter-group">
+                        <label class="filter-label">Estado</label>
+                        <select name="estado" class="filter-select" id="filtroEstado">
+                            <option value="">Todos</option>
+                            <option value="activo" <?= $estado_filtro == 'activo' ? 'selected' : '' ?>>Activos</option>
+                            <option value="inactivo" <?= $estado_filtro == 'inactivo' ? 'selected' : '' ?>>Inactivos</option>
+                        </select>
+                    </div>
+                    
                     <button type="submit" class="btn-filter-apply">
                         <i class="fas fa-sliders-h"></i> Aplicar
                     </button>
                     
-                    <a href="niveles_academicos.php" class="btn-filter-clear <?= empty($busqueda) ? 'disabled' : '' ?>">
+                    <a href="niveles_academicos.php" class="btn-filter-clear <?= (empty($busqueda) && empty($estado_filtro)) ? 'disabled' : '' ?>">
                         <i class="fas fa-times"></i> Limpiar
                     </a>
                 </div>
@@ -383,6 +419,17 @@ include 'template/menu.php';
                                     <?php endif; ?>
                                 </a>
                             </th>
+                            <th class="col-estado">
+                                <a href="?<?= http_build_query(array_merge($_GET, ['orden_columna' => 'activo', 'orden_direccion' => ($orden_columna == 'activo' && $orden_direccion == 'asc') ? 'desc' : 'asc'])) ?>" 
+                                   class="sort-link <?= $orden_columna == 'activo' ? 'active' : '' ?>">
+                                    <span class="sort-label">Estado</span>
+                                    <?php if ($orden_columna == 'activo'): ?>
+                                        <i class="fas fa-chevron-<?= $orden_direccion == 'asc' ? 'up' : 'down' ?>"></i>
+                                    <?php else: ?>
+                                        <i class="fas fa-sort sort-icon-inactive"></i>
+                                    <?php endif; ?>
+                                </a>
+                            </th>
                             <th class="col-acciones">Acciones</th>
                         </tr>
                     </thead>
@@ -392,8 +439,10 @@ include 'template/menu.php';
                                 $personas_count = $personas_por_nivel[$nivel['id']] ?? 0;
                                 $personas_class = $personas_count > 0 ? 'badge-personas-activo' : 'badge-personas-vacio';
                                 $puede_eliminar = $personas_count == 0;
+                                $estado_texto = $nivel['activo'] ? 'Activo' : 'Inactivo';
+                                $estado_class = $nivel['activo'] ? 'status-active' : 'status-inactive';
                             ?>
-                            <tr data-id="<?= $nivel['id'] ?>" data-personas="<?= $personas_count ?>">
+                            <tr data-id="<?= $nivel['id'] ?>" data-personas="<?= $personas_count ?>" data-activo="<?= $nivel['activo'] ? '1' : '0' ?>">
                                 <td>
                                     <div class="nivel-cell">
                                         <div class="nivel-nombre"><?= htmlspecialchars($nivel['nombre']) ?></div>
@@ -404,6 +453,11 @@ include 'template/menu.php';
                                 <td>
                                     <span class="badge-personas <?= $personas_class ?>">
                                         <?= $personas_count ?>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="<?= $estado_class ?>">
+                                        <i class="fas fa-circle"></i> <?= $estado_texto ?>
                                     </span>
                                 </td>
                                 <td>
@@ -429,7 +483,7 @@ include 'template/menu.php';
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="5" class="empty-row">
+                                <td colspan="6" class="empty-row">
                                     <i class="fas fa-graduation-cap"></i>
                                     <p>No se encontraron niveles académicos con los filtros aplicados</p>
                                 </td>
@@ -478,6 +532,18 @@ include 'template/menu.php';
                         <label class="form-label required">Abreviatura (Femenino)</label>
                         <input type="text" name="abr_f" id="abr_f" class="form-control" placeholder="Ej. Lic." required>
                         <small class="form-hint">Ejemplo: Lic., Mtra., Dra., etc.</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Estado</label>
+                        <div class="checkbox-container">
+                            <div class="toggle-modern" onclick="toggleVisibility(this)">
+                                <input type="checkbox" name="activo" id="activo" value="1" checked>
+                                <span class="toggle-slider"></span>
+                            </div>
+                            <label for="activo" style="font-size:0.85rem;color:#4a4a4a;cursor:pointer;">Activo</label>
+                        </div>
+                        <small class="form-hint">Desactive para ocultar el nivel en los listados</small>
                     </div>
                 </div>
             </div>
@@ -685,8 +751,8 @@ include 'template/menu.php';
 .filter-group {
     position: relative;
     flex: 0 1 auto;
-    min-width: 220px;
-    max-width: 350px;
+    min-width: 200px;
+    max-width: 280px;
 }
 
 .filter-label {
@@ -724,6 +790,29 @@ include 'template/menu.php';
     outline: none;
     border-color: #8B0000;
     background: white;
+    box-shadow: 0 0 0 4px rgba(139, 0, 0, 0.06);
+}
+
+.filter-select {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    border: 2px solid #e8e8e8;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+    background: #fafafa;
+    color: #1a1a1a;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b6b6b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: #8B0000;
+    background-color: white;
     box-shadow: 0 0 0 4px rgba(139, 0, 0, 0.06);
 }
 
@@ -805,7 +894,7 @@ include 'template/menu.php';
     border-collapse: collapse;
     font-size: 0.9rem;
     table-layout: fixed;
-    min-width: 650px;
+    min-width: 750px;
 }
 
 .table-modern thead {
@@ -827,19 +916,23 @@ include 'template/menu.php';
 }
 
 .col-nombre {
-    width: 35%;
-    min-width: 180px;
+    width: 28%;
+    min-width: 150px;
 }
 .col-abr-m {
-    width: 15%;
-    min-width: 90px;
+    width: 13%;
+    min-width: 80px;
 }
 .col-abr-f {
-    width: 15%;
-    min-width: 90px;
+    width: 13%;
+    min-width: 80px;
 }
 .col-personas {
-    width: 15%;
+    width: 12%;
+    min-width: 70px;
+}
+.col-estado {
+    width: 14%;
     min-width: 80px;
 }
 .col-acciones {
@@ -925,6 +1018,32 @@ include 'template/menu.php';
 .badge-personas-vacio {
     background: #f5f5f5;
     color: #999;
+}
+
+.status-active {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #2e7d32;
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.status-active i {
+    font-size: 0.5rem;
+}
+
+.status-inactive {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #c62828;
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.status-inactive i {
+    font-size: 0.5rem;
 }
 
 /* Acciones */
@@ -1132,6 +1251,60 @@ include 'template/menu.php';
     color: #bbb;
 }
 
+/* Toggle Switch en modal */
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.4rem 0;
+}
+
+.toggle-modern {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 22px;
+    cursor: pointer;
+}
+
+.toggle-modern input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-modern .toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #ccc;
+    transition: 0.3s;
+    border-radius: 22px;
+}
+
+.toggle-modern .toggle-slider:before {
+    content: "";
+    position: absolute;
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+    background: white;
+    transition: 0.3s;
+    border-radius: 50%;
+}
+
+.toggle-modern input:checked + .toggle-slider {
+    background: #8B0000;
+}
+
+.toggle-modern input:checked + .toggle-slider:before {
+    transform: translateX(18px);
+}
+
 .modal-card-nivel .btn-modal-cancel {
     padding: 0.6rem 1.5rem;
     background: white;
@@ -1200,6 +1373,11 @@ include 'template/menu.php';
     to { transform: translateY(0); opacity: 1; }
 }
 
+@keyframes slideDown {
+    from { transform: translateX(-50%) translateY(-20px); opacity: 0; }
+    to { transform: translateX(-50%) translateY(0); opacity: 1; }
+}
+
 @keyframes slideUpMessage {
     from { transform: translateX(-50%) translateY(0); opacity: 1; }
     to { transform: translateX(-50%) translateY(-20px); opacity: 0; }
@@ -1256,11 +1434,6 @@ include 'template/menu.php';
     padding: 0 0.25rem;
 }
 
-@keyframes slideDown {
-    from { transform: translateX(-50%) translateY(-20px); opacity: 0; }
-    to { transform: translateX(-50%) translateY(0); opacity: 1; }
-}
-
 /* Responsive */
 @media (max-width: 992px) {
     .filters-row {
@@ -1311,7 +1484,7 @@ include 'template/menu.php';
     }
 
     .table-modern {
-        min-width: 550px;
+        min-width: 650px;
         font-size: 0.8rem;
     }
 
@@ -1353,7 +1526,7 @@ include 'template/menu.php';
     }
 
     .table-modern {
-        min-width: 480px;
+        min-width: 550px;
         font-size: 0.7rem;
     }
 
@@ -1385,6 +1558,7 @@ const personasPorNivel = <?= json_encode($personas_por_nivel) ?>;
 
 document.addEventListener('DOMContentLoaded', function() {
     const buscarInput = document.getElementById('buscarNivel');
+    const filtroEstado = document.getElementById('filtroEstado');
     const formFiltros = document.getElementById('formFiltros');
     
     let timeoutId = null;
@@ -1397,7 +1571,26 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 500);
         });
     }
+    
+    if (filtroEstado) {
+        filtroEstado.addEventListener('change', function() {
+            formFiltros.submit();
+        });
+    }
 });
+
+// ============================================================
+// TOGGLE VISIBILITY
+// ============================================================
+
+function toggleVisibility(element) {
+    const checkbox = element.querySelector('input[type="checkbox"]');
+    if (checkbox && !checkbox.disabled) {
+        checkbox.checked = !checkbox.checked;
+        const event = new Event('change', { bubbles: true });
+        checkbox.dispatchEvent(event);
+    }
+}
 
 // ============================================================
 // MODAL - REGISTRO/EDICIÓN
@@ -1412,6 +1605,7 @@ function abrirModalRegistro() {
     const nombre = document.getElementById('nombre');
     const abrM = document.getElementById('abr_m');
     const abrF = document.getElementById('abr_f');
+    const activo = document.getElementById('activo');
     
     titulo.textContent = 'Registrar Nuevo Nivel Académico';
     icon.className = 'fas fa-graduation-cap';
@@ -1420,6 +1614,7 @@ function abrirModalRegistro() {
     nombre.value = '';
     abrM.value = '';
     abrF.value = '';
+    activo.checked = true;
     
     modal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
@@ -1441,6 +1636,7 @@ function abrirModalEdicion(id) {
     const nombre = document.getElementById('nombre');
     const abrM = document.getElementById('abr_m');
     const abrF = document.getElementById('abr_f');
+    const activo = document.getElementById('activo');
     
     titulo.textContent = 'Editar Nivel Académico';
     icon.className = 'fas fa-edit';
@@ -1449,6 +1645,7 @@ function abrirModalEdicion(id) {
     nombre.value = nivel.nombre;
     abrM.value = nivel.abr_m;
     abrF.value = nivel.abr_f;
+    activo.checked = nivel.activo;
     
     modal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
@@ -1624,20 +1821,21 @@ function descargarCSV() {
         return;
     }
     
-    let csv = 'Nombre,Abreviatura M,Abreviatura F,Personas\n';
+    let csv = 'Nombre,Abreviatura M,Abreviatura F,Personas,Estado\n';
     
     filas.forEach(fila => {
         if (fila.classList.contains('empty-row')) return;
         
         const celdas = fila.querySelectorAll('td');
-        if (celdas.length < 5) return;
+        if (celdas.length < 6) return;
         
         const nombre = celdas[0].textContent.trim();
         const abrM = celdas[1].textContent.trim();
         const abrF = celdas[2].textContent.trim();
         const personas = celdas[3].textContent.trim();
+        const estado = celdas[4].textContent.trim();
         
-        csv += `"${nombre}","${abrM}","${abrF}","${personas}"\n`;
+        csv += `"${nombre}","${abrM}","${abrF}","${personas}","${estado}"\n`;
     });
     
     const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
@@ -1650,4 +1848,4 @@ function descargarCSV() {
 }
 </script>
 
-<?php include 'template/footer.php'; ?> 
+<?php include 'template/footer.php'; ?>
