@@ -18,83 +18,164 @@ if (!isset($_SESSION['usuario'])) {
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 1;
 
 // ============================================================
-// DATOS SIMULADOS
+// DATOS SIMULADOS (ACTUALIZADOS CON DIRECTORIOS.PHP)
 // ============================================================
 
-// Niveles Académicos
+// Niveles Académicos (basados en directorios.php)
 $niveles_academicos = [
     [
         'id' => 1,
-        'nombre' => 'Licenciatura',
-        'abr_m' => 'Lic.',
-        'abr_f' => 'Lic.',
-        'activo' => true
+        'nombre' => 'Doctorado',
+        'abr_m' => 'Dr.',
+        'abr_f' => 'Dra.',
+        'activo' => true,
+        'personas_ids' => [1, 2, 5, 6, 7, 8, 10, 14, 16, 17, 18, 22, 23, 24, 25, 29, 31, 33, 35, 36, 37, 38]
     ],
     [
         'id' => 2,
         'nombre' => 'Maestría',
         'abr_m' => 'Mtro.',
         'abr_f' => 'Mtra.',
-        'activo' => true
+        'activo' => true,
+        'personas_ids' => [3, 4, 9, 11, 13, 15, 19, 20, 21, 27, 28, 30, 32, 34]
     ],
     [
         'id' => 3,
-        'nombre' => 'Doctorado',
-        'abr_m' => 'Dr.',
-        'abr_f' => 'Dra.',
-        'activo' => true
-    ],
-    [
-        'id' => 4,
         'nombre' => 'Especialidad',
         'abr_m' => 'Esp.',
         'abr_f' => 'Esp.',
-        'activo' => false
+        'activo' => true,
+        'personas_ids' => [12]
+    ],
+    [
+        'id' => 4,
+        'nombre' => 'Licenciatura',
+        'abr_m' => 'Lic.',
+        'abr_f' => 'Lic.',
+        'activo' => true,
+        'personas_ids' => []
     ],
     [
         'id' => 5,
         'nombre' => 'Técnico Superior Universitario',
         'abr_m' => 'T.S.U.',
         'abr_f' => 'T.S.U.',
-        'activo' => true
+        'activo' => true,
+        'personas_ids' => []
     ],
     [
         'id' => 6,
         'nombre' => 'Ingeniería',
         'abr_m' => 'Ing.',
         'abr_f' => 'Ing.',
-        'activo' => true
+        'activo' => true,
+        'personas_ids' => []
     ]
 ];
 
-// Personas asociadas a niveles académicos (simuladas)
-$personas_asociadas = [
-    1 => [
-        ['id' => 1, 'nombre' => 'María González Pérez', 'institucion' => 'UNAM - Facultad de Contaduría', 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 2, 'nombre' => 'Juan Martínez López', 'institucion' => 'IPN - ESCOM', 'fecha_inicio' => '2024-03-15', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 3, 'nombre' => 'Carlos Hernández Díaz', 'institucion' => 'UDG - Guadalajara', 'fecha_inicio' => '2024-02-01', 'fecha_fin' => '2024-12-31', 'activo' => false],
-        ['id' => 4, 'nombre' => 'Ana Sánchez Ramírez', 'institucion' => 'UAQ - Querétaro', 'fecha_inicio' => '2024-06-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 5, 'nombre' => 'Laura Torres Vega', 'institucion' => 'UABC - Mexicali', 'fecha_inicio' => '2024-07-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 6, 'nombre' => 'Patricia Flores Reyes', 'institucion' => 'UAEH - Pachuca', 'fecha_inicio' => '2024-04-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 7, 'nombre' => 'Sofía Reyes Gil', 'institucion' => 'UAM - Iztapalapa', 'fecha_inicio' => '2024-12-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 8, 'nombre' => 'Gabriela Mendoza Soto', 'institucion' => 'UDG - Guadalajara', 'fecha_inicio' => '2024-08-15', 'fecha_fin' => null, 'activo' => true],
-    ],
-    2 => [
-        ['id' => 2, 'nombre' => 'Juan Martínez López', 'institucion' => 'IPN - ESCOM', 'fecha_inicio' => '2024-03-15', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 9, 'nombre' => 'Luis Méndez Vargas', 'institucion' => 'UABC - Tijuana', 'fecha_inicio' => '2023-06-01', 'fecha_fin' => '2024-05-31', 'activo' => false],
-        ['id' => 10, 'nombre' => 'Andrés Moreno Rojas', 'institucion' => 'UANL - San Nicolás', 'fecha_inicio' => '2024-10-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 11, 'nombre' => 'Jorge Gómez García', 'institucion' => 'UADY - Mérida', 'fecha_inicio' => '2024-08-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    3 => [
-        ['id' => 12, 'nombre' => 'Carmen Rivera Morales', 'institucion' => 'UDG - Guadalajara', 'fecha_inicio' => '2024-05-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 13, 'nombre' => 'Teresa Ortega Luna', 'institucion' => 'UAEM - Toluca', 'fecha_inicio' => '2024-11-15', 'fecha_fin' => null, 'activo' => true],
-    ],
-    6 => [
-        ['id' => 14, 'nombre' => 'Ricardo Peña Fuentes', 'institucion' => 'UABJO - Oaxaca', 'fecha_inicio' => '2023-12-01', 'fecha_fin' => '2024-11-30', 'activo' => false],
-        ['id' => 15, 'nombre' => 'Elena Castro Ramos', 'institucion' => 'UASLP - San Luis Potosí', 'fecha_inicio' => '2024-09-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 16, 'nombre' => 'Fernando Cruz Salazar', 'institucion' => 'UAQ - Querétaro', 'fecha_inicio' => '2024-07-01', 'fecha_fin' => null, 'activo' => true],
-    ]
+// ============================================================
+// PERSONAS ASOCIADAS A NIVELES ACADÉMICOS
+// Basado en directorios.php
+// ============================================================
+
+$personas_data = [
+    // ============ DOCTORADO (Dr./Dra.) ============
+    // ID => [nombre, institucion]
+    1 => ['nombre' => 'Armando Tomé González', 'institucion' => 'Universidad Nacional Autónoma de México - Facultad de Contaduría y Administración'],
+    2 => ['nombre' => 'Adriana Garza Elizondo', 'institucion' => 'Universidad Autónoma de Nuevo León - Facultad de Contaduría Pública y Administración'],
+    5 => ['nombre' => 'Leobardo Berrelleza Reyes', 'institucion' => 'Universidad Autónoma de Sinaloa - Facultad de Contaduría y Administración'],
+    6 => ['nombre' => 'Laura María del Pilar Macías Amozurrutia', 'institucion' => 'Universidad Iberoamericana Torreón - Departamento de Negocios'],
+    7 => ['nombre' => 'Ismael Manuel Rodríguez Herrera', 'institucion' => 'Universidad Autónoma de Aguascalientes - Centro de Ciencias Económicas y Administrativas'],
+    8 => ['nombre' => 'Cristian Omar Alcantar López', 'institucion' => 'Universidad de Guadalajara - División de Contaduría'],
+    10 => ['nombre' => 'Anabel Galván Sarabia', 'institucion' => 'Universidad Veracruzana - Facultad de Contaduría y Administración'],
+    14 => ['nombre' => 'Mónica Sánchez Limón', 'institucion' => 'Universidad Autónoma de Tamaulipas - Facultad de Comercio y Administración Victoria'],
+    16 => ['nombre' => 'Ivett Guillén Morales', 'institucion' => 'Instituto Politécnico Nacional - Escuela Superior de Comercio y Administración Unidad Tepepan'],
+    17 => ['nombre' => 'José Ernesto Amorós Espinosa', 'institucion' => 'Tecnológico de Monterrey - División de Negocios Campus Ciudad de México'],
+    18 => ['nombre' => 'Cristina Cabrera Ramos', 'institucion' => 'Universidad Autónoma de Chihuahua - Facultad de Contaduría y Administración'],
+    22 => ['nombre' => 'Cecilia Morales del Río', 'institucion' => 'Universidad de Monterrey - División de Negocios'],
+    23 => ['nombre' => 'María Antonieta Monserrat Vera Muñoz', 'institucion' => 'Benemérita Universidad Autónoma de Puebla - Facultad de Contaduría Pública'],
+    24 => ['nombre' => 'Lorena Argentina Medina Bocanegra', 'institucion' => 'Universidad Autónoma de Coahuila - Facultad de Contaduría y Administración'],
+    25 => ['nombre' => 'Idi Amin Germán Silva Jug', 'institucion' => 'Universidad Autónoma de Nayarit - Unidad Académica de Contaduría y Administración'],
+    29 => ['nombre' => 'José Sánchez Gutiérrez', 'institucion' => 'Universidad de Guadalajara - Departamento de Mercadotécnia y Negocios Internacionales'],
+    31 => ['nombre' => 'Emigdio Larios Gómez', 'institucion' => 'Benemérita Universidad Autónoma de Puebla - Facultad de Administración'],
+    33 => ['nombre' => 'Luis Edmundo Garrido Sánchez', 'institucion' => 'Instituto Tecnológico y de Estudios Superiores de Occidente - Departamento de Economía, Administración y Finanzas'],
+    35 => ['nombre' => 'Esmeralda Brito Cervantes', 'institucion' => 'Universidad Autónoma de Guadalajara - Facultad de Administración'],
+    36 => ['nombre' => 'Nadia Natasha Reus González', 'institucion' => 'Universidad de Guadalajara - Centro Universitario de los Altos'],
+    37 => ['nombre' => 'Salvador Cervantes Cervantes', 'institucion' => 'Universidad del Valle de Atemajac - Dirección General Académica'],
+    38 => ['nombre' => 'María Antonieta Monserrat Vera Muñoz', 'institucion' => 'Benemérita Universidad Autónoma de Puebla - Facultad de Contaduría Pública'],
+
+    // ============ MAESTRÍA (M.A., Mtra., Mtro., M.F.) ============
+    3 => ['nombre' => 'Carlos Lobo Sánchez', 'institucion' => 'Universidad Nacional Autónoma de México - Facultad de Contaduría y Administración'],
+    4 => ['nombre' => 'Lourdes Mata Romero', 'institucion' => 'Universidad Nacional Autónoma de México - Facultad de Contaduría y Administración'],
+    9 => ['nombre' => 'Mario Franz Subieta Zecua', 'institucion' => 'Universidad Autónoma de Tlaxcala - Facultad de Ciencias Económico Administrativas'],
+    11 => ['nombre' => 'Giannina Sampieri Laguna', 'institucion' => 'Universidad Intercontinental - División de Negocios'],
+    12 => ['nombre' => 'David Roberto Suárez Pacheco', 'institucion' => 'Universidad Autónoma de Yucatán - Facultad de Contaduría y Administración'],
+    13 => ['nombre' => 'José Juan Paz Reyes', 'institucion' => 'Universidad Juárez Autónoma de Tabasco - División Académica de Ciencias Económico Administrativas'],
+    15 => ['nombre' => 'Lenin Martínez Pérez', 'institucion' => 'Universidad Tecnológica de Tabasco'],
+    19 => ['nombre' => 'Aureliano Martínez Castillo', 'institucion' => 'Universidad Autónoma de Yucatán - Facultad de Contaduría y Administración'],
+    20 => ['nombre' => 'Juan Antonio Zapata Zapata', 'institucion' => 'Universidad Autónoma de San Luis Potosí - Facultad de Contaduría y Administración'],
+    21 => ['nombre' => 'Laura Ofelia Robles Sahagún', 'institucion' => 'Universidad del Valle de Atemajac - Campus Puerto Vallarta'],
+    27 => ['nombre' => 'Patricia Hernández García', 'institucion' => 'Universidad Autónoma de San Luis Potosí - Facultad de Contaduría y Administración'],
+    28 => ['nombre' => 'Mónica Blanco Jiménez', 'institucion' => 'Universidad Autónoma de Nuevo León - Facultad de Contaduría Pública y Administración'],
+    30 => ['nombre' => 'Alfonso Martin Rodríguez', 'institucion' => 'Universidad Autónoma de Aguascalientes - Centro de Ciencias Económicas y Administrativas'],
+    32 => ['nombre' => 'Alfonso Martin Rodríguez', 'institucion' => 'Universidad Autónoma de Aguascalientes - Centro de Ciencias Económicas y Administrativas'],
+    34 => ['nombre' => 'Maria Margarita Villareal Treviño', 'institucion' => 'Instituto Tecnológico y de Estudios Superiores de Occidente - Escuela de Contaduría Pública'],
+
+    // ============ ESPECIALIDAD (C.P. C.) ============
+    12 => ['nombre' => 'Juan Antonio Zapata Zapata', 'institucion' => 'Universidad Autónoma de San Luis Potosí - Facultad de Contaduría y Administración'],
 ];
+
+// Personas asociadas por nivel académico
+$personas_asociadas = [
+    1 => [], // Doctorado - se llena dinámicamente
+    2 => [], // Maestría - se llena dinámicamente
+    3 => [], // Especialidad - se llena dinámicamente
+    4 => [], // Licenciatura
+    5 => [], // TSU
+    6 => []  // Ingeniería
+];
+
+// Llenar Doctorado (id 1)
+foreach ([1, 2, 5, 6, 7, 8, 10, 14, 16, 17, 18, 22, 23, 24, 25, 29, 31, 33, 35, 36, 37, 38] as $pid) {
+    if (isset($personas_data[$pid])) {
+        $personas_asociadas[1][] = [
+            'id' => $pid,
+            'nombre' => $personas_data[$pid]['nombre'],
+            'institucion' => $personas_data[$pid]['institucion'],
+            'fecha_inicio' => '2024-01-01',
+            'fecha_fin' => null,
+            'activo' => true
+        ];
+    }
+}
+
+// Llenar Maestría (id 2)
+foreach ([3, 4, 9, 11, 12, 13, 15, 19, 20, 21, 27, 28, 30, 32, 34] as $pid) {
+    if (isset($personas_data[$pid])) {
+        $personas_asociadas[2][] = [
+            'id' => $pid,
+            'nombre' => $personas_data[$pid]['nombre'],
+            'institucion' => $personas_data[$pid]['institucion'],
+            'fecha_inicio' => '2024-01-01',
+            'fecha_fin' => null,
+            'activo' => true
+        ];
+    }
+}
+
+// Llenar Especialidad (id 3)
+foreach ([12] as $pid) {
+    if (isset($personas_data[$pid])) {
+        $personas_asociadas[3][] = [
+            'id' => $pid,
+            'nombre' => $personas_data[$pid]['nombre'],
+            'institucion' => $personas_data[$pid]['institucion'],
+            'fecha_inicio' => '2024-01-01',
+            'fecha_fin' => null,
+            'activo' => true
+        ];
+    }
+}
 
 // Buscar el nivel académico
 $nivel = null;

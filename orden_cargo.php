@@ -11,13 +11,14 @@ if (!isset($_SESSION['usuario'])) {
 }
 
 // ============================================================
-// DATOS SIMULADOS
+// DATOS SIMULADOS (BASADOS EN DIRECTORIOS.PHP)
 // ============================================================
 
 $tipos_directorio = [
     1 => 'Consejo Nacional Directivo',
-    2 => 'Consejos Regionales',
-    3 => 'Coordinaciones Nacionales'
+    2 => 'Coordinaciones Regionales',
+    3 => 'Coordinaciones Nacionales',
+    4 => 'Instituciones'
 ];
 
 $zonas_regionales = [
@@ -31,48 +32,40 @@ $zonas_regionales = [
 ];
 
 // ============================================================
-// DATOS DE PERSONAS CON SUS CARGOS (simulados)
+// PERSONAS CON SUS CARGOS (basado en directorios.php)
 // ============================================================
 
 $personas = [
+    // ============ CND - Consejo Nacional Directivo ============
     [
         'id' => 1,
-        'nombre' => 'María González Pérez',
-        'genero' => 'F',
+        'nombre' => 'Armando Tomé González',
+        'genero' => 'M',
         'id_zona' => 7,
-        'institucion' => 'UNAM - Facultad de Contaduría',
+        'institucion' => 'Universidad Nacional Autónoma de México - Facultad de Contaduría y Administración',
         'cargos' => [
             [
                 'nivel' => 1,
-                'nombre' => 'Presidenta',
+                'nombre' => 'Presidente',
                 'fecha_inicio' => '2024-01-01',
                 'fecha_fin' => null,
-                'directorios' => [1, 3],
+                'directorios' => [1],
                 'zona' => null,
                 'coordinacion' => null
-            ],
-            [
-                'nivel' => 2,
-                'nombre' => 'Coordinadora Regional',
-                'fecha_inicio' => '2024-07-01',
-                'fecha_fin' => null,
-                'directorios' => [2],
-                'zona' => 7,
-                'coordinacion' => 1
             ]
         ]
     ],
     [
         'id' => 2,
-        'nombre' => 'Juan Martínez López',
-        'genero' => 'M',
-        'id_zona' => 7,
-        'institucion' => 'IPN - ESCOM',
+        'nombre' => 'Adriana Garza Elizondo',
+        'genero' => 'F',
+        'id_zona' => 2,
+        'institucion' => 'Universidad Autónoma de Nuevo León - Facultad de Contaduría Pública y Administración',
         'cargos' => [
             [
                 'nivel' => 1,
-                'nombre' => 'Coordinador Nacional',
-                'fecha_inicio' => '2024-03-15',
+                'nombre' => 'Vicepresidenta',
+                'fecha_inicio' => '2024-01-01',
                 'fecha_fin' => null,
                 'directorios' => [1],
                 'zona' => null,
@@ -82,80 +75,71 @@ $personas = [
     ],
     [
         'id' => 3,
-        'nombre' => 'Ana Sánchez Ramírez',
-        'genero' => 'F',
-        'id_zona' => 3,
-        'institucion' => 'UAQ - Querétaro',
+        'nombre' => 'Carlos Lobo Sánchez',
+        'genero' => 'M',
+        'id_zona' => 7,
+        'institucion' => 'Universidad Nacional Autónoma de México - Facultad de Contaduría y Administración',
         'cargos' => [
             [
                 'nivel' => 1,
-                'nombre' => 'Secretaria General',
-                'fecha_inicio' => '2024-06-01',
+                'nombre' => 'Secretario General',
+                'fecha_inicio' => '2024-01-01',
                 'fecha_fin' => null,
-                'directorios' => [2, 3],
+                'directorios' => [1],
                 'zona' => null,
                 'coordinacion' => null
-            ],
-            [
-                'nivel' => 2,
-                'nombre' => 'Coordinadora Regional',
-                'fecha_inicio' => '2023-01-01',
-                'fecha_fin' => '2023-12-31',
-                'directorios' => [2],
-                'zona' => 3,
-                'coordinacion' => 2
             ]
         ]
     ],
     [
         'id' => 4,
-        'nombre' => 'Carlos Hernández Díaz',
-        'genero' => 'M',
-        'id_zona' => 4,
-        'institucion' => 'UDG - Guadalajara',
+        'nombre' => 'Lourdes Mata Romero',
+        'genero' => 'F',
+        'id_zona' => 7,
+        'institucion' => 'Universidad Nacional Autónoma de México - Facultad de Contaduría y Administración',
         'cargos' => [
             [
-                'nivel' => 2,
-                'nombre' => 'Director Regional',
-                'fecha_inicio' => '2024-02-01',
+                'nivel' => 1,
+                'nombre' => 'Directora Ejecutiva',
+                'fecha_inicio' => '2024-01-01',
                 'fecha_fin' => null,
-                'directorios' => [2],
-                'zona' => 4,
+                'directorios' => [1],
+                'zona' => null,
                 'coordinacion' => null
             ]
         ]
     ],
     [
         'id' => 5,
-        'nombre' => 'Laura Torres Vega',
-        'genero' => 'F',
+        'nombre' => 'Leobardo Berrelleza Reyes',
+        'genero' => 'M',
         'id_zona' => 1,
-        'institucion' => 'UABC - Mexicali',
+        'institucion' => 'Universidad Autónoma de Sinaloa - Facultad de Contaduría y Administración',
         'cargos' => [
             [
-                'nivel' => 2,
-                'nombre' => 'Coordinadora Regional',
-                'fecha_inicio' => '2024-07-01',
+                'nivel' => 1,
+                'nombre' => 'Director Regional Zona 1',
+                'fecha_inicio' => '2024-01-01',
                 'fecha_fin' => null,
-                'directorios' => [3],
+                'directorios' => [1, 2],
                 'zona' => 1,
-                'coordinacion' => 1
+                'coordinacion' => null
             ]
         ]
     ],
     [
         'id' => 6,
-        'nombre' => 'Roberto Mendoza Cruz',
-        'genero' => 'M',
+        'nombre' => 'Laura María del Pilar Macías Amozurrutia',
+        'genero' => 'F',
         'id_zona' => 2,
-        'institucion' => 'UANL - San Nicolás',
+        'institucion' => 'Universidad Iberoamericana Torreón - Departamento de Negocios',
         'cargos' => [
             [
-                'nivel' => 2,
-                'nombre' => 'Secretario Regional',
-                'fecha_inicio' => '2023-01-01',
-                'fecha_fin' => '2024-01-01',
-                'directorios' => [2],
+                'nivel' => 1,
+                'nombre' => 'Directora Regional Zona 2',
+                'fecha_inicio' => '2024-01-01',
+                'fecha_fin' => null,
+                'directorios' => [1, 2],
                 'zona' => 2,
                 'coordinacion' => null
             ]
@@ -163,19 +147,574 @@ $personas = [
     ],
     [
         'id' => 7,
-        'nombre' => 'Patricia Flores Reyes',
-        'genero' => 'F',
+        'nombre' => 'Ismael Manuel Rodríguez Herrera',
+        'genero' => 'M',
+        'id_zona' => 3,
+        'institucion' => 'Universidad Autónoma de Aguascalientes - Centro de Ciencias Económicas y Administrativas',
+        'cargos' => [
+            [
+                'nivel' => 1,
+                'nombre' => 'Director Regional Zona 3',
+                'fecha_inicio' => '2024-01-01',
+                'fecha_fin' => null,
+                'directorios' => [1, 2],
+                'zona' => 3,
+                'coordinacion' => null
+            ]
+        ]
+    ],
+    [
+        'id' => 8,
+        'nombre' => 'Cristian Omar Alcantar López',
+        'genero' => 'M',
+        'id_zona' => 4,
+        'institucion' => 'Universidad de Guadalajara - División de Contaduría',
+        'cargos' => [
+            [
+                'nivel' => 1,
+                'nombre' => 'Director Regional Zona 4',
+                'fecha_inicio' => '2024-01-01',
+                'fecha_fin' => null,
+                'directorios' => [1, 2],
+                'zona' => 4,
+                'coordinacion' => null
+            ],
+            [
+                'nivel' => 3,
+                'nombre' => 'Director de División',
+                'fecha_inicio' => '2024-01-01',
+                'fecha_fin' => null,
+                'directorios' => [4],
+                'zona' => null,
+                'coordinacion' => null
+            ]
+        ]
+    ],
+    [
+        'id' => 9,
+        'nombre' => 'Mario Franz Subieta Zecua',
+        'genero' => 'M',
         'id_zona' => 5,
-        'institucion' => 'UAEH - Pachuca',
+        'institucion' => 'Universidad Autónoma de Tlaxcala - Facultad de Ciencias Económico Administrativas',
+        'cargos' => [
+            [
+                'nivel' => 1,
+                'nombre' => 'Director Regional Zona 5',
+                'fecha_inicio' => '2024-01-01',
+                'fecha_fin' => null,
+                'directorios' => [1, 2],
+                'zona' => 5,
+                'coordinacion' => null
+            ]
+        ]
+    ],
+    [
+        'id' => 10,
+        'nombre' => 'Anabel Galván Sarabia',
+        'genero' => 'F',
+        'id_zona' => 6,
+        'institucion' => 'Universidad Veracruzana - Facultad de Contaduría y Administración',
+        'cargos' => [
+            [
+                'nivel' => 1,
+                'nombre' => 'Directora Regional Zona 6',
+                'fecha_inicio' => '2024-01-01',
+                'fecha_fin' => null,
+                'directorios' => [1, 2],
+                'zona' => 6,
+                'coordinacion' => null
+            ]
+        ]
+    ],
+    [
+        'id' => 11,
+        'nombre' => 'Giannina Sampieri Laguna',
+        'genero' => 'F',
+        'id_zona' => 7,
+        'institucion' => 'Universidad Intercontinental - División de Negocios',
+        'cargos' => [
+            [
+                'nivel' => 1,
+                'nombre' => 'Directora Regional Zona 7',
+                'fecha_inicio' => '2024-01-01',
+                'fecha_fin' => null,
+                'directorios' => [1, 2],
+                'zona' => 7,
+                'coordinacion' => null
+            ]
+        ]
+    ],
+
+    // ============ COORDINACIONES NACIONALES ============
+    [
+        'id' => 12,
+        'nombre' => 'David Roberto Suárez Pacheco',
+        'genero' => 'M',
+        'id_zona' => 6,
+        'institucion' => 'Universidad Autónoma de Yucatán - Facultad de Contaduría y Administración',
         'cargos' => [
             [
                 'nivel' => 2,
-                'nombre' => 'Coordinadora Regional',
-                'fecha_inicio' => '2024-04-01',
+                'nombre' => 'Coordinador Nacional de Certificación Académica',
+                'fecha_inicio' => '2024-01-01',
                 'fecha_fin' => null,
                 'directorios' => [3],
-                'zona' => 5,
+                'zona' => null,
+                'coordinacion' => 1
+            ]
+        ]
+    ],
+    [
+        'id' => 13,
+        'nombre' => 'José Juan Paz Reyes',
+        'genero' => 'M',
+        'id_zona' => 6,
+        'institucion' => 'Universidad Juárez Autónoma de Tabasco - División Académica de Ciencias Económico Administrativas',
+        'cargos' => [
+            [
+                'nivel' => 2,
+                'nombre' => 'Coordinador Nacional de la Academia ANFECA',
+                'fecha_inicio' => '2024-01-01',
+                'fecha_fin' => null,
+                'directorios' => [3],
+                'zona' => null,
+                'coordinacion' => 2
+            ]
+        ]
+    ],
+    [
+        'id' => 14,
+        'nombre' => 'Mónica Sánchez Limón',
+        'genero' => 'F',
+        'id_zona' => 2,
+        'institucion' => 'Universidad Autónoma de Tamaulipas - Facultad de Comercio y Administración Victoria',
+        'cargos' => [
+            [
+                'nivel' => 2,
+                'nombre' => 'Coordinador Nacional de Emprendimiento Social',
+                'fecha_inicio' => '2024-01-01',
+                'fecha_fin' => null,
+                'directorios' => [3],
+                'zona' => null,
+                'coordinacion' => 3
+            ]
+        ]
+    ],
+    [
+        'id' => 15,
+        'nombre' => 'Lenin Martínez Pérez',
+        'genero' => 'M',
+        'id_zona' => 6,
+        'institucion' => 'Universidad Tecnológica de Tabasco',
+        'cargos' => [
+            [
+                'nivel' => 2,
+                'nombre' => 'Coordinador Nacional de Planes y Programas de Estudio',
+                'fecha_inicio' => '2024-01-01',
+                'fecha_fin' => null,
+                'directorios' => [3],
+                'zona' => null,
+                'coordinacion' => 4
+            ]
+        ]
+    ],
+    [
+        'id' => 16,
+        'nombre' => 'Ivett Guillén Morales',
+        'genero' => 'F',
+        'id_zona' => 7,
+        'institucion' => 'Instituto Politécnico Nacional - Escuela Superior de Comercio y Administración Unidad Tepepan',
+        'cargos' => [
+            [
+                'nivel' => 2,
+                'nombre' => 'Coordinador Nacional de Investigación',
+                'fecha_inicio' => '2024-01-01',
+                'fecha_fin' => null,
+                'directorios' => [3],
+                'zona' => null,
                 'coordinacion' => 5
+            ]
+        ]
+    ],
+    [
+        'id' => 17,
+        'nombre' => 'José Ernesto Amorós Espinosa',
+        'genero' => 'M',
+        'id_zona' => 7,
+        'institucion' => 'Tecnológico de Monterrey - División de Negocios Campus Ciudad de México',
+        'cargos' => [
+            [
+                'nivel' => 2,
+                'nombre' => 'Coordinador Nacional de Posgrado',
+                'fecha_inicio' => '2024-01-01',
+                'fecha_fin' => null,
+                'directorios' => [3],
+                'zona' => null,
+                'coordinacion' => 6
+            ]
+        ]
+    ],
+    [
+        'id' => 18,
+        'nombre' => 'Cristina Cabrera Ramos',
+        'genero' => 'F',
+        'id_zona' => 1,
+        'institucion' => 'Universidad Autónoma de Chihuahua - Facultad de Contaduría y Administración',
+        'cargos' => [
+            [
+                'nivel' => 2,
+                'nombre' => 'Coordinador Nacional de Maratones',
+                'fecha_inicio' => '2024-01-01',
+                'fecha_fin' => null,
+                'directorios' => [3],
+                'zona' => null,
+                'coordinacion' => 7
+            ]
+        ]
+    ],
+    [
+        'id' => 19,
+        'nombre' => 'Aureliano Martínez Castillo',
+        'genero' => 'M',
+        'id_zona' => 6,
+        'institucion' => 'Universidad Autónoma de Yucatán - Facultad de Contaduría y Administración',
+        'cargos' => [
+            [
+                'nivel' => 2,
+                'nombre' => 'Coordinador Nacional de Historia',
+                'fecha_inicio' => '2024-01-01',
+                'fecha_fin' => null,
+                'directorios' => [3],
+                'zona' => null,
+                'coordinacion' => 8
+            ]
+        ]
+    ],
+    [
+        'id' => 20,
+        'nombre' => 'Juan Antonio Zapata Zapata',
+        'genero' => 'M',
+        'id_zona' => 3,
+        'institucion' => 'Universidad Autónoma de San Luis Potosí - Facultad de Contaduría y Administración',
+        'cargos' => [
+            [
+                'nivel' => 2,
+                'nombre' => 'Coordinador Nacional de Vinculación Nacional e Internacional',
+                'fecha_inicio' => '2024-01-01',
+                'fecha_fin' => null,
+                'directorios' => [3],
+                'zona' => null,
+                'coordinacion' => 9
+            ]
+        ]
+    ],
+    [
+        'id' => 21,
+        'nombre' => 'Laura Ofelia Robles Sahagún',
+        'genero' => 'F',
+        'id_zona' => 4,
+        'institucion' => 'Universidad del Valle de Atemajac - Campus Puerto Vallarta',
+        'cargos' => [
+            [
+                'nivel' => 2,
+                'nombre' => 'Coordinador Nacional de Universidad Empresa',
+                'fecha_inicio' => '2024-01-01',
+                'fecha_fin' => null,
+                'directorios' => [3],
+                'zona' => null,
+                'coordinacion' => 10
+            ]
+        ]
+    ],
+    [
+        'id' => 22,
+        'nombre' => 'Cecilia Morales del Río',
+        'genero' => 'F',
+        'id_zona' => 2,
+        'institucion' => 'Universidad de Monterrey - División de Negocios',
+        'cargos' => [
+            [
+                'nivel' => 2,
+                'nombre' => 'Coordinador Nacional de Formación Profesional y Académica',
+                'fecha_inicio' => '2024-01-01',
+                'fecha_fin' => null,
+                'directorios' => [3],
+                'zona' => null,
+                'coordinacion' => 11
+            ]
+        ]
+    ],
+    [
+        'id' => 23,
+        'nombre' => 'María Antonieta Monserrat Vera Muñoz',
+        'genero' => 'F',
+        'id_zona' => 5,
+        'institucion' => 'Benemérita Universidad Autónoma de Puebla - Facultad de Contaduría Pública',
+        'cargos' => [
+            [
+                'nivel' => 2,
+                'nombre' => 'Coordinador Nacional de Responsabilidad Social Universitaria',
+                'fecha_inicio' => '2024-01-01',
+                'fecha_fin' => null,
+                'directorios' => [3],
+                'zona' => null,
+                'coordinacion' => 12
+            ]
+        ]
+    ],
+    [
+        'id' => 24,
+        'nombre' => 'Lorena Argentina Medina Bocanegra',
+        'genero' => 'F',
+        'id_zona' => 2,
+        'institucion' => 'Universidad Autónoma de Coahuila - Facultad de Contaduría y Administración',
+        'cargos' => [
+            [
+                'nivel' => 2,
+                'nombre' => 'Coordinador Nacional de Igualdad de Género',
+                'fecha_inicio' => '2024-01-01',
+                'fecha_fin' => null,
+                'directorios' => [3],
+                'zona' => null,
+                'coordinacion' => 13
+            ]
+        ]
+    ],
+    [
+        'id' => 25,
+        'nombre' => 'Idi Amin Germán Silva Jug',
+        'genero' => 'M',
+        'id_zona' => 4,
+        'institucion' => 'Universidad Autónoma de Nayarit - Unidad Académica de Contaduría y Administración',
+        'cargos' => [
+            [
+                'nivel' => 2,
+                'nombre' => 'Coordinador Nacional de Desarrollo Académico Estudiantil',
+                'fecha_inicio' => '2024-01-01',
+                'fecha_fin' => null,
+                'directorios' => [3],
+                'zona' => null,
+                'coordinacion' => 14
+            ]
+        ]
+    ],
+
+    // ============ COORDINADORES REGIONALES ============
+    [
+        'id' => 26,
+        'nombre' => 'Leticia María González Velásquez',
+        'genero' => 'F',
+        'id_zona' => 1,
+        'institucion' => 'Universidad de Sonora - División de Ciencias Económicas y Sociales',
+        'cargos' => [
+            [
+                'nivel' => 2,
+                'nombre' => 'Coordinador Regional Zona 1 de Certificación Académica',
+                'fecha_inicio' => '2024-01-01',
+                'fecha_fin' => null,
+                'directorios' => [2],
+                'zona' => 1,
+                'coordinacion' => 1
+            ]
+        ]
+    ],
+    [
+        'id' => 27,
+        'nombre' => 'Patricia Hernández García',
+        'genero' => 'F',
+        'id_zona' => 3,
+        'institucion' => 'Universidad Autónoma de San Luis Potosí - Facultad de Contaduría y Administración',
+        'cargos' => [
+            [
+                'nivel' => 2,
+                'nombre' => 'Coordinador Regional Zona 3 de Certificación Académica',
+                'fecha_inicio' => '2024-01-01',
+                'fecha_fin' => null,
+                'directorios' => [2],
+                'zona' => 3,
+                'coordinacion' => 1
+            ]
+        ]
+    ],
+    [
+        'id' => 28,
+        'nombre' => 'Mónica Blanco Jiménez',
+        'genero' => 'F',
+        'id_zona' => 2,
+        'institucion' => 'Universidad Autónoma de Nuevo León - Facultad de Contaduría Pública y Administración',
+        'cargos' => [
+            [
+                'nivel' => 2,
+                'nombre' => 'Coordinador Regional Zona 2 de Certificación Académica',
+                'fecha_inicio' => '2024-01-01',
+                'fecha_fin' => null,
+                'directorios' => [2],
+                'zona' => 2,
+                'coordinacion' => 1
+            ]
+        ]
+    ],
+    [
+        'id' => 29,
+        'nombre' => 'José Sánchez Gutiérrez',
+        'genero' => 'M',
+        'id_zona' => 4,
+        'institucion' => 'Universidad de Guadalajara - Departamento de Mercadotécnia y Negocios Internacionales',
+        'cargos' => [
+            [
+                'nivel' => 2,
+                'nombre' => 'Coordinador Regional Zona 4 de Investigación',
+                'fecha_inicio' => '2024-01-01',
+                'fecha_fin' => null,
+                'directorios' => [2],
+                'zona' => 4,
+                'coordinacion' => 5
+            ]
+        ]
+    ],
+    [
+        'id' => 30,
+        'nombre' => 'Alfonso Martin Rodríguez',
+        'genero' => 'M',
+        'id_zona' => 3,
+        'institucion' => 'Universidad Autónoma de Aguascalientes - Centro de Ciencias Económicas y Administrativas',
+        'cargos' => [
+            [
+                'nivel' => 2,
+                'nombre' => 'Coordinador Regional Zona 3 de Responsabilidad Social Universitaria',
+                'fecha_inicio' => '2024-01-01',
+                'fecha_fin' => null,
+                'directorios' => [2],
+                'zona' => 3,
+                'coordinacion' => 12
+            ]
+        ]
+    ],
+    [
+        'id' => 31,
+        'nombre' => 'Emigdio Larios Gómez',
+        'genero' => 'M',
+        'id_zona' => 5,
+        'institucion' => 'Benemérita Universidad Autónoma de Puebla - Facultad de Administración',
+        'cargos' => [
+            [
+                'nivel' => 2,
+                'nombre' => 'Coordinador Regional Zona 5 de Posgrado',
+                'fecha_inicio' => '2024-01-01',
+                'fecha_fin' => null,
+                'directorios' => [2],
+                'zona' => 5,
+                'coordinacion' => 6
+            ]
+        ]
+    ],
+
+    // ============ INSTITUCIONES ============
+    [
+        'id' => 33,
+        'nombre' => 'Luis Edmundo Garrido Sánchez',
+        'genero' => 'M',
+        'id_zona' => 4,
+        'institucion' => 'Instituto Tecnológico y de Estudios Superiores de Occidente - Departamento de Economía, Administración y Finanzas',
+        'cargos' => [
+            [
+                'nivel' => 3,
+                'nombre' => 'Jefe de Departamento',
+                'fecha_inicio' => '2024-01-01',
+                'fecha_fin' => null,
+                'directorios' => [4],
+                'zona' => null,
+                'coordinacion' => null
+            ]
+        ]
+    ],
+    [
+        'id' => 34,
+        'nombre' => 'Maria Margarita Villareal Treviño',
+        'genero' => 'F',
+        'id_zona' => 4,
+        'institucion' => 'Instituto Tecnológico y de Estudios Superiores de Occidente - Escuela de Contaduría Pública',
+        'cargos' => [
+            [
+                'nivel' => 3,
+                'nombre' => 'Directora',
+                'fecha_inicio' => '2024-01-01',
+                'fecha_fin' => null,
+                'directorios' => [4],
+                'zona' => null,
+                'coordinacion' => null
+            ]
+        ]
+    ],
+    [
+        'id' => 35,
+        'nombre' => 'Esmeralda Brito Cervantes',
+        'genero' => 'F',
+        'id_zona' => 4,
+        'institucion' => 'Universidad Autónoma de Guadalajara - Facultad de Administración',
+        'cargos' => [
+            [
+                'nivel' => 3,
+                'nombre' => 'Directora del Programa de Administración',
+                'fecha_inicio' => '2024-01-01',
+                'fecha_fin' => null,
+                'directorios' => [4],
+                'zona' => null,
+                'coordinacion' => null
+            ]
+        ]
+    ],
+    [
+        'id' => 36,
+        'nombre' => 'Nadia Natasha Reus González',
+        'genero' => 'F',
+        'id_zona' => 4,
+        'institucion' => 'Universidad de Guadalajara - Centro Universitario de los Altos',
+        'cargos' => [
+            [
+                'nivel' => 3,
+                'nombre' => 'Secretario de la División de Ciencias Sociales y de la Cultura',
+                'fecha_inicio' => '2024-01-01',
+                'fecha_fin' => null,
+                'directorios' => [4],
+                'zona' => null,
+                'coordinacion' => null
+            ]
+        ]
+    ],
+    [
+        'id' => 37,
+        'nombre' => 'Salvador Cervantes Cervantes',
+        'genero' => 'M',
+        'id_zona' => 4,
+        'institucion' => 'Universidad del Valle de Atemajac - Dirección General Académica',
+        'cargos' => [
+            [
+                'nivel' => 3,
+                'nombre' => 'Director General Académico',
+                'fecha_inicio' => '2024-01-01',
+                'fecha_fin' => null,
+                'directorios' => [4],
+                'zona' => null,
+                'coordinacion' => null
+            ]
+        ]
+    ],
+    [
+        'id' => 38,
+        'nombre' => 'María Guadalupe Jiménez Hernández',
+        'genero' => 'F',
+        'id_zona' => 4,
+        'institucion' => 'Universidad del Valle de Atemajac - Departamento de Administración y Contaduría Plantel Vallarta',
+        'cargos' => [
+            [
+                'nivel' => 3,
+                'nombre' => 'Director General de Plantel',
+                'fecha_inicio' => '2024-01-01',
+                'fecha_fin' => null,
+                'directorios' => [4],
+                'zona' => null,
+                'coordinacion' => null
             ]
         ]
     ]
@@ -186,7 +725,6 @@ $personas = [
 // ============================================================
 
 function cargoActivo($cargo) {
-    // Si tiene fecha fin y ya pasó, no está activo
     if ($cargo['fecha_fin'] !== null && strtotime($cargo['fecha_fin']) < time()) {
         return false;
     }
@@ -199,36 +737,27 @@ function cargoActivo($cargo) {
 
 $directorio_seleccionado = isset($_GET['directorio']) ? (int)$_GET['directorio'] : 1;
 
-// Obtener cargos activos para el directorio seleccionado
 $cargos_ordenables = [];
 
 foreach ($personas as $persona) {
     foreach ($persona['cargos'] as $cargo) {
-        // Verificar si el cargo pertenece al directorio seleccionado
         if (!in_array($directorio_seleccionado, $cargo['directorios'])) {
             continue;
         }
         
-        // Verificar si el cargo está activo
         if (!cargoActivo($cargo)) {
             continue;
         }
         
-        // Construir nombre del cargo con zona si corresponde
         $nombre_cargo = $cargo['nombre'];
         if ($cargo['zona'] !== null && isset($zonas_regionales[$cargo['zona']])) {
             $nombre_cargo .= ' - ' . $zonas_regionales[$cargo['zona']];
         }
         
-        // Determinar el nivel del cargo
         $nivel_cargo = '';
-        if ($cargo['nivel'] == 1) {
-            $nivel_cargo = 'Nacional';
-        } elseif ($cargo['nivel'] == 2) {
-            $nivel_cargo = 'Regional';
-        } elseif ($cargo['nivel'] == 3) {
-            $nivel_cargo = 'Institucional';
-        }
+        if ($cargo['nivel'] == 1) $nivel_cargo = 'Nacional';
+        elseif ($cargo['nivel'] == 2) $nivel_cargo = 'Regional';
+        elseif ($cargo['nivel'] == 3) $nivel_cargo = 'Institucional';
         
         $cargos_ordenables[] = [
             'persona_id' => $persona['id'],
@@ -244,7 +773,6 @@ foreach ($personas as $persona) {
     }
 }
 
-// Si no hay cargos, mostrar mensaje
 $no_cargos = empty($cargos_ordenables);
 
 // ============================================================
@@ -254,23 +782,19 @@ $no_cargos = empty($cargos_ordenables);
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['accion']) && $_POST['accion'] == 'guardar_orden') {
     $orden = isset($_POST['orden']) ? json_decode($_POST['orden'], true) : [];
     
-    // Inicializar sesión para guardar órdenes
     if (!isset($_SESSION['orden_cargos'])) {
         $_SESSION['orden_cargos'] = [];
     }
     
     $_SESSION['orden_cargos'][$directorio_seleccionado] = $orden;
-    
     $mensaje = 'Orden guardado exitosamente';
 }
 
-// Cargar orden guardado (si existe)
 $orden_guardado = [];
 if (isset($_SESSION['orden_cargos'][$directorio_seleccionado])) {
     $orden_guardado = $_SESSION['orden_cargos'][$directorio_seleccionado];
 }
 
-// Aplicar orden guardado a los cargos
 if (!empty($orden_guardado)) {
     $cargos_ordenados = [];
     foreach ($orden_guardado as $id_unico) {
@@ -281,7 +805,6 @@ if (!empty($orden_guardado)) {
             }
         }
     }
-    // Agregar cargos que no están en el orden guardado (nuevos)
     foreach ($cargos_ordenables as $cargo) {
         $existe = false;
         foreach ($cargos_ordenados as $c) {
@@ -419,7 +942,6 @@ include 'template/menu.php';
    ESTILOS - ORDENAR CARGOS
    ============================================================ */
 
-/* Page Header */
 .page-header {
     display: flex;
     justify-content: space-between;
@@ -516,7 +1038,6 @@ include 'template/menu.php';
     color: #2e7d32;
 }
 
-/* Filtros */
 .filters-container {
     background: white;
     border-radius: 14px;
@@ -598,7 +1119,6 @@ include 'template/menu.php';
     margin-right: 0.3rem;
 }
 
-/* Orden Container */
 .table-modern-container {
     background: white;
     border-radius: 14px;
@@ -660,7 +1180,6 @@ include 'template/menu.php';
     cursor: not-allowed;
 }
 
-/* Orden Lista */
 .orden-lista {
     display: flex;
     flex-direction: column;
@@ -789,7 +1308,6 @@ include 'template/menu.php';
     margin-right: 0.2rem;
 }
 
-/* Orden Vacío */
 .orden-vacio {
     text-align: center;
     padding: 3rem 1rem;
@@ -814,7 +1332,6 @@ include 'template/menu.php';
     margin-top: 0.3rem !important;
 }
 
-/* Orden Footer */
 .orden-footer {
     margin-top: 1.25rem;
     padding-top: 0.75rem;
@@ -830,7 +1347,6 @@ include 'template/menu.php';
     color: #1a1a1a;
 }
 
-/* Responsive */
 @media (max-width: 992px) {
     .filters-row {
         flex-direction: column;
@@ -944,13 +1460,8 @@ include 'template/menu.php';
 </style>
 
 <script>
-// ============================================================
-// DRAG & DROP - REORDENAR
-// ============================================================
-
-let draggedItem = null;
-
 document.addEventListener('DOMContentLoaded', function() {
+    // Drag & Drop
     const items = document.querySelectorAll('.orden-item');
     
     items.forEach(item => {
@@ -961,7 +1472,19 @@ document.addEventListener('DOMContentLoaded', function() {
         item.addEventListener('dragleave', handleDragLeave);
         item.addEventListener('drop', handleDrop);
     });
+
+    // Filtro directorio
+    const filtroDirectorio = document.getElementById('filtroDirectorio');
+    const formFiltros = document.getElementById('formFiltros');
+    
+    if (filtroDirectorio) {
+        filtroDirectorio.addEventListener('change', function() {
+            formFiltros.submit();
+        });
+    }
 });
+
+let draggedItem = null;
 
 function handleDragStart(e) {
     draggedItem = this;
@@ -1024,10 +1547,6 @@ function actualizarNumeros() {
     });
 }
 
-// ============================================================
-// GUARDAR ORDEN
-// ============================================================
-
 function guardarOrden() {
     const items = document.querySelectorAll('.orden-item');
     const orden = [];
@@ -1055,21 +1574,6 @@ function guardarOrden() {
     document.body.appendChild(form);
     form.submit();
 }
-
-// ============================================================
-// FILTROS EN TIEMPO REAL
-// ============================================================
-
-document.addEventListener('DOMContentLoaded', function() {
-    const filtroDirectorio = document.getElementById('filtroDirectorio');
-    const formFiltros = document.getElementById('formFiltros');
-    
-    if (filtroDirectorio) {
-        filtroDirectorio.addEventListener('change', function() {
-            formFiltros.submit();
-        });
-    }
-});
 </script>
 
 <?php include 'template/footer.php'; ?>

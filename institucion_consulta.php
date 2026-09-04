@@ -840,79 +840,203 @@ $sitios_web = [
 ];
 
 // ============================================================
-// PERSONAS ASOCIADAS
+// PERSONAS ASOCIADAS A INSTITUCIONES (basado en personas.php)
 // ============================================================
 
 $personas_asociadas = [
+    // UNAM (id 1) - Personas con institución UNAM
+    1 => [
+        ['id' => 1, 'nombre' => 'Armando Tomé González', 'cargo' => 'Presidente', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 3, 'nombre' => 'Carlos Lobo Sánchez', 'cargo' => 'Secretario General', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 4, 'nombre' => 'Lourdes Mata Romero', 'cargo' => 'Directora Ejecutiva', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    // FCA UNAM (id 2)
     2 => [
-        ['id' => 1, 'nombre' => 'María González Pérez', 'cargo' => 'Presidenta', 'titular' => true, 'fecha_inicio' => '2024-01-15', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 2, 'nombre' => 'Juan Martínez López', 'cargo' => 'Coordinador Nacional', 'titular' => false, 'fecha_inicio' => '2024-02-15', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 16, 'nombre' => 'Fernando Cruz Salazar', 'cargo' => 'Secretario Técnico General', 'titular' => false, 'fecha_inicio' => '2023-08-01', 'fecha_fin' => '2024-07-31', 'activo' => false]
+        ['id' => 1, 'nombre' => 'Armando Tomé González', 'cargo' => 'Presidente', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 3, 'nombre' => 'Carlos Lobo Sánchez', 'cargo' => 'Secretario General', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 4, 'nombre' => 'Lourdes Mata Romero', 'cargo' => 'Directora Ejecutiva', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
     ],
+    // IPN (id 3)
+    3 => [
+        ['id' => 16, 'nombre' => 'Ivett Guillén Morales', 'cargo' => 'Coordinador Nacional de Investigación', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    // ESCOM IPN (id 4)
     4 => [
-        ['id' => 2, 'nombre' => 'Juan Martínez López', 'cargo' => 'Coordinador Nacional', 'titular' => true, 'fecha_inicio' => '2024-02-15', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 4, 'nombre' => 'Carlos Hernández Díaz', 'cargo' => 'Director Regional', 'titular' => false, 'fecha_inicio' => '2024-03-01', 'fecha_fin' => null, 'activo' => true]
+        ['id' => 16, 'nombre' => 'Ivett Guillén Morales', 'cargo' => 'Coordinador Nacional de Investigación', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
     ],
+    // UDG (id 5)
     5 => [
-        ['id' => 3, 'nombre' => 'Ana Sánchez Ramírez', 'cargo' => 'Secretaria General', 'titular' => true, 'fecha_inicio' => '2024-03-01', 'fecha_fin' => null, 'activo' => true]
+        ['id' => 8, 'nombre' => 'Cristian Omar Alcantar López', 'cargo' => 'Director Regional Zona 4', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 29, 'nombre' => 'José Sánchez Gutiérrez', 'cargo' => 'Coordinador Regional Zona 4 de Investigación', 'titular' => false, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
     ],
+    // Facultad Contaduría UDG (id 6)
     6 => [
-        ['id' => 3, 'nombre' => 'Ana Sánchez Ramírez', 'cargo' => 'Secretaria General', 'titular' => true, 'fecha_inicio' => '2024-03-15', 'fecha_fin' => null, 'activo' => true]
+        ['id' => 8, 'nombre' => 'Cristian Omar Alcantar López', 'cargo' => 'Director Regional Zona 4', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
     ],
-    7 => [
-        ['id' => 5, 'nombre' => 'Laura Torres Vega', 'cargo' => 'Coordinadora Regional', 'titular' => true, 'fecha_inicio' => '2024-04-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 10, 'nombre' => 'Luis Méndez Vargas', 'cargo' => 'Secretario Técnico', 'titular' => false, 'fecha_inicio' => '2024-04-10', 'fecha_fin' => null, 'activo' => true]
+    // UABC (id 7)
+    7 => [],
+    // Campus UABC Mexicali (id 8)
+    8 => [],
+    // UANL (id 9)
+    9 => [
+        ['id' => 2, 'nombre' => 'Adriana Garza Elizondo', 'cargo' => 'Vicepresidenta', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 28, 'nombre' => 'Mónica Blanco Jiménez', 'cargo' => 'Coordinador Regional Zona 2 de Certificación Académica', 'titular' => false, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
     ],
-    8 => [
-        ['id' => 5, 'nombre' => 'Laura Torres Vega', 'cargo' => 'Coordinadora Regional', 'titular' => true, 'fecha_inicio' => '2024-04-15', 'fecha_fin' => null, 'activo' => true]
+    // Campus UANL San Nicolás (id 10)
+    10 => [
+        ['id' => 2, 'nombre' => 'Adriana Garza Elizondo', 'cargo' => 'Vicepresidenta', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
     ],
-    11 => [
-        ['id' => 9, 'nombre' => 'Carmen Rivera Morales', 'cargo' => 'Coordinadora Académica', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    // IT Mochis (id 11)
+    11 => [],
+    // CESUN (id 12)
+    12 => [],
+    // IES Chihuahua (id 13)
+    13 => [],
+    // Facultad Ciencias Administrativas CESUN (id 14)
+    14 => [],
+    // UAQ (id 15)
+    15 => [],
+    // UADY (id 16)
+    16 => [
+        ['id' => 12, 'nombre' => 'David Roberto Suárez Pacheco', 'cargo' => 'Coordinador Nacional de Certificación Académica', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 19, 'nombre' => 'Aureliano Martínez Castillo', 'cargo' => 'Coordinador Nacional de Historia', 'titular' => false, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
     ],
-    13 => [
-        ['id' => 6, 'nombre' => 'Roberto Mendoza Cruz', 'cargo' => 'Secretario Regional', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    14 => [
-        ['id' => 6, 'nombre' => 'Roberto Mendoza Cruz', 'cargo' => 'Secretario Regional', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
+    // UAS (id 17)
     17 => [
-        ['id' => 8, 'nombre' => 'Jorge Gómez García', 'cargo' => 'Director Académico', 'titular' => true, 'fecha_inicio' => '2024-07-01', 'fecha_fin' => null, 'activo' => true]
+        ['id' => 5, 'nombre' => 'Leobardo Berrelleza Reyes', 'cargo' => 'Director Regional Zona 1', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
     ],
+    // Tec de Monterrey (id 19)
+    19 => [
+        ['id' => 17, 'nombre' => 'José Ernesto Amorós Espinosa', 'cargo' => 'Coordinador Nacional de Posgrado', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    // UIC (id 20)
+    20 => [
+        ['id' => 11, 'nombre' => 'Giannina Sampieri Laguna', 'cargo' => 'Directora Regional Zona 7', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    // UAA (id 21)
+    21 => [
+        ['id' => 7, 'nombre' => 'Ismael Manuel Rodríguez Herrera', 'cargo' => 'Director Regional Zona 3', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 30, 'nombre' => 'Alfonso Martin Rodríguez', 'cargo' => 'Coordinador Regional Zona 3 de Responsabilidad Social Universitaria', 'titular' => false, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    // UIA Torreón (id 22)
+    22 => [
+        ['id' => 6, 'nombre' => 'Laura María del Pilar Macías Amozurrutia', 'cargo' => 'Directora Regional Zona 2', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    // UASLP (id 23)
+    23 => [
+        ['id' => 20, 'nombre' => 'Juan Antonio Zapata Zapata', 'cargo' => 'Coordinador Nacional de Vinculación Nacional e Internacional', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 27, 'nombre' => 'Patricia Hernández García', 'cargo' => 'Coordinador Regional Zona 3 de Certificación Académica', 'titular' => false, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    // UATx (id 24)
+    24 => [
+        ['id' => 9, 'nombre' => 'Mario Franz Subieta Zecua', 'cargo' => 'Director Regional Zona 5', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    // UV (id 25)
+    25 => [
+        ['id' => 10, 'nombre' => 'Anabel Galván Sarabia', 'cargo' => 'Directora Regional Zona 6', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    // UJAT (id 26)
+    26 => [
+        ['id' => 13, 'nombre' => 'José Juan Paz Reyes', 'cargo' => 'Coordinador Nacional de la Academia ANFECA', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    // UAT (id 27)
+    27 => [
+        ['id' => 14, 'nombre' => 'Mónica Sánchez Limón', 'cargo' => 'Coordinador Nacional de Emprendimiento Social', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    // UT Tabasco (id 28)
+    28 => [
+        ['id' => 15, 'nombre' => 'Lenin Martínez Pérez', 'cargo' => 'Coordinador Nacional de Planes y Programas de Estudio', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    // UACH (id 29)
+    29 => [
+        ['id' => 18, 'nombre' => 'Cristina Cabrera Ramos', 'cargo' => 'Coordinador Nacional de Maratones', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    // UNISON (id 30)
+    30 => [
+        ['id' => 26, 'nombre' => 'Leticia María González Velásquez', 'cargo' => 'Coordinador Regional Zona 1 de Certificación Académica', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    // UAN (id 31)
+    31 => [
+        ['id' => 25, 'nombre' => 'Idi Amin Germán Silva Jug', 'cargo' => 'Coordinador Nacional de Desarrollo Académico Estudiantil', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    // ITESO (id 32)
+    32 => [
+        ['id' => 33, 'nombre' => 'Luis Edmundo Garrido Sánchez', 'cargo' => 'Jefe de Departamento', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 34, 'nombre' => 'Maria Margarita Villareal Treviño', 'cargo' => 'Directora', 'titular' => false, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    // UAG (id 33)
+    33 => [
+        ['id' => 35, 'nombre' => 'Esmeralda Brito Cervantes', 'cargo' => 'Directora del Programa de Administración', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    // CUALTOS UDG (id 34)
+    34 => [
+        ['id' => 36, 'nombre' => 'Nadia Natasha Reus González', 'cargo' => 'Secretario de la División de Ciencias Sociales y de la Cultura', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    // UNIVA (id 35)
+    35 => [
+        ['id' => 21, 'nombre' => 'Laura Ofelia Robles Sahagún', 'cargo' => 'Coordinador Nacional de Universidad Empresa', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 37, 'nombre' => 'Salvador Cervantes Cervantes', 'cargo' => 'Director General Académico', 'titular' => false, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    // UAdeC (id 36)
+    36 => [
+        ['id' => 24, 'nombre' => 'Lorena Argentina Medina Bocanegra', 'cargo' => 'Coordinador Nacional de Igualdad de Género', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    // UDEM (id 37)
+    37 => [
+        ['id' => 22, 'nombre' => 'Cecilia Morales del Río', 'cargo' => 'Coordinador Nacional de Formación Profesional y Académica', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    // BUAP (id 38)
+    38 => [
+        ['id' => 23, 'nombre' => 'María Antonieta Monserrat Vera Muñoz', 'cargo' => 'Coordinador Nacional de Responsabilidad Social Universitaria', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 31, 'nombre' => 'Emigdio Larios Gómez', 'cargo' => 'Coordinador Regional Zona 5 de Posgrado', 'titular' => false, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    // ESCA Tepepan IPN (id 39)
     39 => [
         ['id' => 16, 'nombre' => 'Ivett Guillén Morales', 'cargo' => 'Coordinador Nacional de Investigación', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
     ],
+    // FCPyA UANL (id 40)
     40 => [
         ['id' => 2, 'nombre' => 'Adriana Garza Elizondo', 'cargo' => 'Vicepresidenta', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
         ['id' => 28, 'nombre' => 'Mónica Blanco Jiménez', 'cargo' => 'Coordinador Regional Zona 2 de Certificación Académica', 'titular' => false, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
     ],
+    // FCA UAS (id 41)
     41 => [
         ['id' => 5, 'nombre' => 'Leobardo Berrelleza Reyes', 'cargo' => 'Director Regional Zona 1', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
     ],
+    // FCA UADY (id 42)
     42 => [
         ['id' => 12, 'nombre' => 'David Roberto Suárez Pacheco', 'cargo' => 'Coordinador Nacional de Certificación Académica', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
         ['id' => 19, 'nombre' => 'Aureliano Martínez Castillo', 'cargo' => 'Coordinador Nacional de Historia', 'titular' => false, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
     ],
+    // Facultad Administración BUAP (id 43)
     43 => [
         ['id' => 31, 'nombre' => 'Emigdio Larios Gómez', 'cargo' => 'Coordinador Regional Zona 5 de Posgrado', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
     ],
+    // Facultad Contaduría Pública BUAP (id 44)
     44 => [
         ['id' => 23, 'nombre' => 'María Antonieta Monserrat Vera Muñoz', 'cargo' => 'Coordinador Nacional de Responsabilidad Social Universitaria', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
     ],
+    // FCA UV (id 45)
     45 => [
         ['id' => 10, 'nombre' => 'Anabel Galván Sarabia', 'cargo' => 'Directora Regional Zona 6', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
     ],
+    // CCEA UAA (id 46)
     46 => [
         ['id' => 7, 'nombre' => 'Ismael Manuel Rodríguez Herrera', 'cargo' => 'Director Regional Zona 3', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
     ],
+    // División Contaduría UDG (id 47)
     47 => [
         ['id' => 8, 'nombre' => 'Cristian Omar Alcantar López', 'cargo' => 'Director Regional Zona 4', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
     ],
+    // UACA UAN (id 48)
     48 => [
         ['id' => 25, 'nombre' => 'Idi Amin Germán Silva Jug', 'cargo' => 'Coordinador Nacional de Desarrollo Académico Estudiantil', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
     ],
+    // Campus Guadalajara ITESO (id 49)
     49 => [
         ['id' => 33, 'nombre' => 'Luis Edmundo Garrido Sánchez', 'cargo' => 'Jefe de Departamento', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
     ],
+    // Campus PV UNIVA (id 50)
     50 => [
         ['id' => 38, 'nombre' => 'María Guadalupe Jiménez Hernández', 'cargo' => 'Director General de Plantel', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
     ]

@@ -32,60 +32,60 @@ $entidades_por_zona = [
     7 => ['Ciudad de México']
 ];
 
-// Zonas Regionales
+// Zonas Regionales con instituciones asociadas actualizadas
 $zonas_regionales = [
     [
         'id' => 1,
         'numero' => 1,
         'nombre' => 'Noroeste',
         'activo' => true,
-        'instituciones_asociadas' => [7, 8, 11, 12, 13, 14, 17]
+        'instituciones_asociadas' => [7, 8, 11, 12, 13, 14, 17, 29, 30, 41]
     ],
     [
         'id' => 2,
         'numero' => 2,
         'nombre' => 'Norte',
         'activo' => true,
-        'instituciones_asociadas' => [9, 10]
+        'instituciones_asociadas' => [9, 10, 22, 27, 36, 37, 40]
     ],
     [
         'id' => 3,
         'numero' => 3,
         'nombre' => 'Centro',
         'activo' => true,
-        'instituciones_asociadas' => [15]
+        'instituciones_asociadas' => [15, 21, 23, 46]
     ],
     [
         'id' => 4,
         'numero' => 4,
         'nombre' => 'Centro Occidente',
         'activo' => true,
-        'instituciones_asociadas' => [5, 6]
+        'instituciones_asociadas' => [5, 6, 31, 32, 33, 34, 35, 47, 48, 49, 50]
     ],
     [
         'id' => 5,
         'numero' => 5,
         'nombre' => 'Centro Sur',
         'activo' => true,
-        'instituciones_asociadas' => []
+        'instituciones_asociadas' => [24, 38, 43, 44]
     ],
     [
         'id' => 6,
         'numero' => 6,
         'nombre' => 'Sur',
         'activo' => true,
-        'instituciones_asociadas' => [16]
+        'instituciones_asociadas' => [16, 25, 26, 28, 42, 45]
     ],
     [
         'id' => 7,
         'numero' => 7,
         'nombre' => 'Ciudad de México',
         'activo' => true,
-        'instituciones_asociadas' => [1, 2, 3, 4]
+        'instituciones_asociadas' => [1, 2, 3, 4, 19, 20, 39]
     ]
 ];
 
-// Instituciones completas
+// Instituciones completas (actualizadas con todas)
 $instituciones = [
     ['id' => 1, 'nombre' => 'Universidad Nacional Autónoma de México', 'personas_relacionadas' => 5],
     ['id' => 2, 'nombre' => 'Facultad de Contaduría y Administración (UNAM)', 'personas_relacionadas' => 3],
@@ -103,7 +103,39 @@ $instituciones = [
     ['id' => 14, 'nombre' => 'Facultad de Ciencias Administrativas (CESUN)', 'personas_relacionadas' => 1],
     ['id' => 15, 'nombre' => 'Universidad Autónoma de Querétaro', 'personas_relacionadas' => 0],
     ['id' => 16, 'nombre' => 'Universidad Autónoma de Yucatán', 'personas_relacionadas' => 0],
-    ['id' => 17, 'nombre' => 'Universidad Autónoma de Sinaloa', 'personas_relacionadas' => 1]
+    ['id' => 17, 'nombre' => 'Universidad Autónoma de Sinaloa', 'personas_relacionadas' => 1],
+    ['id' => 19, 'nombre' => 'Tecnológico de Monterrey', 'personas_relacionadas' => 1],
+    ['id' => 20, 'nombre' => 'Universidad Intercontinental', 'personas_relacionadas' => 1],
+    ['id' => 21, 'nombre' => 'Universidad Autónoma de Aguascalientes', 'personas_relacionadas' => 1],
+    ['id' => 22, 'nombre' => 'Universidad Iberoamericana Torreón', 'personas_relacionadas' => 1],
+    ['id' => 23, 'nombre' => 'Universidad Autónoma de San Luis Potosí', 'personas_relacionadas' => 2],
+    ['id' => 24, 'nombre' => 'Universidad Autónoma de Tlaxcala', 'personas_relacionadas' => 1],
+    ['id' => 25, 'nombre' => 'Universidad Veracruzana', 'personas_relacionadas' => 1],
+    ['id' => 26, 'nombre' => 'Universidad Juárez Autónoma de Tabasco', 'personas_relacionadas' => 1],
+    ['id' => 27, 'nombre' => 'Universidad Autónoma de Tamaulipas', 'personas_relacionadas' => 1],
+    ['id' => 28, 'nombre' => 'Universidad Tecnológica de Tabasco', 'personas_relacionadas' => 1],
+    ['id' => 29, 'nombre' => 'Universidad Autónoma de Chihuahua', 'personas_relacionadas' => 1],
+    ['id' => 30, 'nombre' => 'Universidad de Sonora', 'personas_relacionadas' => 1],
+    ['id' => 31, 'nombre' => 'Universidad Autónoma de Nayarit', 'personas_relacionadas' => 1],
+    ['id' => 32, 'nombre' => 'Instituto Tecnológico y de Estudios Superiores de Occidente', 'personas_relacionadas' => 2],
+    ['id' => 33, 'nombre' => 'Universidad Autónoma de Guadalajara', 'personas_relacionadas' => 1],
+    ['id' => 34, 'nombre' => 'Centro Universitario de los Altos (UDG)', 'personas_relacionadas' => 1],
+    ['id' => 35, 'nombre' => 'Universidad del Valle de Atemajac', 'personas_relacionadas' => 2],
+    ['id' => 36, 'nombre' => 'Universidad Autónoma de Coahuila', 'personas_relacionadas' => 1],
+    ['id' => 37, 'nombre' => 'Universidad de Monterrey', 'personas_relacionadas' => 1],
+    ['id' => 38, 'nombre' => 'Benemérita Universidad Autónoma de Puebla', 'personas_relacionadas' => 2],
+    ['id' => 39, 'nombre' => 'ESCA Unidad Tepepan (IPN)', 'personas_relacionadas' => 1],
+    ['id' => 40, 'nombre' => 'Facultad de Contaduría Pública y Administración (UANL)', 'personas_relacionadas' => 1],
+    ['id' => 41, 'nombre' => 'Facultad de Contaduría y Administración (UAS)', 'personas_relacionadas' => 1],
+    ['id' => 42, 'nombre' => 'Facultad de Contaduría y Administración (UADY)', 'personas_relacionadas' => 2],
+    ['id' => 43, 'nombre' => 'Facultad de Administración (BUAP)', 'personas_relacionadas' => 1],
+    ['id' => 44, 'nombre' => 'Facultad de Contaduría Pública (BUAP)', 'personas_relacionadas' => 1],
+    ['id' => 45, 'nombre' => 'Facultad de Contaduría y Administración (UV)', 'personas_relacionadas' => 1],
+    ['id' => 46, 'nombre' => 'Centro de Ciencias Económicas y Administrativas (UAA)', 'personas_relacionadas' => 1],
+    ['id' => 47, 'nombre' => 'División de Contaduría (UDG)', 'personas_relacionadas' => 1],
+    ['id' => 48, 'nombre' => 'Unidad Académica de Contaduría y Administración (UAN)', 'personas_relacionadas' => 1],
+    ['id' => 49, 'nombre' => 'Campus Guadalajara (ITESO)', 'personas_relacionadas' => 1],
+    ['id' => 50, 'nombre' => 'Campus Puerto Vallarta (UNIVA)', 'personas_relacionadas' => 1]
 ];
 
 // Buscar la zona

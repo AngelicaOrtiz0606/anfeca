@@ -12,18 +12,18 @@ if (!isset($_SESSION['usuario'])) {
 }
 
 // ============================================================
-// DATOS SIMULADOS
+// DATOS SIMULADOS (BASADOS EN DIRECTORIOS.PHP)
 // ============================================================
 
-// Niveles Académicos con personas asociadas y activo
+// Niveles Académicos con personas asociadas
 $niveles_academicos = [
     [
         'id' => 1,
-        'nombre' => 'Licenciatura',
-        'abr_m' => 'Lic.',
-        'abr_f' => 'Lic.',
+        'nombre' => 'Doctorado',
+        'abr_m' => 'Dr.',
+        'abr_f' => 'Dra.',
         'activo' => true,
-        'personas' => 8
+        'personas' => 22
     ],
     [
         'id' => 2,
@@ -31,22 +31,22 @@ $niveles_academicos = [
         'abr_m' => 'Mtro.',
         'abr_f' => 'Mtra.',
         'activo' => true,
-        'personas' => 4
+        'personas' => 15
     ],
     [
         'id' => 3,
-        'nombre' => 'Doctorado',
-        'abr_m' => 'Dr.',
-        'abr_f' => 'Dra.',
-        'activo' => true,
-        'personas' => 2
-    ],
-    [
-        'id' => 4,
         'nombre' => 'Especialidad',
         'abr_m' => 'Esp.',
         'abr_f' => 'Esp.',
-        'activo' => false,
+        'activo' => true,
+        'personas' => 1
+    ],
+    [
+        'id' => 4,
+        'nombre' => 'Licenciatura',
+        'abr_m' => 'Lic.',
+        'abr_f' => 'Lic.',
+        'activo' => true,
         'personas' => 0
     ],
     [
@@ -63,21 +63,21 @@ $niveles_academicos = [
         'abr_m' => 'Ing.',
         'abr_f' => 'Ing.',
         'activo' => true,
-        'personas' => 3
+        'personas' => 0
     ]
 ];
 
 // ID máximo para nuevos registros
 $ultimo_id = count($niveles_academicos);
 
-// Personas simuladas para validar eliminación
+// Personas por nivel para validar eliminación (basado en directorios.php)
 $personas_por_nivel = [
-    1 => 8,
-    2 => 4,
-    3 => 2,
-    4 => 0,
-    5 => 0,
-    6 => 3
+    1 => 22, // Doctorado
+    2 => 15, // Maestría
+    3 => 1,  // Especialidad
+    4 => 0,  // Licenciatura
+    5 => 0,  // TSU
+    6 => 0   // Ingeniería
 ];
 
 // ============================================================
@@ -349,8 +349,6 @@ include 'template/menu.php';
                             <option value="inactivo" <?= $estado_filtro == 'inactivo' ? 'selected' : '' ?>>Inactivos</option>
                         </select>
                     </div>
-                    
-                    
                     
                     <a href="niveles_academicos.php" class="btn-filter-clear <?= (empty($busqueda) && empty($estado_filtro)) ? 'disabled' : '' ?>">
                         <i class="fas fa-times"></i> Limpiar

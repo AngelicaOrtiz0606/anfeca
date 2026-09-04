@@ -29,32 +29,73 @@ $zonas_regionales = [
     7 => '7 - Ciudad de México'
 ];
 
-// Personas asociadas a coordinaciones (con zona)
+// ============================================================
+// PERSONAS ASOCIADAS A COORDINACIONES
+// Basado en directorios.php
+// ============================================================
+
 $personas_asociadas = [
+    // Certificación Académica (id 1 en coordinaciones)
     1 => [
-        ['id' => 1, 'nombre' => 'María González Pérez', 'cargo' => 'Coordinadora Nacional', 'zona' => null, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 5, 'nombre' => 'Laura Torres Vega', 'cargo' => 'Coordinadora Regional', 'zona' => 1, 'fecha_inicio' => '2024-07-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 12, 'nombre' => 'David Roberto Suárez Pacheco', 'cargo' => 'Coordinador Nacional de Certificación Académica', 'zona' => null, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 26, 'nombre' => 'Leticia María González Velásquez', 'cargo' => 'Coordinador Regional Zona 1 de Certificación Académica', 'zona' => 1, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 27, 'nombre' => 'Patricia Hernández García', 'cargo' => 'Coordinador Regional Zona 3 de Certificación Académica', 'zona' => 3, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 28, 'nombre' => 'Mónica Blanco Jiménez', 'cargo' => 'Coordinador Regional Zona 2 de Certificación Académica', 'zona' => 2, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
     ],
+    // Academia ANFECA (id 2 en coordinaciones)
     2 => [
-        ['id' => 2, 'nombre' => 'Juan Martínez López', 'cargo' => 'Coordinador Nacional', 'zona' => null, 'fecha_inicio' => '2024-03-15', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 13, 'nombre' => 'José Juan Paz Reyes', 'cargo' => 'Coordinador Nacional de la Academia ANFECA', 'zona' => null, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
     ],
+    // Emprendimiento Social (id 3 en coordinaciones)
+    3 => [
+        ['id' => 14, 'nombre' => 'Mónica Sánchez Limón', 'cargo' => 'Coordinador Nacional de Emprendimiento Social', 'zona' => null, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    // Planes y Programas de Estudio (id 4 en coordinaciones)
     4 => [
-        ['id' => 3, 'nombre' => 'Ana Sánchez Ramírez', 'cargo' => 'Coordinadora Nacional', 'zona' => null, 'fecha_inicio' => '2024-06-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 7, 'nombre' => 'Patricia Flores Reyes', 'cargo' => 'Coordinadora Regional', 'zona' => 5, 'fecha_inicio' => '2024-04-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 15, 'nombre' => 'Sofía Reyes Gil', 'cargo' => 'Coordinadora Regional', 'zona' => 7, 'fecha_inicio' => '2024-12-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 15, 'nombre' => 'Lenin Martínez Pérez', 'cargo' => 'Coordinador Nacional de Planes y Programas de Estudio', 'zona' => null, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
     ],
+    // Investigación (id 5 en coordinaciones)
     5 => [
-        ['id' => 8, 'nombre' => 'Jorge Gómez García', 'cargo' => 'Coordinador Nacional', 'zona' => null, 'fecha_inicio' => '2024-08-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 16, 'nombre' => 'Ivett Guillén Morales', 'cargo' => 'Coordinador Nacional de Investigación', 'zona' => null, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 29, 'nombre' => 'José Sánchez Gutiérrez', 'cargo' => 'Coordinador Regional Zona 4 de Investigación', 'zona' => 4, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
     ],
+    // Posgrado (id 6 en coordinaciones)
+    6 => [
+        ['id' => 17, 'nombre' => 'José Ernesto Amorós Espinosa', 'cargo' => 'Coordinador Nacional de Posgrado', 'zona' => null, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 31, 'nombre' => 'Emigdio Larios Gómez', 'cargo' => 'Coordinador Regional Zona 5 de Posgrado', 'zona' => 5, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    // Maratones (id 7 en coordinaciones)
+    7 => [
+        ['id' => 18, 'nombre' => 'Cristina Cabrera Ramos', 'cargo' => 'Coordinador Nacional de Maratones', 'zona' => null, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    // Historia (id 8 en coordinaciones)
+    8 => [
+        ['id' => 19, 'nombre' => 'Aureliano Martínez Castillo', 'cargo' => 'Coordinador Nacional de Historia', 'zona' => null, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    // Vinculación Nacional e Internacional (id 9 en coordinaciones)
     9 => [
-        ['id' => 9, 'nombre' => 'Carmen Rivera Morales', 'cargo' => 'Coordinadora Nacional', 'zona' => null, 'fecha_inicio' => '2024-05-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 20, 'nombre' => 'Juan Antonio Zapata Zapata', 'cargo' => 'Coordinador Nacional de Vinculación Nacional e Internacional', 'zona' => null, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
     ],
+    // Universidad-Empresa (id 10 en coordinaciones)
+    10 => [
+        ['id' => 21, 'nombre' => 'Laura Ofelia Robles Sahagún', 'cargo' => 'Coordinador Nacional de Universidad Empresa', 'zona' => null, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    // Formación Profesional Académica (id 11 en coordinaciones)
     11 => [
-        ['id' => 13, 'nombre' => 'Teresa Ortega Luna', 'cargo' => 'Coordinadora Nacional', 'zona' => null, 'fecha_inicio' => '2024-11-15', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 14, 'nombre' => 'Ricardo Peña Fuentes', 'cargo' => 'Coordinador Regional', 'zona' => 6, 'fecha_inicio' => '2023-12-01', 'fecha_fin' => '2024-11-30', 'activo' => false],
+        ['id' => 22, 'nombre' => 'Cecilia Morales del Río', 'cargo' => 'Coordinador Nacional de Formación Profesional y Académica', 'zona' => null, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
     ],
+    // Responsabilidad Social Universitaria (id 12 en coordinaciones)
+    12 => [
+        ['id' => 23, 'nombre' => 'María Antonieta Monserrat Vera Muñoz', 'cargo' => 'Coordinador Nacional de Responsabilidad Social Universitaria', 'zona' => null, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 30, 'nombre' => 'Alfonso Martin Rodríguez', 'cargo' => 'Coordinador Regional Zona 3 de Responsabilidad Social Universitaria', 'zona' => 3, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    // Igualdad de Género (id 13 en coordinaciones)
     13 => [
-        ['id' => 16, 'nombre' => 'Fernando Cruz Salazar', 'cargo' => 'Coordinador Nacional', 'zona' => null, 'fecha_inicio' => '2024-07-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 24, 'nombre' => 'Lorena Argentina Medina Bocanegra', 'cargo' => 'Coordinador Nacional de Igualdad de Género', 'zona' => null, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    // Desarrollo Académico Estudiantil (id 14 en coordinaciones)
+    14 => [
+        ['id' => 25, 'nombre' => 'Idi Amin Germán Silva Jug', 'cargo' => 'Coordinador Nacional de Desarrollo Académico Estudiantil', 'zona' => null, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
     ]
 ];
 
