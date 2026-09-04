@@ -12,7 +12,7 @@ if (!isset($_SESSION['usuario'])) {
 }
 
 // ============================================================
-// DATOS SIMULADOS
+// DATOS DE REFERENCIA (coinciden con directorios.php)
 // ============================================================
 
 $niveles_cargo = [
@@ -21,7 +21,78 @@ $niveles_cargo = [
     3 => 'Institucional'
 ];
 
-// Datos simulados de cargos
+$tipos_directorio = [
+    1 => 'Consejo Nacional Directivo',
+    2 => 'Consejos Regionales',
+    3 => 'Coordinaciones Nacionales',
+    4 => 'Instituciones'
+];
+
+// ============================================================
+// DATOS DE PERSONAS REALES (tomados de directorios.php)
+// ============================================================
+
+$personas_reales = [
+    1 => ['nombre' => 'Armando Tomé González', 'institucion' => 'Universidad Nacional Autónoma de México', 'cargo' => 'Presidente', 'nivel' => 1],
+    2 => ['nombre' => 'Adriana Garza Elizondo', 'institucion' => 'Universidad Autónoma de Nuevo León', 'cargo' => 'Vicepresidenta', 'nivel' => 1],
+    3 => ['nombre' => 'Carlos Lobo Sánchez', 'institucion' => 'Universidad Nacional Autónoma de México', 'cargo' => 'Secretario General', 'nivel' => 1],
+    4 => ['nombre' => 'Lourdes Mata Romero', 'institucion' => 'Universidad Nacional Autónoma de México', 'cargo' => 'Directora Ejecutiva', 'nivel' => 1],
+    5 => ['nombre' => 'Leobardo Berrelleza Reyes', 'institucion' => 'Universidad Autónoma de Sinaloa', 'cargo' => 'Director Regional Zona 1', 'nivel' => 1],
+    6 => ['nombre' => 'Laura María del Pilar Macías Amozurrutia', 'institucion' => 'Universidad Iberoamericana Torreón', 'cargo' => 'Directora Regional Zona 2', 'nivel' => 1],
+    7 => ['nombre' => 'Ismael Manuel Rodríguez Herrera', 'institucion' => 'Universidad Autónoma de Aguascalientes', 'cargo' => 'Director Regional Zona 3', 'nivel' => 1],
+    8 => ['nombre' => 'Cristian Omar Alcantar López', 'institucion' => 'Universidad de Guadalajara', 'cargo' => 'Director Regional Zona 4', 'nivel' => 1],
+    9 => ['nombre' => 'Mario Franz Subieta Zecua', 'institucion' => 'Universidad Autónoma de Tlaxcala', 'cargo' => 'Director Regional Zona 5', 'nivel' => 1],
+    10 => ['nombre' => 'Anabel Galván Sarabia', 'institucion' => 'Universidad Veracruzana', 'cargo' => 'Directora Regional Zona 6', 'nivel' => 1],
+    11 => ['nombre' => 'Giannina Sampieri Laguna', 'institucion' => 'Universidad Intercontinental', 'cargo' => 'Directora Regional Zona 7', 'nivel' => 1],
+    12 => ['nombre' => 'David Roberto Suárez Pacheco', 'institucion' => 'Universidad Autónoma de Yucatán', 'cargo' => 'Coordinador Nacional de Certificación Académica', 'nivel' => 2],
+    13 => ['nombre' => 'José Juan Paz Reyes', 'institucion' => 'Universidad Juárez Autónoma de Tabasco', 'cargo' => 'Coordinador Nacional de la Academia ANFECA', 'nivel' => 2],
+    14 => ['nombre' => 'Mónica Sánchez Limón', 'institucion' => 'Universidad Autónoma de Tamaulipas', 'cargo' => 'Coordinador Nacional de Emprendimiento Social', 'nivel' => 2],
+    15 => ['nombre' => 'Lenin Martínez Pérez', 'institucion' => 'Universidad Tecnológica de Tabasco', 'cargo' => 'Coordinador Nacional de Planes y Programas de Estudio', 'nivel' => 2],
+    16 => ['nombre' => 'Ivett Guillén Morales', 'institucion' => 'Instituto Politécnico Nacional', 'cargo' => 'Coordinador Nacional de Investigación', 'nivel' => 2],
+    17 => ['nombre' => 'José Ernesto Amorós Espinosa', 'institucion' => 'Tecnológico de Monterrey', 'cargo' => 'Coordinador Nacional de Posgrado', 'nivel' => 2],
+    18 => ['nombre' => 'Cristina Cabrera Ramos', 'institucion' => 'Universidad Autónoma de Chihuahua', 'cargo' => 'Coordinador Nacional de Maratones', 'nivel' => 2],
+    19 => ['nombre' => 'Aureliano Martínez Castillo', 'institucion' => 'Universidad Autónoma de Yucatán', 'cargo' => 'Coordinador Nacional de Historia', 'nivel' => 2],
+    20 => ['nombre' => 'Juan Antonio Zapata Zapata', 'institucion' => 'Universidad Autónoma de San Luis Potosí', 'cargo' => 'Coordinador Nacional de Vinculación Nacional e Internacional', 'nivel' => 2],
+    21 => ['nombre' => 'Laura Ofelia Robles Sahagún', 'institucion' => 'Universidad del Valle de Atemajac', 'cargo' => 'Coordinador Nacional de Universidad Empresa', 'nivel' => 2],
+    22 => ['nombre' => 'Cecilia Morales del Río', 'institucion' => 'Universidad de Monterrey', 'cargo' => 'Coordinador Nacional de Formación Profesional y Académica', 'nivel' => 2],
+    23 => ['nombre' => 'María Antonieta Monserrat Vera Muñoz', 'institucion' => 'Benemérita Universidad Autónoma de Puebla', 'cargo' => 'Coordinador Nacional de Responsabilidad Social Universitaria', 'nivel' => 2],
+    24 => ['nombre' => 'Lorena Argentina Medina Bocanegra', 'institucion' => 'Universidad Autónoma de Coahuila', 'cargo' => 'Coordinador Nacional de Igualdad de Género', 'nivel' => 2],
+    25 => ['nombre' => 'Idi Amin Germán Silva Jug', 'institucion' => 'Universidad Autónoma de Nayarit', 'cargo' => 'Coordinador Nacional de Desarrollo Académico Estudiantil', 'nivel' => 2],
+    26 => ['nombre' => 'Leticia María González Velásquez', 'institucion' => 'Universidad de Sonora', 'cargo' => 'Coordinador Regional Zona 1 de Certificación Académica', 'nivel' => 2],
+    27 => ['nombre' => 'Patricia Hernández García', 'institucion' => 'Universidad Autónoma de San Luis Potosí', 'cargo' => 'Coordinador Regional Zona 3 de Certificación Académica', 'nivel' => 2],
+    28 => ['nombre' => 'Mónica Blanco Jiménez', 'institucion' => 'Universidad Autónoma de Nuevo León', 'cargo' => 'Coordinador Regional Zona 2 de Certificación Académica', 'nivel' => 2],
+    29 => ['nombre' => 'José Sánchez Gutiérrez', 'institucion' => 'Universidad de Guadalajara', 'cargo' => 'Coordinador Regional Zona 4 de Investigación', 'nivel' => 2],
+    30 => ['nombre' => 'Alfonso Martin Rodríguez', 'institucion' => 'Universidad Autónoma de Aguascalientes', 'cargo' => 'Coordinador Regional Zona 3 de Responsabilidad Social Universitaria', 'nivel' => 2],
+    31 => ['nombre' => 'Emigdio Larios Gómez', 'institucion' => 'Benemérita Universidad Autónoma de Puebla', 'cargo' => 'Coordinador Regional Zona 5 de Posgrado', 'nivel' => 2],
+    32 => ['nombre' => 'Cristian Omar Alcantar López', 'institucion' => 'Universidad de Guadalajara', 'cargo' => 'Director de División', 'nivel' => 3],
+    33 => ['nombre' => 'Luis Edmundo Garrido Sánchez', 'institucion' => 'Instituto Tecnológico y de Estudios Superiores de Occidente', 'cargo' => 'Jefe de Departamento', 'nivel' => 3],
+    34 => ['nombre' => 'Maria Margarita Villareal Treviño', 'institucion' => 'Instituto Tecnológico y de Estudios Superiores de Occidente', 'cargo' => 'Directora', 'nivel' => 3],
+    35 => ['nombre' => 'Esmeralda Brito Cervantes', 'institucion' => 'Universidad Autónoma de Guadalajara', 'cargo' => 'Directora del Programa de Administración', 'nivel' => 3],
+    36 => ['nombre' => 'Nadia Natasha Reus González', 'institucion' => 'Universidad de Guadalajara', 'cargo' => 'Secretario de la División de Ciencias Sociales y de la Cultura', 'nivel' => 3],
+    37 => ['nombre' => 'Salvador Cervantes Cervantes', 'institucion' => 'Universidad del Valle de Atemajac', 'cargo' => 'Director General Académico', 'nivel' => 3],
+    38 => ['nombre' => 'María Guadalupe Jiménez Hernández', 'institucion' => 'Universidad del Valle de Atemajac', 'cargo' => 'Director General de Plantel', 'nivel' => 3]
+];
+
+// ============================================================
+// FUNCIÓN PARA CONTAR PERSONAS POR CARGO
+// ============================================================
+
+function contarPersonasPorCargo($cargo_nombre) {
+    global $personas_reales;
+    $contador = 0;
+    foreach ($personas_reales as $p) {
+        // Buscar coincidencia exacta o parcial
+        if (strpos($p['cargo'], $cargo_nombre) !== false) {
+            $contador++;
+        }
+    }
+    return $contador;
+}
+
+// ============================================================
+// DATOS DE CARGOS (con conteo real de personas)
+// ============================================================
+
 $cargos = [
     [
         'id' => 1,
@@ -29,7 +100,7 @@ $cargos = [
         'nombre_f' => 'Presidenta',
         'id_nivel' => 1,
         'activo' => true,
-        'personas' => 1
+        'personas' => contarPersonasPorCargo('Presidente')
     ],
     [
         'id' => 2,
@@ -37,7 +108,7 @@ $cargos = [
         'nombre_f' => 'Vicepresidenta',
         'id_nivel' => 1,
         'activo' => true,
-        'personas' => 2
+        'personas' => contarPersonasPorCargo('Vicepresidenta')
     ],
     [
         'id' => 3,
@@ -45,7 +116,7 @@ $cargos = [
         'nombre_f' => 'Secretaria General',
         'id_nivel' => 1,
         'activo' => true,
-        'personas' => 0
+        'personas' => contarPersonasPorCargo('Secretario General')
     ],
     [
         'id' => 4,
@@ -53,429 +124,137 @@ $cargos = [
         'nombre_f' => 'Directora Ejecutiva',
         'id_nivel' => 1,
         'activo' => true,
-        'personas' => 1
+        'personas' => contarPersonasPorCargo('Directora Ejecutiva')
     ],
     [
         'id' => 5,
-        'nombre_m' => 'Coordinador Nacional',
-        'nombre_f' => 'Coordinadora Nacional',
+        'nombre_m' => 'Director Regional',
+        'nombre_f' => 'Directora Regional',
         'id_nivel' => 1,
         'activo' => true,
-        'personas' => 3
+        'personas' => contarPersonasPorCargo('Director Regional')
     ],
     [
         'id' => 6,
-        'nombre_m' => 'Director Regional',
-        'nombre_f' => 'Directora Regional',
+        'nombre_m' => 'Coordinador Nacional',
+        'nombre_f' => 'Coordinadora Nacional',
         'id_nivel' => 2,
         'activo' => true,
-        'personas' => 4
+        'personas' => contarPersonasPorCargo('Coordinador Nacional')
     ],
     [
         'id' => 7,
-        'nombre_m' => 'Secretario Regional',
-        'nombre_f' => 'Secretaria Regional',
-        'id_nivel' => 2,
-        'activo' => true,
-        'personas' => 0
-    ],
-    [
-        'id' => 8,
         'nombre_m' => 'Coordinador Regional',
         'nombre_f' => 'Coordinadora Regional',
         'id_nivel' => 2,
         'activo' => true,
-        'personas' => 2
+        'personas' => contarPersonasPorCargo('Coordinador Regional')
+    ],
+    [
+        'id' => 8,
+        'nombre_m' => 'Director de División',
+        'nombre_f' => 'Directora de División',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => contarPersonasPorCargo('Director de División')
     ],
     [
         'id' => 9,
-        'nombre_m' => 'Director',
-        'nombre_f' => 'Directora',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 5
-    ],
-    [
-        'id' => 10,
-        'nombre_m' => 'Director General',
-        'nombre_f' => 'Directora General',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 1
-    ],
-    [
-        'id' => 11,
-        'nombre_m' => 'Coordinador Académico',
-        'nombre_f' => 'Coordinadora Académica',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 3
-    ],
-    [
-        'id' => 12,
         'nombre_m' => 'Jefe de Departamento',
         'nombre_f' => 'Jefa de Departamento',
         'id_nivel' => 3,
         'activo' => true,
-        'personas' => 6
+        'personas' => contarPersonasPorCargo('Jefe de Departamento')
+    ],
+    [
+        'id' => 10,
+        'nombre_m' => 'Director',
+        'nombre_f' => 'Directora',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => contarPersonasPorCargo('Directora')
+    ],
+    [
+        'id' => 11,
+        'nombre_m' => 'Director de Programa',
+        'nombre_f' => 'Directora de Programa',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => contarPersonasPorCargo('Director del Programa')
+    ],
+    [
+        'id' => 12,
+        'nombre_m' => 'Secretario de División',
+        'nombre_f' => 'Secretaria de División',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => contarPersonasPorCargo('Secretario de la División')
     ],
     [
         'id' => 13,
-        'nombre_m' => 'Rector',
-        'nombre_f' => 'Rectora',
+        'nombre_m' => 'Director General Académico',
+        'nombre_f' => 'Directora General Académica',
         'id_nivel' => 3,
         'activo' => true,
-        'personas' => 0
+        'personas' => contarPersonasPorCargo('Director General Académico')
     ],
     [
         'id' => 14,
-        'nombre_m' => 'Secretario Técnico General',
-        'nombre_f' => 'Secretaria Técnica General',
-        'id_nivel' => 1,
-        'activo' => false,
-        'personas' => 0
+        'nombre_m' => 'Director General de Plantel',
+        'nombre_f' => 'Directora General de Plantel',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => contarPersonasPorCargo('Director General de Plantel')
     ],
     [
         'id' => 15,
         'nombre_m' => 'Representante ANFECA ante ALAFEC',
         'nombre_f' => 'Representante ANFECA ante ALAFEC',
         'id_nivel' => 1,
-        'activo' => true,
-        'personas' => 1
+        'activo' => false,
+        'personas' => 0
     ],
     [
         'id' => 16,
         'nombre_m' => 'Director General CACECA',
         'nombre_f' => 'Directora General CACECA',
         'id_nivel' => 1,
-        'activo' => true,
+        'activo' => false,
         'personas' => 0
-    ],
-    [
-        'id' => 17,
-        'nombre_m' => 'Secretario Técnico',
-        'nombre_f' => 'Secretaria Técnica',
-        'id_nivel' => 2,
-        'activo' => true,
-        'personas' => 2
-    ],
-    [
-        'id' => 18,
-        'nombre_m' => 'Director Académico',
-        'nombre_f' => 'Directora Académica',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 1
-    ],
-    [
-        'id' => 19,
-        'nombre_m' => 'Director de Área',
-        'nombre_f' => 'Directora de Área',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 2
-    ],
-    [
-        'id' => 20,
-        'nombre_m' => 'Director de Contaduría',
-        'nombre_f' => 'Directora de Contaduría',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 0
-    ],
-    [
-        'id' => 21,
-        'nombre_m' => 'Director de División',
-        'nombre_f' => 'Directora de División',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 3
-    ],
-    [
-        'id' => 22,
-        'nombre_m' => 'Director de División Económico-Administrativa',
-        'nombre_f' => 'Directora de División Económico-Administrativa',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 0
-    ],
-    [
-        'id' => 23,
-        'nombre_m' => 'Director de Carrera de LIN',
-        'nombre_f' => 'Directora de Carrera de LIN',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 1
-    ],
-    [
-        'id' => 24,
-        'nombre_m' => 'Coordinador de Licenciatura en Administración',
-        'nombre_f' => 'Coordinadora de Licenciatura en Administración',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 0
-    ],
-    [
-        'id' => 25,
-        'nombre_m' => 'Coordinador de Contaduría y Administración',
-        'nombre_f' => 'Coordinadora de Contaduría y Administración',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 2
-    ],
-    [
-        'id' => 26,
-        'nombre_m' => 'Coordinador de Licenciatura en Contaduría Pública',
-        'nombre_f' => 'Coordinadora de Licenciatura en Contaduría Pública',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 0
-    ],
-    [
-        'id' => 27,
-        'nombre_m' => 'Coordinador de la Facultad',
-        'nombre_f' => 'Coordinadora de la Facultad',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 3
-    ],
-    [
-        'id' => 28,
-        'nombre_m' => 'Coordinador General',
-        'nombre_f' => 'Coordinadora General',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 1
-    ],
-    [
-        'id' => 29,
-        'nombre_m' => 'Coordinador de Negocios',
-        'nombre_f' => 'Coordinadora de Negocios',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 0
-    ],
-    [
-        'id' => 30,
-        'nombre_m' => 'Coordinador de Proyectos y Vinculación Institucional',
-        'nombre_f' => 'Coordinadora de Proyectos y Vinculación Institucional',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 0
-    ],
-    [
-        'id' => 31,
-        'nombre_m' => 'Coordinador de Unidad Académica',
-        'nombre_f' => 'Coordinadora de Unidad Académica',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 2
-    ],
-    [
-        'id' => 32,
-        'nombre_m' => 'Coordinador de Área Económico-Administrativa',
-        'nombre_f' => 'Coordinadora de Área Económico-Administrativa',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 0
-    ],
-    [
-        'id' => 33,
-        'nombre_m' => 'Coordinador de Ciencias Económico Administrativas',
-        'nombre_f' => 'Coordinadora de Ciencias Económico Administrativas',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 1
-    ],
-    [
-        'id' => 34,
-        'nombre_m' => 'Coordinador de Contaduría',
-        'nombre_f' => 'Coordinadora de Contaduría',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 0
-    ],
-    [
-        'id' => 35,
-        'nombre_m' => 'Jefe de Departamento de Ciencias Administrativas',
-        'nombre_f' => 'Jefa de Departamento de Ciencias Administrativas',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 4
-    ],
-    [
-        'id' => 36,
-        'nombre_m' => 'Jefe de Departamento de Ciencias Económico Administrativas',
-        'nombre_f' => 'Jefa de Departamento de Ciencias Económico Administrativas',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 0
-    ],
-    [
-        'id' => 37,
-        'nombre_m' => 'Jefe del Departamento de Contabilidad',
-        'nombre_f' => 'Jefa del Departamento de Contabilidad',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 2
-    ],
-    [
-        'id' => 38,
-        'nombre_m' => 'Encargado de la Dirección',
-        'nombre_f' => 'Encargada de la Dirección',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 0
-    ],
-    [
-        'id' => 39,
-        'nombre_m' => 'Secretario',
-        'nombre_f' => 'Secretaria',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 1
     ]
 ];
-
-// Personas asociadas a cargos (para el historial)
-$personas_asociadas = [
-    1 => [
-        ['id' => 1, 'nombre' => 'María González Pérez', 'institucion' => 'UNAM - Facultad de Contaduría', 'cargo' => 'Presidenta', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    2 => [
-        ['id' => 2, 'nombre' => 'Juan Martínez López', 'institucion' => 'IPN - ESCOM', 'cargo' => 'Vicepresidente', 'titular' => true, 'fecha_inicio' => '2024-03-15', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 3, 'nombre' => 'Carlos Hernández Díaz', 'institucion' => 'UDG - Guadalajara', 'cargo' => 'Vicepresidente', 'titular' => false, 'fecha_inicio' => '2024-02-01', 'fecha_fin' => '2024-12-31', 'activo' => false],
-    ],
-    4 => [
-        ['id' => 4, 'nombre' => 'Ana Sánchez Ramírez', 'institucion' => 'UAQ - Querétaro', 'cargo' => 'Directora Ejecutiva', 'titular' => true, 'fecha_inicio' => '2024-06-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    5 => [
-        ['id' => 5, 'nombre' => 'Laura Torres Vega', 'institucion' => 'UABC - Mexicali', 'cargo' => 'Coordinadora Nacional', 'titular' => true, 'fecha_inicio' => '2024-07-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 6, 'nombre' => 'Patricia Flores Reyes', 'institucion' => 'UAEH - Pachuca', 'cargo' => 'Coordinadora Nacional', 'titular' => false, 'fecha_inicio' => '2024-04-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 7, 'nombre' => 'Sofía Reyes Gil', 'institucion' => 'UAM - Iztapalapa', 'cargo' => 'Coordinadora Nacional', 'titular' => true, 'fecha_inicio' => '2024-12-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    6 => [
-        ['id' => 3, 'nombre' => 'Carlos Hernández Díaz', 'institucion' => 'UDG - Guadalajara', 'cargo' => 'Director Regional', 'titular' => true, 'fecha_inicio' => '2024-02-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 8, 'nombre' => 'Gabriela Mendoza Soto', 'institucion' => 'UDG - Guadalajara', 'cargo' => 'Directora Regional', 'titular' => false, 'fecha_inicio' => '2024-08-15', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 9, 'nombre' => 'Luis Méndez Vargas', 'institucion' => 'UABC - Tijuana', 'cargo' => 'Director Regional', 'titular' => false, 'fecha_inicio' => '2023-06-01', 'fecha_fin' => '2024-05-31', 'activo' => false],
-        ['id' => 10, 'nombre' => 'Andrés Moreno Rojas', 'institucion' => 'UANL - San Nicolás', 'cargo' => 'Coordinador Regional', 'titular' => true, 'fecha_inicio' => '2024-10-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    8 => [
-        ['id' => 6, 'nombre' => 'Patricia Flores Reyes', 'institucion' => 'UAEH - Pachuca', 'cargo' => 'Coordinadora Regional', 'titular' => true, 'fecha_inicio' => '2024-04-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 10, 'nombre' => 'Andrés Moreno Rojas', 'institucion' => 'UANL - San Nicolás', 'cargo' => 'Coordinador Regional', 'titular' => false, 'fecha_inicio' => '2024-10-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    9 => [
-        ['id' => 11, 'nombre' => 'Jorge Gómez García', 'institucion' => 'UADY - Mérida', 'cargo' => 'Director Académico', 'titular' => true, 'fecha_inicio' => '2024-08-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 12, 'nombre' => 'Carmen Rivera Morales', 'institucion' => 'UDG - Guadalajara', 'cargo' => 'Coordinadora Académica', 'titular' => true, 'fecha_inicio' => '2024-05-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 13, 'nombre' => 'Teresa Ortega Luna', 'institucion' => 'UAEM - Toluca', 'cargo' => 'Director de División', 'titular' => true, 'fecha_inicio' => '2024-11-15', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 14, 'nombre' => 'Ricardo Peña Fuentes', 'institucion' => 'UABJO - Oaxaca', 'cargo' => 'Jefe de Departamento', 'titular' => false, 'fecha_inicio' => '2023-12-01', 'fecha_fin' => '2024-11-30', 'activo' => false],
-        ['id' => 15, 'nombre' => 'Elena Castro Ramos', 'institucion' => 'UASLP - San Luis Potosí', 'cargo' => 'Directora General', 'titular' => true, 'fecha_inicio' => '2024-09-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    10 => [
-        ['id' => 15, 'nombre' => 'Elena Castro Ramos', 'institucion' => 'UASLP - San Luis Potosí', 'cargo' => 'Directora General', 'titular' => true, 'fecha_inicio' => '2024-09-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    11 => [
-        ['id' => 12, 'nombre' => 'Carmen Rivera Morales', 'institucion' => 'UDG - Guadalajara', 'cargo' => 'Coordinadora Académica', 'titular' => true, 'fecha_inicio' => '2024-05-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 13, 'nombre' => 'Teresa Ortega Luna', 'institucion' => 'UAEM - Toluca', 'cargo' => 'Directora de División', 'titular' => false, 'fecha_inicio' => '2024-11-15', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 11, 'nombre' => 'Jorge Gómez García', 'institucion' => 'UADY - Mérida', 'cargo' => 'Director Académico', 'titular' => false, 'fecha_inicio' => '2024-08-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    12 => [
-        ['id' => 14, 'nombre' => 'Ricardo Peña Fuentes', 'institucion' => 'UABJO - Oaxaca', 'cargo' => 'Jefe de Departamento', 'titular' => false, 'fecha_inicio' => '2023-12-01', 'fecha_fin' => '2024-11-30', 'activo' => false],
-        ['id' => 1, 'nombre' => 'María González Pérez', 'institucion' => 'UNAM - Facultad de Contaduría', 'cargo' => 'Jefa de Departamento', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 3, 'nombre' => 'Carlos Hernández Díaz', 'institucion' => 'UDG - Guadalajara', 'cargo' => 'Jefe de Departamento', 'titular' => false, 'fecha_inicio' => '2024-02-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 4, 'nombre' => 'Ana Sánchez Ramírez', 'institucion' => 'UAQ - Querétaro', 'cargo' => 'Jefa de Departamento', 'titular' => true, 'fecha_inicio' => '2024-06-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 6, 'nombre' => 'Patricia Flores Reyes', 'institucion' => 'UAEH - Pachuca', 'cargo' => 'Jefa de Departamento', 'titular' => false, 'fecha_inicio' => '2024-04-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 16, 'nombre' => 'Fernando Cruz Salazar', 'institucion' => 'UAQ - Querétaro', 'cargo' => 'Jefe de Departamento', 'titular' => true, 'fecha_inicio' => '2024-07-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    15 => [
-        ['id' => 3, 'nombre' => 'Carlos Hernández Díaz', 'institucion' => 'UDG - Guadalajara', 'cargo' => 'Representante ANFECA ante ALAFEC', 'titular' => true, 'fecha_inicio' => '2024-02-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    17 => [
-        ['id' => 9, 'nombre' => 'Luis Méndez Vargas', 'institucion' => 'UABC - Tijuana', 'cargo' => 'Secretario Técnico', 'titular' => false, 'fecha_inicio' => '2023-06-01', 'fecha_fin' => '2024-05-31', 'activo' => false],
-        ['id' => 10, 'nombre' => 'Andrés Moreno Rojas', 'institucion' => 'UANL - San Nicolás', 'cargo' => 'Secretario Técnico', 'titular' => true, 'fecha_inicio' => '2024-10-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    18 => [
-        ['id' => 11, 'nombre' => 'Jorge Gómez García', 'institucion' => 'UADY - Mérida', 'cargo' => 'Director Académico', 'titular' => true, 'fecha_inicio' => '2024-08-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    19 => [
-        ['id' => 12, 'nombre' => 'Carmen Rivera Morales', 'institucion' => 'UDG - Guadalajara', 'cargo' => 'Directora de Área', 'titular' => true, 'fecha_inicio' => '2024-05-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 13, 'nombre' => 'Teresa Ortega Luna', 'institucion' => 'UAEM - Toluca', 'cargo' => 'Directora de Área', 'titular' => false, 'fecha_inicio' => '2024-11-15', 'fecha_fin' => null, 'activo' => true],
-    ],
-    21 => [
-        ['id' => 11, 'nombre' => 'Jorge Gómez García', 'institucion' => 'UADY - Mérida', 'cargo' => 'Director de División', 'titular' => false, 'fecha_inicio' => '2024-08-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 14, 'nombre' => 'Ricardo Peña Fuentes', 'institucion' => 'UABJO - Oaxaca', 'cargo' => 'Director de División', 'titular' => false, 'fecha_inicio' => '2023-12-01', 'fecha_fin' => '2024-11-30', 'activo' => false],
-        ['id' => 15, 'nombre' => 'Elena Castro Ramos', 'institucion' => 'UASLP - San Luis Potosí', 'cargo' => 'Directora de División', 'titular' => true, 'fecha_inicio' => '2024-09-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    23 => [
-        ['id' => 1, 'nombre' => 'María González Pérez', 'institucion' => 'UNAM - Facultad de Contaduría', 'cargo' => 'Directora de Carrera de LIN', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    25 => [
-        ['id' => 4, 'nombre' => 'Ana Sánchez Ramírez', 'institucion' => 'UAQ - Querétaro', 'cargo' => 'Coordinadora de Contaduría y Administración', 'titular' => true, 'fecha_inicio' => '2024-06-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 16, 'nombre' => 'Fernando Cruz Salazar', 'institucion' => 'UAQ - Querétaro', 'cargo' => 'Coordinador de Contaduría y Administración', 'titular' => false, 'fecha_inicio' => '2024-07-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    27 => [
-        ['id' => 13, 'nombre' => 'Teresa Ortega Luna', 'institucion' => 'UAEM - Toluca', 'cargo' => 'Coordinadora de la Facultad', 'titular' => true, 'fecha_inicio' => '2024-11-15', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 11, 'nombre' => 'Jorge Gómez García', 'institucion' => 'UADY - Mérida', 'cargo' => 'Coordinador de la Facultad', 'titular' => false, 'fecha_inicio' => '2024-08-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 14, 'nombre' => 'Ricardo Peña Fuentes', 'institucion' => 'UABJO - Oaxaca', 'cargo' => 'Coordinador de la Facultad', 'titular' => false, 'fecha_inicio' => '2023-12-01', 'fecha_fin' => '2024-11-30', 'activo' => false],
-    ],
-    28 => [
-        ['id' => 7, 'nombre' => 'Sofía Reyes Gil', 'institucion' => 'UAM - Iztapalapa', 'cargo' => 'Coordinadora General', 'titular' => true, 'fecha_inicio' => '2024-12-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    31 => [
-        ['id' => 13, 'nombre' => 'Teresa Ortega Luna', 'institucion' => 'UAEM - Toluca', 'cargo' => 'Coordinadora de Unidad Académica', 'titular' => false, 'fecha_inicio' => '2024-11-15', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 11, 'nombre' => 'Jorge Gómez García', 'institucion' => 'UADY - Mérida', 'cargo' => 'Coordinador de Unidad Académica', 'titular' => true, 'fecha_inicio' => '2024-08-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    33 => [
-        ['id' => 16, 'nombre' => 'Fernando Cruz Salazar', 'institucion' => 'UAQ - Querétaro', 'cargo' => 'Coordinador de Ciencias Económico Administrativas', 'titular' => true, 'fecha_inicio' => '2024-07-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    35 => [
-        ['id' => 4, 'nombre' => 'Ana Sánchez Ramírez', 'institucion' => 'UAQ - Querétaro', 'cargo' => 'Jefa de Departamento de Ciencias Administrativas', 'titular' => false, 'fecha_inicio' => '2024-06-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 1, 'nombre' => 'María González Pérez', 'institucion' => 'UNAM - Facultad de Contaduría', 'cargo' => 'Jefa de Departamento de Ciencias Administrativas', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 3, 'nombre' => 'Carlos Hernández Díaz', 'institucion' => 'UDG - Guadalajara', 'cargo' => 'Jefe de Departamento de Ciencias Administrativas', 'titular' => false, 'fecha_inicio' => '2024-02-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 6, 'nombre' => 'Patricia Flores Reyes', 'institucion' => 'UAEH - Pachuca', 'cargo' => 'Jefa de Departamento de Ciencias Administrativas', 'titular' => true, 'fecha_inicio' => '2024-04-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    37 => [
-        ['id' => 2, 'nombre' => 'Juan Martínez López', 'institucion' => 'IPN - ESCOM', 'cargo' => 'Jefe del Departamento de Contabilidad', 'titular' => true, 'fecha_inicio' => '2024-03-15', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 3, 'nombre' => 'Carlos Hernández Díaz', 'institucion' => 'UDG - Guadalajara', 'cargo' => 'Jefe del Departamento de Contabilidad', 'titular' => false, 'fecha_inicio' => '2024-02-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    39 => [
-        ['id' => 2, 'nombre' => 'Juan Martínez López', 'institucion' => 'IPN - ESCOM', 'cargo' => 'Secretario', 'titular' => true, 'fecha_inicio' => '2024-03-15', 'fecha_fin' => null, 'activo' => true],
-    ]
-];
-
-// ID máximo para nuevos registros
-$ultimo_id = count($cargos);
 
 // ============================================================
-// PROCESAR ACCIONES DEL CRUD (SIMULADO)
+// PROCESAR ACCIONES DEL CRUD
 // ============================================================
 
 $mensaje = '';
 $error = '';
 $accion = isset($_GET['accion']) ? $_GET['accion'] : '';
 
-// Eliminar cargo
+// Eliminar cargo (solo si no tiene personas asociadas)
 if ($accion === 'eliminar' && isset($_GET['id'])) {
     $id_eliminar = (int)$_GET['id'];
-    $en_uso = [1, 2, 3];
-    $personas_asociadas_cargo = $personas_asociadas[$id_eliminar] ?? [];
-    
-    if (in_array($id_eliminar, $en_uso)) {
-        $error = 'No se puede eliminar el cargo porque está siendo utilizado en puestos.';
-    } elseif (count($personas_asociadas_cargo) > 0) {
-        $error = 'No se puede eliminar el cargo porque tiene ' . count($personas_asociadas_cargo) . ' persona(s) asociada(s).';
-    } else {
-        foreach ($cargos as $key => $c) {
-            if ($c['id'] == $id_eliminar) {
-                unset($cargos[$key]);
-                $mensaje = 'Cargo eliminado exitosamente';
-                break;
-            }
+    $cargo_a_eliminar = null;
+    $cargo_key = null;
+    foreach ($cargos as $key => $c) {
+        if ($c['id'] == $id_eliminar) {
+            $cargo_a_eliminar = $c;
+            $cargo_key = $key;
+            break;
         }
+    }
+    
+    if ($cargo_a_eliminar && $cargo_a_eliminar['personas'] > 0) {
+        $error = 'No se puede eliminar el cargo porque tiene ' . $cargo_a_eliminar['personas'] . ' persona(s) asociada(s).';
+    } elseif ($cargo_a_eliminar && $cargo_a_eliminar['personas'] == 0) {
+        unset($cargos[$cargo_key]);
         $cargos = array_values($cargos);
-        // Actualizar el array para el modal (se recarga la página)
+        $mensaje = 'Cargo eliminado exitosamente';
         header('Location: cargos.php?mensaje=' . urlencode($mensaje));
         exit;
+    } else {
+        $error = 'Cargo no encontrado';
     }
 }
 
@@ -496,7 +275,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($errores)) {
         if ($id_cargo > 0) {
             // Editar cargo existente
-            // Validar duplicados (excepto el mismo)
             $duplicado = false;
             foreach ($cargos as $c) {
                 if ($c['id'] != $id_cargo && strtolower($c['nombre_m']) == strtolower($nombre_m)) {
@@ -514,6 +292,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         $cargos[$key]['nombre_f'] = $nombre_f;
                         $cargos[$key]['id_nivel'] = $id_nivel;
                         $cargos[$key]['activo'] = $activo;
+                        // Mantener el conteo de personas
                         $encontrado = true;
                         $mensaje = 'Cargo actualizado exitosamente';
                         break;
@@ -535,9 +314,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ($duplicado) {
                 $error = 'El nombre "' . $nombre_m . '" ya está registrado como cargo';
             } else {
-                $ultimo_id++;
+                $ultimo_id = 0;
+                foreach ($cargos as $c) {
+                    if ($c['id'] > $ultimo_id) $ultimo_id = $c['id'];
+                }
+                $nuevo_id = $ultimo_id + 1;
                 $cargos[] = [
-                    'id' => $ultimo_id,
+                    'id' => $nuevo_id,
                     'nombre_m' => $nombre_m,
                     'nombre_f' => $nombre_f,
                     'id_nivel' => $id_nivel,
@@ -579,14 +362,23 @@ $registros_por_pagina = 6;
 
 $cargos_filtrados = $cargos;
 
+// Filtro por búsqueda
+if (!empty($busqueda)) {
+    $busqueda_lower = strtolower($busqueda);
+    $cargos_filtrados = array_filter($cargos_filtrados, function($c) use ($busqueda_lower) {
+        return strpos(strtolower($c['nombre_m']), $busqueda_lower) !== false ||
+               strpos(strtolower($c['nombre_f']), $busqueda_lower) !== false;
+    });
+}
 
-
+// Filtro por nivel
 if ($nivel_filtro > 0) {
     $cargos_filtrados = array_filter($cargos_filtrados, function($c) use ($nivel_filtro) {
         return $c['id_nivel'] == $nivel_filtro;
     });
 }
 
+// Filtro por estado
 if ($estado_filtro == 'activo') {
     $cargos_filtrados = array_filter($cargos_filtrados, function($c) {
         return $c['activo'] == true;
@@ -729,8 +521,6 @@ include 'template/menu.php';
                         </select>
                     </div>
                     
-                    
-                    
                     <a href="cargos.php" class="btn-filter-clear <?= (empty($busqueda) && $nivel_filtro == 0 && empty($estado_filtro)) ? 'disabled' : '' ?>">
                         <i class="fas fa-times"></i> Limpiar
                     </a>
@@ -818,10 +608,9 @@ include 'template/menu.php';
                                 $estado_class = $cargo['activo'] ? 'status-active' : 'status-inactive';
                                 $personas = $cargo['personas'] ?? 0;
                                 $personas_class = $personas > 0 ? 'badge-personas-activo' : 'badge-personas-vacio';
-                                $personas_asociadas_cargo = $personas_asociadas[$cargo['id']] ?? [];
-                                $puede_eliminar = !in_array($cargo['id'], [1, 2, 3]) && count($personas_asociadas_cargo) == 0;
+                                $puede_eliminar = $personas == 0;
                             ?>
-                            <tr data-id="<?= $cargo['id'] ?>" data-personas="<?= count($personas_asociadas_cargo) ?>">
+                            <tr data-id="<?= $cargo['id'] ?>" data-personas="<?= $personas ?>">
                                 <td>
                                     <div class="cargo-cell">
                                         <div class="cargo-nombre"><?= htmlspecialchars($cargo['nombre_m']) ?></div>
@@ -854,8 +643,8 @@ include 'template/menu.php';
                                         <button onclick="abrirModalEdicion(<?= $cargo['id'] ?>)" class="btn-accion btn-editar" title="Editar">
                                             <i class="fas fa-pen"></i>
                                         </button>
-                                        <button onclick="eliminarCargo(<?= $cargo['id'] ?>)" class="btn-accion btn-eliminar <?= !$puede_eliminar ? 'btn-eliminar-bloqueado' : '' ?>" title="<?= !$puede_eliminar ? 'No se puede eliminar (tiene personas asociadas o está en uso)' : 'Eliminar' ?>">
-                                            <i class="fas <?= !$puede_eliminar ? 'fa-trash-alt' : 'fa-trash-alt' ?>"></i>
+                                        <button onclick="eliminarCargo(<?= $cargo['id'] ?>)" class="btn-accion btn-eliminar <?= !$puede_eliminar ? 'btn-eliminar-bloqueado' : '' ?>" title="<?= !$puede_eliminar ? 'No se puede eliminar (tiene personas asociadas)' : 'Eliminar' ?>">
+                                            <i class="fas fa-trash-alt"></i>
                                         </button>
                                     </div>
                                 </td>
@@ -1246,24 +1035,6 @@ include 'template/menu.php';
     box-shadow: 0 0 0 4px rgba(139, 0, 0, 0.06);
 }
 
-.btn-filter-apply {
-    padding: 0.5rem 1.25rem;
-    background: #8B0000;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    white-space: nowrap;
-}
-
-.btn-filter-apply:hover {
-    background: #5C0000;
-    transform: translateY(-1px);
-}
-
 .btn-filter-clear {
     padding: 0.5rem 1.25rem;
     background: transparent;
@@ -1549,7 +1320,7 @@ include 'template/menu.php';
     color: #dc3545;
 }
 
-.btn-eliminar:hover {
+.btn-eliminar:hover:not(.btn-eliminar-bloqueado) {
     background: #dc3545;
     color: white;
 }
@@ -1666,14 +1437,6 @@ include 'template/menu.php';
     height: 32px;
     color: #999;
     font-size: 0.8rem;
-}
-
-.table-modern-footer {
-    padding: 0.8rem 1.25rem;
-    border-top: 1px solid #f0f0f0;
-    background: #fafafa;
-    font-size: 0.85rem;
-    color: #6b6b6b;
 }
 
 /* ============================================================
@@ -1985,7 +1748,6 @@ include 'template/menu.php';
         max-width: none;
     }
 
-    .btn-filter-apply,
     .btn-filter-clear {
         width: 100%;
         justify-content: center;
@@ -2018,8 +1780,7 @@ include 'template/menu.php';
         align-items: stretch;
     }
 
-    .page-header-right .btn-primary-modern,
-    .page-header-right .btn-outline-modern {
+    .page-header-right .btn-primary-modern {
         width: 100%;
         justify-content: center;
     }
@@ -2120,7 +1881,6 @@ include 'template/menu.php';
 
 const nivelesCargo = <?= json_encode($niveles_cargo) ?>;
 const cargosData = <?= json_encode($cargos) ?>;
-const personasAsociadas = <?= json_encode($personas_asociadas) ?>;
 
 // ============================================================
 // BÚSQUEDA Y FILTROS EN TIEMPO REAL
@@ -2254,9 +2014,7 @@ function eliminarCargo(id) {
         return;
     }
     
-    const personas = personasAsociadas[id] || [];
-    const totalPersonas = personas.length;
-    const enUso = [1, 2, 3].includes(id);
+    const totalPersonas = cargo.personas || 0;
     
     const modal = document.getElementById('modalEliminar');
     const modalIcon = document.getElementById('modalIconEliminar');
@@ -2264,22 +2022,15 @@ function eliminarCargo(id) {
     const modalBody = document.getElementById('modalBodyEliminar');
     const modalFooter = document.getElementById('modalFooterEliminar');
     
-    if (enUso || totalPersonas > 0) {
+    if (totalPersonas > 0) {
         modalIcon.style.color = '#e65100';
         modalIcon.className = 'fas fa-lock';
         modalTitulo.textContent = 'No se puede eliminar';
         
-        let razon = '';
-        if (enUso) {
-            razon = 'Este cargo está siendo utilizado en puestos.';
-        } else if (totalPersonas > 0) {
-            razon = 'Este cargo tiene <strong>' + totalPersonas + ' persona(s)</strong> asociada(s).';
-        }
-        
         modalBody.innerHTML = `
             <p style="color:#e65100;font-weight:600;">
                 <i class="fas fa-exclamation-circle"></i> 
-                ${razon}
+                Este cargo tiene <strong>${totalPersonas} persona(s)</strong> asociada(s).
             </p>
             <p>Para poder eliminar este cargo, primero debe eliminar o reasignar todas las personas asociadas.</p>
             <div style="background:#faf8f8;padding:1rem;border-radius:10px;border:1px solid #f0ecec;margin:0.75rem 0;">
@@ -2295,12 +2046,10 @@ function eliminarCargo(id) {
                     <span style="font-weight:600;color:#666;width:120px;">Estado</span>
                     <span style="color:#1a1a1a;">${cargo.activo ? 'Activo' : 'Inactivo'}</span>
                 </div>
-                ${totalPersonas > 0 ? `
                 <div style="display:flex;padding:0.3rem 0;border-top:1px solid #f0ecec;margin-top:0.3rem;padding-top:0.3rem;">
                     <span style="font-weight:600;color:#666;width:120px;">Personas asociadas</span>
                     <span style="color:#e65100;font-weight:600;">${totalPersonas}</span>
                 </div>
-                ` : ''}
             </div>
         `;
         

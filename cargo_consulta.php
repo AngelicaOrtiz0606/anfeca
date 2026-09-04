@@ -12,13 +12,7 @@ if (!isset($_SESSION['usuario'])) {
 }
 
 // ============================================================
-// OBTENER ID DEL CARGO
-// ============================================================
-
-$id = isset($_GET['id']) ? (int)$_GET['id'] : 1;
-
-// ============================================================
-// DATOS SIMULADOS
+// DATOS DE REFERENCIA (coinciden con directorios.php)
 // ============================================================
 
 $niveles_cargo = [
@@ -27,6 +21,55 @@ $niveles_cargo = [
     3 => 'Institucional'
 ];
 
+// ============================================================
+// DATOS DE PERSONAS REALES (tomados de directorios.php)
+// ============================================================
+
+$personas_reales = [
+    1 => ['nombre' => 'Armando Tomé González', 'institucion' => 'Universidad Nacional Autónoma de México', 'cargo' => 'Presidente'],
+    2 => ['nombre' => 'Adriana Garza Elizondo', 'institucion' => 'Universidad Autónoma de Nuevo León', 'cargo' => 'Vicepresidenta'],
+    3 => ['nombre' => 'Carlos Lobo Sánchez', 'institucion' => 'Universidad Nacional Autónoma de México', 'cargo' => 'Secretario General'],
+    4 => ['nombre' => 'Lourdes Mata Romero', 'institucion' => 'Universidad Nacional Autónoma de México', 'cargo' => 'Directora Ejecutiva'],
+    5 => ['nombre' => 'Leobardo Berrelleza Reyes', 'institucion' => 'Universidad Autónoma de Sinaloa', 'cargo' => 'Director Regional Zona 1'],
+    6 => ['nombre' => 'Laura María del Pilar Macías Amozurrutia', 'institucion' => 'Universidad Iberoamericana Torreón', 'cargo' => 'Directora Regional Zona 2'],
+    7 => ['nombre' => 'Ismael Manuel Rodríguez Herrera', 'institucion' => 'Universidad Autónoma de Aguascalientes', 'cargo' => 'Director Regional Zona 3'],
+    8 => ['nombre' => 'Cristian Omar Alcantar López', 'institucion' => 'Universidad de Guadalajara', 'cargo' => 'Director Regional Zona 4'],
+    9 => ['nombre' => 'Mario Franz Subieta Zecua', 'institucion' => 'Universidad Autónoma de Tlaxcala', 'cargo' => 'Director Regional Zona 5'],
+    10 => ['nombre' => 'Anabel Galván Sarabia', 'institucion' => 'Universidad Veracruzana', 'cargo' => 'Directora Regional Zona 6'],
+    11 => ['nombre' => 'Giannina Sampieri Laguna', 'institucion' => 'Universidad Intercontinental', 'cargo' => 'Directora Regional Zona 7'],
+    12 => ['nombre' => 'David Roberto Suárez Pacheco', 'institucion' => 'Universidad Autónoma de Yucatán', 'cargo' => 'Coordinador Nacional de Certificación Académica'],
+    13 => ['nombre' => 'José Juan Paz Reyes', 'institucion' => 'Universidad Juárez Autónoma de Tabasco', 'cargo' => 'Coordinador Nacional de la Academia ANFECA'],
+    14 => ['nombre' => 'Mónica Sánchez Limón', 'institucion' => 'Universidad Autónoma de Tamaulipas', 'cargo' => 'Coordinador Nacional de Emprendimiento Social'],
+    15 => ['nombre' => 'Lenin Martínez Pérez', 'institucion' => 'Universidad Tecnológica de Tabasco', 'cargo' => 'Coordinador Nacional de Planes y Programas de Estudio'],
+    16 => ['nombre' => 'Ivett Guillén Morales', 'institucion' => 'Instituto Politécnico Nacional', 'cargo' => 'Coordinador Nacional de Investigación'],
+    17 => ['nombre' => 'José Ernesto Amorós Espinosa', 'institucion' => 'Tecnológico de Monterrey', 'cargo' => 'Coordinador Nacional de Posgrado'],
+    18 => ['nombre' => 'Cristina Cabrera Ramos', 'institucion' => 'Universidad Autónoma de Chihuahua', 'cargo' => 'Coordinador Nacional de Maratones'],
+    19 => ['nombre' => 'Aureliano Martínez Castillo', 'institucion' => 'Universidad Autónoma de Yucatán', 'cargo' => 'Coordinador Nacional de Historia'],
+    20 => ['nombre' => 'Juan Antonio Zapata Zapata', 'institucion' => 'Universidad Autónoma de San Luis Potosí', 'cargo' => 'Coordinador Nacional de Vinculación Nacional e Internacional'],
+    21 => ['nombre' => 'Laura Ofelia Robles Sahagún', 'institucion' => 'Universidad del Valle de Atemajac', 'cargo' => 'Coordinador Nacional de Universidad Empresa'],
+    22 => ['nombre' => 'Cecilia Morales del Río', 'institucion' => 'Universidad de Monterrey', 'cargo' => 'Coordinador Nacional de Formación Profesional y Académica'],
+    23 => ['nombre' => 'María Antonieta Monserrat Vera Muñoz', 'institucion' => 'Benemérita Universidad Autónoma de Puebla', 'cargo' => 'Coordinador Nacional de Responsabilidad Social Universitaria'],
+    24 => ['nombre' => 'Lorena Argentina Medina Bocanegra', 'institucion' => 'Universidad Autónoma de Coahuila', 'cargo' => 'Coordinador Nacional de Igualdad de Género'],
+    25 => ['nombre' => 'Idi Amin Germán Silva Jug', 'institucion' => 'Universidad Autónoma de Nayarit', 'cargo' => 'Coordinador Nacional de Desarrollo Académico Estudiantil'],
+    26 => ['nombre' => 'Leticia María González Velásquez', 'institucion' => 'Universidad de Sonora', 'cargo' => 'Coordinador Regional Zona 1 de Certificación Académica'],
+    27 => ['nombre' => 'Patricia Hernández García', 'institucion' => 'Universidad Autónoma de San Luis Potosí', 'cargo' => 'Coordinador Regional Zona 3 de Certificación Académica'],
+    28 => ['nombre' => 'Mónica Blanco Jiménez', 'institucion' => 'Universidad Autónoma de Nuevo León', 'cargo' => 'Coordinador Regional Zona 2 de Certificación Académica'],
+    29 => ['nombre' => 'José Sánchez Gutiérrez', 'institucion' => 'Universidad de Guadalajara', 'cargo' => 'Coordinador Regional Zona 4 de Investigación'],
+    30 => ['nombre' => 'Alfonso Martin Rodríguez', 'institucion' => 'Universidad Autónoma de Aguascalientes', 'cargo' => 'Coordinador Regional Zona 3 de Responsabilidad Social Universitaria'],
+    31 => ['nombre' => 'Emigdio Larios Gómez', 'institucion' => 'Benemérita Universidad Autónoma de Puebla', 'cargo' => 'Coordinador Regional Zona 5 de Posgrado'],
+    32 => ['nombre' => 'Cristian Omar Alcantar López', 'institucion' => 'Universidad de Guadalajara', 'cargo' => 'Director de División'],
+    33 => ['nombre' => 'Luis Edmundo Garrido Sánchez', 'institucion' => 'Instituto Tecnológico y de Estudios Superiores de Occidente', 'cargo' => 'Jefe de Departamento'],
+    34 => ['nombre' => 'Maria Margarita Villareal Treviño', 'institucion' => 'Instituto Tecnológico y de Estudios Superiores de Occidente', 'cargo' => 'Directora'],
+    35 => ['nombre' => 'Esmeralda Brito Cervantes', 'institucion' => 'Universidad Autónoma de Guadalajara', 'cargo' => 'Directora del Programa de Administración'],
+    36 => ['nombre' => 'Nadia Natasha Reus González', 'institucion' => 'Universidad de Guadalajara', 'cargo' => 'Secretario de la División de Ciencias Sociales y de la Cultura'],
+    37 => ['nombre' => 'Salvador Cervantes Cervantes', 'institucion' => 'Universidad del Valle de Atemajac', 'cargo' => 'Director General Académico'],
+    38 => ['nombre' => 'María Guadalupe Jiménez Hernández', 'institucion' => 'Universidad del Valle de Atemajac', 'cargo' => 'Director General de Plantel']
+];
+
+// ============================================================
+// DATOS DE CARGOS (con personas asociadas reales)
+// ============================================================
+
 $cargos = [
     [
         'id' => 1,
@@ -34,7 +77,8 @@ $cargos = [
         'nombre_f' => 'Presidenta',
         'id_nivel' => 1,
         'activo' => true,
-        'personas' => 1
+        'personas' => 1,
+        'personas_ids' => [1]
     ],
     [
         'id' => 2,
@@ -42,7 +86,8 @@ $cargos = [
         'nombre_f' => 'Vicepresidenta',
         'id_nivel' => 1,
         'activo' => true,
-        'personas' => 2
+        'personas' => 1,
+        'personas_ids' => [2]
     ],
     [
         'id' => 3,
@@ -50,7 +95,8 @@ $cargos = [
         'nombre_f' => 'Secretaria General',
         'id_nivel' => 1,
         'activo' => true,
-        'personas' => 0
+        'personas' => 1,
+        'personas_ids' => [3]
     ],
     [
         'id' => 4,
@@ -58,87 +104,98 @@ $cargos = [
         'nombre_f' => 'Directora Ejecutiva',
         'id_nivel' => 1,
         'activo' => true,
-        'personas' => 1
+        'personas' => 1,
+        'personas_ids' => [4]
     ],
     [
         'id' => 5,
-        'nombre_m' => 'Coordinador Nacional',
-        'nombre_f' => 'Coordinadora Nacional',
+        'nombre_m' => 'Director Regional',
+        'nombre_f' => 'Directora Regional',
         'id_nivel' => 1,
         'activo' => true,
-        'personas' => 3
+        'personas' => 7,
+        'personas_ids' => [5, 6, 7, 8, 9, 10, 11]
     ],
     [
         'id' => 6,
-        'nombre_m' => 'Director Regional',
-        'nombre_f' => 'Directora Regional',
+        'nombre_m' => 'Coordinador Nacional',
+        'nombre_f' => 'Coordinadora Nacional',
         'id_nivel' => 2,
         'activo' => true,
-        'personas' => 4
+        'personas' => 14,
+        'personas_ids' => [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
     ],
     [
         'id' => 7,
-        'nombre_m' => 'Secretario Regional',
-        'nombre_f' => 'Secretaria Regional',
-        'id_nivel' => 2,
-        'activo' => true,
-        'personas' => 0
-    ],
-    [
-        'id' => 8,
         'nombre_m' => 'Coordinador Regional',
         'nombre_f' => 'Coordinadora Regional',
         'id_nivel' => 2,
         'activo' => true,
-        'personas' => 2
+        'personas' => 6,
+        'personas_ids' => [26, 27, 28, 29, 30, 31]
+    ],
+    [
+        'id' => 8,
+        'nombre_m' => 'Director de División',
+        'nombre_f' => 'Directora de División',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => 1,
+        'personas_ids' => [32]
     ],
     [
         'id' => 9,
-        'nombre_m' => 'Director',
-        'nombre_f' => 'Directora',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 5
-    ],
-    [
-        'id' => 10,
-        'nombre_m' => 'Director General',
-        'nombre_f' => 'Directora General',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 1
-    ],
-    [
-        'id' => 11,
-        'nombre_m' => 'Coordinador Académico',
-        'nombre_f' => 'Coordinadora Académica',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 3
-    ],
-    [
-        'id' => 12,
         'nombre_m' => 'Jefe de Departamento',
         'nombre_f' => 'Jefa de Departamento',
         'id_nivel' => 3,
         'activo' => true,
-        'personas' => 6
+        'personas' => 1,
+        'personas_ids' => [33]
+    ],
+    [
+        'id' => 10,
+        'nombre_m' => 'Director',
+        'nombre_f' => 'Directora',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => 1,
+        'personas_ids' => [34]
+    ],
+    [
+        'id' => 11,
+        'nombre_m' => 'Director de Programa',
+        'nombre_f' => 'Directora de Programa',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => 1,
+        'personas_ids' => [35]
+    ],
+    [
+        'id' => 12,
+        'nombre_m' => 'Secretario de División',
+        'nombre_f' => 'Secretaria de División',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => 1,
+        'personas_ids' => [36]
     ],
     [
         'id' => 13,
-        'nombre_m' => 'Rector',
-        'nombre_f' => 'Rectora',
+        'nombre_m' => 'Director General Académico',
+        'nombre_f' => 'Directora General Académica',
         'id_nivel' => 3,
         'activo' => true,
-        'personas' => 0
+        'personas' => 1,
+        'personas_ids' => [37]
     ],
     [
         'id' => 14,
-        'nombre_m' => 'Secretario Técnico General',
-        'nombre_f' => 'Secretaria Técnica General',
-        'id_nivel' => 1,
-        'activo' => false,
-        'personas' => 0
+        'nombre_m' => 'Director General de Plantel',
+        'nombre_f' => 'Directora General de Plantel',
+        'id_nivel' => 3,
+        'activo' => true,
+        'personas' => 1,
+        'personas_ids' => [38]
     ],
     [
         'id' => 15,
@@ -146,7 +203,8 @@ $cargos = [
         'nombre_f' => 'Representante ANFECA ante ALAFEC',
         'id_nivel' => 1,
         'activo' => true,
-        'personas' => 1
+        'personas' => 0,
+        'personas_ids' => []
     ],
     [
         'id' => 16,
@@ -154,298 +212,16 @@ $cargos = [
         'nombre_f' => 'Directora General CACECA',
         'id_nivel' => 1,
         'activo' => true,
-        'personas' => 0
-    ],
-    [
-        'id' => 17,
-        'nombre_m' => 'Secretario Técnico',
-        'nombre_f' => 'Secretaria Técnica',
-        'id_nivel' => 2,
-        'activo' => true,
-        'personas' => 2
-    ],
-    [
-        'id' => 18,
-        'nombre_m' => 'Director Académico',
-        'nombre_f' => 'Directora Académica',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 1
-    ],
-    [
-        'id' => 19,
-        'nombre_m' => 'Director de Área',
-        'nombre_f' => 'Directora de Área',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 2
-    ],
-    [
-        'id' => 20,
-        'nombre_m' => 'Director de Contaduría',
-        'nombre_f' => 'Directora de Contaduría',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 0
-    ],
-    [
-        'id' => 21,
-        'nombre_m' => 'Director de División',
-        'nombre_f' => 'Directora de División',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 3
-    ],
-    [
-        'id' => 22,
-        'nombre_m' => 'Director de División Económico-Administrativa',
-        'nombre_f' => 'Directora de División Económico-Administrativa',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 0
-    ],
-    [
-        'id' => 23,
-        'nombre_m' => 'Director de Carrera de LIN',
-        'nombre_f' => 'Directora de Carrera de LIN',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 1
-    ],
-    [
-        'id' => 24,
-        'nombre_m' => 'Coordinador de Licenciatura en Administración',
-        'nombre_f' => 'Coordinadora de Licenciatura en Administración',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 0
-    ],
-    [
-        'id' => 25,
-        'nombre_m' => 'Coordinador de Contaduría y Administración',
-        'nombre_f' => 'Coordinadora de Contaduría y Administración',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 2
-    ],
-    [
-        'id' => 26,
-        'nombre_m' => 'Coordinador de Licenciatura en Contaduría Pública',
-        'nombre_f' => 'Coordinadora de Licenciatura en Contaduría Pública',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 0
-    ],
-    [
-        'id' => 27,
-        'nombre_m' => 'Coordinador de la Facultad',
-        'nombre_f' => 'Coordinadora de la Facultad',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 3
-    ],
-    [
-        'id' => 28,
-        'nombre_m' => 'Coordinador General',
-        'nombre_f' => 'Coordinadora General',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 1
-    ],
-    [
-        'id' => 29,
-        'nombre_m' => 'Coordinador de Negocios',
-        'nombre_f' => 'Coordinadora de Negocios',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 0
-    ],
-    [
-        'id' => 30,
-        'nombre_m' => 'Coordinador de Proyectos y Vinculación Institucional',
-        'nombre_f' => 'Coordinadora de Proyectos y Vinculación Institucional',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 0
-    ],
-    [
-        'id' => 31,
-        'nombre_m' => 'Coordinador de Unidad Académica',
-        'nombre_f' => 'Coordinadora de Unidad Académica',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 2
-    ],
-    [
-        'id' => 32,
-        'nombre_m' => 'Coordinador de Área Económico-Administrativa',
-        'nombre_f' => 'Coordinadora de Área Económico-Administrativa',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 0
-    ],
-    [
-        'id' => 33,
-        'nombre_m' => 'Coordinador de Ciencias Económico Administrativas',
-        'nombre_f' => 'Coordinadora de Ciencias Económico Administrativas',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 1
-    ],
-    [
-        'id' => 34,
-        'nombre_m' => 'Coordinador de Contaduría',
-        'nombre_f' => 'Coordinadora de Contaduría',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 0
-    ],
-    [
-        'id' => 35,
-        'nombre_m' => 'Jefe de Departamento de Ciencias Administrativas',
-        'nombre_f' => 'Jefa de Departamento de Ciencias Administrativas',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 4
-    ],
-    [
-        'id' => 36,
-        'nombre_m' => 'Jefe de Departamento de Ciencias Económico Administrativas',
-        'nombre_f' => 'Jefa de Departamento de Ciencias Económico Administrativas',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 0
-    ],
-    [
-        'id' => 37,
-        'nombre_m' => 'Jefe del Departamento de Contabilidad',
-        'nombre_f' => 'Jefa del Departamento de Contabilidad',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 2
-    ],
-    [
-        'id' => 38,
-        'nombre_m' => 'Encargado de la Dirección',
-        'nombre_f' => 'Encargada de la Dirección',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 0
-    ],
-    [
-        'id' => 39,
-        'nombre_m' => 'Secretario',
-        'nombre_f' => 'Secretaria',
-        'id_nivel' => 3,
-        'activo' => true,
-        'personas' => 1
+        'personas' => 0,
+        'personas_ids' => []
     ]
 ];
 
-$personas_asociadas = [
-    1 => [
-        ['id' => 1, 'nombre' => 'María González Pérez', 'institucion' => 'UNAM - Facultad de Contaduría', 'cargo' => 'Presidenta', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    2 => [
-        ['id' => 2, 'nombre' => 'Juan Martínez López', 'institucion' => 'IPN - ESCOM', 'cargo' => 'Vicepresidente', 'titular' => true, 'fecha_inicio' => '2024-03-15', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 3, 'nombre' => 'Carlos Hernández Díaz', 'institucion' => 'UDG - Guadalajara', 'cargo' => 'Vicepresidente', 'titular' => false, 'fecha_inicio' => '2024-02-01', 'fecha_fin' => '2024-12-31', 'activo' => false],
-    ],
-    4 => [
-        ['id' => 4, 'nombre' => 'Ana Sánchez Ramírez', 'institucion' => 'UAQ - Querétaro', 'cargo' => 'Directora Ejecutiva', 'titular' => true, 'fecha_inicio' => '2024-06-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    5 => [
-        ['id' => 5, 'nombre' => 'Laura Torres Vega', 'institucion' => 'UABC - Mexicali', 'cargo' => 'Coordinadora Nacional', 'titular' => true, 'fecha_inicio' => '2024-07-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 6, 'nombre' => 'Patricia Flores Reyes', 'institucion' => 'UAEH - Pachuca', 'cargo' => 'Coordinadora Nacional', 'titular' => false, 'fecha_inicio' => '2024-04-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 7, 'nombre' => 'Sofía Reyes Gil', 'institucion' => 'UAM - Iztapalapa', 'cargo' => 'Coordinadora Nacional', 'titular' => true, 'fecha_inicio' => '2024-12-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    6 => [
-        ['id' => 3, 'nombre' => 'Carlos Hernández Díaz', 'institucion' => 'UDG - Guadalajara', 'cargo' => 'Director Regional', 'titular' => true, 'fecha_inicio' => '2024-02-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 8, 'nombre' => 'Gabriela Mendoza Soto', 'institucion' => 'UDG - Guadalajara', 'cargo' => 'Directora Regional', 'titular' => false, 'fecha_inicio' => '2024-08-15', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 9, 'nombre' => 'Luis Méndez Vargas', 'institucion' => 'UABC - Tijuana', 'cargo' => 'Director Regional', 'titular' => false, 'fecha_inicio' => '2023-06-01', 'fecha_fin' => '2024-05-31', 'activo' => false],
-        ['id' => 10, 'nombre' => 'Andrés Moreno Rojas', 'institucion' => 'UANL - San Nicolás', 'cargo' => 'Coordinador Regional', 'titular' => true, 'fecha_inicio' => '2024-10-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    8 => [
-        ['id' => 6, 'nombre' => 'Patricia Flores Reyes', 'institucion' => 'UAEH - Pachuca', 'cargo' => 'Coordinadora Regional', 'titular' => true, 'fecha_inicio' => '2024-04-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 10, 'nombre' => 'Andrés Moreno Rojas', 'institucion' => 'UANL - San Nicolás', 'cargo' => 'Coordinador Regional', 'titular' => false, 'fecha_inicio' => '2024-10-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    9 => [
-        ['id' => 11, 'nombre' => 'Jorge Gómez García', 'institucion' => 'UADY - Mérida', 'cargo' => 'Director Académico', 'titular' => true, 'fecha_inicio' => '2024-08-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 12, 'nombre' => 'Carmen Rivera Morales', 'institucion' => 'UDG - Guadalajara', 'cargo' => 'Coordinadora Académica', 'titular' => true, 'fecha_inicio' => '2024-05-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 13, 'nombre' => 'Teresa Ortega Luna', 'institucion' => 'UAEM - Toluca', 'cargo' => 'Director de División', 'titular' => true, 'fecha_inicio' => '2024-11-15', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 14, 'nombre' => 'Ricardo Peña Fuentes', 'institucion' => 'UABJO - Oaxaca', 'cargo' => 'Jefe de Departamento', 'titular' => false, 'fecha_inicio' => '2023-12-01', 'fecha_fin' => '2024-11-30', 'activo' => false],
-        ['id' => 15, 'nombre' => 'Elena Castro Ramos', 'institucion' => 'UASLP - San Luis Potosí', 'cargo' => 'Directora General', 'titular' => true, 'fecha_inicio' => '2024-09-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    10 => [
-        ['id' => 15, 'nombre' => 'Elena Castro Ramos', 'institucion' => 'UASLP - San Luis Potosí', 'cargo' => 'Directora General', 'titular' => true, 'fecha_inicio' => '2024-09-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    11 => [
-        ['id' => 12, 'nombre' => 'Carmen Rivera Morales', 'institucion' => 'UDG - Guadalajara', 'cargo' => 'Coordinadora Académica', 'titular' => true, 'fecha_inicio' => '2024-05-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 13, 'nombre' => 'Teresa Ortega Luna', 'institucion' => 'UAEM - Toluca', 'cargo' => 'Directora de División', 'titular' => false, 'fecha_inicio' => '2024-11-15', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 11, 'nombre' => 'Jorge Gómez García', 'institucion' => 'UADY - Mérida', 'cargo' => 'Director Académico', 'titular' => false, 'fecha_inicio' => '2024-08-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    12 => [
-        ['id' => 14, 'nombre' => 'Ricardo Peña Fuentes', 'institucion' => 'UABJO - Oaxaca', 'cargo' => 'Jefe de Departamento', 'titular' => false, 'fecha_inicio' => '2023-12-01', 'fecha_fin' => '2024-11-30', 'activo' => false],
-        ['id' => 1, 'nombre' => 'María González Pérez', 'institucion' => 'UNAM - Facultad de Contaduría', 'cargo' => 'Jefa de Departamento', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 3, 'nombre' => 'Carlos Hernández Díaz', 'institucion' => 'UDG - Guadalajara', 'cargo' => 'Jefe de Departamento', 'titular' => false, 'fecha_inicio' => '2024-02-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 4, 'nombre' => 'Ana Sánchez Ramírez', 'institucion' => 'UAQ - Querétaro', 'cargo' => 'Jefa de Departamento', 'titular' => true, 'fecha_inicio' => '2024-06-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 6, 'nombre' => 'Patricia Flores Reyes', 'institucion' => 'UAEH - Pachuca', 'cargo' => 'Jefa de Departamento', 'titular' => false, 'fecha_inicio' => '2024-04-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 16, 'nombre' => 'Fernando Cruz Salazar', 'institucion' => 'UAQ - Querétaro', 'cargo' => 'Jefe de Departamento', 'titular' => true, 'fecha_inicio' => '2024-07-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    15 => [
-        ['id' => 3, 'nombre' => 'Carlos Hernández Díaz', 'institucion' => 'UDG - Guadalajara', 'cargo' => 'Representante ANFECA ante ALAFEC', 'titular' => true, 'fecha_inicio' => '2024-02-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    17 => [
-        ['id' => 9, 'nombre' => 'Luis Méndez Vargas', 'institucion' => 'UABC - Tijuana', 'cargo' => 'Secretario Técnico', 'titular' => false, 'fecha_inicio' => '2023-06-01', 'fecha_fin' => '2024-05-31', 'activo' => false],
-        ['id' => 10, 'nombre' => 'Andrés Moreno Rojas', 'institucion' => 'UANL - San Nicolás', 'cargo' => 'Secretario Técnico', 'titular' => true, 'fecha_inicio' => '2024-10-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    18 => [
-        ['id' => 11, 'nombre' => 'Jorge Gómez García', 'institucion' => 'UADY - Mérida', 'cargo' => 'Director Académico', 'titular' => true, 'fecha_inicio' => '2024-08-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    19 => [
-        ['id' => 12, 'nombre' => 'Carmen Rivera Morales', 'institucion' => 'UDG - Guadalajara', 'cargo' => 'Directora de Área', 'titular' => true, 'fecha_inicio' => '2024-05-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 13, 'nombre' => 'Teresa Ortega Luna', 'institucion' => 'UAEM - Toluca', 'cargo' => 'Directora de Área', 'titular' => false, 'fecha_inicio' => '2024-11-15', 'fecha_fin' => null, 'activo' => true],
-    ],
-    21 => [
-        ['id' => 11, 'nombre' => 'Jorge Gómez García', 'institucion' => 'UADY - Mérida', 'cargo' => 'Director de División', 'titular' => false, 'fecha_inicio' => '2024-08-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 14, 'nombre' => 'Ricardo Peña Fuentes', 'institucion' => 'UABJO - Oaxaca', 'cargo' => 'Director de División', 'titular' => false, 'fecha_inicio' => '2023-12-01', 'fecha_fin' => '2024-11-30', 'activo' => false],
-        ['id' => 15, 'nombre' => 'Elena Castro Ramos', 'institucion' => 'UASLP - San Luis Potosí', 'cargo' => 'Directora de División', 'titular' => true, 'fecha_inicio' => '2024-09-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    23 => [
-        ['id' => 1, 'nombre' => 'María González Pérez', 'institucion' => 'UNAM - Facultad de Contaduría', 'cargo' => 'Directora de Carrera de LIN', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    25 => [
-        ['id' => 4, 'nombre' => 'Ana Sánchez Ramírez', 'institucion' => 'UAQ - Querétaro', 'cargo' => 'Coordinadora de Contaduría y Administración', 'titular' => true, 'fecha_inicio' => '2024-06-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 16, 'nombre' => 'Fernando Cruz Salazar', 'institucion' => 'UAQ - Querétaro', 'cargo' => 'Coordinador de Contaduría y Administración', 'titular' => false, 'fecha_inicio' => '2024-07-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    27 => [
-        ['id' => 13, 'nombre' => 'Teresa Ortega Luna', 'institucion' => 'UAEM - Toluca', 'cargo' => 'Coordinadora de la Facultad', 'titular' => true, 'fecha_inicio' => '2024-11-15', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 11, 'nombre' => 'Jorge Gómez García', 'institucion' => 'UADY - Mérida', 'cargo' => 'Coordinador de la Facultad', 'titular' => false, 'fecha_inicio' => '2024-08-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 14, 'nombre' => 'Ricardo Peña Fuentes', 'institucion' => 'UABJO - Oaxaca', 'cargo' => 'Coordinador de la Facultad', 'titular' => false, 'fecha_inicio' => '2023-12-01', 'fecha_fin' => '2024-11-30', 'activo' => false],
-    ],
-    28 => [
-        ['id' => 7, 'nombre' => 'Sofía Reyes Gil', 'institucion' => 'UAM - Iztapalapa', 'cargo' => 'Coordinadora General', 'titular' => true, 'fecha_inicio' => '2024-12-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    31 => [
-        ['id' => 13, 'nombre' => 'Teresa Ortega Luna', 'institucion' => 'UAEM - Toluca', 'cargo' => 'Coordinadora de Unidad Académica', 'titular' => false, 'fecha_inicio' => '2024-11-15', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 11, 'nombre' => 'Jorge Gómez García', 'institucion' => 'UADY - Mérida', 'cargo' => 'Coordinador de Unidad Académica', 'titular' => true, 'fecha_inicio' => '2024-08-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    33 => [
-        ['id' => 16, 'nombre' => 'Fernando Cruz Salazar', 'institucion' => 'UAQ - Querétaro', 'cargo' => 'Coordinador de Ciencias Económico Administrativas', 'titular' => true, 'fecha_inicio' => '2024-07-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    35 => [
-        ['id' => 4, 'nombre' => 'Ana Sánchez Ramírez', 'institucion' => 'UAQ - Querétaro', 'cargo' => 'Jefa de Departamento de Ciencias Administrativas', 'titular' => false, 'fecha_inicio' => '2024-06-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 1, 'nombre' => 'María González Pérez', 'institucion' => 'UNAM - Facultad de Contaduría', 'cargo' => 'Jefa de Departamento de Ciencias Administrativas', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 3, 'nombre' => 'Carlos Hernández Díaz', 'institucion' => 'UDG - Guadalajara', 'cargo' => 'Jefe de Departamento de Ciencias Administrativas', 'titular' => false, 'fecha_inicio' => '2024-02-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 6, 'nombre' => 'Patricia Flores Reyes', 'institucion' => 'UAEH - Pachuca', 'cargo' => 'Jefa de Departamento de Ciencias Administrativas', 'titular' => true, 'fecha_inicio' => '2024-04-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    37 => [
-        ['id' => 2, 'nombre' => 'Juan Martínez López', 'institucion' => 'IPN - ESCOM', 'cargo' => 'Jefe del Departamento de Contabilidad', 'titular' => true, 'fecha_inicio' => '2024-03-15', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 3, 'nombre' => 'Carlos Hernández Díaz', 'institucion' => 'UDG - Guadalajara', 'cargo' => 'Jefe del Departamento de Contabilidad', 'titular' => false, 'fecha_inicio' => '2024-02-01', 'fecha_fin' => null, 'activo' => true],
-    ],
-    39 => [
-        ['id' => 2, 'nombre' => 'Juan Martínez López', 'institucion' => 'IPN - ESCOM', 'cargo' => 'Secretario', 'titular' => true, 'fecha_inicio' => '2024-03-15', 'fecha_fin' => null, 'activo' => true],
-    ]
-];
+// ============================================================
+// OBTENER ID DEL CARGO
+// ============================================================
+
+$id = isset($_GET['id']) ? (int)$_GET['id'] : 1;
 
 // Buscar el cargo
 $cargo = null;
@@ -462,12 +238,27 @@ if (!$cargo) {
     exit;
 }
 
+// Obtener personas asociadas reales
+$personas_asociadas = [];
+foreach ($cargo['personas_ids'] as $id_persona) {
+    if (isset($personas_reales[$id_persona])) {
+        $personas_asociadas[] = [
+            'id' => $id_persona,
+            'nombre' => $personas_reales[$id_persona]['nombre'],
+            'institucion' => $personas_reales[$id_persona]['institucion'],
+            'cargo' => $personas_reales[$id_persona]['cargo'],
+            'fecha_inicio' => '2024-01-01',
+            'fecha_fin' => null,
+            'activo' => true
+        ];
+    }
+}
+
 // Obtener datos adicionales
 $nivel_nombre = $niveles_cargo[$cargo['id_nivel']] ?? 'Sin nivel';
 $estado_texto = $cargo['activo'] ? 'Activo' : 'Inactivo';
 $estado_class = $cargo['activo'] ? 'status-active' : 'status-inactive';
-$personas = $personas_asociadas[$cargo['id']] ?? [];
-$total_personas = count($personas);
+$total_personas = count($personas_asociadas);
 
 include 'template/header.php';
 include 'template/menu.php';
@@ -547,6 +338,7 @@ include 'template/menu.php';
                                 <thead>
                                     <tr>
                                         <th>Nombre</th>
+                                        <th>Institución</th>
                                         <th>Cargo</th>
                                         <th>Fecha Inicio</th>
                                         <th>Fecha Fin</th>
@@ -554,7 +346,7 @@ include 'template/menu.php';
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($personas as $persona): 
+                                    <?php foreach ($personas_asociadas as $persona): 
                                         $fecha_inicio = date('d/m/Y', strtotime($persona['fecha_inicio']));
                                         $fecha_fin = $persona['fecha_fin'] ? date('d/m/Y', strtotime($persona['fecha_fin'])) : '---';
                                         $estado_persona = $persona['activo'] ? 'Activo' : 'Inactivo';
@@ -566,6 +358,7 @@ include 'template/menu.php';
                                                 <?= htmlspecialchars($persona['nombre']) ?>
                                             </a>
                                         </td>
+                                        <td><?= htmlspecialchars($persona['institucion']) ?></td>
                                         <td><?= htmlspecialchars($persona['cargo']) ?></td>
                                         <td><?= $fecha_inicio ?></td>
                                         <td><?= $fecha_fin ?></td>
@@ -592,7 +385,7 @@ include 'template/menu.php';
     </div>
 </main>
 
-<!-- Modal Edición (mismo que en cargos.php) -->
+<!-- Modal Edición -->
 <div class="modal-overlay" id="modalCargo" style="display:none;">
     <div class="modal-card modal-card-cargo">
         <div class="modal-header">
@@ -621,8 +414,8 @@ include 'template/menu.php';
                         <label class="form-label required">Nivel de Cargo</label>
                         <select name="id_nivel" id="id_nivel" class="form-control" required>
                             <option value="">Seleccionar nivel...</option>
-                            <?php foreach ($niveles_cargo as $id => $nombre): ?>
-                                <option value="<?= $id ?>"><?= htmlspecialchars($nombre) ?></option>
+                            <?php foreach ($niveles_cargo as $id_nivel => $nombre): ?>
+                                <option value="<?= $id_nivel ?>"><?= htmlspecialchars($nombre) ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
