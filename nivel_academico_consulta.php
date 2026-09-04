@@ -70,29 +70,29 @@ $niveles_academicos = [
 // Personas asociadas a niveles académicos (simuladas)
 $personas_asociadas = [
     1 => [
-        ['id' => 1, 'nombre' => 'María González Pérez', 'institucion' => 'UNAM - Facultad de Contaduría', 'cargo' => 'Presidenta', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 2, 'nombre' => 'Juan Martínez López', 'institucion' => 'IPN - ESCOM', 'cargo' => 'Vicepresidente', 'titular' => true, 'fecha_inicio' => '2024-03-15', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 3, 'nombre' => 'Carlos Hernández Díaz', 'institucion' => 'UDG - Guadalajara', 'cargo' => 'Director Regional', 'titular' => false, 'fecha_inicio' => '2024-02-01', 'fecha_fin' => '2024-12-31', 'activo' => false],
-        ['id' => 4, 'nombre' => 'Ana Sánchez Ramírez', 'institucion' => 'UAQ - Querétaro', 'cargo' => 'Directora Ejecutiva', 'titular' => true, 'fecha_inicio' => '2024-06-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 5, 'nombre' => 'Laura Torres Vega', 'institucion' => 'UABC - Mexicali', 'cargo' => 'Coordinadora Nacional', 'titular' => true, 'fecha_inicio' => '2024-07-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 6, 'nombre' => 'Patricia Flores Reyes', 'institucion' => 'UAEH - Pachuca', 'cargo' => 'Coordinadora Nacional', 'titular' => false, 'fecha_inicio' => '2024-04-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 7, 'nombre' => 'Sofía Reyes Gil', 'institucion' => 'UAM - Iztapalapa', 'cargo' => 'Coordinadora Nacional', 'titular' => true, 'fecha_inicio' => '2024-12-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 8, 'nombre' => 'Gabriela Mendoza Soto', 'institucion' => 'UDG - Guadalajara', 'cargo' => 'Directora Regional', 'titular' => false, 'fecha_inicio' => '2024-08-15', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 1, 'nombre' => 'María González Pérez', 'institucion' => 'UNAM - Facultad de Contaduría', 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 2, 'nombre' => 'Juan Martínez López', 'institucion' => 'IPN - ESCOM', 'fecha_inicio' => '2024-03-15', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 3, 'nombre' => 'Carlos Hernández Díaz', 'institucion' => 'UDG - Guadalajara', 'fecha_inicio' => '2024-02-01', 'fecha_fin' => '2024-12-31', 'activo' => false],
+        ['id' => 4, 'nombre' => 'Ana Sánchez Ramírez', 'institucion' => 'UAQ - Querétaro', 'fecha_inicio' => '2024-06-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 5, 'nombre' => 'Laura Torres Vega', 'institucion' => 'UABC - Mexicali', 'fecha_inicio' => '2024-07-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 6, 'nombre' => 'Patricia Flores Reyes', 'institucion' => 'UAEH - Pachuca', 'fecha_inicio' => '2024-04-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 7, 'nombre' => 'Sofía Reyes Gil', 'institucion' => 'UAM - Iztapalapa', 'fecha_inicio' => '2024-12-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 8, 'nombre' => 'Gabriela Mendoza Soto', 'institucion' => 'UDG - Guadalajara', 'fecha_inicio' => '2024-08-15', 'fecha_fin' => null, 'activo' => true],
     ],
     2 => [
-        ['id' => 2, 'nombre' => 'Juan Martínez López', 'institucion' => 'IPN - ESCOM', 'cargo' => 'Vicepresidente', 'titular' => true, 'fecha_inicio' => '2024-03-15', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 9, 'nombre' => 'Luis Méndez Vargas', 'institucion' => 'UABC - Tijuana', 'cargo' => 'Director Regional', 'titular' => false, 'fecha_inicio' => '2023-06-01', 'fecha_fin' => '2024-05-31', 'activo' => false],
-        ['id' => 10, 'nombre' => 'Andrés Moreno Rojas', 'institucion' => 'UANL - San Nicolás', 'cargo' => 'Coordinador Regional', 'titular' => true, 'fecha_inicio' => '2024-10-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 11, 'nombre' => 'Jorge Gómez García', 'institucion' => 'UADY - Mérida', 'cargo' => 'Director Académico', 'titular' => true, 'fecha_inicio' => '2024-08-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 2, 'nombre' => 'Juan Martínez López', 'institucion' => 'IPN - ESCOM', 'fecha_inicio' => '2024-03-15', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 9, 'nombre' => 'Luis Méndez Vargas', 'institucion' => 'UABC - Tijuana', 'fecha_inicio' => '2023-06-01', 'fecha_fin' => '2024-05-31', 'activo' => false],
+        ['id' => 10, 'nombre' => 'Andrés Moreno Rojas', 'institucion' => 'UANL - San Nicolás', 'fecha_inicio' => '2024-10-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 11, 'nombre' => 'Jorge Gómez García', 'institucion' => 'UADY - Mérida', 'fecha_inicio' => '2024-08-01', 'fecha_fin' => null, 'activo' => true],
     ],
     3 => [
-        ['id' => 12, 'nombre' => 'Carmen Rivera Morales', 'institucion' => 'UDG - Guadalajara', 'cargo' => 'Coordinadora Académica', 'titular' => true, 'fecha_inicio' => '2024-05-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 13, 'nombre' => 'Teresa Ortega Luna', 'institucion' => 'UAEM - Toluca', 'cargo' => 'Directora de División', 'titular' => true, 'fecha_inicio' => '2024-11-15', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 12, 'nombre' => 'Carmen Rivera Morales', 'institucion' => 'UDG - Guadalajara', 'fecha_inicio' => '2024-05-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 13, 'nombre' => 'Teresa Ortega Luna', 'institucion' => 'UAEM - Toluca', 'fecha_inicio' => '2024-11-15', 'fecha_fin' => null, 'activo' => true],
     ],
     6 => [
-        ['id' => 14, 'nombre' => 'Ricardo Peña Fuentes', 'institucion' => 'UABJO - Oaxaca', 'cargo' => 'Jefe de Departamento', 'titular' => false, 'fecha_inicio' => '2023-12-01', 'fecha_fin' => '2024-11-30', 'activo' => false],
-        ['id' => 15, 'nombre' => 'Elena Castro Ramos', 'institucion' => 'UASLP - San Luis Potosí', 'cargo' => 'Directora General', 'titular' => true, 'fecha_inicio' => '2024-09-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 16, 'nombre' => 'Fernando Cruz Salazar', 'institucion' => 'UAQ - Querétaro', 'cargo' => 'Jefe de Departamento', 'titular' => true, 'fecha_inicio' => '2024-07-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 14, 'nombre' => 'Ricardo Peña Fuentes', 'institucion' => 'UABJO - Oaxaca', 'fecha_inicio' => '2023-12-01', 'fecha_fin' => '2024-11-30', 'activo' => false],
+        ['id' => 15, 'nombre' => 'Elena Castro Ramos', 'institucion' => 'UASLP - San Luis Potosí', 'fecha_inicio' => '2024-09-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 16, 'nombre' => 'Fernando Cruz Salazar', 'institucion' => 'UAQ - Querétaro', 'fecha_inicio' => '2024-07-01', 'fecha_fin' => null, 'activo' => true],
     ]
 ];
 
@@ -197,8 +197,6 @@ include 'template/menu.php';
                                     <tr>
                                         <th>Nombre</th>
                                         <th>Institución</th>
-                                        <th>Cargo</th>
-                                        <th>Titular</th>
                                         <th>Fecha Inicio</th>
                                         <th>Fecha Fin</th>
                                         <th>Estado</th>
@@ -218,14 +216,6 @@ include 'template/menu.php';
                                             </a>
                                         </td>
                                         <td><?= htmlspecialchars($persona['institucion']) ?></td>
-                                        <td><?= htmlspecialchars($persona['cargo']) ?></td>
-                                        <td>
-                                            <?php if ($persona['titular']): ?>
-                                                <span class="badge-titular">Sí</span>
-                                            <?php else: ?>
-                                                <span class="badge-no-titular">No</span>
-                                            <?php endif; ?>
-                                        </td>
                                         <td><?= $fecha_inicio ?></td>
                                         <td><?= $fecha_fin ?></td>
                                         <td>
@@ -251,7 +241,7 @@ include 'template/menu.php';
     </div>
 </main>
 
-<!-- Modal Edición (reutilizando el mismo modal que en el listado) -->
+<!-- Modal Edición -->
 <div class="modal-overlay" id="modalNivel" style="display:none;">
     <div class="modal-card modal-card-nivel">
         <div class="modal-header">
@@ -617,26 +607,6 @@ include 'template/menu.php';
 
 .table-modern tbody tr:hover {
     background: #faf8f8;
-}
-
-.badge-titular {
-    display: inline-block;
-    padding: 0.1rem 0.5rem;
-    background: #e8f5e9;
-    color: #2e7d32;
-    border-radius: 12px;
-    font-size: 0.7rem;
-    font-weight: 600;
-}
-
-.badge-no-titular {
-    display: inline-block;
-    padding: 0.1rem 0.5rem;
-    background: #f5f5f5;
-    color: #999;
-    border-radius: 12px;
-    font-size: 0.7rem;
-    font-weight: 600;
 }
 
 .status-active {
