@@ -78,169 +78,12 @@ $tipos_participacion = [
     'matriz' => 'Matriz'
 ];
 
-// Direcciones simuladas
-$direcciones = [
-    1 => [
-        'calle' => 'Avenida Universidad',
-        'numero_exterior' => '3000',
-        'numero_interior' => '',
-        'colonia' => 'Ciudad Universitaria',
-        'cp' => '04510',
-        'municipio' => 'Coyoacán'
-    ],
-    2 => [
-        'calle' => 'Circuito Exterior',
-        'numero_exterior' => 'S/N',
-        'numero_interior' => 'Edificio A',
-        'colonia' => 'Ciudad Universitaria',
-        'cp' => '04510',
-        'municipio' => 'Coyoacán'
-    ],
-    3 => [
-        'calle' => 'Avenida Instituto Politécnico Nacional',
-        'numero_exterior' => 'S/N',
-        'numero_interior' => '',
-        'colonia' => 'Zacatenco',
-        'cp' => '07738',
-        'municipio' => 'Gustavo A. Madero'
-    ],
-    4 => [
-        'calle' => 'Avenida Instituto Politécnico Nacional',
-        'numero_exterior' => 'S/N',
-        'numero_interior' => 'Edificio 8',
-        'colonia' => 'Zacatenco',
-        'cp' => '07738',
-        'municipio' => 'Gustavo A. Madero'
-    ],
-    5 => [
-        'calle' => 'Avenida Juárez',
-        'numero_exterior' => '976',
-        'numero_interior' => '',
-        'colonia' => 'Centro',
-        'cp' => '44100',
-        'municipio' => 'Guadalajara'
-    ],
-    6 => [
-        'calle' => 'Periférico Norte',
-        'numero_exterior' => '799',
-        'numero_interior' => 'Int. 301',
-        'colonia' => 'Centro',
-        'cp' => '44100',
-        'municipio' => 'Guadalajara'
-    ],
-    7 => [
-        'calle' => 'Carretera Transpeninsular',
-        'numero_exterior' => 'S/N',
-        'numero_interior' => '',
-        'colonia' => 'Ciudad Universitaria',
-        'cp' => '21259',
-        'municipio' => 'Mexicali'
-    ],
-    8 => [
-        'calle' => 'Calzada Universidad',
-        'numero_exterior' => '14418',
-        'numero_interior' => '',
-        'colonia' => 'Internacional Tijuana',
-        'cp' => '22424',
-        'municipio' => 'Tijuana'
-    ],
-    9 => [
-        'calle' => 'Avenida Universidad',
-        'numero_exterior' => 'S/N',
-        'numero_interior' => '',
-        'colonia' => 'Ciudad Universitaria',
-        'cp' => '66450',
-        'municipio' => 'San Nicolás de los Garza'
-    ],
-    10 => [
-        'calle' => 'Avenida Universidad',
-        'numero_exterior' => 'S/N',
-        'numero_interior' => '',
-        'colonia' => 'Ciudad Universitaria',
-        'cp' => '66450',
-        'municipio' => 'San Nicolás de los Garza'
-    ],
-    11 => [
-        'calle' => 'Blv. Juan de Dios Batiz y 20 de Noviembre',
-        'numero_exterior' => 'S/N',
-        'numero_interior' => 'Apartado 766',
-        'colonia' => 'Del Parque',
-        'cp' => '81250',
-        'municipio' => 'Ahome'
-    ],
-    12 => [
-        'calle' => 'Blv. Cucapahcu',
-        'numero_exterior' => '20100',
-        'numero_interior' => '',
-        'colonia' => 'Fracc. Lago',
-        'cp' => '22100',
-        'municipio' => 'Tijuana'
-    ],
-    13 => [
-        'calle' => 'Calle Francisco Javier Mina',
-        'numero_exterior' => '1000',
-        'numero_interior' => '',
-        'colonia' => 'Zona Centro',
-        'cp' => '31000',
-        'municipio' => 'Chihuahua'
-    ],
-    14 => [
-        'calle' => 'Blv. Cucapahcu',
-        'numero_exterior' => '20100',
-        'numero_interior' => '',
-        'colonia' => 'Fracc. Lago',
-        'cp' => '22100',
-        'municipio' => 'Tijuana'
-    ],
-    15 => [
-        'calle' => 'Avenida Tecnológico',
-        'numero_exterior' => 'S/N',
-        'numero_interior' => '',
-        'colonia' => 'Ciudad Universitaria',
-        'cp' => '76010',
-        'municipio' => 'Querétaro'
-    ],
-    16 => [
-        'calle' => 'Calle 60',
-        'numero_exterior' => '491',
-        'numero_interior' => '',
-        'colonia' => 'Centro',
-        'cp' => '97160',
-        'municipio' => 'Mérida'
-    ],
-    17 => [
-        'calle' => 'Blvd. Universitarios y Avenida las Américas',
-        'numero_exterior' => 'S/N',
-        'numero_interior' => '',
-        'colonia' => 'Ciudad Universitaria',
-        'cp' => '80013',
-        'municipio' => 'Culiacán'
-    ]
-];
+// ============================================================
+// INSTITUCIONES COMPLETAS (coincidiendo con instituciones.php)
+// ============================================================
 
-// Sitios web simulados
-$sitios_web = [
-    1 => ['https://www.unam.mx'],
-    2 => ['https://www.fca.unam.mx'],
-    3 => ['https://www.ipn.mx', 'https://www.tecnm.mx'],
-    4 => ['https://www.escom.ipn.mx'],
-    5 => ['https://www.udg.mx', 'https://www.cucea.udg.mx'],
-    6 => ['https://www.cucea.udg.mx'],
-    7 => ['https://www.uabc.mx', 'https://www.uabc.mx/ensenada'],
-    8 => ['https://www.uabc.mx/planteles/mexicali'],
-    9 => ['https://www.uanl.mx', 'https://www.uanl.mx/ciudad-universitaria'],
-    10 => ['https://www.uanl.mx/campus-san-nicolas'],
-    11 => ['https://www.itmochis.edu.mx'],
-    12 => ['https://www.cesun.mx'],
-    13 => ['https://www.iesch.edu.mx'],
-    14 => ['https://www.cesun.mx/administrativas'],
-    15 => ['https://www.uaq.mx'],
-    16 => ['https://www.uady.mx'],
-    17 => ['https://www.uas.edu.mx']
-];
-
-// Instituciones
 $instituciones = [
+    // ============ MATRICES (Universidades) ============
     [
         'id' => 1,
         'num_afiliacion' => null,
@@ -252,19 +95,6 @@ $instituciones = [
         'id_universidad' => null,
         'personas_relacionadas' => 5,
         'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 2,
-        'num_afiliacion' => '2607002',
-        'nombre' => 'Facultad de Contaduría y Administración (UNAM)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 7,
-        'id_entidad' => 7,
-        'id_universidad' => 1,
-        'personas_relacionadas' => 3,
-        'fecha_inicio' => '2024-01-15',
         'fecha_fin' => null
     ],
     [
@@ -281,19 +111,6 @@ $instituciones = [
         'fecha_fin' => null
     ],
     [
-        'id' => 4,
-        'num_afiliacion' => '2607004',
-        'nombre' => 'ESCOM (IPN)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 7,
-        'id_entidad' => 7,
-        'id_universidad' => 3,
-        'personas_relacionadas' => 2,
-        'fecha_inicio' => '2024-02-15',
-        'fecha_fin' => null
-    ],
-    [
         'id' => 5,
         'num_afiliacion' => '2601005',
         'nombre' => 'Universidad de Guadalajara',
@@ -304,19 +121,6 @@ $instituciones = [
         'id_universidad' => null,
         'personas_relacionadas' => 1,
         'fecha_inicio' => '2024-03-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 6,
-        'num_afiliacion' => '2604006',
-        'nombre' => 'Facultad de Contaduría (UDG)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 15,
-        'id_universidad' => 5,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-03-15',
         'fecha_fin' => null
     ],
     [
@@ -333,19 +137,6 @@ $instituciones = [
         'fecha_fin' => null
     ],
     [
-        'id' => 8,
-        'num_afiliacion' => '2601008',
-        'nombre' => 'Campus UABC - Mexicali',
-        'tipo' => 3,
-        'participacion' => 'afiliada',
-        'id_zona' => 1,
-        'id_entidad' => 2,
-        'id_universidad' => 7,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-04-15',
-        'fecha_fin' => null
-    ],
-    [
         'id' => 9,
         'num_afiliacion' => '2602009',
         'nombre' => 'Universidad Autónoma de Nuevo León',
@@ -356,19 +147,6 @@ $instituciones = [
         'id_universidad' => null,
         'personas_relacionadas' => 0,
         'fecha_inicio' => '2024-05-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 10,
-        'num_afiliacion' => '2605010',
-        'nombre' => 'Campus UANL - San Nicolás',
-        'tipo' => 3,
-        'participacion' => 'afiliada',
-        'id_zona' => 2,
-        'id_entidad' => 19,
-        'id_universidad' => 9,
-        'personas_relacionadas' => 0,
-        'fecha_inicio' => '2024-05-15',
         'fecha_fin' => null
     ],
     [
@@ -411,19 +189,6 @@ $instituciones = [
         'fecha_fin' => null
     ],
     [
-        'id' => 14,
-        'num_afiliacion' => null,
-        'nombre' => 'Facultad de Ciencias Administrativas (CESUN)',
-        'tipo' => 2,
-        'participacion' => 'observadora',
-        'id_zona' => 1,
-        'id_entidad' => 2,
-        'id_universidad' => 12,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
         'id' => 15,
         'num_afiliacion' => '2603011',
         'nombre' => 'Universidad Autónoma de Querétaro',
@@ -461,20 +226,621 @@ $instituciones = [
         'personas_relacionadas' => 1,
         'fecha_inicio' => '2024-07-01',
         'fecha_fin' => null
+    ],
+    [
+        'id' => 19,
+        'num_afiliacion' => '9807033',
+        'nombre' => 'Tecnológico de Monterrey',
+        'tipo' => 1,
+        'participacion' => 'afiliada',
+        'id_zona' => 7,
+        'id_entidad' => 7,
+        'id_universidad' => null,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 20,
+        'num_afiliacion' => null,
+        'nombre' => 'Universidad Intercontinental',
+        'tipo' => 1,
+        'participacion' => 'afiliada',
+        'id_zona' => 7,
+        'id_entidad' => 7,
+        'id_universidad' => null,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 21,
+        'num_afiliacion' => '9803004',
+        'nombre' => 'Universidad Autónoma de Aguascalientes',
+        'tipo' => 1,
+        'participacion' => 'afiliada',
+        'id_zona' => 3,
+        'id_entidad' => 1,
+        'id_universidad' => null,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 22,
+        'num_afiliacion' => '9802020',
+        'nombre' => 'Universidad Iberoamericana Torreón',
+        'tipo' => 1,
+        'participacion' => 'afiliada',
+        'id_zona' => 2,
+        'id_entidad' => 8,
+        'id_universidad' => null,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 23,
+        'num_afiliacion' => '9803007',
+        'nombre' => 'Universidad Autónoma de San Luis Potosí',
+        'tipo' => 1,
+        'participacion' => 'afiliada',
+        'id_zona' => 3,
+        'id_entidad' => 24,
+        'id_universidad' => null,
+        'personas_relacionadas' => 2,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 24,
+        'num_afiliacion' => '9805012',
+        'nombre' => 'Universidad Autónoma de Tlaxcala',
+        'tipo' => 1,
+        'participacion' => 'afiliada',
+        'id_zona' => 5,
+        'id_entidad' => 29,
+        'id_universidad' => null,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 25,
+        'num_afiliacion' => '9806001',
+        'nombre' => 'Universidad Veracruzana',
+        'tipo' => 1,
+        'participacion' => 'afiliada',
+        'id_zona' => 6,
+        'id_entidad' => 30,
+        'id_universidad' => null,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 26,
+        'num_afiliacion' => '9806018',
+        'nombre' => 'Universidad Juárez Autónoma de Tabasco',
+        'tipo' => 1,
+        'participacion' => 'afiliada',
+        'id_zona' => 6,
+        'id_entidad' => 27,
+        'id_universidad' => null,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 27,
+        'num_afiliacion' => '9802009',
+        'nombre' => 'Universidad Autónoma de Tamaulipas',
+        'tipo' => 1,
+        'participacion' => 'afiliada',
+        'id_zona' => 2,
+        'id_entidad' => 28,
+        'id_universidad' => null,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 28,
+        'num_afiliacion' => '1906067',
+        'nombre' => 'Universidad Tecnológica de Tabasco',
+        'tipo' => 1,
+        'participacion' => 'afiliada',
+        'id_zona' => 6,
+        'id_entidad' => 27,
+        'id_universidad' => null,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 29,
+        'num_afiliacion' => '9801017',
+        'nombre' => 'Universidad Autónoma de Chihuahua',
+        'tipo' => 1,
+        'participacion' => 'afiliada',
+        'id_zona' => 1,
+        'id_entidad' => 6,
+        'id_universidad' => null,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 30,
+        'num_afiliacion' => '9801020',
+        'nombre' => 'Universidad de Sonora',
+        'tipo' => 1,
+        'participacion' => 'afiliada',
+        'id_zona' => 1,
+        'id_entidad' => 26,
+        'id_universidad' => null,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 31,
+        'num_afiliacion' => '9804009',
+        'nombre' => 'Universidad Autónoma de Nayarit',
+        'tipo' => 1,
+        'participacion' => 'afiliada',
+        'id_zona' => 4,
+        'id_entidad' => 18,
+        'id_universidad' => null,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 32,
+        'num_afiliacion' => '9804005',
+        'nombre' => 'Instituto Tecnológico y de Estudios Superiores de Occidente',
+        'tipo' => 1,
+        'participacion' => 'afiliada',
+        'id_zona' => 4,
+        'id_entidad' => 15,
+        'id_universidad' => null,
+        'personas_relacionadas' => 2,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 33,
+        'num_afiliacion' => '9804007',
+        'nombre' => 'Universidad Autónoma de Guadalajara',
+        'tipo' => 1,
+        'participacion' => 'afiliada',
+        'id_zona' => 4,
+        'id_entidad' => 15,
+        'id_universidad' => null,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 34,
+        'num_afiliacion' => '9804014',
+        'nombre' => 'Centro Universitario de los Altos (UDG)',
+        'tipo' => 1,
+        'participacion' => 'afiliada',
+        'id_zona' => 4,
+        'id_entidad' => 15,
+        'id_universidad' => null,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 35,
+        'num_afiliacion' => '9804019',
+        'nombre' => 'Universidad del Valle de Atemajac',
+        'tipo' => 1,
+        'participacion' => 'afiliada',
+        'id_zona' => 4,
+        'id_entidad' => 15,
+        'id_universidad' => null,
+        'personas_relacionadas' => 2,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 36,
+        'num_afiliacion' => '9802001',
+        'nombre' => 'Universidad Autónoma de Coahuila',
+        'tipo' => 1,
+        'participacion' => 'afiliada',
+        'id_zona' => 2,
+        'id_entidad' => 8,
+        'id_universidad' => null,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 37,
+        'num_afiliacion' => '9802016',
+        'nombre' => 'Universidad de Monterrey',
+        'tipo' => 1,
+        'participacion' => 'afiliada',
+        'id_zona' => 2,
+        'id_entidad' => 19,
+        'id_universidad' => null,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 38,
+        'num_afiliacion' => '9805002',
+        'nombre' => 'Benemérita Universidad Autónoma de Puebla',
+        'tipo' => 1,
+        'participacion' => 'afiliada',
+        'id_zona' => 5,
+        'id_entidad' => 21,
+        'id_universidad' => null,
+        'personas_relacionadas' => 2,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+
+    // ============ FACULTADES (con dependencia) ============
+    [
+        'id' => 2,
+        'num_afiliacion' => '2607002',
+        'nombre' => 'Facultad de Contaduría y Administración (UNAM)',
+        'tipo' => 2,
+        'participacion' => 'afiliada',
+        'id_zona' => 7,
+        'id_entidad' => 7,
+        'id_universidad' => 1,
+        'personas_relacionadas' => 3,
+        'fecha_inicio' => '2024-01-15',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 4,
+        'num_afiliacion' => '2607004',
+        'nombre' => 'ESCOM (IPN)',
+        'tipo' => 2,
+        'participacion' => 'afiliada',
+        'id_zona' => 7,
+        'id_entidad' => 7,
+        'id_universidad' => 3,
+        'personas_relacionadas' => 2,
+        'fecha_inicio' => '2024-02-15',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 6,
+        'num_afiliacion' => '2604006',
+        'nombre' => 'Facultad de Contaduría (UDG)',
+        'tipo' => 2,
+        'participacion' => 'afiliada',
+        'id_zona' => 4,
+        'id_entidad' => 15,
+        'id_universidad' => 5,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-03-15',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 14,
+        'num_afiliacion' => null,
+        'nombre' => 'Facultad de Ciencias Administrativas (CESUN)',
+        'tipo' => 2,
+        'participacion' => 'observadora',
+        'id_zona' => 1,
+        'id_entidad' => 2,
+        'id_universidad' => 12,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 39,
+        'num_afiliacion' => '9807033',
+        'nombre' => 'ESCA Unidad Tepepan (IPN)',
+        'tipo' => 2,
+        'participacion' => 'afiliada',
+        'id_zona' => 7,
+        'id_entidad' => 7,
+        'id_universidad' => 3,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 40,
+        'num_afiliacion' => '9802008',
+        'nombre' => 'Facultad de Contaduría Pública y Administración (UANL)',
+        'tipo' => 2,
+        'participacion' => 'afiliada',
+        'id_zona' => 2,
+        'id_entidad' => 19,
+        'id_universidad' => 9,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 41,
+        'num_afiliacion' => '9801018',
+        'nombre' => 'Facultad de Contaduría y Administración (UAS)',
+        'tipo' => 2,
+        'participacion' => 'afiliada',
+        'id_zona' => 1,
+        'id_entidad' => 25,
+        'id_universidad' => 17,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 42,
+        'num_afiliacion' => '9806012',
+        'nombre' => 'Facultad de Contaduría y Administración (UADY)',
+        'tipo' => 2,
+        'participacion' => 'afiliada',
+        'id_zona' => 6,
+        'id_entidad' => 31,
+        'id_universidad' => 16,
+        'personas_relacionadas' => 2,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 43,
+        'num_afiliacion' => '9805011',
+        'nombre' => 'Facultad de Administración (BUAP)',
+        'tipo' => 2,
+        'participacion' => 'afiliada',
+        'id_zona' => 5,
+        'id_entidad' => 21,
+        'id_universidad' => 38,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 44,
+        'num_afiliacion' => '9805002',
+        'nombre' => 'Facultad de Contaduría Pública (BUAP)',
+        'tipo' => 2,
+        'participacion' => 'afiliada',
+        'id_zona' => 5,
+        'id_entidad' => 21,
+        'id_universidad' => 38,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 45,
+        'num_afiliacion' => '9806023',
+        'nombre' => 'Facultad de Contaduría y Administración (UV)',
+        'tipo' => 2,
+        'participacion' => 'afiliada',
+        'id_zona' => 6,
+        'id_entidad' => 30,
+        'id_universidad' => 25,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 46,
+        'num_afiliacion' => '9803004',
+        'nombre' => 'Centro de Ciencias Económicas y Administrativas (UAA)',
+        'tipo' => 2,
+        'participacion' => 'afiliada',
+        'id_zona' => 3,
+        'id_entidad' => 1,
+        'id_universidad' => 21,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 47,
+        'num_afiliacion' => '9804001',
+        'nombre' => 'División de Contaduría (UDG)',
+        'tipo' => 2,
+        'participacion' => 'afiliada',
+        'id_zona' => 4,
+        'id_entidad' => 15,
+        'id_universidad' => 5,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 48,
+        'num_afiliacion' => '9804009',
+        'nombre' => 'Unidad Académica de Contaduría y Administración (UAN)',
+        'tipo' => 2,
+        'participacion' => 'afiliada',
+        'id_zona' => 4,
+        'id_entidad' => 18,
+        'id_universidad' => 31,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+
+    // ============ CAMPUS (con dependencia) ============
+    [
+        'id' => 8,
+        'num_afiliacion' => '2601008',
+        'nombre' => 'Campus UABC - Mexicali',
+        'tipo' => 3,
+        'participacion' => 'afiliada',
+        'id_zona' => 1,
+        'id_entidad' => 2,
+        'id_universidad' => 7,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-04-15',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 10,
+        'num_afiliacion' => '2605010',
+        'nombre' => 'Campus UANL - San Nicolás',
+        'tipo' => 3,
+        'participacion' => 'afiliada',
+        'id_zona' => 2,
+        'id_entidad' => 19,
+        'id_universidad' => 9,
+        'personas_relacionadas' => 0,
+        'fecha_inicio' => '2024-05-15',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 49,
+        'num_afiliacion' => '9804005',
+        'nombre' => 'Campus Guadalajara (ITESO)',
+        'tipo' => 3,
+        'participacion' => 'afiliada',
+        'id_zona' => 4,
+        'id_entidad' => 15,
+        'id_universidad' => 32,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
+    ],
+    [
+        'id' => 50,
+        'num_afiliacion' => '9804019',
+        'nombre' => 'Campus Puerto Vallarta (UNIVA)',
+        'tipo' => 3,
+        'participacion' => 'afiliada',
+        'id_zona' => 4,
+        'id_entidad' => 15,
+        'id_universidad' => 35,
+        'personas_relacionadas' => 1,
+        'fecha_inicio' => '2024-01-01',
+        'fecha_fin' => null
     ]
 ];
 
-// Obtener nombres de universidades para mostrar
-$universidades = array_filter($instituciones, function($i) {
-    return $i['tipo'] == 1 && ($i['participacion'] == 'afiliada' || $i['participacion'] == 'matriz');
-});
-$universidades_nombres = [];
-foreach ($universidades as $u) {
-    $universidades_nombres[$u['id']] = $u['nombre'];
-}
+// ============================================================
+// DIRECCIONES (actualizadas para todas las instituciones)
+// ============================================================
+
+$direcciones = [
+    1 => ['calle' => 'Avenida Universidad', 'numero_exterior' => '3000', 'numero_interior' => '', 'colonia' => 'Ciudad Universitaria', 'cp' => '04510', 'municipio' => 'Coyoacán'],
+    2 => ['calle' => 'Circuito Exterior', 'numero_exterior' => 'S/N', 'numero_interior' => 'Edificio A', 'colonia' => 'Ciudad Universitaria', 'cp' => '04510', 'municipio' => 'Coyoacán'],
+    3 => ['calle' => 'Avenida Instituto Politécnico Nacional', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Zacatenco', 'cp' => '07738', 'municipio' => 'Gustavo A. Madero'],
+    4 => ['calle' => 'Avenida Instituto Politécnico Nacional', 'numero_exterior' => 'S/N', 'numero_interior' => 'Edificio 8', 'colonia' => 'Zacatenco', 'cp' => '07738', 'municipio' => 'Gustavo A. Madero'],
+    5 => ['calle' => 'Avenida Juárez', 'numero_exterior' => '976', 'numero_interior' => '', 'colonia' => 'Centro', 'cp' => '44100', 'municipio' => 'Guadalajara'],
+    6 => ['calle' => 'Periférico Norte', 'numero_exterior' => '799', 'numero_interior' => 'Int. 301', 'colonia' => 'Centro', 'cp' => '44100', 'municipio' => 'Guadalajara'],
+    7 => ['calle' => 'Carretera Transpeninsular', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Ciudad Universitaria', 'cp' => '21259', 'municipio' => 'Mexicali'],
+    8 => ['calle' => 'Calzada Universidad', 'numero_exterior' => '14418', 'numero_interior' => '', 'colonia' => 'Internacional Tijuana', 'cp' => '22424', 'municipio' => 'Tijuana'],
+    9 => ['calle' => 'Avenida Universidad', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Ciudad Universitaria', 'cp' => '66450', 'municipio' => 'San Nicolás de los Garza'],
+    10 => ['calle' => 'Avenida Universidad', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Ciudad Universitaria', 'cp' => '66450', 'municipio' => 'San Nicolás de los Garza'],
+    11 => ['calle' => 'Blv. Juan de Dios Batiz y 20 de Noviembre', 'numero_exterior' => 'S/N', 'numero_interior' => 'Apartado 766', 'colonia' => 'Del Parque', 'cp' => '81250', 'municipio' => 'Ahome'],
+    12 => ['calle' => 'Blv. Cucapahcu', 'numero_exterior' => '20100', 'numero_interior' => '', 'colonia' => 'Fracc. Lago', 'cp' => '22100', 'municipio' => 'Tijuana'],
+    13 => ['calle' => 'Calle Francisco Javier Mina', 'numero_exterior' => '1000', 'numero_interior' => '', 'colonia' => 'Zona Centro', 'cp' => '31000', 'municipio' => 'Chihuahua'],
+    14 => ['calle' => 'Blv. Cucapahcu', 'numero_exterior' => '20100', 'numero_interior' => '', 'colonia' => 'Fracc. Lago', 'cp' => '22100', 'municipio' => 'Tijuana'],
+    15 => ['calle' => 'Avenida Tecnológico', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Ciudad Universitaria', 'cp' => '76010', 'municipio' => 'Querétaro'],
+    16 => ['calle' => 'Calle 60', 'numero_exterior' => '491', 'numero_interior' => '', 'colonia' => 'Centro', 'cp' => '97160', 'municipio' => 'Mérida'],
+    17 => ['calle' => 'Blvd. Universitarios y Avenida las Américas', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Ciudad Universitaria', 'cp' => '80013', 'municipio' => 'Culiacán'],
+    19 => ['calle' => 'Av. Eugenio Garza Sada', 'numero_exterior' => '2501', 'numero_interior' => '', 'colonia' => 'Tecnológico', 'cp' => '64849', 'municipio' => 'Monterrey'],
+    20 => ['calle' => 'Insurgentes Sur', 'numero_exterior' => '4303', 'numero_interior' => '', 'colonia' => 'Col. Santa Úrsula Xitla', 'cp' => '14420', 'municipio' => 'Tlalpan'],
+    21 => ['calle' => 'Avenida Universidad', 'numero_exterior' => '940', 'numero_interior' => '', 'colonia' => 'Ciudad Universitaria', 'cp' => '20100', 'municipio' => 'Aguascalientes'],
+    22 => ['calle' => 'Boulevard Torreón', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Residencial las Haciendas', 'cp' => '27010', 'municipio' => 'Torreón'],
+    23 => ['calle' => 'Avenida Venustiano Carranza', 'numero_exterior' => '2405', 'numero_interior' => '', 'colonia' => 'Zona Universitaria', 'cp' => '78290', 'municipio' => 'San Luis Potosí'],
+    24 => ['calle' => 'Autopista Tlaxcala-Puebla', 'numero_exterior' => 'Km 1.5', 'numero_interior' => '', 'colonia' => 'Col. San José', 'cp' => '90000', 'municipio' => 'Tlaxcala'],
+    25 => ['calle' => 'Lomas del Estadio', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Zona Universitaria', 'cp' => '91000', 'municipio' => 'Xalapa'],
+    26 => ['calle' => 'Avenida Universidad', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Zona de la Cultura', 'cp' => '86000', 'municipio' => 'Villahermosa'],
+    27 => ['calle' => 'Centro Universitario', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Ciudad Victoria', 'cp' => '87000', 'municipio' => 'Ciudad Victoria'],
+    28 => ['calle' => 'Carretera Villahermosa-Cárdenas', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'El Cuyo', 'cp' => '86000', 'municipio' => 'Villahermosa'],
+    29 => ['calle' => 'Avenida de las Américas', 'numero_exterior' => '1010', 'numero_interior' => '', 'colonia' => 'Zona Centro', 'cp' => '31000', 'municipio' => 'Chihuahua'],
+    30 => ['calle' => 'Rosales', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Zona Centro', 'cp' => '83000', 'municipio' => 'Hermosillo'],
+    31 => ['calle' => 'Ciudad de la Cultura', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Cd. de la Cultura', 'cp' => '63000', 'municipio' => 'Tepic'],
+    32 => ['calle' => 'Periférico Sur', 'numero_exterior' => '3130', 'numero_interior' => '', 'colonia' => 'Camino Real', 'cp' => '45010', 'municipio' => 'Guadalajara'],
+    33 => ['calle' => 'Av. Patria', 'numero_exterior' => '1390', 'numero_interior' => '', 'colonia' => 'Jardines de Guadalupe', 'cp' => '45030', 'municipio' => 'Zapopan'],
+    34 => ['calle' => 'Carretera Lagos de Moreno', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Los Altos', 'cp' => '47600', 'municipio' => 'Tepatitlán de Morelos'],
+    35 => ['calle' => 'Av. Tepeyac', 'numero_exterior' => '4800', 'numero_interior' => '', 'colonia' => 'Monraz', 'cp' => '45000', 'municipio' => 'Guadalajara'],
+    36 => ['calle' => 'Blvd. Fundadores', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Ciudad Universitaria', 'cp' => '25000', 'municipio' => 'Saltillo'],
+    37 => ['calle' => 'Av. Ignacio Morones Prieto', 'numero_exterior' => '4500', 'numero_interior' => '', 'colonia' => 'Cumbres', 'cp' => '64610', 'municipio' => 'San Pedro Garza García'],
+    38 => ['calle' => 'Calle 4 Sur', 'numero_exterior' => '1106', 'numero_interior' => '', 'colonia' => 'Cuauhtémoc', 'cp' => '72420', 'municipio' => 'Puebla'],
+    39 => ['calle' => 'Avenida Instituto Politécnico Nacional', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Zacatenco', 'cp' => '07738', 'municipio' => 'Gustavo A. Madero'],
+    40 => ['calle' => 'Avenida Universidad', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Ciudad Universitaria', 'cp' => '66450', 'municipio' => 'San Nicolás de los Garza'],
+    41 => ['calle' => 'Blvd. Universitarios', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Ciudad Universitaria', 'cp' => '80013', 'municipio' => 'Culiacán'],
+    42 => ['calle' => 'Calle 60', 'numero_exterior' => '491', 'numero_interior' => '', 'colonia' => 'Centro', 'cp' => '97160', 'municipio' => 'Mérida'],
+    43 => ['calle' => 'Calle 4 Sur', 'numero_exterior' => '1106', 'numero_interior' => '', 'colonia' => 'Cuauhtémoc', 'cp' => '72420', 'municipio' => 'Puebla'],
+    44 => ['calle' => 'Calle 4 Sur', 'numero_exterior' => '1106', 'numero_interior' => '', 'colonia' => 'Cuauhtémoc', 'cp' => '72420', 'municipio' => 'Puebla'],
+    45 => ['calle' => 'Lomas del Estadio', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Zona Universitaria', 'cp' => '91000', 'municipio' => 'Xalapa'],
+    46 => ['calle' => 'Avenida Universidad', 'numero_exterior' => '940', 'numero_interior' => '', 'colonia' => 'Ciudad Universitaria', 'cp' => '20100', 'municipio' => 'Aguascalientes'],
+    47 => ['calle' => 'Avenida Juárez', 'numero_exterior' => '976', 'numero_interior' => '', 'colonia' => 'Centro', 'cp' => '44100', 'municipio' => 'Guadalajara'],
+    48 => ['calle' => 'Ciudad de la Cultura', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Cd. de la Cultura', 'cp' => '63000', 'municipio' => 'Tepic'],
+    49 => ['calle' => 'Periférico Sur', 'numero_exterior' => '3130', 'numero_interior' => '', 'colonia' => 'Camino Real', 'cp' => '45010', 'municipio' => 'Guadalajara'],
+    50 => ['calle' => 'Av. Tepeyac', 'numero_exterior' => '4800', 'numero_interior' => '', 'colonia' => 'Monraz', 'cp' => '45000', 'municipio' => 'Guadalajara']
+];
 
 // ============================================================
-// PERSONAS ASOCIADAS CON IDs (coincidiendo con personas.php)
+// SITIOS WEB (actualizados)
+// ============================================================
+
+$sitios_web = [
+    1 => ['https://www.unam.mx'],
+    2 => ['https://www.fca.unam.mx'],
+    3 => ['https://www.ipn.mx'],
+    4 => ['https://www.escom.ipn.mx'],
+    5 => ['https://www.udg.mx'],
+    6 => ['https://www.cucea.udg.mx'],
+    7 => ['https://www.uabc.mx'],
+    8 => ['https://www.uabc.mx/planteles/mexicali'],
+    9 => ['https://www.uanl.mx'],
+    10 => ['https://www.uanl.mx/campus-san-nicolas'],
+    11 => ['https://www.itmochis.edu.mx'],
+    12 => ['https://www.cesun.mx'],
+    13 => ['https://www.iesch.edu.mx'],
+    14 => ['https://www.cesun.mx/administrativas'],
+    15 => ['https://www.uaq.mx'],
+    16 => ['https://www.uady.mx'],
+    17 => ['https://www.uas.edu.mx'],
+    19 => ['https://www.tec.mx'],
+    20 => ['https://www.uic.edu.mx'],
+    21 => ['https://www.uaa.mx'],
+    22 => ['https://www.iberotorreon.edu.mx'],
+    23 => ['https://www.uaslp.mx'],
+    24 => ['https://www.uatx.mx'],
+    25 => ['https://www.uv.mx'],
+    26 => ['https://www.ujat.mx'],
+    27 => ['https://www.uat.edu.mx'],
+    28 => ['https://www.utdt.mx'],
+    29 => ['https://www.uach.mx'],
+    30 => ['https://www.unison.mx'],
+    31 => ['https://www.uan.mx'],
+    32 => ['https://www.iteso.mx'],
+    33 => ['https://www.uag.mx'],
+    34 => ['https://www.cualtos.udg.mx'],
+    35 => ['https://www.univa.mx'],
+    36 => ['https://www.uadec.mx'],
+    37 => ['https://www.udem.edu.mx'],
+    38 => ['https://www.buap.mx'],
+    39 => ['https://www.esca.ipn.mx'],
+    40 => ['https://www.fcpya.uanl.mx'],
+    41 => ['https://www.fca.uas.edu.mx'],
+    42 => ['https://www.fca.uady.mx'],
+    43 => ['https://www.fa.buap.mx'],
+    44 => ['https://www.fcp.buap.mx'],
+    45 => ['https://www.fca.uv.mx'],
+    46 => ['https://www.ccea.uaa.mx'],
+    47 => ['https://www.cucea.udg.mx/contaduria'],
+    48 => ['https://www.uan.edu.mx/contaduria'],
+    49 => ['https://www.iteso.mx/guadalajara'],
+    50 => ['https://www.univa.mx/puerto-vallarta']
+];
+
+// ============================================================
+// PERSONAS ASOCIADAS
 // ============================================================
 
 $personas_asociadas = [
@@ -511,17 +877,77 @@ $personas_asociadas = [
     ],
     17 => [
         ['id' => 8, 'nombre' => 'Jorge Gómez García', 'cargo' => 'Director Académico', 'titular' => true, 'fecha_inicio' => '2024-07-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    39 => [
+        ['id' => 16, 'nombre' => 'Ivett Guillén Morales', 'cargo' => 'Coordinador Nacional de Investigación', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    40 => [
+        ['id' => 2, 'nombre' => 'Adriana Garza Elizondo', 'cargo' => 'Vicepresidenta', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 28, 'nombre' => 'Mónica Blanco Jiménez', 'cargo' => 'Coordinador Regional Zona 2 de Certificación Académica', 'titular' => false, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    41 => [
+        ['id' => 5, 'nombre' => 'Leobardo Berrelleza Reyes', 'cargo' => 'Director Regional Zona 1', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    42 => [
+        ['id' => 12, 'nombre' => 'David Roberto Suárez Pacheco', 'cargo' => 'Coordinador Nacional de Certificación Académica', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
+        ['id' => 19, 'nombre' => 'Aureliano Martínez Castillo', 'cargo' => 'Coordinador Nacional de Historia', 'titular' => false, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    43 => [
+        ['id' => 31, 'nombre' => 'Emigdio Larios Gómez', 'cargo' => 'Coordinador Regional Zona 5 de Posgrado', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    44 => [
+        ['id' => 23, 'nombre' => 'María Antonieta Monserrat Vera Muñoz', 'cargo' => 'Coordinador Nacional de Responsabilidad Social Universitaria', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    45 => [
+        ['id' => 10, 'nombre' => 'Anabel Galván Sarabia', 'cargo' => 'Directora Regional Zona 6', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    46 => [
+        ['id' => 7, 'nombre' => 'Ismael Manuel Rodríguez Herrera', 'cargo' => 'Director Regional Zona 3', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    47 => [
+        ['id' => 8, 'nombre' => 'Cristian Omar Alcantar López', 'cargo' => 'Director Regional Zona 4', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    48 => [
+        ['id' => 25, 'nombre' => 'Idi Amin Germán Silva Jug', 'cargo' => 'Coordinador Nacional de Desarrollo Académico Estudiantil', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    49 => [
+        ['id' => 33, 'nombre' => 'Luis Edmundo Garrido Sánchez', 'cargo' => 'Jefe de Departamento', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
+    ],
+    50 => [
+        ['id' => 38, 'nombre' => 'María Guadalupe Jiménez Hernández', 'cargo' => 'Director General de Plantel', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
     ]
 ];
 
-// Buscar la institución
-$institucion = null;
-foreach ($instituciones as $i) {
-    if ($i['id'] == $id) {
-        $institucion = $i;
-        break;
+// ============================================================
+// FUNCIONES AUXILIARES
+// ============================================================
+
+function getInstitucionPorId($id) {
+    global $instituciones;
+    foreach ($instituciones as $i) {
+        if ($i['id'] == $id) {
+            return $i;
+        }
     }
+    return null;
 }
+
+function getDependenciasDe($id) {
+    global $instituciones;
+    $dependencias = [];
+    foreach ($instituciones as $i) {
+        if ($i['id_universidad'] == $id) {
+            $dependencias[] = $i;
+        }
+    }
+    return $dependencias;
+}
+
+// ============================================================
+// BUSCAR LA INSTITUCIÓN
+// ============================================================
+
+$institucion = getInstitucionPorId($id);
 
 if (!$institucion) {
     echo '<div class="main-content"><div class="dashboard-container"><div class="alert-modern alert-error"><i class="fas fa-exclamation-circle"></i><div><strong>Error</strong> No se encontró la institución solicitada.</div></div></div></div>';
@@ -529,46 +955,41 @@ if (!$institucion) {
     exit;
 }
 
-// Obtener datos adicionales
+// ============================================================
+// OBTENER DATOS ADICIONALES
+// ============================================================
+
 $zona_nombre = $zonas_regionales[$institucion['id_zona']] ?? 'Sin zona';
+$zona_numero = explode(' - ', $zona_nombre)[0] ?? '?';
 $tipo_nombre = $tipos_institucion[$institucion['tipo']] ?? 'No definido';
 $entidad_nombre = $entidades_federativas[$institucion['id_entidad']] ?? 'Sin entidad';
 $participacion_nombre = $tipos_participacion[$institucion['participacion']] ?? 'No definido';
 $estado = $institucion['fecha_fin'] === null ? 'Vigente' : 'Finalizada';
 $es_matriz = $institucion['participacion'] == 'matriz';
 
-// Determinar si muestra número de afiliación
-$mostrar_num_afiliacion = false;
+// Número de afiliación
 $num_afiliacion_mostrar = '---';
-if ($institucion['participacion'] == 'matriz') {
+if ($es_matriz) {
     $num_afiliacion_mostrar = 'No aplica';
-    $mostrar_num_afiliacion = false;
 } elseif ($institucion['num_afiliacion']) {
     $num_afiliacion_mostrar = $institucion['num_afiliacion'];
-    $mostrar_num_afiliacion = true;
 }
 
-// Obtener dependencia y su ID para enlace
+// Obtener dependencia
 $dependencia = '';
 $dependencia_id = null;
 if ($institucion['tipo'] != 1 && $institucion['id_universidad']) {
-    foreach ($instituciones as $i) {
-        if ($i['id'] == $institucion['id_universidad']) {
-            $dependencia = $i['nombre'];
-            $dependencia_id = $i['id'];
-            break;
-        }
+    $dependencia_obj = getInstitucionPorId($institucion['id_universidad']);
+    if ($dependencia_obj) {
+        $dependencia = $dependencia_obj['nombre'];
+        $dependencia_id = $dependencia_obj['id'];
     }
 }
 
-// Si es matriz, obtener sus facultades/campus asociados
+// Si es matriz, obtener instituciones asociadas
 $instituciones_asociadas = [];
 if ($es_matriz) {
-    foreach ($instituciones as $i) {
-        if ($i['id_universidad'] == $institucion['id']) {
-            $instituciones_asociadas[] = $i;
-        }
-    }
+    $instituciones_asociadas = getDependenciasDe($institucion['id']);
 }
 
 // Obtener dirección
@@ -577,11 +998,8 @@ $direccion = $direcciones[$id] ?? null;
 // Obtener sitios web
 $webs = $sitios_web[$id] ?? [];
 
-// Obtener personas asociadas (solo si no es matriz)
-$personas = [];
-if (!$es_matriz) {
-    $personas = $personas_asociadas[$id] ?? [];
-}
+// Obtener personas asociadas
+$personas = $personas_asociadas[$id] ?? [];
 
 include 'template/header.php';
 include 'template/menu.php';
@@ -635,7 +1053,7 @@ include 'template/menu.php';
                         <div class="profile-meta">
                             <span class="profile-afiliacion">
                                 <span class="afiliacion-label">Núm. Afiliación:</span>
-                                <span class="afiliacion-value <?= !$mostrar_num_afiliacion ? 'afiliacion-no-aplica' : '' ?>">
+                                <span class="afiliacion-value <?= $es_matriz ? 'afiliacion-no-aplica' : '' ?>">
                                     <?= htmlspecialchars($num_afiliacion_mostrar) ?>
                                 </span>
                             </span>
@@ -664,7 +1082,7 @@ include 'template/menu.php';
                                     <?= htmlspecialchars($dependencia) ?>
                                 </a>
                             <?php else: ?>
-                                <?= htmlspecialchars($dependencia) ?>
+                                <span class="dependencia-na"><?= $es_matriz ? 'Es matriz' : '---' ?></span>
                             <?php endif; ?>
                         </span>
                     </div>
@@ -686,6 +1104,14 @@ include 'template/menu.php';
                         <span class="profile-label">Fecha Fin</span>
                         <span class="profile-value"><?= $institucion['fecha_fin'] ? date('d/m/Y', strtotime($institucion['fecha_fin'])) : '---' ?></span>
                     </div>
+                    <div class="profile-item">
+                        <span class="profile-label">Personas asociadas</span>
+                        <span class="profile-value">
+                            <span class="badge-personas <?= $institucion['personas_relacionadas'] > 0 ? 'badge-personas-activo' : 'badge-personas-vacio' ?>">
+                                <?= $institucion['personas_relacionadas'] ?>
+                            </span>
+                        </span>
+                    </div>
                 </div>
             </div>
 
@@ -706,6 +1132,7 @@ include 'template/menu.php';
                                                 <th>Institución</th>
                                                 <th>Tipo</th>
                                                 <th>Participación</th>
+                                                <th>Zona</th>
                                                 <th>Personas</th>
                                             </tr>
                                         </thead>
@@ -713,6 +1140,7 @@ include 'template/menu.php';
                                             <?php foreach ($instituciones_asociadas as $asociada): 
                                                 $tipo_asociada = $tipos_institucion[$asociada['tipo']] ?? 'No definido';
                                                 $participacion_asociada = $tipos_participacion[$asociada['participacion']] ?? 'No definido';
+                                                $zona_asociada = $zonas_regionales[$asociada['id_zona']] ?? 'Sin zona';
                                                 $personas_count = $asociada['personas_relacionadas'] ?? 0;
                                             ?>
                                                 <tr>
@@ -729,6 +1157,9 @@ include 'template/menu.php';
                                                         ?>">
                                                             <?= htmlspecialchars($participacion_asociada) ?>
                                                         </span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge-zona"><?= htmlspecialchars($zona_asociada) ?></span>
                                                     </td>
                                                     <td>
                                                         <span class="badge-personas <?= $personas_count > 0 ? 'badge-personas-activo' : 'badge-personas-vacio' ?>">
@@ -812,65 +1243,58 @@ include 'template/menu.php';
             </div>
             <?php endif; ?>
 
-            <!-- Personas asociadas (solo si NO es matriz) -->
-            <?php if (!$es_matriz): ?>
+            <!-- Personas asociadas -->
+            <?php if (count($personas) > 0): ?>
             <div class="detail-card">
                 <div class="detail-card-header">
                     <h3>Personas asociadas</h3>
                     <span class="detail-badge"><?= count($personas) ?> persona(s)</span>
                 </div>
                 <div class="detail-card-body">
-                    <?php if (count($personas) > 0): ?>
-                        <div class="table-modern-container">
-                            <div class="table-modern-wrapper">
-                                <table class="table-modern">
-                                    <thead>
+                    <div class="table-modern-container">
+                        <div class="table-modern-wrapper">
+                            <table class="table-modern">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Cargo</th>
+                                        <th>Titular</th>
+                                        <th>Fecha Inicio</th>
+                                        <th>Fecha Fin</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($personas as $persona): ?>
                                         <tr>
-                                            <th>Nombre</th>
-                                            <th>Cargo</th>
-                                            <th>Titular</th>
-                                            <th>Fecha Inicio</th>
-                                            <th>Fecha Fin</th>
-                                            <th>Estado</th>
+                                            <td>
+                                                <a href="persona_consulta.php?id=<?= $persona['id'] ?>" class="persona-link">
+                                                    <?= htmlspecialchars($persona['nombre']) ?>
+                                                </a>
+                                            </td>
+                                            <td><?= htmlspecialchars($persona['cargo']) ?></td>
+                                            <td>
+                                                <?php if ($persona['titular']): ?>
+                                                    <span class="badge-titular">Sí</span>
+                                                <?php else: ?>
+                                                    <span class="badge-no-titular">No</span>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td><?= date('d/m/Y', strtotime($persona['fecha_inicio'])) ?></td>
+                                            <td><?= $persona['fecha_fin'] ? date('d/m/Y', strtotime($persona['fecha_fin'])) : '---' ?></td>
+                                            <td>
+                                                <?php if ($persona['activo']): ?>
+                                                    <span class="status-active"><i class="fas fa-circle"></i> Activo</span>
+                                                <?php else: ?>
+                                                    <span class="status-inactive"><i class="fas fa-circle"></i> Inactivo</span>
+                                                <?php endif; ?>
+                                            </td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach ($personas as $persona): ?>
-                                            <tr>
-                                                <td>
-                                                    <a href="persona_consulta.php?id=<?= $persona['id'] ?>" class="persona-link">
-                                                        <?= htmlspecialchars($persona['nombre']) ?>
-                                                    </a>
-                                                </td>
-                                                <td><?= htmlspecialchars($persona['cargo']) ?></td>
-                                                <td>
-                                                    <?php if ($persona['titular']): ?>
-                                                        <span class="badge-titular">Sí</span>
-                                                    <?php else: ?>
-                                                        <span class="badge-no-titular">No</span>
-                                                    <?php endif; ?>
-                                                </td>
-                                                <td><?= date('d/m/Y', strtotime($persona['fecha_inicio'])) ?></td>
-                                                <td><?= $persona['fecha_fin'] ? date('d/m/Y', strtotime($persona['fecha_fin'])) : '---' ?></td>
-                                                <td>
-                                                    <?php if ($persona['activo']): ?>
-                                                        <span class="status-active"><i class="fas fa-circle"></i> Activo</span>
-                                                    <?php else: ?>
-                                                        <span class="status-inactive"><i class="fas fa-circle"></i> Inactivo</span>
-                                                    <?php endif; ?>
-                                                </td>
-                                            </tr>
-                                        <?php endforeach; ?>
-                                    </tbody>
-                                </table>
-                            </div>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
                         </div>
-                    <?php else: ?>
-                        <div class="empty-personas">
-                            <i class="fas fa-user-times"></i>
-                            <p>No hay personas asociadas a esta institución</p>
-                        </div>
-                    <?php endif; ?>
+                    </div>
                 </div>
             </div>
             <?php endif; ?>
@@ -1154,7 +1578,7 @@ include 'template/menu.php';
 
 .profile-body {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 1rem;
     padding: 1.25rem 1.75rem;
 }
@@ -1190,6 +1614,10 @@ include 'template/menu.php';
 .dependencia-link:hover {
     color: #5C0000;
     text-decoration: underline;
+}
+
+.dependencia-na {
+    color: #999;
 }
 
 /* Institución link */
@@ -1455,6 +1883,16 @@ include 'template/menu.php';
 }
 
 /* Responsive */
+@media (max-width: 992px) {
+    .profile-body {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .direccion-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 @media (max-width: 768px) {
     .page-header {
         flex-direction: column;
