@@ -19,77 +19,99 @@ $_SESSION['nombre'] = 'Admin ANFECA';
 $_SESSION['rol'] = 'Administrador';
 
 // ============================================================
-// DATOS ESTADÍSTICOS (SIMULADOS)
+// DATOS ESTADÍSTICOS
 // ============================================================
 
 $stats = [
     'personas' => [
-        'total' => 1284,
-        'activas' => 1156,
-        'inactivas' => 128
+        'total' => 7,
+        'activas' => 6,
+        'inactivas' => 1
     ],
     'instituciones' => [
-        'total' => 87,
-        'afiliadas' => 63,
-        'observadoras' => 24
+        'total' => 17,
+        'afiliadas' => 14,
+        'observadoras' => 3
     ],
     'cargos' => [
-        'total' => 45
+        'total' => 14
     ],
     'coordinaciones' => [
-        'total' => 24,
-        'activas' => 22
+        'total' => 14,
+        'activas' => 14
     ]
 ];
 
-// Actividad reciente (con fechas y horas reales)
-$actividad_reciente = [
+// ============================================================
+// MAPEO DE ACCIONES A VERBOS E ICONOS
+// ============================================================
+
+$acciones_map = [
+    'Registro' => ['verbo' => 'registró', 'icono' => 'fa-user-plus'],
+    'Modificacion' => ['verbo' => 'modificó', 'icono' => 'fa-edit'],
+    'Activacion' => ['verbo' => 'reactivó', 'icono' => 'fa-user-check'],
+    'Desactivacion' => ['verbo' => 'desactivó', 'icono' => 'fa-user-times']
+];
+
+// ============================================================
+// BITÁCORA RECIENTE (con la acción de la BD)
+// ============================================================
+
+$bitacora_reciente = [
     [
-        'icono' => 'user-plus',
-        'color' => '#2e7d32',
-        'bg' => '#e8f5e9',
-        'accion' => 'registró una nueva persona',
+        'fecha_hora' => '2026-08-15 09:30:00',
         'usuario' => 'María González',
-        'fecha' => '15 de agosto de 2026',
-        'hora' => '09:30 hrs'
+        'accion' => 'Registro',
+        'descripcion' => 'a Patricia Flores Reyes'
     ],
     [
-        'icono' => 'edit',
-        'color' => '#1565c0',
-        'bg' => '#e3f2fd',
-        'accion' => 'modificó la institución "UNAM"',
+        'fecha_hora' => '2026-08-15 09:15:00',
         'usuario' => 'Juan Pérez',
-        'fecha' => '15 de agosto de 2026',
-        'hora' => '09:15 hrs'
+        'accion' => 'Modificacion',
+        'descripcion' => 'los datos de UNAM'
     ],
     [
-        'icono' => 'user-check',
-        'color' => '#e65100',
-        'bg' => '#fff3e0',
-        'accion' => 'asignó un cargo a una persona',
+        'fecha_hora' => '2026-08-14 16:45:00',
         'usuario' => 'Carlos López',
-        'fecha' => '14 de agosto de 2026',
-        'hora' => '16:45 hrs'
+        'accion' => 'Modificacion',
+        'descripcion' => 'cargo a Laura Torres Vega'
     ],
     [
-        'icono' => 'user-times',
-        'color' => '#c62828',
-        'bg' => '#fce4ec',
-        'accion' => 'desactivó una persona',
-        'usuario' => 'Admin',
-        'fecha' => '14 de agosto de 2026',
-        'hora' => '14:20 hrs'
+        'fecha_hora' => '2026-08-14 14:20:00',
+        'usuario' => 'Roberto Mendoza',
+        'accion' => 'Desactivacion',
+        'descripcion' => 'a Roberto Mendoza Cruz'
+    ],
+    [
+        'fecha_hora' => '2026-08-14 11:00:00',
+        'usuario' => 'Ana Sánchez',
+        'accion' => 'Registro',
+        'descripcion' => 'Instituto Tecnológico de los Mochis'
+    ],
+    [
+        'fecha_hora' => '2026-08-13 17:30:00',
+        'usuario' => 'Admin ANFECA',
+        'accion' => 'Registro',
+        'descripcion' => 'Responsabilidad Social Universitaria'
+    ],
+    [
+        'fecha_hora' => '2026-08-13 15:00:00',
+        'usuario' => 'María González',
+        'accion' => 'Modificacion',
+        'descripcion' => 'datos de Juan Martínez López'
+    ],
+    [
+        'fecha_hora' => '2026-08-13 12:30:00',
+        'usuario' => 'Admin ANFECA',
+        'accion' => 'Activacion',
+        'descripcion' => 'a Ana Sánchez Ramírez'
     ]
 ];
 
-// Incluir templates
 include 'template/header.php';
 include 'template/menu.php';
 ?>
 
-<!-- ============================================================
-MAIN CONTENT
-============================================================ -->
 <main class="main-content">
     <div class="dashboard-container">
 
@@ -97,7 +119,7 @@ MAIN CONTENT
         <section class="welcome-section">
             <div class="welcome-text">
                 <h1>Bienvenido, <?= htmlspecialchars($_SESSION['nombre'] ?? 'Administrador') ?></h1>
-                <p>Sistema Integral de Directorios ANFECA - Panel de Control</p>
+                <p>Sistema de ANFECA - Panel de Control</p>
             </div>
             <div class="welcome-date" id="reloj">
                 <i class="fas fa-calendar-alt"></i>
@@ -105,10 +127,8 @@ MAIN CONTENT
             </div>
         </section>
 
-        <!-- Stats Grid (SOLO 4 - sin tendencias) -->
+        <!-- Stats Grid -->
         <section class="stats-grid">
-
-            <!-- Personas -->
             <div class="stat-card">
                 <div class="stat-icon primary">
                     <i class="fas fa-users"></i>
@@ -118,11 +138,11 @@ MAIN CONTENT
                     <span class="stat-label">Personas</span>
                     <div class="stat-detail">
                         <span><span class="dot" style="background:#2e7d32;"></span> Activas: <?= number_format($stats['personas']['activas']) ?></span>
+                        <span><span class="dot" style="background:#c62828;"></span> Inactivas: <?= number_format($stats['personas']['inactivas']) ?></span>
                     </div>
                 </div>
             </div>
 
-            <!-- Instituciones -->
             <div class="stat-card">
                 <div class="stat-icon success">
                     <i class="fas fa-university"></i>
@@ -132,12 +152,11 @@ MAIN CONTENT
                     <span class="stat-label">Instituciones</span>
                     <div class="stat-detail">
                         <span><span class="dot" style="background:#2e7d32;"></span> Afiliadas: <?= number_format($stats['instituciones']['afiliadas']) ?></span>
-                        <span><span class="dot" style="background:#ffc107;"></span> Observadoras: <?= number_format($stats['instituciones']['observadoras']) ?></span>
+                        <span><span class="dot" style="background:#e65100;"></span> Observadoras: <?= number_format($stats['instituciones']['observadoras']) ?></span>
                     </div>
                 </div>
             </div>
 
-            <!-- Cargos -->
             <div class="stat-card">
                 <div class="stat-icon info">
                     <i class="fas fa-briefcase"></i>
@@ -148,7 +167,6 @@ MAIN CONTENT
                 </div>
             </div>
 
-            <!-- Coordinaciones -->
             <div class="stat-card">
                 <div class="stat-icon warning">
                     <i class="fas fa-sitemap"></i>
@@ -161,7 +179,6 @@ MAIN CONTENT
                     </div>
                 </div>
             </div>
-
         </section>
 
         <!-- Actividad Reciente -->
@@ -171,22 +188,30 @@ MAIN CONTENT
                     <i class="fas fa-clock"></i>
                     Actividad reciente
                 </h3>
-                <a href="#" class="btn btn-sm btn-outline">
+                <a href="bitacora.php" class="btn btn-sm btn-outline">
                     Ver todas <i class="fas fa-arrow-right"></i>
                 </a>
             </div>
             <div class="card-body">
                 <div class="activity-list">
-                    <?php foreach ($actividad_reciente as $actividad): ?>
+                    <?php foreach ($bitacora_reciente as $registro): 
+                        $accion = $acciones_map[$registro['accion']] ?? ['verbo' => 'realizó', 'icono' => 'fa-edit'];
+                    ?>
                     <div class="activity-item">
-                        <div class="activity-icon" style="background: <?= $actividad['bg'] ?>; color: <?= $actividad['color'] ?>;">
-                            <i class="fas fa-<?= $actividad['icono'] ?>"></i>
+                        <div class="activity-icon" style="background: #f5f0f0; color: #8B0000;">
+                            <i class="fas <?= $accion['icono'] ?>"></i>
                         </div>
                         <div class="activity-content">
-                            <p><strong><?= htmlspecialchars($actividad['usuario']) ?></strong> <?= htmlspecialchars($actividad['accion']) ?></p>
+                            <p>
+                                <strong><?= htmlspecialchars($registro['usuario']) ?></strong>
+                                <span class="verbo-rojo"><?= $accion['verbo'] ?></span>
+                                <?= htmlspecialchars($registro['descripcion']) ?>
+                            </p>
                             <div class="activity-datetime">
-                                <i class="far fa-calendar-alt"></i> <?= $actividad['fecha'] ?>
-                                <i class="far fa-clock" style="margin-left: 0.5rem;"></i> <?= $actividad['hora'] ?>
+                                <i class="far fa-calendar-alt"></i>
+                                <?= date('d/m/Y', strtotime($registro['fecha_hora'])) ?>
+                                <i class="far fa-clock" style="margin-left: 0.5rem;"></i>
+                                <?= date('H:i', strtotime($registro['fecha_hora'])) ?> hrs
                             </div>
                         </div>
                     </div>
@@ -197,5 +222,52 @@ MAIN CONTENT
 
     </div>
 </main>
+
+<style>
+/* ============================================================
+   ESTILOS - BITÁCORA
+   ============================================================ */
+
+.activity-item p {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    flex-wrap: wrap;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.verbo-rojo {
+    color: #c62828;
+    font-weight: 600;
+}
+
+.activity-icon {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    border-radius: 50%;
+    background: #f5f0f0;
+    color: #8B0000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.activity-item:hover .activity-icon {
+    background: #8B0000;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .activity-item p {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.1rem;
+    }
+}
+</style>
 
 <?php include 'template/footer.php'; ?>
