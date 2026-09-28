@@ -99,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(139, 0, 0, 0.35);
+            background: rgba(139, 0, 0, 0.86);
             pointer-events: none;
         }
         
@@ -424,7 +424,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="image-content">
                 <h1>
                     Sistema de ANFECA
-                    <span>SISTEMA INTEGRAL DE DIRECTORIOS</span>
+                    <span>SISTEMA DE ANFECA</span>
                 </h1>
                 <div class="brand-line"></div>
                 <p class="brand-subtitle">

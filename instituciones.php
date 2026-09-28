@@ -11,765 +11,7 @@ if (!isset($_SESSION['usuario'])) {
     exit;
 }
 
-// ============================================================
-// DATOS SIMULADOS
-// ============================================================
-
-$entidades_federativas = [
-    1 => 'Aguascalientes',
-    2 => 'Baja California',
-    3 => 'Baja California Sur',
-    4 => 'Campeche',
-    5 => 'Chiapas',
-    6 => 'Chihuahua',
-    7 => 'Ciudad de México',
-    8 => 'Coahuila',
-    9 => 'Colima',
-    10 => 'Durango',
-    11 => 'Estado de México',
-    12 => 'Guanajuato',
-    13 => 'Guerrero',
-    14 => 'Hidalgo',
-    15 => 'Jalisco',
-    16 => 'Michoacán',
-    17 => 'Morelos',
-    18 => 'Nayarit',
-    19 => 'Nuevo León',
-    20 => 'Oaxaca',
-    21 => 'Puebla',
-    22 => 'Querétaro',
-    23 => 'Quintana Roo',
-    24 => 'San Luis Potosí',
-    25 => 'Sinaloa',
-    26 => 'Sonora',
-    27 => 'Tabasco',
-    28 => 'Tamaulipas',
-    29 => 'Tlaxcala',
-    30 => 'Veracruz',
-    31 => 'Yucatán',
-    32 => 'Zacatecas'
-];
-
-$zonas_regionales = [
-    1 => '1 - Noroeste',
-    2 => '2 - Norte',
-    3 => '3 - Centro',
-    4 => '4 - Centro Occidente',
-    5 => '5 - Centro Sur',
-    6 => '6 - Sur',
-    7 => '7 - Ciudad de México'
-];
-
-$tipos_institucion = [
-    1 => 'Universidad',
-    2 => 'Facultad',
-    3 => 'Campus'
-];
-
-$tipos_participacion = [
-    'afiliada' => 'Afiliada',
-    'observadora' => 'Observadora',
-    'matriz' => 'Matriz'
-];
-
-// ============================================================
-// INSTITUCIONES CON DATOS CORREGIDOS
-// ============================================================
-
-$instituciones = [
-    // ============ MATRICES (Universidades) ============
-    [
-        'id' => 1,
-        'num_afiliacion' => null,
-        'nombre' => 'Universidad Nacional Autónoma de México',
-        'tipo' => 1,
-        'participacion' => 'matriz',
-        'id_zona' => 7,
-        'id_entidad' => 7,
-        'id_universidad' => null,
-        'personas_relacionadas' => 5,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 3,
-        'num_afiliacion' => null,
-        'nombre' => 'Instituto Politécnico Nacional',
-        'tipo' => 1,
-        'participacion' => 'matriz',
-        'id_zona' => 7,
-        'id_entidad' => 7,
-        'id_universidad' => null,
-        'personas_relacionadas' => 2,
-        'fecha_inicio' => '2024-02-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 5,
-        'num_afiliacion' => '2601005',
-        'nombre' => 'Universidad de Guadalajara',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 15,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-03-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 7,
-        'num_afiliacion' => '2601007',
-        'nombre' => 'Universidad Autónoma de Baja California',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 1,
-        'id_entidad' => 2,
-        'id_universidad' => null,
-        'personas_relacionadas' => 2,
-        'fecha_inicio' => '2024-04-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 9,
-        'num_afiliacion' => '2602009',
-        'nombre' => 'Universidad Autónoma de Nuevo León',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 2,
-        'id_entidad' => 19,
-        'id_universidad' => null,
-        'personas_relacionadas' => 0,
-        'fecha_inicio' => '2024-05-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 11,
-        'num_afiliacion' => null,
-        'nombre' => 'Instituto Tecnológico de los Mochis',
-        'tipo' => 1,
-        'participacion' => 'observadora',
-        'id_zona' => 1,
-        'id_entidad' => 25,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 12,
-        'num_afiliacion' => null,
-        'nombre' => 'Centro de Estudios Superiores del Noroeste',
-        'tipo' => 1,
-        'participacion' => 'observadora',
-        'id_zona' => 1,
-        'id_entidad' => 2,
-        'id_universidad' => null,
-        'personas_relacionadas' => 0,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => '2024-12-31'
-    ],
-    [
-        'id' => 13,
-        'num_afiliacion' => null,
-        'nombre' => 'Instituto de Estudios Superiores de Chihuahua',
-        'tipo' => 1,
-        'participacion' => 'observadora',
-        'id_zona' => 1,
-        'id_entidad' => 6,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 15,
-        'num_afiliacion' => '2603011',
-        'nombre' => 'Universidad Autónoma de Querétaro',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 3,
-        'id_entidad' => 22,
-        'id_universidad' => null,
-        'personas_relacionadas' => 0,
-        'fecha_inicio' => '2024-06-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 16,
-        'num_afiliacion' => '2606012',
-        'nombre' => 'Universidad Autónoma de Yucatán',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 6,
-        'id_entidad' => 31,
-        'id_universidad' => null,
-        'personas_relacionadas' => 0,
-        'fecha_inicio' => '2024-06-15',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 17,
-        'num_afiliacion' => '2601013',
-        'nombre' => 'Universidad Autónoma de Sinaloa',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 1,
-        'id_entidad' => 25,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-07-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 19,
-        'num_afiliacion' => '9807033',
-        'nombre' => 'Tecnológico de Monterrey',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 7,
-        'id_entidad' => 7,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 20,
-        'num_afiliacion' => null,
-        'nombre' => 'Universidad Intercontinental',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 7,
-        'id_entidad' => 7,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 21,
-        'num_afiliacion' => '9803004',
-        'nombre' => 'Universidad Autónoma de Aguascalientes',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 3,
-        'id_entidad' => 1,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 22,
-        'num_afiliacion' => '9802020',
-        'nombre' => 'Universidad Iberoamericana Torreón',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 2,
-        'id_entidad' => 8,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 23,
-        'num_afiliacion' => '9803007',
-        'nombre' => 'Universidad Autónoma de San Luis Potosí',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 3,
-        'id_entidad' => 24,
-        'id_universidad' => null,
-        'personas_relacionadas' => 2,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 24,
-        'num_afiliacion' => '9805012',
-        'nombre' => 'Universidad Autónoma de Tlaxcala',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 5,
-        'id_entidad' => 29,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 25,
-        'num_afiliacion' => '9806001',
-        'nombre' => 'Universidad Veracruzana',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 6,
-        'id_entidad' => 30,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 26,
-        'num_afiliacion' => '9806018',
-        'nombre' => 'Universidad Juárez Autónoma de Tabasco',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 6,
-        'id_entidad' => 27,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 27,
-        'num_afiliacion' => '9802009',
-        'nombre' => 'Universidad Autónoma de Tamaulipas',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 2,
-        'id_entidad' => 28,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 28,
-        'num_afiliacion' => '1906067',
-        'nombre' => 'Universidad Tecnológica de Tabasco',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 6,
-        'id_entidad' => 27,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 29,
-        'num_afiliacion' => '9801017',
-        'nombre' => 'Universidad Autónoma de Chihuahua',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 1,
-        'id_entidad' => 6,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 30,
-        'num_afiliacion' => '9801020',
-        'nombre' => 'Universidad de Sonora',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 1,
-        'id_entidad' => 26,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 31,
-        'num_afiliacion' => '9804009',
-        'nombre' => 'Universidad Autónoma de Nayarit',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 18,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 32,
-        'num_afiliacion' => '9804005',
-        'nombre' => 'Instituto Tecnológico y de Estudios Superiores de Occidente',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 15,
-        'id_universidad' => null,
-        'personas_relacionadas' => 2,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 33,
-        'num_afiliacion' => '9804007',
-        'nombre' => 'Universidad Autónoma de Guadalajara',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 15,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 34,
-        'num_afiliacion' => '9804014',
-        'nombre' => 'Centro Universitario de los Altos (UDG)',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 15,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 35,
-        'num_afiliacion' => '9804019',
-        'nombre' => 'Universidad del Valle de Atemajac',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 15,
-        'id_universidad' => null,
-        'personas_relacionadas' => 2,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 36,
-        'num_afiliacion' => '9802001',
-        'nombre' => 'Universidad Autónoma de Coahuila',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 2,
-        'id_entidad' => 8,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 37,
-        'num_afiliacion' => '9802016',
-        'nombre' => 'Universidad de Monterrey',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 2,
-        'id_entidad' => 19,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 38,
-        'num_afiliacion' => '9805002',
-        'nombre' => 'Benemérita Universidad Autónoma de Puebla',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 5,
-        'id_entidad' => 21,
-        'id_universidad' => null,
-        'personas_relacionadas' => 2,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-
-    // ============ FACULTADES (con dependencia) ============
-    [
-        'id' => 2,
-        'num_afiliacion' => '2607002',
-        'nombre' => 'Facultad de Contaduría y Administración (UNAM)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 7,
-        'id_entidad' => 7,
-        'id_universidad' => 1,
-        'personas_relacionadas' => 3,
-        'fecha_inicio' => '2024-01-15',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 4,
-        'num_afiliacion' => '2607004',
-        'nombre' => 'ESCOM (IPN)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 7,
-        'id_entidad' => 7,
-        'id_universidad' => 3,
-        'personas_relacionadas' => 2,
-        'fecha_inicio' => '2024-02-15',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 6,
-        'num_afiliacion' => '2604006',
-        'nombre' => 'Facultad de Contaduría (UDG)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 15,
-        'id_universidad' => 5,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-03-15',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 14,
-        'num_afiliacion' => null,
-        'nombre' => 'Facultad de Ciencias Administrativas (CESUN)',
-        'tipo' => 2,
-        'participacion' => 'observadora',
-        'id_zona' => 1,
-        'id_entidad' => 2,
-        'id_universidad' => 12,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 39,
-        'num_afiliacion' => '9807033',
-        'nombre' => 'ESCA Unidad Tepepan (IPN)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 7,
-        'id_entidad' => 7,
-        'id_universidad' => 3,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 40,
-        'num_afiliacion' => '9802008',
-        'nombre' => 'Facultad de Contaduría Pública y Administración (UANL)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 2,
-        'id_entidad' => 19,
-        'id_universidad' => 9,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 41,
-        'num_afiliacion' => '9801018',
-        'nombre' => 'Facultad de Contaduría y Administración (UAS)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 1,
-        'id_entidad' => 25,
-        'id_universidad' => 17,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 42,
-        'num_afiliacion' => '9806012',
-        'nombre' => 'Facultad de Contaduría y Administración (UADY)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 6,
-        'id_entidad' => 31,
-        'id_universidad' => 16,
-        'personas_relacionadas' => 2,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 43,
-        'num_afiliacion' => '9805011',
-        'nombre' => 'Facultad de Administración (BUAP)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 5,
-        'id_entidad' => 21,
-        'id_universidad' => 38,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 44,
-        'num_afiliacion' => '9805002',
-        'nombre' => 'Facultad de Contaduría Pública (BUAP)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 5,
-        'id_entidad' => 21,
-        'id_universidad' => 38,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 45,
-        'num_afiliacion' => '9806023',
-        'nombre' => 'Facultad de Contaduría y Administración (UV)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 6,
-        'id_entidad' => 30,
-        'id_universidad' => 25,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 46,
-        'num_afiliacion' => '9803004',
-        'nombre' => 'Centro de Ciencias Económicas y Administrativas (UAA)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 3,
-        'id_entidad' => 1,
-        'id_universidad' => 21,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 47,
-        'num_afiliacion' => '9804001',
-        'nombre' => 'División de Contaduría (UDG)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 15,
-        'id_universidad' => 5,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 48,
-        'num_afiliacion' => '9804009',
-        'nombre' => 'Unidad Académica de Contaduría y Administración (UAN)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 18,
-        'id_universidad' => 31,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-
-    // ============ CAMPUS (con dependencia) ============
-    [
-        'id' => 8,
-        'num_afiliacion' => '2601008',
-        'nombre' => 'Campus UABC - Mexicali',
-        'tipo' => 3,
-        'participacion' => 'afiliada',
-        'id_zona' => 1,
-        'id_entidad' => 2,
-        'id_universidad' => 7,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-04-15',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 10,
-        'num_afiliacion' => '2605010',
-        'nombre' => 'Campus UANL - San Nicolás',
-        'tipo' => 3,
-        'participacion' => 'afiliada',
-        'id_zona' => 2,
-        'id_entidad' => 19,
-        'id_universidad' => 9,
-        'personas_relacionadas' => 0,
-        'fecha_inicio' => '2024-05-15',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 49,
-        'num_afiliacion' => '9804005',
-        'nombre' => 'Campus Guadalajara (ITESO)',
-        'tipo' => 3,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 15,
-        'id_universidad' => 32,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 50,
-        'num_afiliacion' => '9804019',
-        'nombre' => 'Campus Puerto Vallarta (UNIVA)',
-        'tipo' => 3,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 15,
-        'id_universidad' => 35,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ]
-];
-
-// ============================================================
-// FUNCIONES AUXILIARES
-// ============================================================
-
-function getEntidadNombre($id) {
-    global $entidades_federativas;
-    return $entidades_federativas[$id] ?? 'Sin entidad';
-}
-
-function getZonaNumero($id) {
-    global $zonas_regionales;
-    return explode(' - ', $zonas_regionales[$id] ?? '0')[0];
-}
-
-function getZonaNombre($id) {
-    global $zonas_regionales;
-    return $zonas_regionales[$id] ?? 'Sin zona';
-}
-
-function getTipoNombre($id) {
-    global $tipos_institucion;
-    return $tipos_institucion[$id] ?? 'No definido';
-}
-
-function getParticipacionNombre($key) {
-    global $tipos_participacion;
-    return $tipos_participacion[$key] ?? 'No definido';
-}
-
-function getInstitucionNombre($id) {
-    global $instituciones;
-    foreach ($instituciones as $i) {
-        if ($i['id'] == $id) {
-            return $i['nombre'];
-        }
-    }
-    return 'Sin dependencia';
-}
-
-function getDependenciasDe($id) {
-    global $instituciones;
-    $dependencias = [];
-    foreach ($instituciones as $i) {
-        if ($i['id_universidad'] == $id) {
-            $dependencias[] = $i['nombre'];
-        }
-    }
-    return $dependencias;
-}
+require_once 'institucion_datos.php';
 
 // ============================================================
 // FILTROS
@@ -791,7 +33,29 @@ if ($tipo_filtro > 0) {
 
 if (!empty($participacion_filtro)) {
     $instituciones_filtradas = array_filter($instituciones_filtradas, function($i) use ($participacion_filtro) {
-        return $i['participacion'] == $participacion_filtro;
+        // Matriz: filtra por es_matriz
+        if ($participacion_filtro === 'matriz') {
+            return $i['es_matriz'] ?? false;
+        }
+        
+        // Si es matriz, no aplica filtro de afiliada u observadora
+        if ($i['es_matriz'] ?? false) {
+            return false;
+        }
+        
+        $part = getParticipacionesDe($i);
+        
+        // Afiliada: participación vigente de tipo Afiliada
+        if ($participacion_filtro === 'afiliada') {
+            return $part['vigente'] && $part['vigente']['tipo'] === 'Afiliada';
+        }
+        
+        // Observadora: participación vigente de tipo Observadora
+        if ($participacion_filtro === 'observadora') {
+            return $part['vigente'] && $part['vigente']['tipo'] === 'Observadora';
+        }
+        
+        return false;
     });
 }
 
@@ -803,8 +67,8 @@ if ($zona_filtro > 0) {
 
 if (!empty($estado_filtro)) {
     $instituciones_filtradas = array_filter($instituciones_filtradas, function($i) use ($estado_filtro) {
-        $estado = $i['fecha_fin'] === null ? 'activo' : 'inactivo';
-        return $estado == $estado_filtro;
+        $estado = getEstadoInstitucion($i);
+        return $estado === $estado_filtro;
     });
 }
 
@@ -863,7 +127,7 @@ include 'template/menu.php';
             </div>
         </div>
 
-        <!-- Filtros - Filtrado automático -->
+        <!-- Filtros -->
         <div class="filters-container">
             <form method="GET" id="formFiltros" class="filters-form">
                 <div class="filters-row">
@@ -876,11 +140,9 @@ include 'template/menu.php';
                         <label class="filter-label">Participación</label>
                         <select name="participacion" id="filtroParticipacion" class="filter-select">
                             <option value="">Todas</option>
-                            <?php foreach ($tipos_participacion as $key => $nombre): ?>
-                                <option value="<?= $key ?>" <?= $participacion_filtro == $key ? 'selected' : '' ?>>
-                                    <?= htmlspecialchars($nombre) ?>
-                                </option>
-                            <?php endforeach; ?>
+                            <option value="afiliada" <?= $participacion_filtro == 'afiliada' ? 'selected' : '' ?>>Afiliada</option>
+                            <option value="observadora" <?= $participacion_filtro == 'observadora' ? 'selected' : '' ?>>Observadora</option>
+                            <option value="matriz" <?= $participacion_filtro == 'matriz' ? 'selected' : '' ?>>Matriz</option>
                         </select>
                     </div>
                     
@@ -900,8 +162,8 @@ include 'template/menu.php';
                         <label class="filter-label">Estado</label>
                         <select name="estado" id="filtroEstado" class="filter-select">
                             <option value="">Todos</option>
-                            <option value="activo" <?= $estado_filtro == 'activo' ? 'selected' : '' ?>>Activo</option>
-                            <option value="inactivo" <?= $estado_filtro == 'inactivo' ? 'selected' : '' ?>>Inactivo</option>
+                            <option value="activa" <?= $estado_filtro == 'activa' ? 'selected' : '' ?>>Activo</option>
+                            <option value="inactiva" <?= $estado_filtro == 'inactiva' ? 'selected' : '' ?>>Inactivo</option>
                         </select>
                     </div>
                     
@@ -939,22 +201,74 @@ include 'template/menu.php';
                         </thead>
                         <tbody>
                             <?php foreach ($instituciones_paginadas as $institucion): 
-                                $dependencia_nombre = '';
-                                if ($institucion['id_universidad']) {
-                                    $dependencia_nombre = getInstitucionNombre($institucion['id_universidad']);
-                                }
-                                $es_matriz = $institucion['participacion'] == 'matriz';
-                                $estado = $institucion['fecha_fin'] === null ? 'Activo' : 'Inactivo';
-                                $estado_clase = $institucion['fecha_fin'] === null ? 'status-active' : 'status-inactive';
+                                $es_matriz = $institucion['es_matriz'] ?? false;
+                                $estado = getEstadoInstitucion($institucion);
+                                $esta_activa = ($estado === 'activa');
                                 
+                                // ============================
+                                // Número de afiliación
+                                // ============================
                                 $num_afiliacion_mostrar = '---';
+                                $participaciones = getParticipacionesDe($institucion);
+                                $participacion_vigente = $participaciones['vigente'];
+                                
                                 if ($es_matriz) {
                                     $num_afiliacion_mostrar = 'N/A';
-                                } elseif ($institucion['num_afiliacion']) {
-                                    $num_afiliacion_mostrar = $institucion['num_afiliacion'];
+                                } elseif ($participacion_vigente && !empty($participacion_vigente['num_afiliacion'])) {
+                                    $num_afiliacion_mostrar = $participacion_vigente['num_afiliacion'];
+                                } elseif (!$esta_activa && !empty($participaciones['anteriores'])) {
+                                    // Inactiva: mostrar el último número que tuvo
+                                    foreach ($participaciones['anteriores'] as $p) {
+                                        if (!empty($p['num_afiliacion'])) {
+                                            $num_afiliacion_mostrar = $p['num_afiliacion'];
+                                            break;
+                                        }
+                                    }
                                 }
                                 
-                                // Verificar si se puede eliminar
+                                // ============================
+                                // Participación (badge)
+                                // ============================
+                                if ($es_matriz) {
+                                    $participacion_badge = 'matriz';
+                                    $participacion_texto = 'Matriz';
+                                } elseif ($participacion_vigente) {
+                                    $participacion_badge = strtolower($participacion_vigente['tipo']);
+                                    $participacion_texto = $participacion_vigente['tipo'];
+                                } else {
+                                    // Inactiva: usar la última participación
+                                    $ultima = !empty($participaciones['anteriores']) ? $participaciones['anteriores'][0] : null;
+                                    $participacion_badge = $ultima ? strtolower($ultima['tipo']) : 'observadora';
+                                    $participacion_texto = $ultima ? $ultima['tipo'] : '---';
+                                }
+                                
+                                // ============================
+                                // Dependencia
+                                // ============================
+                                $dependencia_nombre = '';
+                                if ($institucion['id_universidad']) {
+                                    $dependencia_nombre = getNombreInstitucion($institucion['id_universidad']);
+                                }
+                                
+                                // ============================
+                                // Zona
+                                // ============================
+                                $zona_mostrar = getZonaNumero($institucion['id_zona']);
+                                
+                                // ============================
+                                // Estado (texto)
+                                // ============================
+                                if ($esta_activa) {
+                                    $estado_texto = 'Activo';
+                                    $estado_clase = 'status-active';
+                                } else {
+                                    $estado_texto = 'Inactivo';
+                                    $estado_clase = 'status-inactive';
+                                }
+                                
+                                // ============================
+                                // ¿Se puede eliminar?
+                                // ============================
                                 $dependencias = getDependenciasDe($institucion['id']);
                                 $puede_eliminar = (count($dependencias) == 0 && $institucion['personas_relacionadas'] == 0);
                                 $tooltip_eliminar = $puede_eliminar ? '' : 'No se puede eliminar porque tiene instituciones o personas asociadas';
@@ -980,15 +294,14 @@ include 'template/menu.php';
                                         <?php endif; ?>
                                     </td>
                                     <td>
-                                        <span class="badge-participacion <?= 
-                                            $institucion['participacion'] == 'afiliada' ? 'badge-afiliada' : 
-                                            ($institucion['participacion'] == 'matriz' ? 'badge-matriz' : 'badge-observadora') 
-                                        ?>">
-                                            <?= htmlspecialchars(getParticipacionNombre($institucion['participacion'])) ?>
+                                        <span class="badge-participacion badge-<?= $participacion_badge ?>">
+                                            <?= htmlspecialchars($participacion_texto) ?>
                                         </span>
                                     </td>
                                     <td>
-                                        <span class="badge-zona"><?= getZonaNumero($institucion['id_zona']) ?></span>
+                                        <span class="badge-zona <?= $zona_mostrar === '---' ? 'badge-zona-na' : '' ?>">
+                                            <?= htmlspecialchars($zona_mostrar) ?>
+                                        </span>
                                     </td>
                                     <td>
                                         <span class="badge-personas <?= $institucion['personas_relacionadas'] > 0 ? 'badge-personas-activo' : 'badge-personas-vacio' ?>">
@@ -997,7 +310,7 @@ include 'template/menu.php';
                                     </td>
                                     <td>
                                         <span class="status-badge <?= $estado_clase ?>">
-                                            <span class="status-dot"></span> <?= $estado ?>
+                                            <span class="status-dot"></span> <?= $estado_texto ?>
                                         </span>
                                     </td>
                                     <td>
@@ -1114,7 +427,7 @@ include 'template/menu.php';
 
 <style>
 /* ============================================================
-   ESTILOS - INSTITUCIONES (TABLA MÁS GRANDE)
+   ESTILOS - INSTITUCIONES
    ============================================================ */
 
 .page-header {
@@ -1318,7 +631,7 @@ include 'template/menu.php';
     margin-right: 0.3rem;
 }
 
-/* Tabla - MÁS GRANDE */
+/* Tabla */
 .table-modern-container {
     background: white;
     border-radius: 14px;
@@ -1424,6 +737,12 @@ include 'template/menu.php';
     border-radius: 14px;
     font-size: 0.8rem;
     font-weight: 600;
+}
+
+.badge-zona-na {
+    background: transparent;
+    color: #ccc;
+    font-weight: 400;
 }
 
 .badge-personas {
@@ -1974,45 +1293,63 @@ document.addEventListener('click', function(e) {
 });
 
 // ============================================================
-// EXPORTAR CSV (todos los resultados)
+// EXPORTAR CSV
 // ============================================================
 
 function descargarCSV() {
     const datos = <?= json_encode(array_map(function($i) {
-        $dependencia_nombre = '';
-        if ($i['id_universidad']) {
-            $dependencia_nombre = getInstitucionNombre($i['id_universidad']);
-        }
-        $es_matriz = $i['participacion'] == 'matriz';
-        $estado = $i['fecha_fin'] === null ? 'Activo' : 'Inactivo';
+        $es_matriz = $i['es_matriz'] ?? false;
+        $estado_general = getEstadoInstitucion($i);
+        $esta_activa = ($estado_general === 'activa');
+        
+        // Número de afiliación
+        $participaciones = getParticipacionesDe($i);
+        $participacion_vigente = $participaciones['vigente'];
         
         $num_afiliacion_mostrar = '---';
         if ($es_matriz) {
             $num_afiliacion_mostrar = 'N/A';
-        } elseif ($i['num_afiliacion']) {
-            $num_afiliacion_mostrar = $i['num_afiliacion'];
-        }
-        
-        // Obtener dependencias si es matriz
-        $dependencias_info = '';
-        if ($es_matriz) {
-            $deps = getDependenciasDe($i['id']);
-            if (count($deps) > 0) {
-                $dependencias_info = count($deps) . ' (' . implode('; ', $deps) . ')';
-            } else {
-                $dependencias_info = '0';
+        } elseif ($participacion_vigente && !empty($participacion_vigente['num_afiliacion'])) {
+            $num_afiliacion_mostrar = $participacion_vigente['num_afiliacion'];
+        } elseif (!$esta_activa && !empty($participaciones['anteriores'])) {
+            foreach ($participaciones['anteriores'] as $p) {
+                if (!empty($p['num_afiliacion'])) {
+                    $num_afiliacion_mostrar = $p['num_afiliacion'];
+                    break;
+                }
             }
         }
+        
+        // Participación
+        if ($es_matriz) {
+            $participacion_texto = 'Matriz';
+        } elseif ($participacion_vigente) {
+            $participacion_texto = $participacion_vigente['tipo'];
+        } else {
+            $ultima = !empty($participaciones['anteriores']) ? $participaciones['anteriores'][0] : null;
+            $participacion_texto = $ultima ? $ultima['tipo'] : '---';
+        }
+        
+        // Dependencia
+        $dependencia_nombre = '';
+        if ($i['id_universidad']) {
+            $dependencia_nombre = getNombreInstitucion($i['id_universidad']);
+        }
+        
+        // Estado
+        $estado_texto = $esta_activa ? 'Activo' : 'Inactivo';
+        
+        // Zona
+        $zona_num = getZonaNumero($i['id_zona']);
         
         return [
             'num_afiliacion' => $num_afiliacion_mostrar,
             'nombre' => $i['nombre'],
             'dependencia' => $dependencia_nombre ?: '---',
-            'participacion' => getParticipacionNombre($i['participacion']),
-            'zona' => getZonaNumero($i['id_zona']),
+            'participacion' => $participacion_texto,
+            'zona' => $zona_num,
             'personas' => $i['personas_relacionadas'],
-            'estado' => $estado,
-            'dependencias' => $dependencias_info
+            'estado' => $estado_texto
         ];
     }, $instituciones_filtradas)) ?>;
     
@@ -2021,10 +1358,10 @@ function descargarCSV() {
         return;
     }
     
-    let csv = 'Núm. Afiliación,Institución,Dependencia,Participación,Zona,Personas,Estado,Instituciones Dependientes\n';
+    let csv = 'Núm. Afiliación,Institución,Dependencia,Participación,Zona,Personas,Estado\n';
     
     datos.forEach(function(row) {
-        csv += `"${row.num_afiliacion}","${row.nombre}","${row.dependencia}","${row.participacion}","${row.zona}","${row.personas}","${row.estado}","${row.dependencias}"\n`;
+        csv += `"${row.num_afiliacion}","${row.nombre}","${row.dependencia}","${row.participacion}","${row.zona}","${row.personas}","${row.estado}"\n`;
     });
     
     const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });

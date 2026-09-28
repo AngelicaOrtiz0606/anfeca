@@ -11,893 +11,14 @@ if (!isset($_SESSION['usuario'])) {
     exit;
 }
 
-// ============================================================
-// DATOS SIMULADOS
-// ============================================================
-
-$entidades_federativas = [
-    1 => 'Aguascalientes',
-    2 => 'Baja California',
-    3 => 'Baja California Sur',
-    4 => 'Campeche',
-    5 => 'Chiapas',
-    6 => 'Chihuahua',
-    7 => 'Ciudad de México',
-    8 => 'Coahuila',
-    9 => 'Colima',
-    10 => 'Durango',
-    11 => 'Estado de México',
-    12 => 'Guanajuato',
-    13 => 'Guerrero',
-    14 => 'Hidalgo',
-    15 => 'Jalisco',
-    16 => 'Michoacán',
-    17 => 'Morelos',
-    18 => 'Nayarit',
-    19 => 'Nuevo León',
-    20 => 'Oaxaca',
-    21 => 'Puebla',
-    22 => 'Querétaro',
-    23 => 'Quintana Roo',
-    24 => 'San Luis Potosí',
-    25 => 'Sinaloa',
-    26 => 'Sonora',
-    27 => 'Tabasco',
-    28 => 'Tamaulipas',
-    29 => 'Tlaxcala',
-    30 => 'Veracruz',
-    31 => 'Yucatán',
-    32 => 'Zacatecas'
-];
-
-$zonas_regionales = [
-    1 => '1 - Noroeste',
-    2 => '2 - Norte',
-    3 => '3 - Centro',
-    4 => '4 - Centro Occidente',
-    5 => '5 - Centro Sur',
-    6 => '6 - Sur',
-    7 => '7 - Ciudad de México'
-];
-
-$tipos_institucion = [
-    1 => 'Universidad',
-    2 => 'Facultad',
-    3 => 'Campus'
-];
-
-$tipos_participacion = [
-    'afiliada' => 'Afiliada',
-    'observadora' => 'Observadora',
-    'matriz' => 'Matriz'
-];
-
-// Mapeo de entidad a zona
-$zona_por_entidad = [
-    1 => 3,  // Aguascalientes → Centro
-    2 => 1,  // Baja California → Noroeste
-    3 => 1,  // Baja California Sur → Noroeste
-    4 => 6,  // Campeche → Sur
-    5 => 6,  // Chiapas → Sur
-    6 => 1,  // Chihuahua → Noroeste
-    7 => 7,  // Ciudad de México → Ciudad de México
-    8 => 2,  // Coahuila → Norte
-    9 => 4,  // Colima → Centro Occidente
-    10 => 3, // Durango → Centro
-    11 => 5, // Estado de México → Centro Sur
-    12 => 4, // Guanajuato → Centro Occidente
-    13 => 5, // Guerrero → Centro Sur
-    14 => 5, // Hidalgo → Centro Sur
-    15 => 4, // Jalisco → Centro Occidente
-    16 => 4, // Michoacán → Centro Occidente
-    17 => 5, // Morelos → Centro Sur
-    18 => 4, // Nayarit → Centro Occidente
-    19 => 2, // Nuevo León → Norte
-    20 => 6, // Oaxaca → Sur
-    21 => 5, // Puebla → Centro Sur
-    22 => 3, // Querétaro → Centro
-    23 => 6, // Quintana Roo → Sur
-    24 => 3, // San Luis Potosí → Centro
-    25 => 1, // Sinaloa → Noroeste
-    26 => 1, // Sonora → Noroeste
-    27 => 6, // Tabasco → Sur
-    28 => 2, // Tamaulipas → Norte
-    29 => 5, // Tlaxcala → Centro Sur
-    30 => 6, // Veracruz → Sur
-    31 => 6, // Yucatán → Sur
-    32 => 3  // Zacatecas → Centro
-];
-
-// Mapeo de código postal a datos
-$datos_por_cp = [
-    '04510' => ['entidad' => 7, 'municipio' => 'Coyoacán', 'colonia' => 'Ciudad Universitaria', 'zona' => 7],
-    '07738' => ['entidad' => 7, 'municipio' => 'Gustavo A. Madero', 'colonia' => 'Zacatenco', 'zona' => 7],
-    '09340' => ['entidad' => 7, 'municipio' => 'Iztapalapa', 'colonia' => 'San Rafael Atlixco', 'zona' => 7],
-    '44100' => ['entidad' => 15, 'municipio' => 'Guadalajara', 'colonia' => 'Centro', 'zona' => 4],
-    '21259' => ['entidad' => 2, 'municipio' => 'Mexicali', 'colonia' => 'Rivera', 'zona' => 1],
-    '22424' => ['entidad' => 2, 'municipio' => 'Tijuana', 'colonia' => 'Internacional Tijuana', 'zona' => 1],
-    '66450' => ['entidad' => 19, 'municipio' => 'San Nicolás de los Garza', 'colonia' => 'Ciudad Universitaria', 'zona' => 2],
-    '42080' => ['entidad' => 14, 'municipio' => 'Pachuca', 'colonia' => 'Ciudad Universitaria', 'zona' => 5],
-    '76010' => ['entidad' => 22, 'municipio' => 'Querétaro', 'colonia' => 'Centro', 'zona' => 3],
-    '72570' => ['entidad' => 21, 'municipio' => 'Puebla', 'colonia' => 'Ciudad Universitaria', 'zona' => 5],
-    '80020' => ['entidad' => 25, 'municipio' => 'Culiacán', 'colonia' => 'Ciudad Universitaria', 'zona' => 1],
-    '97160' => ['entidad' => 31, 'municipio' => 'Mérida', 'colonia' => 'Centro', 'zona' => 6],
-    '64849' => ['entidad' => 19, 'municipio' => 'Monterrey', 'colonia' => 'Tecnológico', 'zona' => 2],
-    '14420' => ['entidad' => 7, 'municipio' => 'Tlalpan', 'colonia' => 'Santa Úrsula Xitla', 'zona' => 7],
-    '20100' => ['entidad' => 1, 'municipio' => 'Aguascalientes', 'colonia' => 'Ciudad Universitaria', 'zona' => 3],
-    '27010' => ['entidad' => 8, 'municipio' => 'Torreón', 'colonia' => 'Residencial las Haciendas', 'zona' => 2],
-    '78290' => ['entidad' => 24, 'municipio' => 'San Luis Potosí', 'colonia' => 'Zona Universitaria', 'zona' => 3],
-    '90000' => ['entidad' => 29, 'municipio' => 'Tlaxcala', 'colonia' => 'Col. San José', 'zona' => 5],
-    '91000' => ['entidad' => 30, 'municipio' => 'Xalapa', 'colonia' => 'Zona Universitaria', 'zona' => 6],
-    '86000' => ['entidad' => 27, 'municipio' => 'Villahermosa', 'colonia' => 'Zona de la Cultura', 'zona' => 6],
-    '87000' => ['entidad' => 28, 'municipio' => 'Ciudad Victoria', 'colonia' => 'Ciudad Victoria', 'zona' => 2],
-    '31000' => ['entidad' => 6, 'municipio' => 'Chihuahua', 'colonia' => 'Zona Centro', 'zona' => 1],
-    '83000' => ['entidad' => 26, 'municipio' => 'Hermosillo', 'colonia' => 'Zona Centro', 'zona' => 1],
-    '63000' => ['entidad' => 18, 'municipio' => 'Tepic', 'colonia' => 'Cd. de la Cultura', 'zona' => 4],
-    '45010' => ['entidad' => 15, 'municipio' => 'Guadalajara', 'colonia' => 'Camino Real', 'zona' => 4],
-    '45030' => ['entidad' => 15, 'municipio' => 'Zapopan', 'colonia' => 'Jardines de Guadalupe', 'zona' => 4],
-    '47600' => ['entidad' => 15, 'municipio' => 'Tepatitlán de Morelos', 'colonia' => 'Los Altos', 'zona' => 4],
-    '45000' => ['entidad' => 15, 'municipio' => 'Guadalajara', 'colonia' => 'Monraz', 'zona' => 4],
-    '25000' => ['entidad' => 8, 'municipio' => 'Saltillo', 'colonia' => 'Ciudad Universitaria', 'zona' => 2],
-    '64610' => ['entidad' => 19, 'municipio' => 'San Pedro Garza García', 'colonia' => 'Cumbres', 'zona' => 2],
-    '72420' => ['entidad' => 21, 'municipio' => 'Puebla', 'colonia' => 'Cuauhtémoc', 'zona' => 5]
-];
+require_once 'institucion_datos.php';
 
 // ============================================================
-// INSTITUCIONES COMPLETAS (coincidiendo con instituciones.php)
+// OBTENER INSTITUCIÓN
 // ============================================================
 
-$instituciones = [
-    // ============ MATRICES (Universidades) ============
-    [
-        'id' => 1,
-        'num_afiliacion' => null,
-        'nombre' => 'Universidad Nacional Autónoma de México',
-        'tipo' => 1,
-        'participacion' => 'matriz',
-        'id_zona' => 7,
-        'id_entidad' => 7,
-        'id_universidad' => null,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 3,
-        'num_afiliacion' => null,
-        'nombre' => 'Instituto Politécnico Nacional',
-        'tipo' => 1,
-        'participacion' => 'matriz',
-        'id_zona' => 7,
-        'id_entidad' => 7,
-        'id_universidad' => null,
-        'fecha_inicio' => '2024-02-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 5,
-        'num_afiliacion' => '2601005',
-        'nombre' => 'Universidad de Guadalajara',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 15,
-        'id_universidad' => null,
-        'fecha_inicio' => '2024-03-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 7,
-        'num_afiliacion' => '2601007',
-        'nombre' => 'Universidad Autónoma de Baja California',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 1,
-        'id_entidad' => 2,
-        'id_universidad' => null,
-        'fecha_inicio' => '2024-04-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 9,
-        'num_afiliacion' => '2602009',
-        'nombre' => 'Universidad Autónoma de Nuevo León',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 2,
-        'id_entidad' => 19,
-        'id_universidad' => null,
-        'fecha_inicio' => '2024-05-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 11,
-        'num_afiliacion' => null,
-        'nombre' => 'Instituto Tecnológico de los Mochis',
-        'tipo' => 1,
-        'participacion' => 'observadora',
-        'id_zona' => 1,
-        'id_entidad' => 25,
-        'id_universidad' => null,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 12,
-        'num_afiliacion' => null,
-        'nombre' => 'Centro de Estudios Superiores del Noroeste',
-        'tipo' => 1,
-        'participacion' => 'observadora',
-        'id_zona' => 1,
-        'id_entidad' => 2,
-        'id_universidad' => null,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => '2024-12-31'
-    ],
-    [
-        'id' => 13,
-        'num_afiliacion' => null,
-        'nombre' => 'Instituto de Estudios Superiores de Chihuahua',
-        'tipo' => 1,
-        'participacion' => 'observadora',
-        'id_zona' => 1,
-        'id_entidad' => 6,
-        'id_universidad' => null,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 15,
-        'num_afiliacion' => '2603011',
-        'nombre' => 'Universidad Autónoma de Querétaro',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 3,
-        'id_entidad' => 22,
-        'id_universidad' => null,
-        'fecha_inicio' => '2024-06-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 16,
-        'num_afiliacion' => '2606012',
-        'nombre' => 'Universidad Autónoma de Yucatán',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 6,
-        'id_entidad' => 31,
-        'id_universidad' => null,
-        'fecha_inicio' => '2024-06-15',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 17,
-        'num_afiliacion' => '2601013',
-        'nombre' => 'Universidad Autónoma de Sinaloa',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 1,
-        'id_entidad' => 25,
-        'id_universidad' => null,
-        'fecha_inicio' => '2024-07-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 19,
-        'num_afiliacion' => '9807033',
-        'nombre' => 'Tecnológico de Monterrey',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 7,
-        'id_entidad' => 7,
-        'id_universidad' => null,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 20,
-        'num_afiliacion' => null,
-        'nombre' => 'Universidad Intercontinental',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 7,
-        'id_entidad' => 7,
-        'id_universidad' => null,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 21,
-        'num_afiliacion' => '9803004',
-        'nombre' => 'Universidad Autónoma de Aguascalientes',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 3,
-        'id_entidad' => 1,
-        'id_universidad' => null,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 22,
-        'num_afiliacion' => '9802020',
-        'nombre' => 'Universidad Iberoamericana Torreón',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 2,
-        'id_entidad' => 8,
-        'id_universidad' => null,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 23,
-        'num_afiliacion' => '9803007',
-        'nombre' => 'Universidad Autónoma de San Luis Potosí',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 3,
-        'id_entidad' => 24,
-        'id_universidad' => null,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 24,
-        'num_afiliacion' => '9805012',
-        'nombre' => 'Universidad Autónoma de Tlaxcala',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 5,
-        'id_entidad' => 29,
-        'id_universidad' => null,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 25,
-        'num_afiliacion' => '9806001',
-        'nombre' => 'Universidad Veracruzana',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 6,
-        'id_entidad' => 30,
-        'id_universidad' => null,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 26,
-        'num_afiliacion' => '9806018',
-        'nombre' => 'Universidad Juárez Autónoma de Tabasco',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 6,
-        'id_entidad' => 27,
-        'id_universidad' => null,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 27,
-        'num_afiliacion' => '9802009',
-        'nombre' => 'Universidad Autónoma de Tamaulipas',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 2,
-        'id_entidad' => 28,
-        'id_universidad' => null,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 28,
-        'num_afiliacion' => '1906067',
-        'nombre' => 'Universidad Tecnológica de Tabasco',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 6,
-        'id_entidad' => 27,
-        'id_universidad' => null,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 29,
-        'num_afiliacion' => '9801017',
-        'nombre' => 'Universidad Autónoma de Chihuahua',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 1,
-        'id_entidad' => 6,
-        'id_universidad' => null,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 30,
-        'num_afiliacion' => '9801020',
-        'nombre' => 'Universidad de Sonora',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 1,
-        'id_entidad' => 26,
-        'id_universidad' => null,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 31,
-        'num_afiliacion' => '9804009',
-        'nombre' => 'Universidad Autónoma de Nayarit',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 18,
-        'id_universidad' => null,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 32,
-        'num_afiliacion' => '9804005',
-        'nombre' => 'Instituto Tecnológico y de Estudios Superiores de Occidente',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 15,
-        'id_universidad' => null,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 33,
-        'num_afiliacion' => '9804007',
-        'nombre' => 'Universidad Autónoma de Guadalajara',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 15,
-        'id_universidad' => null,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 34,
-        'num_afiliacion' => '9804014',
-        'nombre' => 'Centro Universitario de los Altos (UDG)',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 15,
-        'id_universidad' => null,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 35,
-        'num_afiliacion' => '9804019',
-        'nombre' => 'Universidad del Valle de Atemajac',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 15,
-        'id_universidad' => null,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 36,
-        'num_afiliacion' => '9802001',
-        'nombre' => 'Universidad Autónoma de Coahuila',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 2,
-        'id_entidad' => 8,
-        'id_universidad' => null,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 37,
-        'num_afiliacion' => '9802016',
-        'nombre' => 'Universidad de Monterrey',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 2,
-        'id_entidad' => 19,
-        'id_universidad' => null,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 38,
-        'num_afiliacion' => '9805002',
-        'nombre' => 'Benemérita Universidad Autónoma de Puebla',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 5,
-        'id_entidad' => 21,
-        'id_universidad' => null,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-
-    // ============ FACULTADES (con dependencia) ============
-    [
-        'id' => 2,
-        'num_afiliacion' => '2607002',
-        'nombre' => 'Facultad de Contaduría y Administración (UNAM)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 7,
-        'id_entidad' => 7,
-        'id_universidad' => 1,
-        'fecha_inicio' => '2024-01-15',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 4,
-        'num_afiliacion' => '2607004',
-        'nombre' => 'ESCOM (IPN)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 7,
-        'id_entidad' => 7,
-        'id_universidad' => 3,
-        'fecha_inicio' => '2024-02-15',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 6,
-        'num_afiliacion' => '2604006',
-        'nombre' => 'Facultad de Contaduría (UDG)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 15,
-        'id_universidad' => 5,
-        'fecha_inicio' => '2024-03-15',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 14,
-        'num_afiliacion' => null,
-        'nombre' => 'Facultad de Ciencias Administrativas (CESUN)',
-        'tipo' => 2,
-        'participacion' => 'observadora',
-        'id_zona' => 1,
-        'id_entidad' => 2,
-        'id_universidad' => 12,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 39,
-        'num_afiliacion' => '9807033',
-        'nombre' => 'ESCA Unidad Tepepan (IPN)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 7,
-        'id_entidad' => 7,
-        'id_universidad' => 3,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 40,
-        'num_afiliacion' => '9802008',
-        'nombre' => 'Facultad de Contaduría Pública y Administración (UANL)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 2,
-        'id_entidad' => 19,
-        'id_universidad' => 9,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 41,
-        'num_afiliacion' => '9801018',
-        'nombre' => 'Facultad de Contaduría y Administración (UAS)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 1,
-        'id_entidad' => 25,
-        'id_universidad' => 17,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 42,
-        'num_afiliacion' => '9806012',
-        'nombre' => 'Facultad de Contaduría y Administración (UADY)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 6,
-        'id_entidad' => 31,
-        'id_universidad' => 16,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 43,
-        'num_afiliacion' => '9805011',
-        'nombre' => 'Facultad de Administración (BUAP)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 5,
-        'id_entidad' => 21,
-        'id_universidad' => 38,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 44,
-        'num_afiliacion' => '9805002',
-        'nombre' => 'Facultad de Contaduría Pública (BUAP)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 5,
-        'id_entidad' => 21,
-        'id_universidad' => 38,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 45,
-        'num_afiliacion' => '9806023',
-        'nombre' => 'Facultad de Contaduría y Administración (UV)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 6,
-        'id_entidad' => 30,
-        'id_universidad' => 25,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 46,
-        'num_afiliacion' => '9803004',
-        'nombre' => 'Centro de Ciencias Económicas y Administrativas (UAA)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 3,
-        'id_entidad' => 1,
-        'id_universidad' => 21,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 47,
-        'num_afiliacion' => '9804001',
-        'nombre' => 'División de Contaduría (UDG)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 15,
-        'id_universidad' => 5,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 48,
-        'num_afiliacion' => '9804009',
-        'nombre' => 'Unidad Académica de Contaduría y Administración (UAN)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 18,
-        'id_universidad' => 31,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-
-    // ============ CAMPUS (con dependencia) ============
-    [
-        'id' => 8,
-        'num_afiliacion' => '2601008',
-        'nombre' => 'Campus UABC - Mexicali',
-        'tipo' => 3,
-        'participacion' => 'afiliada',
-        'id_zona' => 1,
-        'id_entidad' => 2,
-        'id_universidad' => 7,
-        'fecha_inicio' => '2024-04-15',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 10,
-        'num_afiliacion' => '2605010',
-        'nombre' => 'Campus UANL - San Nicolás',
-        'tipo' => 3,
-        'participacion' => 'afiliada',
-        'id_zona' => 2,
-        'id_entidad' => 19,
-        'id_universidad' => 9,
-        'fecha_inicio' => '2024-05-15',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 49,
-        'num_afiliacion' => '9804005',
-        'nombre' => 'Campus Guadalajara (ITESO)',
-        'tipo' => 3,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 15,
-        'id_universidad' => 32,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 50,
-        'num_afiliacion' => '9804019',
-        'nombre' => 'Campus Puerto Vallarta (UNIVA)',
-        'tipo' => 3,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 15,
-        'id_universidad' => 35,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ]
-];
-
-// ============================================================
-// LISTA DE UNIVERSIDADES PARA EL SELECT DE DEPENDENCIA
-// ============================================================
-
-$universidades = [];
-foreach ($instituciones as $i) {
-    if ($i['tipo'] == 1 && ($i['participacion'] == 'afiliada' || $i['participacion'] == 'matriz')) {
-        $universidades[$i['id']] = $i['nombre'];
-    }
-}
-
-// ============================================================
-// DIRECCIONES (actualizadas para todas las instituciones)
-// ============================================================
-
-$direcciones = [
-    1 => ['calle' => 'Avenida Universidad', 'numero_exterior' => '3000', 'numero_interior' => '', 'colonia' => 'Ciudad Universitaria', 'cp' => '04510', 'municipio' => 'Coyoacán'],
-    2 => ['calle' => 'Circuito Exterior', 'numero_exterior' => 'S/N', 'numero_interior' => 'Edificio A', 'colonia' => 'Ciudad Universitaria', 'cp' => '04510', 'municipio' => 'Coyoacán'],
-    3 => ['calle' => 'Avenida Instituto Politécnico Nacional', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Zacatenco', 'cp' => '07738', 'municipio' => 'Gustavo A. Madero'],
-    4 => ['calle' => 'Avenida Instituto Politécnico Nacional', 'numero_exterior' => 'S/N', 'numero_interior' => 'Edificio 8', 'colonia' => 'Zacatenco', 'cp' => '07738', 'municipio' => 'Gustavo A. Madero'],
-    5 => ['calle' => 'Avenida Juárez', 'numero_exterior' => '976', 'numero_interior' => '', 'colonia' => 'Centro', 'cp' => '44100', 'municipio' => 'Guadalajara'],
-    6 => ['calle' => 'Periférico Norte', 'numero_exterior' => '799', 'numero_interior' => 'Int. 301', 'colonia' => 'Centro', 'cp' => '44100', 'municipio' => 'Guadalajara'],
-    7 => ['calle' => 'Carretera Transpeninsular', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Ciudad Universitaria', 'cp' => '21259', 'municipio' => 'Mexicali'],
-    8 => ['calle' => 'Calzada Universidad', 'numero_exterior' => '14418', 'numero_interior' => '', 'colonia' => 'Internacional Tijuana', 'cp' => '22424', 'municipio' => 'Tijuana'],
-    9 => ['calle' => 'Avenida Universidad', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Ciudad Universitaria', 'cp' => '66450', 'municipio' => 'San Nicolás de los Garza'],
-    10 => ['calle' => 'Avenida Universidad', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Ciudad Universitaria', 'cp' => '66450', 'municipio' => 'San Nicolás de los Garza'],
-    11 => ['calle' => 'Blv. Juan de Dios Batiz y 20 de Noviembre', 'numero_exterior' => 'S/N', 'numero_interior' => 'Apartado 766', 'colonia' => 'Del Parque', 'cp' => '81250', 'municipio' => 'Ahome'],
-    12 => ['calle' => 'Blv. Cucapahcu', 'numero_exterior' => '20100', 'numero_interior' => '', 'colonia' => 'Fracc. Lago', 'cp' => '22100', 'municipio' => 'Tijuana'],
-    13 => ['calle' => 'Calle Francisco Javier Mina', 'numero_exterior' => '1000', 'numero_interior' => '', 'colonia' => 'Zona Centro', 'cp' => '31000', 'municipio' => 'Chihuahua'],
-    14 => ['calle' => 'Blv. Cucapahcu', 'numero_exterior' => '20100', 'numero_interior' => '', 'colonia' => 'Fracc. Lago', 'cp' => '22100', 'municipio' => 'Tijuana'],
-    15 => ['calle' => 'Avenida Tecnológico', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Ciudad Universitaria', 'cp' => '76010', 'municipio' => 'Querétaro'],
-    16 => ['calle' => 'Calle 60', 'numero_exterior' => '491', 'numero_interior' => '', 'colonia' => 'Centro', 'cp' => '97160', 'municipio' => 'Mérida'],
-    17 => ['calle' => 'Blvd. Universitarios y Avenida las Américas', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Ciudad Universitaria', 'cp' => '80013', 'municipio' => 'Culiacán'],
-    19 => ['calle' => 'Av. Eugenio Garza Sada', 'numero_exterior' => '2501', 'numero_interior' => '', 'colonia' => 'Tecnológico', 'cp' => '64849', 'municipio' => 'Monterrey'],
-    20 => ['calle' => 'Insurgentes Sur', 'numero_exterior' => '4303', 'numero_interior' => '', 'colonia' => 'Col. Santa Úrsula Xitla', 'cp' => '14420', 'municipio' => 'Tlalpan'],
-    21 => ['calle' => 'Avenida Universidad', 'numero_exterior' => '940', 'numero_interior' => '', 'colonia' => 'Ciudad Universitaria', 'cp' => '20100', 'municipio' => 'Aguascalientes'],
-    22 => ['calle' => 'Boulevard Torreón', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Residencial las Haciendas', 'cp' => '27010', 'municipio' => 'Torreón'],
-    23 => ['calle' => 'Avenida Venustiano Carranza', 'numero_exterior' => '2405', 'numero_interior' => '', 'colonia' => 'Zona Universitaria', 'cp' => '78290', 'municipio' => 'San Luis Potosí'],
-    24 => ['calle' => 'Autopista Tlaxcala-Puebla', 'numero_exterior' => 'Km 1.5', 'numero_interior' => '', 'colonia' => 'Col. San José', 'cp' => '90000', 'municipio' => 'Tlaxcala'],
-    25 => ['calle' => 'Lomas del Estadio', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Zona Universitaria', 'cp' => '91000', 'municipio' => 'Xalapa'],
-    26 => ['calle' => 'Avenida Universidad', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Zona de la Cultura', 'cp' => '86000', 'municipio' => 'Villahermosa'],
-    27 => ['calle' => 'Centro Universitario', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Ciudad Victoria', 'cp' => '87000', 'municipio' => 'Ciudad Victoria'],
-    28 => ['calle' => 'Carretera Villahermosa-Cárdenas', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'El Cuyo', 'cp' => '86000', 'municipio' => 'Villahermosa'],
-    29 => ['calle' => 'Avenida de las Américas', 'numero_exterior' => '1010', 'numero_interior' => '', 'colonia' => 'Zona Centro', 'cp' => '31000', 'municipio' => 'Chihuahua'],
-    30 => ['calle' => 'Rosales', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Zona Centro', 'cp' => '83000', 'municipio' => 'Hermosillo'],
-    31 => ['calle' => 'Ciudad de la Cultura', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Cd. de la Cultura', 'cp' => '63000', 'municipio' => 'Tepic'],
-    32 => ['calle' => 'Periférico Sur', 'numero_exterior' => '3130', 'numero_interior' => '', 'colonia' => 'Camino Real', 'cp' => '45010', 'municipio' => 'Guadalajara'],
-    33 => ['calle' => 'Av. Patria', 'numero_exterior' => '1390', 'numero_interior' => '', 'colonia' => 'Jardines de Guadalupe', 'cp' => '45030', 'municipio' => 'Zapopan'],
-    34 => ['calle' => 'Carretera Lagos de Moreno', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Los Altos', 'cp' => '47600', 'municipio' => 'Tepatitlán de Morelos'],
-    35 => ['calle' => 'Av. Tepeyac', 'numero_exterior' => '4800', 'numero_interior' => '', 'colonia' => 'Monraz', 'cp' => '45000', 'municipio' => 'Guadalajara'],
-    36 => ['calle' => 'Blvd. Fundadores', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Ciudad Universitaria', 'cp' => '25000', 'municipio' => 'Saltillo'],
-    37 => ['calle' => 'Av. Ignacio Morones Prieto', 'numero_exterior' => '4500', 'numero_interior' => '', 'colonia' => 'Cumbres', 'cp' => '64610', 'municipio' => 'San Pedro Garza García'],
-    38 => ['calle' => 'Calle 4 Sur', 'numero_exterior' => '1106', 'numero_interior' => '', 'colonia' => 'Cuauhtémoc', 'cp' => '72420', 'municipio' => 'Puebla'],
-    39 => ['calle' => 'Avenida Instituto Politécnico Nacional', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Zacatenco', 'cp' => '07738', 'municipio' => 'Gustavo A. Madero'],
-    40 => ['calle' => 'Avenida Universidad', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Ciudad Universitaria', 'cp' => '66450', 'municipio' => 'San Nicolás de los Garza'],
-    41 => ['calle' => 'Blvd. Universitarios', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Ciudad Universitaria', 'cp' => '80013', 'municipio' => 'Culiacán'],
-    42 => ['calle' => 'Calle 60', 'numero_exterior' => '491', 'numero_interior' => '', 'colonia' => 'Centro', 'cp' => '97160', 'municipio' => 'Mérida'],
-    43 => ['calle' => 'Calle 4 Sur', 'numero_exterior' => '1106', 'numero_interior' => '', 'colonia' => 'Cuauhtémoc', 'cp' => '72420', 'municipio' => 'Puebla'],
-    44 => ['calle' => 'Calle 4 Sur', 'numero_exterior' => '1106', 'numero_interior' => '', 'colonia' => 'Cuauhtémoc', 'cp' => '72420', 'municipio' => 'Puebla'],
-    45 => ['calle' => 'Lomas del Estadio', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Zona Universitaria', 'cp' => '91000', 'municipio' => 'Xalapa'],
-    46 => ['calle' => 'Avenida Universidad', 'numero_exterior' => '940', 'numero_interior' => '', 'colonia' => 'Ciudad Universitaria', 'cp' => '20100', 'municipio' => 'Aguascalientes'],
-    47 => ['calle' => 'Avenida Juárez', 'numero_exterior' => '976', 'numero_interior' => '', 'colonia' => 'Centro', 'cp' => '44100', 'municipio' => 'Guadalajara'],
-    48 => ['calle' => 'Ciudad de la Cultura', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Cd. de la Cultura', 'cp' => '63000', 'municipio' => 'Tepic'],
-    49 => ['calle' => 'Periférico Sur', 'numero_exterior' => '3130', 'numero_interior' => '', 'colonia' => 'Camino Real', 'cp' => '45010', 'municipio' => 'Guadalajara'],
-    50 => ['calle' => 'Av. Tepeyac', 'numero_exterior' => '4800', 'numero_interior' => '', 'colonia' => 'Monraz', 'cp' => '45000', 'municipio' => 'Guadalajara']
-];
-
-// ============================================================
-// SITIOS WEB (actualizados)
-// ============================================================
-
-$sitios_web = [
-    1 => ['https://www.unam.mx'],
-    2 => ['https://www.fca.unam.mx'],
-    3 => ['https://www.ipn.mx'],
-    4 => ['https://www.escom.ipn.mx'],
-    5 => ['https://www.udg.mx'],
-    6 => ['https://www.cucea.udg.mx'],
-    7 => ['https://www.uabc.mx'],
-    8 => ['https://www.uabc.mx/planteles/mexicali'],
-    9 => ['https://www.uanl.mx'],
-    10 => ['https://www.uanl.mx/campus-san-nicolas'],
-    11 => ['https://www.itmochis.edu.mx'],
-    12 => ['https://www.cesun.mx'],
-    13 => ['https://www.iesch.edu.mx'],
-    14 => ['https://www.cesun.mx/administrativas'],
-    15 => ['https://www.uaq.mx'],
-    16 => ['https://www.uady.mx'],
-    17 => ['https://www.uas.edu.mx'],
-    19 => ['https://www.tec.mx'],
-    20 => ['https://www.uic.edu.mx'],
-    21 => ['https://www.uaa.mx'],
-    22 => ['https://www.iberotorreon.edu.mx'],
-    23 => ['https://www.uaslp.mx'],
-    24 => ['https://www.uatx.mx'],
-    25 => ['https://www.uv.mx'],
-    26 => ['https://www.ujat.mx'],
-    27 => ['https://www.uat.edu.mx'],
-    28 => ['https://www.utdt.mx'],
-    29 => ['https://www.uach.mx'],
-    30 => ['https://www.unison.mx'],
-    31 => ['https://www.uan.mx'],
-    32 => ['https://www.iteso.mx'],
-    33 => ['https://www.uag.mx'],
-    34 => ['https://www.cualtos.udg.mx'],
-    35 => ['https://www.univa.mx'],
-    36 => ['https://www.uadec.mx'],
-    37 => ['https://www.udem.edu.mx'],
-    38 => ['https://www.buap.mx'],
-    39 => ['https://www.esca.ipn.mx'],
-    40 => ['https://www.fcpya.uanl.mx'],
-    41 => ['https://www.fca.uas.edu.mx'],
-    42 => ['https://www.fca.uady.mx'],
-    43 => ['https://www.fa.buap.mx'],
-    44 => ['https://www.fcp.buap.mx'],
-    45 => ['https://www.fca.uv.mx'],
-    46 => ['https://www.ccea.uaa.mx'],
-    47 => ['https://www.cucea.udg.mx/contaduria'],
-    48 => ['https://www.uan.edu.mx/contaduria'],
-    49 => ['https://www.iteso.mx/guadalajara'],
-    50 => ['https://www.univa.mx/puerto-vallarta']
-];
-
-// ============================================================
-// NÚMEROS DE AFILIACIÓN EXISTENTES PARA VALIDACIÓN
-// ============================================================
-
-$instituciones_existentes = [];
-foreach ($instituciones as $i) {
-    if ($i['num_afiliacion']) {
-        $instituciones_existentes[] = $i['num_afiliacion'];
-    }
-}
-
-// Estructura para almacenar números por zona
-$numeros_por_zona = [];
-foreach ($instituciones_existentes as $num) {
-    $zona = (int)substr($num, 2, 2);
-    if (!isset($numeros_por_zona[$zona])) {
-        $numeros_por_zona[$zona] = [];
-    }
-    $numeros_por_zona[$zona][] = (int)substr($num, 4);
-}
-
-// Obtener el ID de la institución a editar
-$id = isset($_GET['id']) ? (int)$_GET['id'] : 1;
-
-// Buscar la institución
-$institucion = null;
-foreach ($instituciones as $i) {
-    if ($i['id'] == $id) {
-        $institucion = $i;
-        break;
-    }
-}
+$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+$institucion = getInstitucionPorId($id);
 
 if (!$institucion) {
     echo '<div class="main-content"><div class="dashboard-container"><div class="alert-modern alert-error"><i class="fas fa-exclamation-circle"></i><div><strong>Error</strong> No se encontró la institución solicitada.</div></div></div></div>';
@@ -905,107 +26,374 @@ if (!$institucion) {
     exit;
 }
 
-// Obtener dirección de la institución
-$direccion = $direcciones[$id] ?? null;
-
-// Obtener sitios web de la institución
-$webs = $sitios_web[$id] ?? [''];
+// Universidades para select de dependencia
+$universidades_existentes = [];
+foreach ($instituciones as $inst) {
+    if ($inst['tipo'] == 1) {
+        $universidades_existentes[$inst['id']] = $inst['nombre'];
+    }
+}
 
 $mensaje = '';
 $error = '';
 
-// Función para generar número de afiliación
-function generarNumAfiliacion($zona, $existentes_por_zona) {
-    $anio = date('y');
-    $prefijo = $anio . str_pad($zona, 2, '0', STR_PAD_LEFT);
-    
-    $numeros = isset($existentes_por_zona[$zona]) ? $existentes_por_zona[$zona] : [];
-    $numero = 1;
-    
-    if (!empty($numeros)) {
-        $numero = max($numeros) + 1;
-    }
-    
-    return $prefijo . str_pad($numero, 3, '0', STR_PAD_LEFT);
-}
+// ============================================================
+// PROCESAR ACCIONES
+// ============================================================
 
-// Función para validar si un número de afiliación ya existe (excluyendo el actual)
-function existeNumeroAfiliacion($numero, $existentes, $id_actual) {
-    global $instituciones;
-    // Si el número es el mismo que el actual, no es un conflicto
-    foreach ($instituciones as $i) {
-        if ($i['id'] == $id_actual && $i['num_afiliacion'] == $numero) {
-            return false;
-        }
-    }
-    return in_array($numero, $existentes);
-}
+$accion = $_POST['accion'] ?? '';
 
-// Procesar formulario de edición
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+$es_matriz = $institucion['es_matriz'] ?? false;
+
+// --- Guardar cambios maestros ---
+if ($accion === 'guardar_datos' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $errores = [];
     
-    if (empty($_POST['nombre'])) $errores[] = 'Nombre de la institución';
-    if (empty($_POST['tipo'])) $errores[] = 'Tipo de institución';
-    if (empty($_POST['participacion'])) $errores[] = 'Tipo de participación';
-    if (empty($_POST['fecha_inicio'])) $errores[] = 'Fecha de inicio';
-    if (empty($_POST['cp'])) $errores[] = 'Código postal';
-    if (empty($_POST['calle'])) $errores[] = 'Calle';
-    if (empty($_POST['numero_exterior'])) $errores[] = 'Número exterior';
-    if (empty($_POST['colonia'])) $errores[] = 'Colonia';
-    if (empty($_POST['municipio'])) $errores[] = 'Alcaldía/Municipio';
-    if (empty($_POST['entidad'])) $errores[] = 'Entidad federativa';
-    if (empty($_POST['zona'])) $errores[] = 'Zona regional';
+    if (empty($_POST['sector'])) $errores[] = 'Sector';
     
-    // Validar número de afiliación
-    $tipo = (int)$_POST['tipo'];
-    $participacion = $_POST['participacion'];
-    $num_afiliacion = trim($_POST['num_afiliacion']);
-    
-    $requiere_numero = false;
-    
-    if ($tipo == 1) {
-        if ($participacion == 'afiliada') {
-            $requiere_numero = true;
-        }
-    } elseif ($tipo == 2 || $tipo == 3) {
-        if ($participacion != 'observadora') {
-            $requiere_numero = true;
+    // Si NO es matriz, validar dirección
+    if (!$es_matriz) {
+        if (empty($_POST['tipo'])) $errores[] = 'Tipo de institución';
+        if (empty($_POST['cp'])) $errores[] = 'Código postal';
+        if (empty($_POST['calle'])) $errores[] = 'Calle';
+        if (empty($_POST['numero_exterior'])) $errores[] = 'Número exterior';
+        if (empty($_POST['colonia'])) $errores[] = 'Colonia';
+        if (empty($_POST['municipio'])) $errores[] = 'Alcaldía/Municipio';
+        if (empty($_POST['entidad'])) $errores[] = 'Entidad federativa';
+        if (empty($_POST['zona'])) $errores[] = 'Zona regional';
+        
+        if (($_POST['tipo'] == 2 || $_POST['tipo'] == 3) && empty($_POST['universidad_padre'])) {
+            $errores[] = 'Universidad de la que depende';
         }
     }
     
-    if ($requiere_numero) {
-        if (empty($num_afiliacion)) {
-            $errores[] = 'Número de afiliación';
-        } elseif (existeNumeroAfiliacion($num_afiliacion, $instituciones_existentes, $id)) {
-            $errores[] = 'El número de afiliación "' . htmlspecialchars($num_afiliacion) . '" ya existe, use otro';
+    if (empty($errores)) {
+        $institucion['sector'] = $_POST['sector'];
+        
+        // Solo actualizar tipo, zona, entidad y dirección si NO es matriz
+        if (!$es_matriz) {
+            $institucion['tipo'] = (int)$_POST['tipo'];
+            $institucion['id_zona'] = (int)$_POST['zona'];
+            $institucion['id_entidad'] = (int)$_POST['entidad'];
+            $institucion['id_universidad'] = ($institucion['tipo'] == 2 || $institucion['tipo'] == 3)
+                ? (int)$_POST['universidad_padre'] : null;
+            
+            $institucion['direccion'] = [
+                'calle' => trim($_POST['calle']),
+                'numero_exterior' => trim($_POST['numero_exterior']),
+                'numero_interior' => trim($_POST['numero_interior'] ?? ''),
+                'colonia' => trim($_POST['colonia']),
+                'cp' => trim($_POST['cp']),
+                'municipio' => trim($_POST['municipio'])
+            ];
         }
+        
+        $sitios = array_filter($_POST['sitios_web'] ?? [], function($u) {
+            return !empty(trim($u));
+        });
+        $institucion['sitios_web'] = array_values($sitios);
+        
+        $mensaje = 'Datos de la institución actualizados exitosamente';
+    } else {
+        $error = 'Complete los campos obligatorios: ' . implode(', ', $errores);
     }
+}
+
+// --- Corregir nombre (sin histórico) ---
+if ($accion === 'corregir_nombre' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    $nombre_corregido = trim($_POST['nombre_corregido'] ?? '');
     
-    // Validar dependencia si es Facultad o Campus
-    if ($tipo == 2 || $tipo == 3) {
-        if (empty($_POST['universidad'])) {
-            $errores[] = 'Universidad a la que pertenece';
-        }
-    }
-    
-    // Validar sitios web (opcionales)
-    if (!empty($_POST['sitios_web'])) {
-        foreach ($_POST['sitios_web'] as $url) {
-            if (!empty($url) && !filter_var($url, FILTER_VALIDATE_URL)) {
-                $errores[] = 'URL inválida: ' . htmlspecialchars($url);
+    if (empty($nombre_corregido)) {
+        $error = 'Debe indicar el nombre';
+    } elseif (mb_strlen($nombre_corregido) > 60) {
+        $error = 'El nombre no puede exceder 60 caracteres';
+    } else {
+        // Actualizar el nombre en el historial vigente (sin crear uno nuevo)
+        foreach ($institucion['historial_nombres'] as &$h) {
+            if ($h['fecha_fin'] === null) {
+                $h['nombre'] = $nombre_corregido;
                 break;
+            }
+        }
+        unset($h);
+        
+        $institucion['nombre'] = $nombre_corregido;
+        
+        $mensaje = 'Nombre corregido exitosamente';
+    }
+}
+
+// --- Cambiar razón social (con histórico) ---
+if ($accion === 'cambiar_nombre' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    $nuevo_nombre = trim($_POST['nuevo_nombre'] ?? '');
+    $fecha_cambio = $_POST['fecha_cambio_nombre'] ?? date('Y-m-d');
+    
+    if (empty($nuevo_nombre)) {
+        $error = 'Debe indicar el nuevo nombre de la institución';
+    } elseif ($nuevo_nombre === $institucion['nombre']) {
+        $error = 'El nuevo nombre debe ser diferente al actual';
+    } elseif (mb_strlen($nuevo_nombre) > 60) {
+        $error = 'El nombre no puede exceder 60 caracteres';
+    } else {
+        $fecha_fin_anterior = date('Y-m-d', strtotime($fecha_cambio . ' -1 day'));
+        
+        foreach ($institucion['historial_nombres'] as &$h) {
+            if ($h['fecha_fin'] === null) {
+                $h['fecha_fin'] = $fecha_fin_anterior;
+                break;
+            }
+        }
+        unset($h);
+        
+        $nuevo_id = empty($institucion['historial_nombres'])
+            ? 1
+            : max(array_column($institucion['historial_nombres'], 'id')) + 1;
+        
+        $institucion['historial_nombres'][] = [
+            'id' => $nuevo_id,
+            'nombre' => $nuevo_nombre,
+            'fecha_inicio' => $fecha_cambio,
+            'fecha_fin' => null
+        ];
+        
+        $institucion['nombre'] = $nuevo_nombre;
+        
+        $mensaje = 'Razón social actualizada. El nombre anterior se conserva en el historial.';
+    }
+}
+
+// --- Convertir en matriz ---
+if ($accion === 'convertir_matriz' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    $fecha_conversion = $_POST['fecha_conversion_matriz'] ?? date('Y-m-d');
+    
+    // Validar que sea Universidad
+    if ($institucion['tipo'] != 1) {
+        $error = 'Solo las universidades pueden convertirse en matriz';
+    } elseif ($es_matriz) {
+        $error = 'Esta institución ya es matriz';
+    } else {
+        // Marcar como matriz
+        $institucion['es_matriz'] = true;
+        $institucion['fecha_matriz'] = $fecha_conversion;
+        
+        // Eliminar dirección, zona y entidad
+        $institucion['direccion'] = null;
+        $institucion['id_zona'] = null;
+        $institucion['id_entidad'] = null;
+        
+        $mensaje = 'La universidad ha sido convertida en matriz. Ahora puede registrar sus sedes.';
+    }
+}
+
+// --- Revertir conversión a matriz ---
+if ($accion === 'revertir_matriz' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Validar que no tenga sedes
+    $sedes = getDependenciasDe($institucion['id']);
+    
+    if (count($sedes) > 0) {
+        $error = 'No se puede revertir la conversión porque la universidad tiene sedes registradas';
+    } else {
+        $institucion['es_matriz'] = false;
+        $institucion['fecha_matriz'] = null;
+        
+        $mensaje = 'Conversión revertida. La universidad vuelve a ser una institución normal. Complete su dirección.';
+    }
+}
+
+// --- Desafiliar / Finalizar observación ---
+if ($accion === 'cerrar_participacion' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    $fecha_fin = $_POST['fecha_fin'] ?? '';
+    
+    $indice_vigente = null;
+    foreach ($institucion['historial_participacion'] as $i => $p) {
+        if ($p['fecha_fin'] === null) {
+            $indice_vigente = $i;
+            break;
+        }
+    }
+    
+    if ($indice_vigente === null) {
+        $error = 'No hay una participación vigente para cerrar';
+    } elseif (empty($fecha_fin)) {
+        $error = 'Debe indicar la fecha en que finaliza la participación';
+    } elseif ($fecha_fin < $institucion['historial_participacion'][$indice_vigente]['fecha_inicio']) {
+        $error = 'La fecha de fin no puede ser anterior a la fecha de inicio del período';
+    } else {
+        $institucion['historial_participacion'][$indice_vigente]['fecha_fin'] = $fecha_fin;
+        $mensaje = 'La participación ha sido cerrada. La institución queda inactiva pero conserva su historial.';
+    }
+}
+
+// --- Convertir Observadora a Afiliada ---
+if ($accion === 'convertir_afiliada' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    $fecha_cambio = $_POST['fecha_cambio'] ?? date('Y-m-d');
+    $nuevo_num_afiliacion = trim($_POST['nuevo_num_afiliacion'] ?? '');
+    
+    $indice_vigente = null;
+    foreach ($institucion['historial_participacion'] as $i => $p) {
+        if ($p['fecha_fin'] === null) {
+            $indice_vigente = $i;
+            break;
+        }
+    }
+    
+    if ($indice_vigente === null) {
+        $error = 'No hay una participación vigente';
+    } elseif ($institucion['historial_participacion'][$indice_vigente]['tipo'] !== 'Observadora') {
+        $error = 'Solo las Observadoras pueden convertirse en Afiliadas';
+    } elseif ($fecha_cambio <= $institucion['historial_participacion'][$indice_vigente]['fecha_inicio']) {
+        $error = 'La fecha del cambio debe ser posterior al inicio del período actual';
+    } elseif (empty($nuevo_num_afiliacion)) {
+        $error = 'Debe asignar un número de afiliación';
+    } elseif (!preg_match('/^[0-9]{7}$/', $nuevo_num_afiliacion)) {
+        $error = 'El número de afiliación debe tener 7 dígitos';
+    } else {
+        $info_numero = buscarNumeroAfiliacion($nuevo_num_afiliacion);
+        // Solo se rechaza si el número pertenece a OTRA institución.
+        // Si pertenece a esta misma institución, se permite reutilizarlo.
+        if ($info_numero && $info_numero['institucion_id'] != $id) {
+            $sufijo = $info_numero['activo'] ? 'está vigente en' : 'pertenece a';
+            $error = 'Este número ' . $sufijo . ' "' . $info_numero['institucion_nombre'] . '". No puede reutilizarse en otra institución.';
+        }
+    }
+    
+    if (empty($error)) {
+        $fecha_fin_actual = date('Y-m-d', strtotime($fecha_cambio . ' -1 day'));
+        
+        $institucion['historial_participacion'][$indice_vigente]['fecha_fin'] = $fecha_fin_actual;
+        
+        $nuevo_id = max(array_column($institucion['historial_participacion'], 'id')) + 1;
+        $institucion['historial_participacion'][] = [
+            'id' => $nuevo_id,
+            'tipo' => 'Afiliada',
+            'num_afiliacion' => $nuevo_num_afiliacion,
+            'fecha_inicio' => $fecha_cambio,
+            'fecha_fin' => null
+        ];
+        
+        $mensaje = 'La institución ha sido convertida en Afiliada exitosamente.';
+    }
+}
+
+// --- Corregir datos de participación ---
+if ($accion === 'corregir_participacion' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    $tipo_corregido = $_POST['tipo_corregido'] ?? '';
+    $num_corregido = trim($_POST['num_corregido'] ?? '');
+    $fecha_inicio_corregida = $_POST['fecha_inicio_corregida'] ?? '';
+    
+    $indice_vigente = null;
+    foreach ($institucion['historial_participacion'] as $i => $p) {
+        if ($p['fecha_fin'] === null) {
+            $indice_vigente = $i;
+            break;
+        }
+    }
+    
+    if ($indice_vigente === null) {
+        $error = 'No hay una participación vigente para corregir';
+    } elseif (empty($tipo_corregido)) {
+        $error = 'Debe indicar el tipo de participación';
+    } elseif (empty($fecha_inicio_corregida)) {
+        $error = 'Debe indicar la fecha de inicio';
+    } elseif ($tipo_corregido === 'Afiliada') {
+        if (empty($num_corregido)) {
+            $error = 'Debe asignar un número de afiliación';
+        } elseif (!preg_match('/^[0-9]{7}$/', $num_corregido)) {
+            $error = 'El número de afiliación debe tener 7 dígitos';
+        } else {
+            $info_numero = buscarNumeroAfiliacion($num_corregido);
+            // Solo valida si el número pertenece a OTRA institución.
+            if ($info_numero && $info_numero['institucion_id'] != $id) {
+                $sufijo = $info_numero['activo'] ? 'está vigente en' : 'pertenece a';
+                $error = 'Este número ' . $sufijo . ' "' . $info_numero['institucion_nombre'] . '". No puede reutilizarse en otra institución.';
             }
         }
     }
     
-    if (!empty($errores)) {
-        $error = 'Complete los campos obligatorios: ' . implode(', ', $errores);
-    } else {
-        $mensaje = 'Institución actualizada exitosamente';
-        // Aquí iría la lógica de actualización en BD
+    if (empty($error)) {
+        $institucion['historial_participacion'][$indice_vigente]['tipo'] = $tipo_corregido;
+        $institucion['historial_participacion'][$indice_vigente]['num_afiliacion'] = ($tipo_corregido === 'Afiliada') ? $num_corregido : null;
+        $institucion['historial_participacion'][$indice_vigente]['fecha_inicio'] = $fecha_inicio_corregida;
+        
+        $mensaje = 'Datos de participación corregidos exitosamente.';
     }
 }
+
+// --- Agregar período ---
+if ($accion === 'agregar_periodo' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    $tipo_periodo = $_POST['periodo_tipo'] ?? '';
+    $fecha_inicio = $_POST['periodo_fecha_inicio'] ?? '';
+    $fecha_fin = $_POST['periodo_fecha_fin'] ?? '';
+    $num_afiliacion = trim($_POST['periodo_num_afiliacion'] ?? '');
+    
+    $tiene_vigente = false;
+    foreach ($institucion['historial_participacion'] as $p) {
+        if ($p['fecha_fin'] === null) {
+            $tiene_vigente = true;
+            break;
+        }
+    }
+    
+    if ($tiene_vigente) {
+        $error = 'Ya existe un período vigente. Debe cerrarlo antes de agregar uno nuevo.';
+    } elseif (empty($tipo_periodo)) {
+        $error = 'Debe indicar el tipo de participación';
+    } elseif (empty($fecha_inicio)) {
+        $error = 'Debe indicar la fecha de inicio';
+    } elseif (!empty($fecha_fin) && $fecha_fin < $fecha_inicio) {
+        $error = 'La fecha de fin no puede ser anterior a la fecha de inicio';
+    } elseif ($tipo_periodo === 'Afiliada') {
+        if (empty($num_afiliacion)) {
+            $error = 'Debe asignar un número de afiliación';
+        } elseif (!preg_match('/^[0-9]{7}$/', $num_afiliacion)) {
+            $error = 'El número de afiliación debe tener 7 dígitos';
+        } else {
+            $info_numero = buscarNumeroAfiliacion($num_afiliacion);
+            // Solo se rechaza si el número pertenece a OTRA institución.
+            // Si es el mismo número que esta institución tuvo antes, se permite (reactivación).
+            if ($info_numero && $info_numero['institucion_id'] != $id) {
+                $sufijo = $info_numero['activo'] ? 'está vigente en' : 'pertenece a';
+                $error = 'Este número ' . $sufijo . ' "' . $info_numero['institucion_nombre'] . '". No puede reutilizarse en otra institución.';
+            }
+        }
+    }
+    
+    if (empty($error)) {
+        $nuevo_id = empty($institucion['historial_participacion'])
+            ? 1
+            : max(array_column($institucion['historial_participacion'], 'id')) + 1;
+        
+        $institucion['historial_participacion'][] = [
+            'id' => $nuevo_id,
+            'tipo' => $tipo_periodo,
+            'num_afiliacion' => $tipo_periodo === 'Afiliada' ? $num_afiliacion : null,
+            'fecha_inicio' => $fecha_inicio,
+            'fecha_fin' => !empty($fecha_fin) ? $fecha_fin : null
+        ];
+        
+        $mensaje = 'Período de participación agregado exitosamente.';
+    }
+}
+
+// ============================================================
+// RECALCULAR DATOS DERIVADOS
+// ============================================================
+
+$es_matriz = $institucion['es_matriz'] ?? false;
+$participaciones = getParticipacionesDe($institucion);
+$participacion_vigente = $participaciones['vigente'];
+$participaciones_anteriores = $participaciones['anteriores'];
+
+$nombres = getNombresDe($institucion);
+$nombre_vigente = $nombres['vigente'];
+$nombres_anteriores = $nombres['anteriores'];
+
+$estado_institucion = getEstadoInstitucion($institucion);
+$sedes = getDependenciasDe($institucion['id']);
+$tiene_sedes = count($sedes) > 0;
+
+// Último número de afiliación de esta institución (para prellenar reactivaciones)
+$ultimo_num_institucion = getUltimoNumeroDeInstitucion($institucion);
 
 include 'template/header.php';
 include 'template/menu.php';
@@ -1017,12 +405,9 @@ include 'template/menu.php';
         <!-- Encabezado -->
         <div class="page-header">
             <div class="page-header-content">
-                <div class="page-header-icon">
-                    <i class="fas fa-university"></i>
-                </div>
                 <div>
                     <h1 class="page-title">Editar Institución</h1>
-                    <p class="page-subtitle">Modifique los datos de la institución educativa en el sistema</p>
+                    <p class="page-subtitle">Modifique los datos y gestione la participación en ANFECA</p>
                 </div>
             </div>
             <div class="page-header-right">
@@ -1032,11 +417,27 @@ include 'template/menu.php';
             </div>
         </div>
 
+        <!-- Estado general -->
+        <div class="estado-banner estado-<?= $estado_institucion ?>">
+            <div class="estado-banner-content">
+                <span class="estado-banner-label">Estado actual</span>
+                <span class="estado-banner-valor">
+                    <?php if ($es_matriz): ?>
+                        Matriz · <?= $estado_institucion === 'activa' ? 'con ' . count($sedes) . ' sede(s) activa(s)' : 'sin sedes activas' ?>
+                    <?php elseif ($participacion_vigente): ?>
+                        Activa · <?= htmlspecialchars($participacion_vigente['tipo']) ?>
+                    <?php else: ?>
+                        Inactiva · sin participación vigente
+                    <?php endif; ?>
+                </span>
+            </div>
+        </div>
+
         <?php if ($mensaje): ?>
             <div class="alert-modern alert-success">
                 <i class="fas fa-check-circle"></i>
                 <div>
-                    <strong>¡Excelente!</strong> <?= $mensaje ?>
+                    <strong>¡Excelente!</strong> <?= htmlspecialchars($mensaje) ?>
                 </div>
             </div>
         <?php endif; ?>
@@ -1045,38 +446,72 @@ include 'template/menu.php';
             <div class="alert-modern alert-error">
                 <i class="fas fa-exclamation-circle"></i>
                 <div>
-                    <strong>Por favor revise</strong> <?= $error ?>
+                    <strong>Por favor revise</strong> <?= htmlspecialchars($error) ?>
                 </div>
             </div>
         <?php endif; ?>
 
-        <!-- Formulario -->
-        <div class="form-container">
-            <div class="form-legend">
-                <span class="legend-asterisk">*</span>
-                <span>Campos obligatorios</span>
-            </div>
+        <!-- Formulario principal -->
+        <form method="POST" id="formEdicion">
+            <input type="hidden" name="accion" value="guardar_datos">
             
-            <form method="POST" id="formEdicion">
-                <input type="hidden" name="id" value="<?= $id ?>">
-                
-                <!-- SECCIÓN 1: DATOS GENERALES -->
+            <div class="form-container">
+                <div class="form-legend">
+                    <span class="legend-asterisk">*</span>
+                    <span>Campos obligatorios</span>
+                </div>
+
+                <!-- SECCIÓN 01: IDENTIFICACIÓN -->
                 <div class="form-section">
                     <div class="section-header">
                         <span class="section-number">01</span>
-                        <h3>Datos Generales</h3>
+                        <h3>Identificación</h3>
+                        <span class="section-line"></span>
+                    </div>
+                    
+                    <div class="nombre-actual-bloque">
+                        <div class="nombre-actual-info">
+                            <span class="nombre-actual-label">Nombre actual</span>
+                            <span class="nombre-actual-valor"><?= htmlspecialchars($institucion['nombre']) ?></span>
+                            <?php if ($nombre_vigente): ?>
+                                <span class="nombre-actual-desde">Vigente desde <?= formatearFecha($nombre_vigente['fecha_inicio']) ?></span>
+                            <?php endif; ?>
+                        </div>
+                        <div class="nombre-actual-actions">
+                            <button type="button" class="btn-corregir-nombre" onclick="abrirModal('modalCorregirNombre')">
+                                Corregir nombre
+                            </button>
+                            <button type="button" class="btn-cambiar-nombre" onclick="abrirModal('modalCambiarNombre')">
+                                Cambiar razón social
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <?php if (count($nombres_anteriores) > 0): ?>
+                    <div class="nombres-anteriores">
+                        <span class="nombres-anteriores-label">Nombres anteriores</span>
+                        <?php foreach ($nombres_anteriores as $h): ?>
+                            <div class="nombre-anterior-item">
+                                <span class="nombre-anterior-valor"><?= htmlspecialchars($h['nombre']) ?></span>
+                                <span class="nombre-anterior-fechas"><?= formatearFecha($h['fecha_inicio']) ?> al <?= formatearFecha($h['fecha_fin']) ?></span>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <?php endif; ?>
+                </div>
+
+                <!-- SECCIÓN 02: TIPO -->
+                <?php if (!$es_matriz): ?>
+                <div class="form-section">
+                    <div class="section-header">
+                        <span class="section-number">02</span>
+                        <h3>Tipo de Institución</h3>
                         <span class="section-line"></span>
                     </div>
                     
                     <div class="form-grid">
                         <div class="form-group">
-                            <label class="form-label required">Nombre de la Institución</label>
-                            <input type="text" name="nombre" class="form-control" 
-                                   value="<?= htmlspecialchars($institucion['nombre']) ?>" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label required">Tipo de Institución</label>
+                            <label class="form-label required">Tipo</label>
                             <select name="tipo" id="tipo" class="form-control" required>
                                 <option value="">Seleccionar tipo...</option>
                                 <?php foreach ($tipos_institucion as $id_tipo => $nombre): ?>
@@ -1087,68 +522,110 @@ include 'template/menu.php';
                             </select>
                         </div>
 
-                        <div class="form-group" id="universidad_container" style="<?= $institucion['tipo'] != 1 ? 'display:block;' : 'display:none;' ?>">
-                            <label class="form-label required">Universidad</label>
-                            <select name="universidad" id="universidad" class="form-control" <?= $institucion['tipo'] != 1 ? 'required' : '' ?>>
-                                <option value="">Seleccionar universidad...</option>
-                                <?php foreach ($universidades as $id_uni => $nombre): ?>
-                                    <option value="<?= $id_uni ?>" <?= $institucion['id_universidad'] == $id_uni ? 'selected' : '' ?>>
+                        <div class="form-group">
+                            <label class="form-label required">Sector</label>
+                            <select name="sector" id="sector" class="form-control" required>
+                                <option value="">Seleccionar sector...</option>
+                                <?php foreach ($sectores as $key => $nombre): ?>
+                                    <option value="<?= $key ?>" <?= $institucion['sector'] == $key ? 'selected' : '' ?>>
                                         <?= htmlspecialchars($nombre) ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
+                    </div>
 
+                    <div class="form-group" id="universidad_padre_container" style="<?= $institucion['tipo'] != 1 ? 'display:flex; margin-top:1.5rem;' : 'display:none; margin-top:1.5rem;' ?>">
+                        <label class="form-label required">Universidad de la que depende</label>
+                        <select name="universidad_padre" id="universidad_padre" class="form-control" <?= $institucion['tipo'] != 1 ? 'required' : '' ?>>
+                            <option value="">Seleccionar universidad...</option>
+                            <?php foreach ($universidades_existentes as $id_uni => $nombre): ?>
+                                <option value="<?= $id_uni ?>" <?= $institucion['id_universidad'] == $id_uni ? 'selected' : '' ?>>
+                                    <?= htmlspecialchars($nombre) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        <small class="form-hint">Institución matriz a la que pertenece esta facultad o campus</small>
+                    </div>
+                </div>
+                <?php else: ?>
+                <!-- Matriz: solo mostrar el sector -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <span class="section-number">02</span>
+                        <h3>Datos Generales</h3>
+                        <span class="section-line"></span>
+                    </div>
+                    
+                    <div class="form-grid">
                         <div class="form-group">
-                            <label class="form-label required">Participación</label>
-                            <select name="participacion" id="participacion" class="form-control" required>
-                                <option value="">Seleccionar...</option>
-                                <?php foreach ($tipos_participacion as $key => $nombre): ?>
-                                    <option value="<?= $key ?>" <?= $institucion['participacion'] == $key ? 'selected' : '' ?>>
+                            <label class="form-label required">Sector</label>
+                            <select name="sector" id="sector" class="form-control" required>
+                                <option value="">Seleccionar sector...</option>
+                                <?php foreach ($sectores as $key => $nombre): ?>
+                                    <option value="<?= $key ?>" <?= $institucion['sector'] == $key ? 'selected' : '' ?>>
                                         <?= htmlspecialchars($nombre) ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
+                    </div>
+                    
+                    <div class="matriz-info">
+                        <p><strong>Esta institución es una matriz.</strong></p>
+                        <p>Desde <?= formatearFecha($institucion['fecha_matriz']) ?>. No tiene dirección propia porque su rol es agrupar a sus sedes.</p>
+                        <p>Actualmente tiene <strong><?= count($sedes) ?></strong> sede(s) registrada(s).</p>
+                    </div>
+                </div>
+                <?php endif; ?>
 
-                        <!-- Sitios Web -->
-                        <div class="form-group">
-                            <label class="form-label">Sitios Web</label>
-                            <div id="sitios_web_container">
-                                <?php if (empty($webs) || (count($webs) == 1 && empty($webs[0]))): ?>
+                <!-- SECCIÓN 03: SITIOS WEB -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <span class="section-number">03</span>
+                        <h3>Sitios Web</h3>
+                        <span class="section-line"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div id="sitios_web_container">
+                            <?php if (empty($institucion['sitios_web'])): ?>
+                                <div class="sitio-web-item">
+                                    <div class="sitio-web-input-group">
+                                        <input type="url" name="sitios_web[]" class="form-control" placeholder="https://www.ejemplo.com">
+                                        <button type="button" class="btn-remove-sitio" onclick="eliminarSitioWeb(this)" style="display:none;">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            <?php else: ?>
+                                <?php foreach ($institucion['sitios_web'] as $index => $web): ?>
                                     <div class="sitio-web-item">
                                         <div class="sitio-web-input-group">
-                                            <input type="url" name="sitios_web[]" class="form-control" placeholder="https://www.ejemplo.com">
-                                            <button type="button" class="btn-remove-sitio" onclick="eliminarSitioWeb(this)" style="display:none;">
+                                            <input type="url" name="sitios_web[]" class="form-control" 
+                                                   placeholder="https://www.ejemplo.com" 
+                                                   value="<?= htmlspecialchars($web) ?>">
+                                            <button type="button" class="btn-remove-sitio" onclick="eliminarSitioWeb(this)" 
+                                                    style="<?= $index == 0 ? 'display:none;' : 'display:flex;' ?>">
                                                 <i class="fas fa-times"></i>
                                             </button>
                                         </div>
                                     </div>
-                                <?php else: ?>
-                                    <?php foreach ($webs as $index => $web): ?>
-                                        <div class="sitio-web-item">
-                                            <div class="sitio-web-input-group">
-                                                <input type="url" name="sitios_web[]" class="form-control" placeholder="https://www.ejemplo.com" value="<?= htmlspecialchars($web) ?>">
-                                                <button type="button" class="btn-remove-sitio" onclick="eliminarSitioWeb(this)" style="<?= $index == 0 ? 'display:none;' : 'display:flex;' ?>">
-                                                    <i class="fas fa-times"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    <?php endforeach; ?>
-                                <?php endif; ?>
-                            </div>
-                            <button type="button" class="btn-add-sitio" onclick="agregarSitioWeb()">
-                                <i class="fas fa-plus-circle"></i> Agregar otro sitio web
-                            </button>
-                            <small class="form-hint">Opcional</small>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </div>
+                        <button type="button" class="btn-add-sitio" onclick="agregarSitioWeb()">
+                            <i class="fas fa-plus-circle"></i> Agregar otro sitio web
+                        </button>
+                        <small class="form-hint">Opcional</small>
                     </div>
                 </div>
 
-                <!-- SECCIÓN 2: DIRECCIÓN -->
+                <!-- SECCIÓN 04: DIRECCIÓN (solo si NO es matriz) -->
+                <?php if (!$es_matriz): ?>
                 <div class="form-section">
                     <div class="section-header">
-                        <span class="section-number">02</span>
+                        <span class="section-number">04</span>
                         <h3>Dirección</h3>
                         <span class="section-line"></span>
                     </div>
@@ -1157,13 +634,14 @@ include 'template/menu.php';
                         <div class="form-group">
                             <label class="form-label required">Código Postal</label>
                             <input type="text" name="cp" id="cp" class="form-control cp-input" 
-                                   value="<?= $direccion ? htmlspecialchars($direccion['cp']) : '' ?>" 
-                                   placeholder="Ej. 04510" pattern="[0-9]{5}" inputmode="numeric" required>
+                                   value="<?= htmlspecialchars($institucion['direccion']['cp'] ?? '') ?>" 
+                                   placeholder="Ej. 04510" pattern="[0-9]{5}" maxlength="5" 
+                                   inputmode="numeric" required>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label required">Entidad</label>
-                            <select name="entidad" id="entidad" class="form-control" required disabled>
+                            <select name="entidad" id="entidad" class="form-control" required>
                                 <option value="">Seleccionar entidad...</option>
                                 <?php foreach ($entidades_federativas as $id_ent => $nombre): ?>
                                     <option value="<?= $id_ent ?>" <?= $institucion['id_entidad'] == $id_ent ? 'selected' : '' ?>>
@@ -1175,30 +653,18 @@ include 'template/menu.php';
 
                         <div class="form-group">
                             <label class="form-label required">Alcaldía / Municipio</label>
-                            <select name="municipio" id="municipio" class="form-control" required disabled>
-                                <option value="">Seleccionar alcaldía/municipio...</option>
-                                <?php if ($direccion && !empty($direccion['municipio'])): ?>
-                                    <option value="<?= htmlspecialchars($direccion['municipio']) ?>" selected>
-                                        <?= htmlspecialchars($direccion['municipio']) ?>
-                                    </option>
-                                <?php endif; ?>
-                            </select>
+                            <input type="text" name="municipio" id="municipio" class="form-control" 
+                                   value="<?= htmlspecialchars($institucion['direccion']['municipio'] ?? '') ?>" required>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label required">Colonia</label>
-                            <select name="colonia" id="colonia" class="form-control" required disabled>
-                                <option value="">Seleccionar colonia...</option>
-                                <?php if ($direccion && !empty($direccion['colonia'])): ?>
-                                    <option value="<?= htmlspecialchars($direccion['colonia']) ?>" selected>
-                                        <?= htmlspecialchars($direccion['colonia']) ?>
-                                    </option>
-                                <?php endif; ?>
-                            </select>
+                            <input type="text" name="colonia" id="colonia" class="form-control" 
+                                   value="<?= htmlspecialchars($institucion['direccion']['colonia'] ?? '') ?>" required>
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label required">Zona</label>
+                            <label class="form-label required">Zona Regional</label>
                             <select name="zona" id="zona" class="form-control" required>
                                 <option value="">Seleccionar zona...</option>
                                 <?php foreach ($zonas_regionales as $id_zona => $nombre): ?>
@@ -1212,96 +678,611 @@ include 'template/menu.php';
                         <div class="form-group">
                             <label class="form-label required">Calle</label>
                             <input type="text" name="calle" class="form-control" 
-                                   value="<?= $direccion ? htmlspecialchars($direccion['calle']) : '' ?>" 
-                                   placeholder="Ej. Calzada Universidad" required>
+                                   value="<?= htmlspecialchars($institucion['direccion']['calle'] ?? '') ?>" required>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label required">Número Exterior</label>
                             <input type="text" name="numero_exterior" class="form-control" 
-                                   value="<?= $direccion ? htmlspecialchars($direccion['numero_exterior']) : '' ?>" 
-                                   placeholder="Ej. 14418" required>
+                                   value="<?= htmlspecialchars($institucion['direccion']['numero_exterior'] ?? '') ?>" required>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label">Número Interior</label>
                             <input type="text" name="numero_interior" class="form-control" 
-                                   value="<?= $direccion && !empty($direccion['numero_interior']) ? htmlspecialchars($direccion['numero_interior']) : '' ?>" 
-                                   placeholder="Ej. A-102">
+                                   value="<?= htmlspecialchars($institucion['direccion']['numero_interior'] ?? '') ?>">
                         </div>
                     </div>
                 </div>
+                <?php endif; ?>
 
-                <!-- SECCIÓN 3: VIGENCIA -->
-                <div class="form-section">
-                    <div class="section-header">
-                        <span class="section-number">03</span>
-                        <h3>Vigencia</h3>
-                        <span class="section-line"></span>
-                    </div>
-                    
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label class="form-label required">Fecha de Inicio</label>
-                            <input type="date" name="fecha_inicio" id="fecha_inicio" class="form-control" 
-                                   value="<?= $institucion['fecha_inicio'] ?>" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Fecha de Fin</label>
-                            <input type="date" name="fecha_fin" id="fecha_fin" class="form-control" 
-                                   value="<?= $institucion['fecha_fin'] ?>">
-                            <small class="form-hint">Dejar vacío si está vigente</small>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SECCIÓN 4: NÚMERO DE AFILIACIÓN -->
-                <div class="form-section">
-                    <div class="section-header">
-                        <span class="section-number">04</span>
-                        <h3>Número de Afiliación</h3>
-                        <span class="section-line"></span>
-                    </div>
-                    
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label class="form-label" id="num_afiliacion_label">Número de Afiliación <span id="num_afiliacion_required" style="color:#c62828; display:none;">*</span></label>
-                            <input type="text" name="num_afiliacion" id="num_afiliacion_input" class="form-control afiliacion-input" 
-                                   placeholder="No aplica" pattern="[0-9]{7}" maxlength="7" autocomplete="off" 
-                                   value="<?= htmlspecialchars($institucion['num_afiliacion'] ?? '') ?>" disabled>
-                            <small class="form-hint" id="num_afiliacion_hint">Se genera automáticamente cuando aplique</small>
-                            <small class="form-hint" id="num_afiliacion_status" style="display:none;"></small>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Botones -->
                 <div class="form-actions">
                     <button type="submit" class="btn-primary-modern">
-                        <i class="fas fa-save"></i> Actualizar Institución
+                        <i class="fas fa-save"></i> Guardar cambios
                     </button>
                     <a href="instituciones.php" class="btn-outline-modern">
                         <i class="fas fa-times"></i> Cancelar
                     </a>
                 </div>
+            </div>
+        </form>
 
-            </form>
+        <!-- SECCIÓN: CONVERSIÓN A MATRIZ -->
+        <?php if (!$es_matriz && $institucion['tipo'] == 1): ?>
+        <div class="matriz-section">
+            <div class="matriz-section-content">
+                <div>
+                    <h2 class="matriz-section-title">Conversión a matriz</h2>
+                    <p class="matriz-section-desc">
+                        Si esta universidad va a operar como contenedora de facultades y campus, puede convertirla en matriz. 
+                        Conservará su número de afiliación para históricos, pero no aparecerá como institución participante en los directorios nuevos.
+                    </p>
+                </div>
+                <button type="button" class="btn-convertir-matriz" onclick="abrirModal('modalConvertirMatriz')">
+                    Convertir en matriz
+                </button>
+            </div>
         </div>
+        <?php endif; ?>
+
+        <!-- SECCIÓN: INFORMACIÓN DE MATRIZ -->
+        <?php if ($es_matriz): ?>
+        <div class="matriz-section matriz-section-active">
+            <div class="matriz-section-content">
+                <div>
+                    <h2 class="matriz-section-title">
+                        Institución matriz
+                        <span class="badge-matriz-inline">Desde <?= formatearFecha($institucion['fecha_matriz']) ?></span>
+                    </h2>
+                    <p class="matriz-section-desc">
+                        Esta universidad agrupa a <?= count($sedes) ?> sede(s). Aparece en los directorios históricos anteriores a <?= formatearFecha($institucion['fecha_matriz']) ?>.
+                    </p>
+                </div>
+                <?php if (!$tiene_sedes): ?>
+                    <button type="button" class="btn-revertir-matriz" onclick="abrirModal('modalRevertirMatriz')">
+                        Revertir conversión
+                    </button>
+                <?php else: ?>
+                    <span class="matriz-section-info">Con sedes registradas, la conversión es permanente</span>
+                <?php endif; ?>
+            </div>
+        </div>
+        <?php endif; ?>
+
+        <!-- SECCIÓN: PARTICIPACIÓN -->
+        <?php if (!$es_matriz): ?>
+        <div class="participacion-section">
+            <div class="participacion-header">
+                <div>
+                    <h2 class="participacion-title">Participación en ANFECA</h2>
+                    <p class="participacion-subtitle">
+                        Cada cambio genera un nuevo período. Los anteriores se conservan para consultas históricas y los directorios de años anteriores.
+                    </p>
+                </div>
+            </div>
+
+            <?php if ($participacion_vigente): ?>
+                <div class="participacion-vigente">
+                    <div class="participacion-vigente-header">
+                        <span class="badge-vigente">Activa</span>
+                        <span class="badge-tipo-participacion <?= $participacion_vigente['tipo'] === 'Afiliada' ? 'badge-afiliada' : 'badge-observadora' ?>">
+                            <?= htmlspecialchars($participacion_vigente['tipo']) ?>
+                        </span>
+                    </div>
+                    <div class="participacion-vigente-body">
+                        <div class="participacion-dato">
+                            <span class="participacion-dato-label">Número de afiliación</span>
+                            <span class="participacion-dato-valor">
+                                <?= $participacion_vigente['num_afiliacion'] ? htmlspecialchars($participacion_vigente['num_afiliacion']) : 'No aplica' ?>
+                            </span>
+                        </div>
+                        <div class="participacion-dato">
+                            <span class="participacion-dato-label">Vigente desde</span>
+                            <span class="participacion-dato-valor"><?= formatearFecha($participacion_vigente['fecha_inicio']) ?></span>
+                        </div>
+                    </div>
+                    <div class="participacion-vigente-actions">
+                        <button type="button" class="btn-accion btn-corregir" onclick="abrirModal('modalCorregirParticipacion')">
+                            Corregir datos
+                        </button>
+                        <?php if ($participacion_vigente['tipo'] === 'Observadora'): ?>
+                            <button type="button" class="btn-accion btn-convertir" onclick="abrirModal('modalConvertirAfiliada')">
+                                Convertir en afiliada
+                            </button>
+                            <button type="button" class="btn-accion btn-desafiliar" onclick="abrirModal('modalDesafiliar')">
+                                Finalizar proceso de observación
+                            </button>
+                        <?php else: ?>
+                            <button type="button" class="btn-accion btn-desafiliar" onclick="abrirModal('modalDesafiliar')">
+                                Desafiliar institución
+                            </button>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            <?php else: ?>
+                <div class="participacion-inactiva">
+                    <div class="participacion-inactiva-header">
+                        <span class="badge-inactiva">Inactiva</span>
+                    </div>
+                    <?php if (!empty($participaciones_anteriores)): 
+                        $ultima = $participaciones_anteriores[0];
+                        $ultimo_num = null;
+                        foreach ($participaciones_anteriores as $p) {
+                            if (!empty($p['num_afiliacion'])) {
+                                $ultimo_num = $p['num_afiliacion'];
+                                break;
+                            }
+                        }
+                    ?>
+                        <p class="participacion-inactiva-info">
+                            Última participación registrada: <strong><?= htmlspecialchars($ultima['tipo']) ?></strong>
+                            <?php if ($ultimo_num): ?>
+                                · Núm. <strong><?= htmlspecialchars($ultimo_num) ?></strong>
+                            <?php endif; ?>
+                            <br>
+                            <span class="participacion-inactiva-fechas">
+                                <?= formatearFecha($ultima['fecha_inicio']) ?> al <?= formatearFecha($ultima['fecha_fin']) ?>
+                            </span>
+                        </p>
+                        <p class="participacion-inactiva-nota">
+                            Puede reutilizar su número de afiliación anterior si la institución regresa a ANFECA.
+                        </p>
+                    <?php endif; ?>
+                    <button type="button" class="btn-agregar-periodo" onclick="abrirModal('modalAgregarPeriodo')">
+                        Agregar nuevo período
+                    </button>
+                </div>
+            <?php endif; ?>
+
+            <?php if (count($participaciones_anteriores) > 0): ?>
+                <div class="participacion-historial">
+                    <h3 class="participacion-historial-title">Historial de participación</h3>
+                    <div class="participacion-historial-list">
+                        <?php foreach ($participaciones_anteriores as $p): ?>
+                            <div class="participacion-historial-item">
+                                <div class="participacion-historial-info">
+                                    <span class="badge-tipo-participacion <?= $p['tipo'] === 'Afiliada' ? 'badge-afiliada' : 'badge-observadora' ?>">
+                                        <?= htmlspecialchars($p['tipo']) ?>
+                                    </span>
+                                    <span class="participacion-historial-fechas">
+                                        <?= formatearFecha($p['fecha_inicio']) ?> al <?= formatearFecha($p['fecha_fin']) ?>
+                                    </span>
+                                    <?php if ($p['num_afiliacion']): ?>
+                                        <span class="participacion-historial-num">Núm. <?= htmlspecialchars($p['num_afiliacion']) ?></span>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+        </div>
+        <?php endif; ?>
+
+        <!-- SECCIÓN: SEDES (solo si es matriz) -->
+        <?php if ($es_matriz && $tiene_sedes): ?>
+        <div class="participacion-section">
+            <div class="participacion-header">
+                <div>
+                    <h2 class="participacion-title">Sedes registradas</h2>
+                    <p class="participacion-subtitle">
+                        Estas son las instituciones que dependen de esta matriz y participan directamente en ANFECA.
+                    </p>
+                </div>
+            </div>
+
+            <div class="sedes-list">
+                <?php foreach ($sedes as $sede): 
+                    $sede_estado = getEstadoInstitucion($sede);
+                    $sede_participaciones = getParticipacionesDe($sede);
+                    $sede_vigente = $sede_participaciones['vigente'];
+                ?>
+                    <div class="sede-item">
+                        <div class="sede-info">
+                            <a href="institucion_consulta.php?id=<?= $sede['id'] ?>" class="sede-nombre">
+                                <?= htmlspecialchars($sede['nombre']) ?>
+                            </a>
+                            <div class="sede-meta">
+                                <span class="badge-tipo-institucion"><?= getTipoNombre($sede['tipo']) ?></span>
+                                <?php if ($sede_vigente): ?>
+                                    <span class="badge-tipo-participacion <?= $sede_vigente['tipo'] === 'Afiliada' ? 'badge-afiliada' : 'badge-observadora' ?>">
+                                        <?= htmlspecialchars($sede_vigente['tipo']) ?>
+                                    </span>
+                                    <?php if ($sede_vigente['num_afiliacion']): ?>
+                                        <span class="sede-num">Núm. <?= htmlspecialchars($sede_vigente['num_afiliacion']) ?></span>
+                                    <?php endif; ?>
+                                <?php else: ?>
+                                    <span class="badge-inactiva-small">Inactiva</span>
+                                <?php endif; ?>
+                                <?php if ($sede_estado === 'activa'): ?>
+                                    <span class="status-badge status-active">
+                                        <span class="status-dot"></span> Activa
+                                    </span>
+                                <?php else: ?>
+                                    <span class="status-badge status-inactive">
+                                        <span class="status-dot"></span> Inactiva
+                                    </span>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <a href="institucion_edicion.php?id=<?= $sede['id'] ?>" class="btn-sede-editar">
+                            Editar
+                        </a>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+        <?php endif; ?>
 
     </div>
 </main>
 
+<!-- ============================================================ -->
+<!-- MODAL: CORREGIR NOMBRE -->
+<!-- ============================================================ -->
+<div class="modal-overlay" id="modalCorregirNombre" style="display:none;">
+    <div class="modal-card">
+        <form method="POST">
+            <input type="hidden" name="accion" value="corregir_nombre">
+            
+            <div class="modal-header">
+                <h3>Corregir nombre</h3>
+                <button type="button" class="modal-close" onclick="cerrarModal('modalCorregirNombre')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-intro">
+                    Corrige errores de captura en el nombre actual. <strong>No se genera histórico.</strong> Si el nombre cambia porque cambió la razón social, usa "Cambiar razón social".
+                </p>
+                
+                <div class="form-group">
+                    <label class="form-label required">Nombre correcto</label>
+                    <input type="text" name="nombre_corregido" class="form-control" 
+                           value="<?= htmlspecialchars($institucion['nombre']) ?>"
+                           maxlength="60" required autocomplete="off">
+                    <small class="form-hint">Máximo 60 caracteres</small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-modal-secondary" onclick="cerrarModal('modalCorregirNombre')">Cancelar</button>
+                <button type="submit" class="btn-modal-primary">Guardar corrección</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- MODAL: CAMBIAR RAZÓN SOCIAL -->
+<!-- ============================================================ -->
+<div class="modal-overlay" id="modalCambiarNombre" style="display:none;">
+    <div class="modal-card">
+        <form method="POST">
+            <input type="hidden" name="accion" value="cambiar_nombre">
+            
+            <div class="modal-header">
+                <h3>Cambiar razón social</h3>
+                <button type="button" class="modal-close" onclick="cerrarModal('modalCambiarNombre')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-intro">
+                    Registra un cambio formal de razón social. El nombre anterior se conserva en el historial y los directorios de años anteriores seguirán mostrándolo.
+                </p>
+                
+                <div class="modal-resumen-resalte">
+                    <span class="modal-resumen-resalte-label">Nombre actual</span>
+                    <span class="modal-resumen-resalte-valor"><?= htmlspecialchars($institucion['nombre']) ?></span>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label required">Nuevo nombre</label>
+                    <input type="text" name="nuevo_nombre" class="form-control" 
+                           maxlength="60" required autocomplete="off">
+                    <small class="form-hint">Máximo 60 caracteres</small>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label required">Fecha del cambio</label>
+                    <input type="date" name="fecha_cambio_nombre" class="form-control" 
+                           value="<?= date('Y-m-d') ?>" required>
+                    <small class="form-hint">A partir de esta fecha la institución se llamará así</small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-modal-secondary" onclick="cerrarModal('modalCambiarNombre')">Cancelar</button>
+                <button type="submit" class="btn-modal-primary">Confirmar cambio</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- MODAL: CONVERTIR EN MATRIZ -->
+<!-- ============================================================ -->
+<div class="modal-overlay" id="modalConvertirMatriz" style="display:none;">
+    <div class="modal-card">
+        <form method="POST">
+            <input type="hidden" name="accion" value="convertir_matriz">
+            
+            <div class="modal-header">
+                <h3>Convertir en matriz</h3>
+                <button type="button" class="modal-close" onclick="cerrarModal('modalConvertirMatriz')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-intro">
+                    Al convertir esta universidad en matriz:
+                </p>
+                <ul class="modal-list">
+                    <li>Conservará su número de afiliación para históricos.</li>
+                    <li><strong>Se eliminará su dirección actual</strong> (la matriz no tiene dirección propia).</li>
+                    <li>No aparecerá como institución participante en directorios nuevos (a partir de la fecha indicada).</li>
+                    <li>En su lugar aparecerán sus sedes.</li>
+                    <li>Podrá registrar sus sedes después de la conversión.</li>
+                </ul>
+                
+                <div class="form-group">
+                    <label class="form-label required">Fecha de conversión</label>
+                    <input type="date" name="fecha_conversion_matriz" class="form-control" 
+                           value="<?= date('Y-m-d') ?>" required>
+                    <small class="form-hint">A partir de este año la universidad no aparecerá en directorios</small>
+                </div>
+                
+                <div class="modal-aviso">
+                    Esta acción no se puede deshacer si después registras sedes. Asegúrate de que esta universidad realmente va a operar como contenedora.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-modal-secondary" onclick="cerrarModal('modalConvertirMatriz')">Cancelar</button>
+                <button type="submit" class="btn-modal-primary">Confirmar conversión</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- MODAL: REVERTIR CONVERSIÓN A MATRIZ -->
+<!-- ============================================================ -->
+<div class="modal-overlay" id="modalRevertirMatriz" style="display:none;">
+    <div class="modal-card">
+        <form method="POST">
+            <input type="hidden" name="accion" value="revertir_matriz">
+            
+            <div class="modal-header">
+                <h3>Revertir conversión a matriz</h3>
+                <button type="button" class="modal-close" onclick="cerrarModal('modalRevertirMatriz')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-intro">
+                    Esta universidad dejará de ser matriz. Volverá a ser una institución normal y aparecerá en directorios como antes.
+                </p>
+                
+                <div class="modal-aviso">
+                    Tendrás que capturar su dirección de nuevo después de la reversión.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-modal-secondary" onclick="cerrarModal('modalRevertirMatriz')">Cancelar</button>
+                <button type="submit" class="btn-modal-danger">Revertir conversión</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- MODAL: DESAFILIAR / FINALIZAR OBSERVACIÓN -->
+<!-- ============================================================ -->
+<div class="modal-overlay" id="modalDesafiliar" style="display:none;">
+    <div class="modal-card">
+        <form method="POST">
+            <input type="hidden" name="accion" value="cerrar_participacion">
+            
+            <div class="modal-header">
+                <h3><?= ($participacion_vigente && $participacion_vigente['tipo'] === 'Observadora') ? 'Finalizar proceso de observación' : 'Desafiliar institución' ?></h3>
+                <button type="button" class="modal-close" onclick="cerrarModal('modalDesafiliar')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-intro">
+                    La institución dejará de participar en ANFECA a partir de la fecha que indique. Su historial y número de afiliación se conservarán.
+                </p>
+                
+                <?php if ($participacion_vigente && $participacion_vigente['num_afiliacion']): ?>
+                    <div class="modal-aviso-info">
+                        El número <strong><?= htmlspecialchars($participacion_vigente['num_afiliacion']) ?></strong> quedará reservado para esta institución. No podrá ser utilizado por otra, pero podrá reutilizarlo si la institución regresa.
+                    </div>
+                <?php endif; ?>
+                
+                <div class="form-group">
+                    <label class="form-label required">Fecha de fin</label>
+                    <input type="date" name="fecha_fin" class="form-control" 
+                           value="<?= date('Y-m-d') ?>" required>
+                    <small class="form-hint">A partir de esta fecha la institución queda inactiva</small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-modal-secondary" onclick="cerrarModal('modalDesafiliar')">Cancelar</button>
+                <button type="submit" class="btn-modal-danger">Confirmar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- MODAL: CONVERTIR OBSERVADORA A AFILIADA -->
+<!-- ============================================================ -->
+<div class="modal-overlay" id="modalConvertirAfiliada" style="display:none;">
+    <div class="modal-card">
+        <form method="POST">
+            <input type="hidden" name="accion" value="convertir_afiliada">
+            
+            <?php 
+            $zona_para_num = $institucion['id_zona'] ?? 1;
+            $num_auto = generarNumAfiliacion($zona_para_num, date('y'));
+            ?>
+            
+            <div class="modal-header">
+                <h3>Convertir en afiliada</h3>
+                <button type="button" class="modal-close" onclick="cerrarModal('modalConvertirAfiliada')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-intro">
+                    La institución aprueba su proceso de observación y se convierte en Afiliada. Se cerrará el período actual y comenzará uno nuevo.
+                </p>
+                
+                <div class="modal-resumen">
+                    <div class="modal-resumen-item">
+                        <span class="modal-resumen-label">Tipo actual</span>
+                        <span class="modal-resumen-valor">Observadora</span>
+                    </div>
+                    <div class="modal-resumen-item">
+                        <span class="modal-resumen-label">Nuevo tipo</span>
+                        <span class="modal-resumen-valor nuevo-valor">Afiliada</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label required">Fecha del cambio</label>
+                    <input type="date" name="fecha_cambio" class="form-control" 
+                           value="<?= date('Y-m-d') ?>" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label required">Número de afiliación</label>
+                    <input type="text" name="nuevo_num_afiliacion" class="form-control afiliacion-input" 
+                           value="<?= htmlspecialchars($num_auto) ?>"
+                           pattern="[0-9]{7}" maxlength="7" required>
+                    <small class="form-hint">Formato: Año(2) + Zona(2) + Consecutivo(3). Puede modificarlo si es necesario.</small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-modal-secondary" onclick="cerrarModal('modalConvertirAfiliada')">Cancelar</button>
+                <button type="submit" class="btn-modal-primary">Confirmar conversión</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- MODAL: CORREGIR PARTICIPACIÓN -->
+<!-- ============================================================ -->
+<div class="modal-overlay" id="modalCorregirParticipacion" style="display:none;">
+    <div class="modal-card">
+        <form method="POST">
+            <input type="hidden" name="accion" value="corregir_participacion">
+            
+            <div class="modal-header">
+                <h3>Corregir datos de participación</h3>
+                <button type="button" class="modal-close" onclick="cerrarModal('modalCorregirParticipacion')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-intro">
+                    Corrige errores de captura en el período vigente. <strong>No se genera histórico.</strong> Si el cambio es real (afiliación, desafiliación), usa las acciones correspondientes.
+                </p>
+                
+                <?php if ($participacion_vigente): ?>
+                <div class="form-group">
+                    <label class="form-label required">Tipo de participación</label>
+                    <select name="tipo_corregido" id="tipo_corregido" class="form-control" required onchange="toggleNumCorregido()">
+                        <option value="Observadora" <?= $participacion_vigente['tipo'] === 'Observadora' ? 'selected' : '' ?>>Observadora</option>
+                        <option value="Afiliada" <?= $participacion_vigente['tipo'] === 'Afiliada' ? 'selected' : '' ?>>Afiliada</option>
+                    </select>
+                </div>
+                
+                <div class="form-group" id="num_corregido_container" style="<?= $participacion_vigente['tipo'] === 'Afiliada' ? 'display:flex;' : 'display:none;' ?>">
+                    <label class="form-label required">Número de afiliación</label>
+                    <input type="text" name="num_corregido" class="form-control afiliacion-input" 
+                           value="<?= htmlspecialchars($participacion_vigente['num_afiliacion'] ?? '') ?>"
+                           pattern="[0-9]{7}" maxlength="7">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label required">Fecha de inicio</label>
+                    <input type="date" name="fecha_inicio_corregida" class="form-control" 
+                           value="<?= htmlspecialchars($participacion_vigente['fecha_inicio']) ?>" required>
+                </div>
+                <?php endif; ?>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-modal-secondary" onclick="cerrarModal('modalCorregirParticipacion')">Cancelar</button>
+                <button type="submit" class="btn-modal-primary">Guardar corrección</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- MODAL: AGREGAR PERÍODO -->
+<!-- ============================================================ -->
+<div class="modal-overlay" id="modalAgregarPeriodo" style="display:none;">
+    <div class="modal-card">
+        <form method="POST">
+            <input type="hidden" name="accion" value="agregar_periodo">
+            
+            <?php 
+            $zona_para_num2 = $institucion['id_zona'] ?? 1;
+            // Si la institución ya tuvo número, prellenar con ese número para reactivación
+            if (!empty($ultimo_num_institucion)) {
+                $num_auto_agregar = $ultimo_num_institucion;
+            } else {
+                $num_auto_agregar = generarNumAfiliacion($zona_para_num2, date('y'));
+            }
+            ?>
+            
+            <div class="modal-header">
+                <h3>Agregar período de participación</h3>
+                <button type="button" class="modal-close" onclick="cerrarModal('modalAgregarPeriodo')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-intro">
+                    Útil para reactivar una institución inactiva o registrar períodos históricos que no se capturaron en su momento.
+                </p>
+                
+                <div class="form-group">
+                    <label class="form-label required">Tipo de participación</label>
+                    <select name="periodo_tipo" id="periodo_tipo" class="form-control" required onchange="toggleNumAfiliacion()">
+                        <option value="">Seleccionar tipo...</option>
+                        <option value="Afiliada">Afiliada</option>
+                        <option value="Observadora">Observadora</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label required">Fecha de inicio</label>
+                    <input type="date" name="periodo_fecha_inicio" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Fecha de fin</label>
+                    <input type="date" name="periodo_fecha_fin" class="form-control">
+                    <small class="form-hint">Dejar en blanco si es el período vigente (reactivación)</small>
+                </div>
+                
+                <div class="form-group" id="periodo_num_afiliacion_container" style="display:none;">
+                    <label class="form-label required">Número de afiliación</label>
+                    <input type="text" name="periodo_num_afiliacion" class="form-control afiliacion-input" 
+                           value="<?= htmlspecialchars($num_auto_agregar) ?>"
+                           pattern="[0-9]{7}" maxlength="7">
+                    <small class="form-hint">Formato: Año(2) + Zona(2) + Consecutivo(3)
+                        <?php if (!empty($ultimo_num_institucion)): ?>
+                            · Número anterior de esta institución: <strong><?= htmlspecialchars($ultimo_num_institucion) ?></strong> (puede reutilizarlo)
+                        <?php endif; ?>
+                    </small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-modal-secondary" onclick="cerrarModal('modalAgregarPeriodo')">Cancelar</button>
+                <button type="submit" class="btn-modal-primary">Guardar período</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <style>
 /* ============================================================
-   ESTILOS MODERNOS - EDICIÓN INSTITUCIÓN
+   ESTILOS - EDICIÓN INSTITUCIÓN
    ============================================================ */
 
-/* Page Header */
 .page-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: 2rem;
     gap: 1.5rem;
     flex-wrap: wrap;
@@ -1309,55 +1290,60 @@ include 'template/menu.php';
 
 .page-header-content {
     display: flex;
-    align-items: center;
-    gap: 1.25rem;
+    align-items: stretch;
+    gap: 1rem;
 }
 
-.page-header-icon {
-    width: 56px;
-    height: 56px;
-    background: linear-gradient(135deg, #8B0000, #5C0000);
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 1.5rem;
+.page-header-content::before {
+    content: '';
+    display: block;
+    width: 4px;
+    background: linear-gradient(180deg, #8B0000, #5C0000);
+    border-radius: 4px;
     flex-shrink: 0;
-    box-shadow: 0 4px 15px rgba(139, 0, 0, 0.25);
+}
+
+.page-header-content > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0.15rem 0;
 }
 
 .page-title {
-    font-size: 1.65rem;
+    font-size: 1.35rem;
     font-weight: 700;
     color: #1a1a1a;
     margin: 0;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
 }
 
 .page-subtitle {
     color: #888;
-    margin: 0.1rem 0 0 0;
-    font-size: 0.92rem;
+    margin: 0.25rem 0 0 0;
+    font-size: 0.9rem;
+    line-height: 1.3;
 }
 
 .page-header-right {
     display: flex;
     gap: 0.75rem;
     align-items: center;
+    padding-top: 0.35rem;
 }
 
-/* Botones */
 .btn-primary-modern {
     display: inline-flex;
     align-items: center;
     gap: 0.6rem;
-    padding: 0.75rem 1.8rem;
+    padding: 0.8rem 1.9rem;
     background: linear-gradient(135deg, #8B0000, #5C0000);
     color: white;
     border: none;
     border-radius: 10px;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     cursor: pointer;
     transition: all 0.3s ease;
     text-decoration: none;
@@ -1374,13 +1360,13 @@ include 'template/menu.php';
     display: inline-flex;
     align-items: center;
     gap: 0.6rem;
-    padding: 0.75rem 1.5rem;
+    padding: 0.8rem 1.6rem;
     background: white;
     color: #4a4a4a;
     border: 2px solid #e8e8e8;
     border-radius: 10px;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     cursor: pointer;
     transition: all 0.3s ease;
     text-decoration: none;
@@ -1389,6 +1375,50 @@ include 'template/menu.php';
 .btn-outline-modern:hover {
     border-color: #8B0000;
     color: #8B0000;
+}
+
+/* Estado banner */
+.estado-banner {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    border: 1.5px solid;
+}
+
+.estado-banner.estado-activa {
+    background: linear-gradient(135deg, #f0f9f0, #e8f5e9);
+    border-color: #a5d6a7;
+}
+
+.estado-banner.estado-inactiva {
+    background: #fafafa;
+    border-color: #e0e0e0;
+}
+
+.estado-banner-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.estado-banner-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #888;
+}
+
+.estado-banner-valor {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.estado-banner.estado-activa .estado-banner-label {
+    color: #2e7d32;
 }
 
 /* Alertas */
@@ -1413,9 +1443,7 @@ include 'template/menu.php';
     border-left: 4px solid #2e7d32;
 }
 
-.alert-success i {
-    color: #2e7d32;
-}
+.alert-success i { color: #2e7d32; }
 
 .alert-error {
     background: #fdf0f0;
@@ -1423,9 +1451,7 @@ include 'template/menu.php';
     border-left: 4px solid #c62828;
 }
 
-.alert-error i {
-    color: #c62828;
-}
+.alert-error i { color: #c62828; }
 
 /* Formulario */
 .form-container {
@@ -1440,11 +1466,11 @@ include 'template/menu.php';
     display: flex;
     align-items: center;
     gap: 0.6rem;
-    padding: 0.5rem 1rem;
+    padding: 0.55rem 1rem;
     background: #faf8f8;
     border-radius: 8px;
     margin-bottom: 2rem;
-    font-size: 0.85rem;
+    font-size: 0.88rem;
     color: #6b6b6b;
 }
 
@@ -1473,17 +1499,17 @@ include 'template/menu.php';
 }
 
 .section-number {
-    font-size: 0.7rem;
+    font-size: 0.72rem;
     font-weight: 700;
     color: #8B0000;
     background: #f5edec;
-    padding: 0.2rem 0.6rem;
+    padding: 0.22rem 0.65rem;
     border-radius: 6px;
     letter-spacing: 0.5px;
 }
 
 .section-header h3 {
-    font-size: 1.05rem;
+    font-size: 1rem;
     font-weight: 700;
     color: #1a1a1a;
     margin: 0;
@@ -1495,32 +1521,143 @@ include 'template/menu.php';
     background: linear-gradient(90deg, #e0d6d6, transparent);
 }
 
-/* Grids - Responsive */
 .form-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1.25rem;
 }
 
-/* Afiliación - Input */
-.afiliacion-input {
-    font-family: monospace;
-    font-size: 1.1rem;
-    letter-spacing: 1px;
+/* Bloque del nombre */
+.nombre-actual-bloque {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 1.25rem 1.5rem;
+    background: #fafafa;
+    border: 1px solid #f0f0f0;
+    border-radius: 12px;
+    flex-wrap: wrap;
+}
+
+.nombre-actual-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    flex: 1;
+    min-width: 0;
+}
+
+.nombre-actual-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #888;
     text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-.afiliacion-input:disabled {
+.nombre-actual-valor {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    line-height: 1.3;
+    word-break: break-word;
+}
+
+.nombre-actual-desde {
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 0.15rem;
+}
+
+.nombre-actual-actions {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+}
+
+.btn-corregir-nombre {
+    padding: 0.65rem 1.2rem;
+    background: white;
+    color: #6b6b6b;
+    border: 1.5px solid #d0d0d0;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+}
+
+.btn-corregir-nombre:hover {
     background: #f5f5f5;
-    color: #999;
-    cursor: not-allowed;
+    border-color: #999;
+    color: #4a4a4a;
 }
 
-.afiliacion-input:disabled::placeholder {
-    color: #bbb;
+.btn-cambiar-nombre {
+    padding: 0.65rem 1.4rem;
+    background: white;
+    color: #8B0000;
+    border: 1.5px solid #8B0000;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    white-space: nowrap;
 }
 
-/* Form groups - Responsive */
+.btn-cambiar-nombre:hover {
+    background: #8B0000;
+    color: white;
+}
+
+/* Nombres anteriores */
+.nombres-anteriores {
+    margin-top: 1rem;
+    padding: 1rem 1.25rem;
+    background: #f5f0f0;
+    border-radius: 10px;
+}
+
+.nombres-anteriores-label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #6b5a5a;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.6rem;
+}
+
+.nombre-anterior-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #e8e0e0;
+    flex-wrap: wrap;
+}
+
+.nombre-anterior-item:last-child {
+    border-bottom: none;
+}
+
+.nombre-anterior-valor {
+    font-size: 0.88rem;
+    color: #4a3a3a;
+    font-weight: 500;
+}
+
+.nombre-anterior-fechas {
+    font-size: 0.78rem;
+    color: #888;
+}
+
+/* Form Groups */
 .form-group {
     display: flex;
     flex-direction: column;
@@ -1530,7 +1667,7 @@ include 'template/menu.php';
 
 .form-label {
     font-weight: 600;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: #3a3a3a;
     white-space: nowrap;
 }
@@ -1541,24 +1678,17 @@ include 'template/menu.php';
 }
 
 .form-hint {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     color: #999;
     margin-top: 0.15rem;
-}
-
-.form-hint.error {
-    color: #c62828;
-}
-
-.form-hint.success {
-    color: #2e7d32;
+    line-height: 1.4;
 }
 
 .form-control {
-    padding: 0.7rem 1rem;
+    padding: 0.75rem 1rem;
     border: 2px solid #e8e8e8;
     border-radius: 10px;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     transition: all 0.3s ease;
     background: #fafafa;
     color: #1a1a1a;
@@ -1572,22 +1702,21 @@ include 'template/menu.php';
     box-shadow: 0 0 0 4px rgba(139, 0, 0, 0.06);
 }
 
-.form-control::placeholder {
-    color: #bbb;
-}
-
-.form-control:disabled {
-    background: #f0f0f0;
-    cursor: not-allowed;
-    opacity: 0.7;
-}
+.form-control::placeholder { color: #bbb; }
 
 .cp-input {
     font-weight: 600;
     letter-spacing: 1px;
 }
 
-/* Sitios Web - Responsive */
+.afiliacion-input {
+    font-family: monospace;
+    font-size: 1.15rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* Sitios Web */
 .sitio-web-item {
     margin-bottom: 0.5rem;
     width: 100%;
@@ -1609,8 +1738,8 @@ include 'template/menu.php';
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 34px;
-    height: 34px;
+    width: 38px;
+    height: 38px;
     background: #fce8e8;
     color: #c62828;
     border: none;
@@ -1629,12 +1758,12 @@ include 'template/menu.php';
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.4rem 1rem;
+    padding: 0.45rem 1rem;
     background: transparent;
     color: #8B0000;
     border: 1px dashed #8B0000;
     border-radius: 8px;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -1646,7 +1775,26 @@ include 'template/menu.php';
     border-color: #8B0000;
 }
 
-/* Form actions - Responsive */
+/* Matriz info */
+.matriz-info {
+    background: #f5f0f0;
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    margin-top: 1rem;
+}
+
+.matriz-info p {
+    margin: 0 0 0.5rem 0;
+    color: #4a3a3a;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.matriz-info p:last-child {
+    margin-bottom: 0;
+}
+
+/* Form Actions */
 .form-actions {
     display: flex;
     gap: 1rem;
@@ -1656,26 +1804,824 @@ include 'template/menu.php';
     flex-wrap: wrap;
 }
 
-/* Responsive */
+/* Sección Conversión a Matriz */
+.matriz-section {
+    background: white;
+    border-radius: 16px;
+    padding: 1.75rem 2rem;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    margin-top: 2rem;
+}
+
+.matriz-section-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.matriz-section-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0 0 0.4rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.matriz-section-desc {
+    color: #6b6b6b;
+    font-size: 0.9rem;
+    margin: 0;
+    line-height: 1.55;
+    max-width: 700px;
+}
+
+.btn-convertir-matriz {
+    padding: 0.75rem 1.75rem;
+    background: linear-gradient(135deg, #8B0000, #5C0000);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    box-shadow: 0 4px 15px rgba(139, 0, 0, 0.25);
+}
+
+.btn-convertir-matriz:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(139, 0, 0, 0.35);
+}
+
+.btn-revertir-matriz {
+    padding: 0.7rem 1.5rem;
+    background: white;
+    color: #c62828;
+    border: 1.5px solid #c62828;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+}
+
+.btn-revertir-matriz:hover {
+    background: #c62828;
+    color: white;
+}
+
+.matriz-section-info {
+    font-size: 0.8rem;
+    color: #888;
+    font-style: italic;
+    white-space: nowrap;
+}
+
+.matriz-section-active {
+    background: linear-gradient(135deg, #f0f7fa, #e8f2f7);
+    border-color: #b8d8e8;
+}
+
+.badge-matriz-inline {
+    display: inline-block;
+    padding: 0.15rem 0.6rem;
+    background: #0d47a1;
+    color: white;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    vertical-align: middle;
+}
+
+/* Participación */
+.participacion-section {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    margin-top: 2rem;
+}
+
+.participacion-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 1.75rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 2px solid #f5f0f0;
+    flex-wrap: wrap;
+}
+
+.participacion-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+.participacion-subtitle {
+    font-size: 0.85rem;
+    color: #888;
+    margin: 0.25rem 0 0 0;
+    line-height: 1.4;
+    max-width: 600px;
+}
+
+.participacion-vigente {
+    background: linear-gradient(135deg, #f0f9f0, #e8f5e9);
+    border: 1.5px solid #a5d6a7;
+    border-radius: 14px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.participacion-vigente-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.badge-vigente {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.85rem;
+    background: #2e7d32;
+    color: white;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge-vigente::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+}
+
+.badge-tipo-participacion {
+    display: inline-block;
+    padding: 0.3rem 0.85rem;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+.badge-tipo-participacion.badge-afiliada {
+    background: #d4edda;
+    color: #1b5e20;
+}
+
+.badge-tipo-participacion.badge-observadora {
+    background: #fff3e0;
+    color: #b25000;
+}
+
+.participacion-vigente-body {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+.participacion-dato {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.participacion-dato-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #2e7d32;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.participacion-dato-valor {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.participacion-vigente-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(46, 125, 50, 0.15);
+}
+
+.btn-accion {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.25rem;
+    background: white;
+    border: 1.5px solid #d0d0d0;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    color: #4a4a4a;
+}
+
+.btn-accion:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.btn-corregir {
+    border-color: #999;
+    color: #6b6b6b;
+}
+
+.btn-corregir:hover {
+    background: #f5f5f5;
+    border-color: #6b6b6b;
+    color: #4a4a4a;
+}
+
+.btn-convertir {
+    border-color: #2e7d32;
+    color: #2e7d32;
+}
+
+.btn-convertir:hover {
+    background: #2e7d32;
+    color: white;
+}
+
+.btn-desafiliar {
+    border-color: #c62828;
+    color: #c62828;
+}
+
+.btn-desafiliar:hover {
+    background: #c62828;
+    color: white;
+}
+
+/* Inactiva */
+.participacion-inactiva {
+    background: #fafafa;
+    border: 1.5px dashed #d0d0d0;
+    border-radius: 14px;
+    padding: 1.75rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.participacion-inactiva-header {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.badge-inactiva {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.85rem;
+    background: #888;
+    color: white;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge-inactiva::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+}
+
+.badge-inactiva-small {
+    display: inline-block;
+    padding: 0.15rem 0.6rem;
+    background: #f5f5f5;
+    color: #888;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.participacion-inactiva-info {
+    color: #4a4a4a;
+    font-size: 0.9rem;
+    margin: 0 0 0.5rem 0;
+    line-height: 1.6;
+}
+
+.participacion-inactiva-fechas {
+    font-size: 0.82rem;
+    color: #888;
+}
+
+.participacion-inactiva-nota {
+    color: #888;
+    font-size: 0.85rem;
+    margin: 0.75rem 0 1.25rem 0;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.5;
+}
+
+.btn-agregar-periodo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: white;
+    color: #8B0000;
+    border: 1.5px solid #8B0000;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.btn-agregar-periodo:hover {
+    background: #8B0000;
+    color: white;
+}
+
+/* Historial */
+.participacion-historial {
+    margin-top: 1.5rem;
+}
+
+.participacion-historial-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin: 0 0 1rem 0;
+}
+
+.participacion-historial-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.participacion-historial-item {
+    background: #fafafa;
+    border: 1px solid #f0f0f0;
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    transition: all 0.2s ease;
+}
+
+.participacion-historial-item:hover {
+    background: #f5f0f0;
+    border-color: #e0d6d6;
+}
+
+.participacion-historial-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.participacion-historial-fechas {
+    font-size: 0.88rem;
+    color: #4a4a4a;
+    font-weight: 500;
+}
+
+.participacion-historial-num {
+    font-size: 0.82rem;
+    color: #888;
+    font-family: monospace;
+    padding: 0.15rem 0.55rem;
+    background: #f0ecec;
+    border-radius: 4px;
+}
+
+/* Sedes */
+.sedes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.sede-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: #fafafa;
+    border: 1px solid #f0f0f0;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+    flex-wrap: wrap;
+}
+
+.sede-item:hover {
+    background: #f5f0f0;
+    border-color: #e0d6d6;
+}
+
+.sede-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+    min-width: 0;
+}
+
+.sede-nombre {
+    font-size: 0.98rem;
+    font-weight: 600;
+    color: #8B0000;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.sede-nombre:hover {
+    color: #5C0000;
+    text-decoration: underline;
+}
+
+.sede-meta {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.badge-tipo-institucion {
+    display: inline-block;
+    padding: 0.15rem 0.6rem;
+    background: #f0ecec;
+    color: #5a3a3a;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.sede-num {
+    font-size: 0.75rem;
+    color: #888;
+    font-family: monospace;
+    padding: 0.1rem 0.5rem;
+    background: #f0ecec;
+    border-radius: 4px;
+}
+
+.btn-sede-editar {
+    padding: 0.5rem 1.25rem;
+    background: white;
+    color: #6b1a1a;
+    border: 1.5px solid #d0d0d0;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+}
+
+.btn-sede-editar:hover {
+    background: #8B0000;
+    color: white;
+    border-color: #8B0000;
+}
+
+/* Status badge en sedes */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.15rem 0.6rem;
+    border-radius: 20px;
+}
+
+.status-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.status-badge.status-active {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.status-badge.status-active .status-dot {
+    background: #2e7d32;
+}
+
+.status-badge.status-inactive {
+    background: #fce4ec;
+    color: #c62828;
+}
+
+.status-badge.status-inactive .status-dot {
+    background: #c62828;
+}
+
+/* ============================================================
+   MODALES
+   ============================================================ */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: fadeIn 0.25s ease;
+    padding: 1rem;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-card {
+    background: white;
+    border-radius: 16px;
+    max-width: 520px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 1.75rem;
+    border-bottom: 2px solid #f5f0f0;
+}
+
+.modal-header h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: #999;
+    cursor: pointer;
+    padding: 0.15rem 0.5rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+    background: #f5f0f0;
+    color: #8B0000;
+}
+
+.modal-body {
+    padding: 1.5rem 1.75rem;
+}
+
+.modal-intro {
+    color: #6b6b6b;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    margin: 0 0 1.5rem 0;
+}
+
+.modal-body .form-group {
+    margin-bottom: 1.25rem;
+}
+
+.modal-body .form-group:last-child {
+    margin-bottom: 0;
+}
+
+.modal-list {
+    background: #fafafa;
+    border: 1px solid #f0f0f0;
+    border-radius: 10px;
+    padding: 1rem 1.25rem 1rem 2.25rem;
+    margin: 0 0 1.5rem 0;
+    color: #4a4a4a;
+    font-size: 0.88rem;
+    line-height: 1.7;
+}
+
+.modal-list li {
+    margin-bottom: 0.35rem;
+}
+
+.modal-list li:last-child {
+    margin-bottom: 0;
+}
+
+.modal-resumen {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    background: #fafafa;
+    border: 1px solid #f0f0f0;
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.modal-resumen-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.modal-resumen-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.modal-resumen-valor {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.modal-resumen-valor.nuevo-valor {
+    color: #8B0000;
+}
+
+.modal-resumen-resalte {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    background: #fafafa;
+    border-left: 4px solid #8B0000;
+    border-radius: 8px;
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 1.5rem;
+}
+
+.modal-resumen-resalte-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.modal-resumen-resalte-valor {
+    font-size: 0.98rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    word-break: break-word;
+}
+
+.modal-aviso {
+    background: #fff8e1;
+    border: 1px solid #ffe082;
+    border-radius: 10px;
+    padding: 0.9rem 1.1rem;
+    font-size: 0.85rem;
+    color: #7a5a1a;
+    line-height: 1.5;
+    margin-top: 0.5rem;
+}
+
+.modal-aviso-info {
+    background: #e3f2fd;
+    border: 1px solid #90caf9;
+    border-radius: 10px;
+    padding: 0.9rem 1.1rem;
+    font-size: 0.85rem;
+    color: #0d47a1;
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
+}
+
+.modal-footer {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    padding: 1.25rem 1.75rem;
+    border-top: 1px solid #f5f0f0;
+    background: #fafafa;
+    border-radius: 0 0 16px 16px;
+}
+
+.btn-modal-secondary {
+    padding: 0.7rem 1.5rem;
+    background: white;
+    color: #4a4a4a;
+    border: 2px solid #e8e8e8;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.btn-modal-secondary:hover {
+    border-color: #8B0000;
+    color: #8B0000;
+}
+
+.btn-modal-primary {
+    padding: 0.7rem 1.75rem;
+    background: linear-gradient(135deg, #8B0000, #5C0000);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 12px rgba(139, 0, 0, 0.2);
+}
+
+.btn-modal-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(139, 0, 0, 0.3);
+}
+
+.btn-modal-danger {
+    padding: 0.7rem 1.75rem;
+    background: #c62828;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 12px rgba(198, 40, 40, 0.2);
+}
+
+.btn-modal-danger:hover {
+    background: #b71c1c;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(198, 40, 40, 0.3);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
 @media (max-width: 992px) {
-    .form-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+    .form-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 768px) {
     .page-header {
         flex-direction: column;
         align-items: stretch;
-    }
-
-    .page-header-content {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .page-title {
-        font-size: 1.4rem;
     }
 
     .page-header-right {
@@ -1709,41 +2655,109 @@ include 'template/menu.php';
     .sitio-web-input-group {
         flex-direction: column;
     }
+
+    .participacion-section {
+        padding: 1.25rem;
+    }
+
+    .participacion-vigente-body {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .participacion-vigente-actions {
+        flex-direction: column;
+    }
+
+    .btn-accion {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .nombre-actual-bloque {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .nombre-actual-actions {
+        flex-direction: column;
+    }
+
+    .btn-corregir-nombre,
+    .btn-cambiar-nombre {
+        width: 100%;
+    }
+
+    .matriz-section-content {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+
+    .btn-convertir-matriz,
+    .btn-revertir-matriz {
+        width: 100%;
+    }
+
+    .modal-resumen {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-footer {
+        flex-direction: column;
+    }
+
+    .modal-footer button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .sede-item {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn-sede-editar {
+        width: 100%;
+        text-align: center;
+    }
 }
 
 @media (max-width: 480px) {
-    .page-header-icon {
-        width: 44px;
-        height: 44px;
-        font-size: 1.2rem;
-    }
-
     .page-title {
         font-size: 1.2rem;
     }
 
-    .form-container {
+    .form-container,
+    .participacion-section,
+    .matriz-section {
         padding: 1rem;
     }
 
     .form-label {
-        font-size: 0.75rem;
+        font-size: 0.8rem;
         white-space: normal;
     }
 
     .form-control {
-        padding: 0.5rem 0.8rem;
-        font-size: 0.85rem;
+        padding: 0.6rem 0.9rem;
+        font-size: 0.9rem;
     }
 
     .afiliacion-input {
-        font-size: 0.95rem;
+        font-size: 1rem;
     }
 
     .btn-remove-sitio {
-        width: 30px;
-        height: 30px;
-        font-size: 0.75rem;
+        width: 34px;
+        height: 34px;
+    }
+
+    .modal-header,
+    .modal-body,
+    .modal-footer {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
     }
 }
 </style>
@@ -1753,311 +2767,114 @@ include 'template/menu.php';
 // DATOS
 // ============================================================
 
-const datosPorCP = <?= json_encode($datos_por_cp) ?>;
 const zonaPorEntidad = <?= json_encode($zona_por_entidad) ?>;
-const numerosPorZona = <?= json_encode($numeros_por_zona) ?>;
-const institucionesExistentes = <?= json_encode($instituciones_existentes) ?>;
-const idActual = <?= $id ?>;
-const numAfiliacionActual = <?= json_encode($institucion['num_afiliacion'] ?? '') ?>;
+const datosPorCP = <?= json_encode($datos_por_cp) ?>;
 
 // ============================================================
-// GENERAR NÚMERO DE AFILIACIÓN AUTOMÁTICAMENTE
+// MODALES
 // ============================================================
 
-function generarNumeroAfiliacion(zona) {
-    const fechaInicio = document.getElementById('fecha_inicio');
-    let anio = new Date().getFullYear().toString().slice(-2);
-    
-    if (fechaInicio && fechaInicio.value) {
-        const fecha = new Date(fechaInicio.value);
-        if (!isNaN(fecha.getTime())) {
-            anio = fecha.getFullYear().toString().slice(-2);
-        }
-    }
-    
-    const zonaStr = String(zona).padStart(2, '0');
-    const prefijo = anio + zonaStr;
-    
-    // Obtener números existentes para este prefijo
-    let numeros = [];
-    institucionesExistentes.forEach(function(num) {
-        if (num.substring(0, 4) === prefijo) {
-            const n = parseInt(num.substring(4));
-            if (!numeros.includes(n)) {
-                numeros.push(n);
-            }
+function abrirModal(id) {
+    document.getElementById(id).style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function cerrarModal(id) {
+    document.getElementById(id).style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+document.querySelectorAll('.modal-overlay').forEach(function(modal) {
+    modal.addEventListener('click', function(e) {
+        if (e.target === this) {
+            this.style.display = 'none';
+            document.body.style.overflow = 'auto';
         }
     });
-    
-    // También considerar números de la zona
-    if (numerosPorZona[zona]) {
-        numerosPorZona[zona].forEach(function(n) {
-            if (!numeros.includes(n)) {
-                numeros.push(n);
-            }
-        });
-    }
-    
-    let consecutivo = 1;
-    if (numeros.length > 0) {
-        consecutivo = Math.max(...numeros) + 1;
-    }
-    
-    return prefijo + String(consecutivo).padStart(3, '0');
-}
+});
 
 // ============================================================
-// VALIDAR NÚMERO DE AFILIACIÓN EN TIEMPO REAL
+// TOGGLE NÚMERO DE AFILIACIÓN EN MODALES
 // ============================================================
 
-function validarNumeroAfiliacion(numero) {
-    if (!numero || numero.length === 0) { 
-        return { valido: false, mensaje: '', clase: '' }; 
-    }
+function toggleNumAfiliacion() {
+    const tipo = document.getElementById('periodo_tipo').value;
+    const container = document.getElementById('periodo_num_afiliacion_container');
+    const input = container.querySelector('input');
     
-    // Verificar formato (7 dígitos)
-    if (!/^[0-9]{7}$/.test(numero)) {
-        return { valido: false, mensaje: 'Formato inválido. Use 7 dígitos (Ej. 2601001)', clase: 'error' };
-    }
-    
-    // Verificar si ya existe (excluyendo el actual)
-    let existe = false;
-    for (let i = 0; i < institucionesExistentes.length; i++) {
-        if (institucionesExistentes[i] === numero) {
-            // Verificar si este número pertenece a la institución actual
-            if (numAfiliacionActual !== numero) {
-                existe = true;
-            }
-            break;
-        }
-    }
-    
-    if (existe) {
-        return { valido: false, mensaje: 'Este número ya está registrado', clase: 'error' };
-    }
-    
-    // Verificar que la zona corresponda
-    const zona = parseInt(numero.substring(2, 4));
-    if (isNaN(zona) || zona < 1 || zona > 7) {
-        return { valido: false, mensaje: 'Zona inválida en el número (posiciones 3-4)', clase: 'error' };
-    }
-    
-    // Verificar que el año no sea futuro
-    const anio = parseInt(numero.substring(0, 2));
-    const anioActual = parseInt(new Date().getFullYear().toString().slice(-2));
-    if (anio > anioActual + 1) {
-        return { valido: false, mensaje: 'Año futuro (posiciones 1-2)', clase: 'error' };
-    }
-    
-    return { valido: true, mensaje: 'Número disponible', clase: 'success' };
-}
-
-function actualizarStatusNumeroAfiliacion() {
-    const input = document.getElementById('num_afiliacion_input');
-    const status = document.getElementById('num_afiliacion_status');
-    const numero = input.value.trim();
-    
-    if (!numero || input.disabled) {
-        status.style.display = 'none';
-        return;
-    }
-    
-    const resultado = validarNumeroAfiliacion(numero);
-    status.style.display = 'block';
-    status.textContent = resultado.mensaje;
-    status.className = 'form-hint ' + (resultado.clase || '');
-    
-    // Cambiar color del borde del input
-    if (resultado.clase === 'error') {
-        input.style.borderColor = '#c62828';
-    } else if (resultado.clase === 'success') {
-        input.style.borderColor = '#2e7d32';
+    if (tipo === 'Afiliada') {
+        container.style.display = 'flex';
+        input.setAttribute('required', 'required');
     } else {
-        input.style.borderColor = '';
+        container.style.display = 'none';
+        input.removeAttribute('required');
     }
 }
 
-// ============================================================
-// ACTIVAR/DESACTIVAR CAMPO DE AFILIACIÓN
-// ============================================================
-
-function actualizarCampos() {
-    const tipoSelect = document.getElementById('tipo');
-    const participacionSelect = document.getElementById('participacion');
-    const numInput = document.getElementById('num_afiliacion_input');
-    const numRequired = document.getElementById('num_afiliacion_required');
-    const numHint = document.getElementById('num_afiliacion_hint');
-    const universidadContainer = document.getElementById('universidad_container');
-    const universidadSelect = document.getElementById('universidad');
-    const zonaSelect = document.getElementById('zona');
-    const fechaInicio = document.getElementById('fecha_inicio');
+function toggleNumCorregido() {
+    const tipo = document.getElementById('tipo_corregido').value;
+    const container = document.getElementById('num_corregido_container');
+    const input = container.querySelector('input');
     
-    const tipo = parseInt(tipoSelect.value);
-    const participacion = participacionSelect.value;
-    const zona = parseInt(zonaSelect.value);
-    
-    // Reset universidad
-    universidadContainer.style.display = 'none';
-    universidadSelect.removeAttribute('required');
-    universidadSelect.value = '';
-    
-    // Determinar si requiere número de afiliación
-    let requiereNumero = false;
-    let hintTexto = 'Se genera automáticamente cuando aplique';
-    
-    if (tipo === 1) {
-        if (participacion === 'matriz') {
-            requiereNumero = false;
-            hintTexto = 'No aplica para universidades matriz';
-        } else if (participacion === 'afiliada') {
-            requiereNumero = true;
-            hintTexto = 'Formato: Año(2) + Zona(2) + Consecutivo(3)';
-        } else {
-            requiereNumero = false;
-            hintTexto = 'No aplica para universidades observadoras';
-        }
-    } else if (tipo === 2 || tipo === 3) {
-        universidadContainer.style.display = 'block';
-        universidadSelect.setAttribute('required', 'required');
-        
-        if (participacion === 'observadora') {
-            requiereNumero = false;
-            hintTexto = 'No aplica para facultades/campus observadores';
-        } else {
-            requiereNumero = true;
-            hintTexto = 'Formato: Año(2) + Zona(2) + Consecutivo(3)';
-        }
-    }
-    
-    // Activar/desactivar campo
-    if (requiereNumero && zona > 0 && fechaInicio.value) {
-        numInput.disabled = false;
-        numInput.required = true;
-        numRequired.style.display = 'inline';
-        numHint.textContent = hintTexto;
-        numInput.placeholder = '';
-        
-        // Si el campo está vacío, generar número automáticamente
-        if (!numInput.value) {
-            const nuevoNum = generarNumeroAfiliacion(zona);
-            numInput.value = nuevoNum;
-            actualizarStatusNumeroAfiliacion();
-        } else {
-            // Si ya tiene valor, validar
-            actualizarStatusNumeroAfiliacion();
-        }
+    if (tipo === 'Afiliada') {
+        container.style.display = 'flex';
+        input.setAttribute('required', 'required');
     } else {
-        numInput.disabled = true;
-        numInput.required = false;
-        numRequired.style.display = 'none';
-        // Si no requiere número, limpiar el campo
-        if (!requiereNumero) {
-            numInput.value = '';
-            numInput.placeholder = 'No aplica';
-        } else {
-            // Si requiere pero falta zona o fecha, mantener el valor pero deshabilitado
-            if (numInput.value) {
-                numInput.placeholder = '';
-            } else {
-                numInput.placeholder = 'No aplica';
-            }
-        }
-        numInput.style.borderColor = '';
-        numHint.textContent = 'Se genera automáticamente cuando aplique';
-        document.getElementById('num_afiliacion_status').style.display = 'none';
-        document.getElementById('num_afiliacion_status').textContent = '';
+        container.style.display = 'none';
+        input.removeAttribute('required');
+        input.value = '';
     }
 }
 
 // ============================================================
-// EVENTOS
+// TIPO DE INSTITUCIÓN → MOSTRAR UNIVERSIDAD PADRE
 // ============================================================
 
 document.addEventListener('DOMContentLoaded', function() {
     const tipoSelect = document.getElementById('tipo');
-    const participacionSelect = document.getElementById('participacion');
-    const zonaSelect = document.getElementById('zona');
-    const fechaInicio = document.getElementById('fecha_inicio');
-    const numInput = document.getElementById('num_afiliacion_input');
+    const universidadContainer = document.getElementById('universidad_padre_container');
+    const universidadSelect = document.getElementById('universidad_padre');
     
-    // Eventos que disparan actualización
     if (tipoSelect) {
-        tipoSelect.addEventListener('change', actualizarCampos);
+        tipoSelect.addEventListener('change', function() {
+            const tipo = parseInt(this.value);
+            
+            if (tipo === 2 || tipo === 3) {
+                universidadContainer.style.display = 'flex';
+                universidadSelect.setAttribute('required', 'required');
+            } else {
+                universidadContainer.style.display = 'none';
+                universidadSelect.removeAttribute('required');
+                universidadSelect.value = '';
+            }
+        });
     }
-    
-    if (participacionSelect) {
-        participacionSelect.addEventListener('change', actualizarCampos);
-    }
-    
-    if (zonaSelect) {
-        zonaSelect.addEventListener('change', actualizarCampos);
-    }
-    
-    if (fechaInicio) {
-        fechaInicio.addEventListener('change', actualizarCampos);
-    }
-    
-    // Validar número en tiempo real cuando el usuario escribe (editable)
-    if (numInput) {
-        numInput.addEventListener('input', actualizarStatusNumeroAfiliacion);
-        numInput.addEventListener('blur', actualizarStatusNumeroAfiliacion);
-    }
-    
-    // Inicializar
-    actualizarCampos();
 });
 
 // ============================================================
-// CÓDIGO POSTAL → DATOS (con campos bloqueados)
+// CÓDIGO POSTAL → AUTOCOMPLETAR
 // ============================================================
 
 document.addEventListener('DOMContentLoaded', function() {
     const cpInput = document.getElementById('cp');
+    if (!cpInput) return;
+    
     const entidadSelect = document.getElementById('entidad');
     const zonaSelect = document.getElementById('zona');
-    const coloniaSelect = document.getElementById('colonia');
-    const municipioSelect = document.getElementById('municipio');
+    const coloniaInput = document.getElementById('colonia');
+    const municipioInput = document.getElementById('municipio');
     
     function cargarDatosPorCP() {
         const cp = cpInput.value.trim();
-        
         const existing = document.querySelector('.cp-mensaje');
         if (existing) existing.remove();
         
         if (cp.length === 5 && datosPorCP[cp]) {
             const datos = datosPorCP[cp];
-            
-            // Entidad - solo lectura
-            if (datos.entidad) {
-                entidadSelect.value = datos.entidad;
-            }
-            
-            // Municipio - solo lectura
-            municipioSelect.innerHTML = '<option value="">Seleccionar alcaldía/municipio...</option>';
-            if (datos.municipio) {
-                const option = document.createElement('option');
-                option.value = datos.municipio;
-                option.textContent = datos.municipio;
-                option.selected = true;
-                municipioSelect.appendChild(option);
-            }
-            
-            // Colonia - solo lectura
-            coloniaSelect.innerHTML = '<option value="">Seleccionar colonia...</option>';
-            if (datos.colonia) {
-                const option = document.createElement('option');
-                option.value = datos.colonia;
-                option.textContent = datos.colonia;
-                option.selected = true;
-                coloniaSelect.appendChild(option);
-            }
-            
-            // Zona - se carga pero es editable
-            if (datos.zona) {
-                zonaSelect.value = datos.zona;
-                // Disparar cambio para actualizar número de afiliación
-                zonaSelect.dispatchEvent(new Event('change'));
-            }
+            if (datos.entidad) entidadSelect.value = datos.entidad;
+            if (datos.municipio) municipioInput.value = datos.municipio;
+            if (datos.colonia) coloniaInput.value = datos.colonia;
+            if (datos.zona) zonaSelect.value = datos.zona;
             
             mostrarMensajeCP('Datos cargados correctamente', 'success');
         } else if (cp.length === 5) {
@@ -2068,14 +2885,13 @@ document.addEventListener('DOMContentLoaded', function() {
     function mostrarMensajeCP(mensaje, tipo) {
         const existing = document.querySelector('.cp-mensaje');
         if (existing) existing.remove();
-        
         const div = document.createElement('div');
         div.className = 'cp-mensaje';
         div.style.cssText = `
             font-size: 0.8rem;
-            padding: 0.3rem 0.5rem;
-            border-radius: 4px;
-            margin-top: 0.15rem;
+            padding: 0.35rem 0.6rem;
+            border-radius: 6px;
+            margin-top: 0.25rem;
             color: ${tipo === 'success' ? '#2e7d32' : '#c62828'};
             background: ${tipo === 'success' ? '#e8f5e9' : '#fce4ec'};
         `;
@@ -2083,32 +2899,16 @@ document.addEventListener('DOMContentLoaded', function() {
         cpInput.parentNode.appendChild(div);
     }
     
-    if (cpInput) {
-        cpInput.addEventListener('blur', cargarDatosPorCP);
-        cpInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                cargarDatosPorCP();
-            }
-        });
-    }
-});
-
-// ============================================================
-// ZONA SEGÚN ENTIDAD
-// ============================================================
-
-document.addEventListener('DOMContentLoaded', function() {
-    const entidadSelect = document.getElementById('entidad');
-    const zonaSelect = document.getElementById('zona');
+    cpInput.addEventListener('blur', cargarDatosPorCP);
+    cpInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') { e.preventDefault(); cargarDatosPorCP(); }
+    });
     
     if (entidadSelect && zonaSelect) {
         entidadSelect.addEventListener('change', function() {
             const entidadId = parseInt(this.value);
             if (entidadId && zonaPorEntidad[entidadId]) {
                 zonaSelect.value = zonaPorEntidad[entidadId];
-                // Disparar cambio para actualizar número de afiliación
-                zonaSelect.dispatchEvent(new Event('change'));
             }
         });
     }
@@ -2120,7 +2920,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function agregarSitioWeb() {
     const container = document.getElementById('sitios_web_container');
-    const items = container.querySelectorAll('.sitio-web-item');
     const nuevoItem = document.createElement('div');
     nuevoItem.className = 'sitio-web-item';
     nuevoItem.innerHTML = `
@@ -2132,7 +2931,6 @@ function agregarSitioWeb() {
         </div>
     `;
     container.appendChild(nuevoItem);
-    
     container.querySelectorAll('.btn-remove-sitio').forEach(function(btn) {
         btn.style.display = 'flex';
     });
@@ -2144,69 +2942,6 @@ function eliminarSitioWeb(btn) {
         btn.closest('.sitio-web-item').remove();
     }
 }
-
-// ============================================================
-// VALIDACIÓN DEL FORMULARIO
-// ============================================================
-
-function validarFormulario() {
-    const numInput = document.getElementById('num_afiliacion_input');
-    const tipo = parseInt(document.getElementById('tipo').value);
-    const participacion = document.getElementById('participacion').value;
-    
-    // Determinar si requiere número
-    let requiereNumero = false;
-    
-    if (tipo === 1) {
-        if (participacion === 'afiliada') {
-            requiereNumero = true;
-        }
-    } else if (tipo === 2 || tipo === 3) {
-        if (participacion !== 'observadora') {
-            requiereNumero = true;
-        }
-    }
-    
-    if (requiereNumero) {
-        const numero = numInput.value.trim();
-        if (!numero) {
-            alert('El número de afiliación es obligatorio. Verifique que la zona y fecha de inicio estén completas.');
-            numInput.focus();
-            return false;
-        }
-        
-        // Validar formato
-        if (!/^[0-9]{7}$/.test(numero)) {
-            alert('El número de afiliación debe tener exactamente 7 dígitos (Ej. 2601001)');
-            numInput.focus();
-            return false;
-        }
-        
-        // Validar unicidad (excluyendo el actual)
-        let existe = false;
-        for (let i = 0; i < institucionesExistentes.length; i++) {
-            if (institucionesExistentes[i] === numero && numAfiliacionActual !== numero) {
-                existe = true;
-                break;
-            }
-        }
-        
-        if (existe) {
-            alert('El número de afiliación "' + numero + '" ya está registrado. Use otro número.');
-            numInput.focus();
-            return false;
-        }
-    }
-    
-    return true;
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('formEdicion');
-    if (form) {
-        form.onsubmit = validarFormulario;
-    }
-});
 </script>
 
 <?php include 'template/footer.php'; ?>

@@ -1,7 +1,7 @@
 <?php
 // ============================================================
 // SIDEANFECA - Gestión de Instituciones
-// Consultar detalle de institución
+// Consulta de institución (vista de solo lectura)
 // ============================================================
 
 session_start();
@@ -11,1119 +11,73 @@ if (!isset($_SESSION['usuario'])) {
     exit;
 }
 
-// ============================================================
-// OBTENER ID DE LA INSTITUCIÓN
-// ============================================================
-
-$id = isset($_GET['id']) ? (int)$_GET['id'] : 1;
+require_once 'institucion_datos.php';
 
 // ============================================================
-// DATOS SIMULADOS
+// OBTENER INSTITUCIÓN
 // ============================================================
 
-$entidades_federativas = [
-    1 => 'Aguascalientes',
-    2 => 'Baja California',
-    3 => 'Baja California Sur',
-    4 => 'Campeche',
-    5 => 'Chiapas',
-    6 => 'Chihuahua',
-    7 => 'Ciudad de México',
-    8 => 'Coahuila',
-    9 => 'Colima',
-    10 => 'Durango',
-    11 => 'Estado de México',
-    12 => 'Guanajuato',
-    13 => 'Guerrero',
-    14 => 'Hidalgo',
-    15 => 'Jalisco',
-    16 => 'Michoacán',
-    17 => 'Morelos',
-    18 => 'Nayarit',
-    19 => 'Nuevo León',
-    20 => 'Oaxaca',
-    21 => 'Puebla',
-    22 => 'Querétaro',
-    23 => 'Quintana Roo',
-    24 => 'San Luis Potosí',
-    25 => 'Sinaloa',
-    26 => 'Sonora',
-    27 => 'Tabasco',
-    28 => 'Tamaulipas',
-    29 => 'Tlaxcala',
-    30 => 'Veracruz',
-    31 => 'Yucatán',
-    32 => 'Zacatecas'
-];
-
-$zonas_regionales = [
-    1 => '1 - Noroeste',
-    2 => '2 - Norte',
-    3 => '3 - Centro',
-    4 => '4 - Centro Occidente',
-    5 => '5 - Centro Sur',
-    6 => '6 - Sur',
-    7 => '7 - Ciudad de México'
-];
-
-$tipos_institucion = [
-    1 => 'Universidad',
-    2 => 'Facultad',
-    3 => 'Campus'
-];
-
-$tipos_participacion = [
-    'afiliada' => 'Afiliada',
-    'observadora' => 'Observadora',
-    'matriz' => 'Matriz'
-];
-
-// ============================================================
-// INSTITUCIONES COMPLETAS (coincidiendo con instituciones.php)
-// ============================================================
-
-$instituciones = [
-    // ============ MATRICES (Universidades) ============
-    [
-        'id' => 1,
-        'num_afiliacion' => null,
-        'nombre' => 'Universidad Nacional Autónoma de México',
-        'tipo' => 1,
-        'participacion' => 'matriz',
-        'id_zona' => 7,
-        'id_entidad' => 7,
-        'id_universidad' => null,
-        'personas_relacionadas' => 5,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 3,
-        'num_afiliacion' => null,
-        'nombre' => 'Instituto Politécnico Nacional',
-        'tipo' => 1,
-        'participacion' => 'matriz',
-        'id_zona' => 7,
-        'id_entidad' => 7,
-        'id_universidad' => null,
-        'personas_relacionadas' => 2,
-        'fecha_inicio' => '2024-02-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 5,
-        'num_afiliacion' => '2601005',
-        'nombre' => 'Universidad de Guadalajara',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 15,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-03-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 7,
-        'num_afiliacion' => '2601007',
-        'nombre' => 'Universidad Autónoma de Baja California',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 1,
-        'id_entidad' => 2,
-        'id_universidad' => null,
-        'personas_relacionadas' => 2,
-        'fecha_inicio' => '2024-04-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 9,
-        'num_afiliacion' => '2602009',
-        'nombre' => 'Universidad Autónoma de Nuevo León',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 2,
-        'id_entidad' => 19,
-        'id_universidad' => null,
-        'personas_relacionadas' => 0,
-        'fecha_inicio' => '2024-05-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 11,
-        'num_afiliacion' => null,
-        'nombre' => 'Instituto Tecnológico de los Mochis',
-        'tipo' => 1,
-        'participacion' => 'observadora',
-        'id_zona' => 1,
-        'id_entidad' => 25,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 12,
-        'num_afiliacion' => null,
-        'nombre' => 'Centro de Estudios Superiores del Noroeste',
-        'tipo' => 1,
-        'participacion' => 'observadora',
-        'id_zona' => 1,
-        'id_entidad' => 2,
-        'id_universidad' => null,
-        'personas_relacionadas' => 0,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => '2024-12-31'
-    ],
-    [
-        'id' => 13,
-        'num_afiliacion' => null,
-        'nombre' => 'Instituto de Estudios Superiores de Chihuahua',
-        'tipo' => 1,
-        'participacion' => 'observadora',
-        'id_zona' => 1,
-        'id_entidad' => 6,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 15,
-        'num_afiliacion' => '2603011',
-        'nombre' => 'Universidad Autónoma de Querétaro',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 3,
-        'id_entidad' => 22,
-        'id_universidad' => null,
-        'personas_relacionadas' => 0,
-        'fecha_inicio' => '2024-06-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 16,
-        'num_afiliacion' => '2606012',
-        'nombre' => 'Universidad Autónoma de Yucatán',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 6,
-        'id_entidad' => 31,
-        'id_universidad' => null,
-        'personas_relacionadas' => 0,
-        'fecha_inicio' => '2024-06-15',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 17,
-        'num_afiliacion' => '2601013',
-        'nombre' => 'Universidad Autónoma de Sinaloa',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 1,
-        'id_entidad' => 25,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-07-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 19,
-        'num_afiliacion' => '9807033',
-        'nombre' => 'Tecnológico de Monterrey',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 7,
-        'id_entidad' => 7,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 20,
-        'num_afiliacion' => null,
-        'nombre' => 'Universidad Intercontinental',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 7,
-        'id_entidad' => 7,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 21,
-        'num_afiliacion' => '9803004',
-        'nombre' => 'Universidad Autónoma de Aguascalientes',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 3,
-        'id_entidad' => 1,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 22,
-        'num_afiliacion' => '9802020',
-        'nombre' => 'Universidad Iberoamericana Torreón',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 2,
-        'id_entidad' => 8,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 23,
-        'num_afiliacion' => '9803007',
-        'nombre' => 'Universidad Autónoma de San Luis Potosí',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 3,
-        'id_entidad' => 24,
-        'id_universidad' => null,
-        'personas_relacionadas' => 2,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 24,
-        'num_afiliacion' => '9805012',
-        'nombre' => 'Universidad Autónoma de Tlaxcala',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 5,
-        'id_entidad' => 29,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 25,
-        'num_afiliacion' => '9806001',
-        'nombre' => 'Universidad Veracruzana',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 6,
-        'id_entidad' => 30,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 26,
-        'num_afiliacion' => '9806018',
-        'nombre' => 'Universidad Juárez Autónoma de Tabasco',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 6,
-        'id_entidad' => 27,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 27,
-        'num_afiliacion' => '9802009',
-        'nombre' => 'Universidad Autónoma de Tamaulipas',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 2,
-        'id_entidad' => 28,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 28,
-        'num_afiliacion' => '1906067',
-        'nombre' => 'Universidad Tecnológica de Tabasco',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 6,
-        'id_entidad' => 27,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 29,
-        'num_afiliacion' => '9801017',
-        'nombre' => 'Universidad Autónoma de Chihuahua',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 1,
-        'id_entidad' => 6,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 30,
-        'num_afiliacion' => '9801020',
-        'nombre' => 'Universidad de Sonora',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 1,
-        'id_entidad' => 26,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 31,
-        'num_afiliacion' => '9804009',
-        'nombre' => 'Universidad Autónoma de Nayarit',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 18,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 32,
-        'num_afiliacion' => '9804005',
-        'nombre' => 'Instituto Tecnológico y de Estudios Superiores de Occidente',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 15,
-        'id_universidad' => null,
-        'personas_relacionadas' => 2,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 33,
-        'num_afiliacion' => '9804007',
-        'nombre' => 'Universidad Autónoma de Guadalajara',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 15,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 34,
-        'num_afiliacion' => '9804014',
-        'nombre' => 'Centro Universitario de los Altos (UDG)',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 15,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 35,
-        'num_afiliacion' => '9804019',
-        'nombre' => 'Universidad del Valle de Atemajac',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 15,
-        'id_universidad' => null,
-        'personas_relacionadas' => 2,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 36,
-        'num_afiliacion' => '9802001',
-        'nombre' => 'Universidad Autónoma de Coahuila',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 2,
-        'id_entidad' => 8,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 37,
-        'num_afiliacion' => '9802016',
-        'nombre' => 'Universidad de Monterrey',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 2,
-        'id_entidad' => 19,
-        'id_universidad' => null,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 38,
-        'num_afiliacion' => '9805002',
-        'nombre' => 'Benemérita Universidad Autónoma de Puebla',
-        'tipo' => 1,
-        'participacion' => 'afiliada',
-        'id_zona' => 5,
-        'id_entidad' => 21,
-        'id_universidad' => null,
-        'personas_relacionadas' => 2,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-
-    // ============ FACULTADES (con dependencia) ============
-    [
-        'id' => 2,
-        'num_afiliacion' => '2607002',
-        'nombre' => 'Facultad de Contaduría y Administración (UNAM)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 7,
-        'id_entidad' => 7,
-        'id_universidad' => 1,
-        'personas_relacionadas' => 3,
-        'fecha_inicio' => '2024-01-15',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 4,
-        'num_afiliacion' => '2607004',
-        'nombre' => 'ESCOM (IPN)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 7,
-        'id_entidad' => 7,
-        'id_universidad' => 3,
-        'personas_relacionadas' => 2,
-        'fecha_inicio' => '2024-02-15',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 6,
-        'num_afiliacion' => '2604006',
-        'nombre' => 'Facultad de Contaduría (UDG)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 15,
-        'id_universidad' => 5,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-03-15',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 14,
-        'num_afiliacion' => null,
-        'nombre' => 'Facultad de Ciencias Administrativas (CESUN)',
-        'tipo' => 2,
-        'participacion' => 'observadora',
-        'id_zona' => 1,
-        'id_entidad' => 2,
-        'id_universidad' => 12,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 39,
-        'num_afiliacion' => '9807033',
-        'nombre' => 'ESCA Unidad Tepepan (IPN)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 7,
-        'id_entidad' => 7,
-        'id_universidad' => 3,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 40,
-        'num_afiliacion' => '9802008',
-        'nombre' => 'Facultad de Contaduría Pública y Administración (UANL)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 2,
-        'id_entidad' => 19,
-        'id_universidad' => 9,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 41,
-        'num_afiliacion' => '9801018',
-        'nombre' => 'Facultad de Contaduría y Administración (UAS)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 1,
-        'id_entidad' => 25,
-        'id_universidad' => 17,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 42,
-        'num_afiliacion' => '9806012',
-        'nombre' => 'Facultad de Contaduría y Administración (UADY)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 6,
-        'id_entidad' => 31,
-        'id_universidad' => 16,
-        'personas_relacionadas' => 2,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 43,
-        'num_afiliacion' => '9805011',
-        'nombre' => 'Facultad de Administración (BUAP)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 5,
-        'id_entidad' => 21,
-        'id_universidad' => 38,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 44,
-        'num_afiliacion' => '9805002',
-        'nombre' => 'Facultad de Contaduría Pública (BUAP)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 5,
-        'id_entidad' => 21,
-        'id_universidad' => 38,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 45,
-        'num_afiliacion' => '9806023',
-        'nombre' => 'Facultad de Contaduría y Administración (UV)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 6,
-        'id_entidad' => 30,
-        'id_universidad' => 25,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 46,
-        'num_afiliacion' => '9803004',
-        'nombre' => 'Centro de Ciencias Económicas y Administrativas (UAA)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 3,
-        'id_entidad' => 1,
-        'id_universidad' => 21,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 47,
-        'num_afiliacion' => '9804001',
-        'nombre' => 'División de Contaduría (UDG)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 15,
-        'id_universidad' => 5,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 48,
-        'num_afiliacion' => '9804009',
-        'nombre' => 'Unidad Académica de Contaduría y Administración (UAN)',
-        'tipo' => 2,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 18,
-        'id_universidad' => 31,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-
-    // ============ CAMPUS (con dependencia) ============
-    [
-        'id' => 8,
-        'num_afiliacion' => '2601008',
-        'nombre' => 'Campus UABC - Mexicali',
-        'tipo' => 3,
-        'participacion' => 'afiliada',
-        'id_zona' => 1,
-        'id_entidad' => 2,
-        'id_universidad' => 7,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-04-15',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 10,
-        'num_afiliacion' => '2605010',
-        'nombre' => 'Campus UANL - San Nicolás',
-        'tipo' => 3,
-        'participacion' => 'afiliada',
-        'id_zona' => 2,
-        'id_entidad' => 19,
-        'id_universidad' => 9,
-        'personas_relacionadas' => 0,
-        'fecha_inicio' => '2024-05-15',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 49,
-        'num_afiliacion' => '9804005',
-        'nombre' => 'Campus Guadalajara (ITESO)',
-        'tipo' => 3,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 15,
-        'id_universidad' => 32,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ],
-    [
-        'id' => 50,
-        'num_afiliacion' => '9804019',
-        'nombre' => 'Campus Puerto Vallarta (UNIVA)',
-        'tipo' => 3,
-        'participacion' => 'afiliada',
-        'id_zona' => 4,
-        'id_entidad' => 15,
-        'id_universidad' => 35,
-        'personas_relacionadas' => 1,
-        'fecha_inicio' => '2024-01-01',
-        'fecha_fin' => null
-    ]
-];
-
-// ============================================================
-// DIRECCIONES (actualizadas para todas las instituciones)
-// ============================================================
-
-$direcciones = [
-    1 => ['calle' => 'Avenida Universidad', 'numero_exterior' => '3000', 'numero_interior' => '', 'colonia' => 'Ciudad Universitaria', 'cp' => '04510', 'municipio' => 'Coyoacán'],
-    2 => ['calle' => 'Circuito Exterior', 'numero_exterior' => 'S/N', 'numero_interior' => 'Edificio A', 'colonia' => 'Ciudad Universitaria', 'cp' => '04510', 'municipio' => 'Coyoacán'],
-    3 => ['calle' => 'Avenida Instituto Politécnico Nacional', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Zacatenco', 'cp' => '07738', 'municipio' => 'Gustavo A. Madero'],
-    4 => ['calle' => 'Avenida Instituto Politécnico Nacional', 'numero_exterior' => 'S/N', 'numero_interior' => 'Edificio 8', 'colonia' => 'Zacatenco', 'cp' => '07738', 'municipio' => 'Gustavo A. Madero'],
-    5 => ['calle' => 'Avenida Juárez', 'numero_exterior' => '976', 'numero_interior' => '', 'colonia' => 'Centro', 'cp' => '44100', 'municipio' => 'Guadalajara'],
-    6 => ['calle' => 'Periférico Norte', 'numero_exterior' => '799', 'numero_interior' => 'Int. 301', 'colonia' => 'Centro', 'cp' => '44100', 'municipio' => 'Guadalajara'],
-    7 => ['calle' => 'Carretera Transpeninsular', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Ciudad Universitaria', 'cp' => '21259', 'municipio' => 'Mexicali'],
-    8 => ['calle' => 'Calzada Universidad', 'numero_exterior' => '14418', 'numero_interior' => '', 'colonia' => 'Internacional Tijuana', 'cp' => '22424', 'municipio' => 'Tijuana'],
-    9 => ['calle' => 'Avenida Universidad', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Ciudad Universitaria', 'cp' => '66450', 'municipio' => 'San Nicolás de los Garza'],
-    10 => ['calle' => 'Avenida Universidad', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Ciudad Universitaria', 'cp' => '66450', 'municipio' => 'San Nicolás de los Garza'],
-    11 => ['calle' => 'Blv. Juan de Dios Batiz y 20 de Noviembre', 'numero_exterior' => 'S/N', 'numero_interior' => 'Apartado 766', 'colonia' => 'Del Parque', 'cp' => '81250', 'municipio' => 'Ahome'],
-    12 => ['calle' => 'Blv. Cucapahcu', 'numero_exterior' => '20100', 'numero_interior' => '', 'colonia' => 'Fracc. Lago', 'cp' => '22100', 'municipio' => 'Tijuana'],
-    13 => ['calle' => 'Calle Francisco Javier Mina', 'numero_exterior' => '1000', 'numero_interior' => '', 'colonia' => 'Zona Centro', 'cp' => '31000', 'municipio' => 'Chihuahua'],
-    14 => ['calle' => 'Blv. Cucapahcu', 'numero_exterior' => '20100', 'numero_interior' => '', 'colonia' => 'Fracc. Lago', 'cp' => '22100', 'municipio' => 'Tijuana'],
-    15 => ['calle' => 'Avenida Tecnológico', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Ciudad Universitaria', 'cp' => '76010', 'municipio' => 'Querétaro'],
-    16 => ['calle' => 'Calle 60', 'numero_exterior' => '491', 'numero_interior' => '', 'colonia' => 'Centro', 'cp' => '97160', 'municipio' => 'Mérida'],
-    17 => ['calle' => 'Blvd. Universitarios y Avenida las Américas', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Ciudad Universitaria', 'cp' => '80013', 'municipio' => 'Culiacán'],
-    19 => ['calle' => 'Av. Eugenio Garza Sada', 'numero_exterior' => '2501', 'numero_interior' => '', 'colonia' => 'Tecnológico', 'cp' => '64849', 'municipio' => 'Monterrey'],
-    20 => ['calle' => 'Insurgentes Sur', 'numero_exterior' => '4303', 'numero_interior' => '', 'colonia' => 'Col. Santa Úrsula Xitla', 'cp' => '14420', 'municipio' => 'Tlalpan'],
-    21 => ['calle' => 'Avenida Universidad', 'numero_exterior' => '940', 'numero_interior' => '', 'colonia' => 'Ciudad Universitaria', 'cp' => '20100', 'municipio' => 'Aguascalientes'],
-    22 => ['calle' => 'Boulevard Torreón', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Residencial las Haciendas', 'cp' => '27010', 'municipio' => 'Torreón'],
-    23 => ['calle' => 'Avenida Venustiano Carranza', 'numero_exterior' => '2405', 'numero_interior' => '', 'colonia' => 'Zona Universitaria', 'cp' => '78290', 'municipio' => 'San Luis Potosí'],
-    24 => ['calle' => 'Autopista Tlaxcala-Puebla', 'numero_exterior' => 'Km 1.5', 'numero_interior' => '', 'colonia' => 'Col. San José', 'cp' => '90000', 'municipio' => 'Tlaxcala'],
-    25 => ['calle' => 'Lomas del Estadio', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Zona Universitaria', 'cp' => '91000', 'municipio' => 'Xalapa'],
-    26 => ['calle' => 'Avenida Universidad', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Zona de la Cultura', 'cp' => '86000', 'municipio' => 'Villahermosa'],
-    27 => ['calle' => 'Centro Universitario', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Ciudad Victoria', 'cp' => '87000', 'municipio' => 'Ciudad Victoria'],
-    28 => ['calle' => 'Carretera Villahermosa-Cárdenas', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'El Cuyo', 'cp' => '86000', 'municipio' => 'Villahermosa'],
-    29 => ['calle' => 'Avenida de las Américas', 'numero_exterior' => '1010', 'numero_interior' => '', 'colonia' => 'Zona Centro', 'cp' => '31000', 'municipio' => 'Chihuahua'],
-    30 => ['calle' => 'Rosales', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Zona Centro', 'cp' => '83000', 'municipio' => 'Hermosillo'],
-    31 => ['calle' => 'Ciudad de la Cultura', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Cd. de la Cultura', 'cp' => '63000', 'municipio' => 'Tepic'],
-    32 => ['calle' => 'Periférico Sur', 'numero_exterior' => '3130', 'numero_interior' => '', 'colonia' => 'Camino Real', 'cp' => '45010', 'municipio' => 'Guadalajara'],
-    33 => ['calle' => 'Av. Patria', 'numero_exterior' => '1390', 'numero_interior' => '', 'colonia' => 'Jardines de Guadalupe', 'cp' => '45030', 'municipio' => 'Zapopan'],
-    34 => ['calle' => 'Carretera Lagos de Moreno', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Los Altos', 'cp' => '47600', 'municipio' => 'Tepatitlán de Morelos'],
-    35 => ['calle' => 'Av. Tepeyac', 'numero_exterior' => '4800', 'numero_interior' => '', 'colonia' => 'Monraz', 'cp' => '45000', 'municipio' => 'Guadalajara'],
-    36 => ['calle' => 'Blvd. Fundadores', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Ciudad Universitaria', 'cp' => '25000', 'municipio' => 'Saltillo'],
-    37 => ['calle' => 'Av. Ignacio Morones Prieto', 'numero_exterior' => '4500', 'numero_interior' => '', 'colonia' => 'Cumbres', 'cp' => '64610', 'municipio' => 'San Pedro Garza García'],
-    38 => ['calle' => 'Calle 4 Sur', 'numero_exterior' => '1106', 'numero_interior' => '', 'colonia' => 'Cuauhtémoc', 'cp' => '72420', 'municipio' => 'Puebla'],
-    39 => ['calle' => 'Avenida Instituto Politécnico Nacional', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Zacatenco', 'cp' => '07738', 'municipio' => 'Gustavo A. Madero'],
-    40 => ['calle' => 'Avenida Universidad', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Ciudad Universitaria', 'cp' => '66450', 'municipio' => 'San Nicolás de los Garza'],
-    41 => ['calle' => 'Blvd. Universitarios', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Ciudad Universitaria', 'cp' => '80013', 'municipio' => 'Culiacán'],
-    42 => ['calle' => 'Calle 60', 'numero_exterior' => '491', 'numero_interior' => '', 'colonia' => 'Centro', 'cp' => '97160', 'municipio' => 'Mérida'],
-    43 => ['calle' => 'Calle 4 Sur', 'numero_exterior' => '1106', 'numero_interior' => '', 'colonia' => 'Cuauhtémoc', 'cp' => '72420', 'municipio' => 'Puebla'],
-    44 => ['calle' => 'Calle 4 Sur', 'numero_exterior' => '1106', 'numero_interior' => '', 'colonia' => 'Cuauhtémoc', 'cp' => '72420', 'municipio' => 'Puebla'],
-    45 => ['calle' => 'Lomas del Estadio', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Zona Universitaria', 'cp' => '91000', 'municipio' => 'Xalapa'],
-    46 => ['calle' => 'Avenida Universidad', 'numero_exterior' => '940', 'numero_interior' => '', 'colonia' => 'Ciudad Universitaria', 'cp' => '20100', 'municipio' => 'Aguascalientes'],
-    47 => ['calle' => 'Avenida Juárez', 'numero_exterior' => '976', 'numero_interior' => '', 'colonia' => 'Centro', 'cp' => '44100', 'municipio' => 'Guadalajara'],
-    48 => ['calle' => 'Ciudad de la Cultura', 'numero_exterior' => 'S/N', 'numero_interior' => '', 'colonia' => 'Cd. de la Cultura', 'cp' => '63000', 'municipio' => 'Tepic'],
-    49 => ['calle' => 'Periférico Sur', 'numero_exterior' => '3130', 'numero_interior' => '', 'colonia' => 'Camino Real', 'cp' => '45010', 'municipio' => 'Guadalajara'],
-    50 => ['calle' => 'Av. Tepeyac', 'numero_exterior' => '4800', 'numero_interior' => '', 'colonia' => 'Monraz', 'cp' => '45000', 'municipio' => 'Guadalajara']
-];
-
-// ============================================================
-// SITIOS WEB (actualizados)
-// ============================================================
-
-$sitios_web = [
-    1 => ['https://www.unam.mx'],
-    2 => ['https://www.fca.unam.mx'],
-    3 => ['https://www.ipn.mx'],
-    4 => ['https://www.escom.ipn.mx'],
-    5 => ['https://www.udg.mx'],
-    6 => ['https://www.cucea.udg.mx'],
-    7 => ['https://www.uabc.mx'],
-    8 => ['https://www.uabc.mx/planteles/mexicali'],
-    9 => ['https://www.uanl.mx'],
-    10 => ['https://www.uanl.mx/campus-san-nicolas'],
-    11 => ['https://www.itmochis.edu.mx'],
-    12 => ['https://www.cesun.mx'],
-    13 => ['https://www.iesch.edu.mx'],
-    14 => ['https://www.cesun.mx/administrativas'],
-    15 => ['https://www.uaq.mx'],
-    16 => ['https://www.uady.mx'],
-    17 => ['https://www.uas.edu.mx'],
-    19 => ['https://www.tec.mx'],
-    20 => ['https://www.uic.edu.mx'],
-    21 => ['https://www.uaa.mx'],
-    22 => ['https://www.iberotorreon.edu.mx'],
-    23 => ['https://www.uaslp.mx'],
-    24 => ['https://www.uatx.mx'],
-    25 => ['https://www.uv.mx'],
-    26 => ['https://www.ujat.mx'],
-    27 => ['https://www.uat.edu.mx'],
-    28 => ['https://www.utdt.mx'],
-    29 => ['https://www.uach.mx'],
-    30 => ['https://www.unison.mx'],
-    31 => ['https://www.uan.mx'],
-    32 => ['https://www.iteso.mx'],
-    33 => ['https://www.uag.mx'],
-    34 => ['https://www.cualtos.udg.mx'],
-    35 => ['https://www.univa.mx'],
-    36 => ['https://www.uadec.mx'],
-    37 => ['https://www.udem.edu.mx'],
-    38 => ['https://www.buap.mx'],
-    39 => ['https://www.esca.ipn.mx'],
-    40 => ['https://www.fcpya.uanl.mx'],
-    41 => ['https://www.fca.uas.edu.mx'],
-    42 => ['https://www.fca.uady.mx'],
-    43 => ['https://www.fa.buap.mx'],
-    44 => ['https://www.fcp.buap.mx'],
-    45 => ['https://www.fca.uv.mx'],
-    46 => ['https://www.ccea.uaa.mx'],
-    47 => ['https://www.cucea.udg.mx/contaduria'],
-    48 => ['https://www.uan.edu.mx/contaduria'],
-    49 => ['https://www.iteso.mx/guadalajara'],
-    50 => ['https://www.univa.mx/puerto-vallarta']
-];
-
-// ============================================================
-// PERSONAS ASOCIADAS A INSTITUCIONES (basado en personas.php)
-// ============================================================
-
-$personas_asociadas = [
-    // UNAM (id 1) - Personas con institución UNAM
-    1 => [
-        ['id' => 1, 'nombre' => 'Armando Tomé González', 'cargo' => 'Presidente', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 3, 'nombre' => 'Carlos Lobo Sánchez', 'cargo' => 'Secretario General', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 4, 'nombre' => 'Lourdes Mata Romero', 'cargo' => 'Directora Ejecutiva', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // FCA UNAM (id 2)
-    2 => [
-        ['id' => 1, 'nombre' => 'Armando Tomé González', 'cargo' => 'Presidente', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 3, 'nombre' => 'Carlos Lobo Sánchez', 'cargo' => 'Secretario General', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 4, 'nombre' => 'Lourdes Mata Romero', 'cargo' => 'Directora Ejecutiva', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // IPN (id 3)
-    3 => [
-        ['id' => 16, 'nombre' => 'Ivett Guillén Morales', 'cargo' => 'Coordinador Nacional de Investigación', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // ESCOM IPN (id 4)
-    4 => [
-        ['id' => 16, 'nombre' => 'Ivett Guillén Morales', 'cargo' => 'Coordinador Nacional de Investigación', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // UDG (id 5)
-    5 => [
-        ['id' => 8, 'nombre' => 'Cristian Omar Alcantar López', 'cargo' => 'Director Regional Zona 4', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 29, 'nombre' => 'José Sánchez Gutiérrez', 'cargo' => 'Coordinador Regional Zona 4 de Investigación', 'titular' => false, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // Facultad Contaduría UDG (id 6)
-    6 => [
-        ['id' => 8, 'nombre' => 'Cristian Omar Alcantar López', 'cargo' => 'Director Regional Zona 4', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // UABC (id 7)
-    7 => [],
-    // Campus UABC Mexicali (id 8)
-    8 => [],
-    // UANL (id 9)
-    9 => [
-        ['id' => 2, 'nombre' => 'Adriana Garza Elizondo', 'cargo' => 'Vicepresidenta', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 28, 'nombre' => 'Mónica Blanco Jiménez', 'cargo' => 'Coordinador Regional Zona 2 de Certificación Académica', 'titular' => false, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // Campus UANL San Nicolás (id 10)
-    10 => [
-        ['id' => 2, 'nombre' => 'Adriana Garza Elizondo', 'cargo' => 'Vicepresidenta', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // IT Mochis (id 11)
-    11 => [],
-    // CESUN (id 12)
-    12 => [],
-    // IES Chihuahua (id 13)
-    13 => [],
-    // Facultad Ciencias Administrativas CESUN (id 14)
-    14 => [],
-    // UAQ (id 15)
-    15 => [],
-    // UADY (id 16)
-    16 => [
-        ['id' => 12, 'nombre' => 'David Roberto Suárez Pacheco', 'cargo' => 'Coordinador Nacional de Certificación Académica', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 19, 'nombre' => 'Aureliano Martínez Castillo', 'cargo' => 'Coordinador Nacional de Historia', 'titular' => false, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // UAS (id 17)
-    17 => [
-        ['id' => 5, 'nombre' => 'Leobardo Berrelleza Reyes', 'cargo' => 'Director Regional Zona 1', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // Tec de Monterrey (id 19)
-    19 => [
-        ['id' => 17, 'nombre' => 'José Ernesto Amorós Espinosa', 'cargo' => 'Coordinador Nacional de Posgrado', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // UIC (id 20)
-    20 => [
-        ['id' => 11, 'nombre' => 'Giannina Sampieri Laguna', 'cargo' => 'Directora Regional Zona 7', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // UAA (id 21)
-    21 => [
-        ['id' => 7, 'nombre' => 'Ismael Manuel Rodríguez Herrera', 'cargo' => 'Director Regional Zona 3', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 30, 'nombre' => 'Alfonso Martin Rodríguez', 'cargo' => 'Coordinador Regional Zona 3 de Responsabilidad Social Universitaria', 'titular' => false, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // UIA Torreón (id 22)
-    22 => [
-        ['id' => 6, 'nombre' => 'Laura María del Pilar Macías Amozurrutia', 'cargo' => 'Directora Regional Zona 2', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // UASLP (id 23)
-    23 => [
-        ['id' => 20, 'nombre' => 'Juan Antonio Zapata Zapata', 'cargo' => 'Coordinador Nacional de Vinculación Nacional e Internacional', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 27, 'nombre' => 'Patricia Hernández García', 'cargo' => 'Coordinador Regional Zona 3 de Certificación Académica', 'titular' => false, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // UATx (id 24)
-    24 => [
-        ['id' => 9, 'nombre' => 'Mario Franz Subieta Zecua', 'cargo' => 'Director Regional Zona 5', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // UV (id 25)
-    25 => [
-        ['id' => 10, 'nombre' => 'Anabel Galván Sarabia', 'cargo' => 'Directora Regional Zona 6', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // UJAT (id 26)
-    26 => [
-        ['id' => 13, 'nombre' => 'José Juan Paz Reyes', 'cargo' => 'Coordinador Nacional de la Academia ANFECA', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // UAT (id 27)
-    27 => [
-        ['id' => 14, 'nombre' => 'Mónica Sánchez Limón', 'cargo' => 'Coordinador Nacional de Emprendimiento Social', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // UT Tabasco (id 28)
-    28 => [
-        ['id' => 15, 'nombre' => 'Lenin Martínez Pérez', 'cargo' => 'Coordinador Nacional de Planes y Programas de Estudio', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // UACH (id 29)
-    29 => [
-        ['id' => 18, 'nombre' => 'Cristina Cabrera Ramos', 'cargo' => 'Coordinador Nacional de Maratones', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // UNISON (id 30)
-    30 => [
-        ['id' => 26, 'nombre' => 'Leticia María González Velásquez', 'cargo' => 'Coordinador Regional Zona 1 de Certificación Académica', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // UAN (id 31)
-    31 => [
-        ['id' => 25, 'nombre' => 'Idi Amin Germán Silva Jug', 'cargo' => 'Coordinador Nacional de Desarrollo Académico Estudiantil', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // ITESO (id 32)
-    32 => [
-        ['id' => 33, 'nombre' => 'Luis Edmundo Garrido Sánchez', 'cargo' => 'Jefe de Departamento', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 34, 'nombre' => 'Maria Margarita Villareal Treviño', 'cargo' => 'Directora', 'titular' => false, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // UAG (id 33)
-    33 => [
-        ['id' => 35, 'nombre' => 'Esmeralda Brito Cervantes', 'cargo' => 'Directora del Programa de Administración', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // CUALTOS UDG (id 34)
-    34 => [
-        ['id' => 36, 'nombre' => 'Nadia Natasha Reus González', 'cargo' => 'Secretario de la División de Ciencias Sociales y de la Cultura', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // UNIVA (id 35)
-    35 => [
-        ['id' => 21, 'nombre' => 'Laura Ofelia Robles Sahagún', 'cargo' => 'Coordinador Nacional de Universidad Empresa', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 37, 'nombre' => 'Salvador Cervantes Cervantes', 'cargo' => 'Director General Académico', 'titular' => false, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // UAdeC (id 36)
-    36 => [
-        ['id' => 24, 'nombre' => 'Lorena Argentina Medina Bocanegra', 'cargo' => 'Coordinador Nacional de Igualdad de Género', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // UDEM (id 37)
-    37 => [
-        ['id' => 22, 'nombre' => 'Cecilia Morales del Río', 'cargo' => 'Coordinador Nacional de Formación Profesional y Académica', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // BUAP (id 38)
-    38 => [
-        ['id' => 23, 'nombre' => 'María Antonieta Monserrat Vera Muñoz', 'cargo' => 'Coordinador Nacional de Responsabilidad Social Universitaria', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 31, 'nombre' => 'Emigdio Larios Gómez', 'cargo' => 'Coordinador Regional Zona 5 de Posgrado', 'titular' => false, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // ESCA Tepepan IPN (id 39)
-    39 => [
-        ['id' => 16, 'nombre' => 'Ivett Guillén Morales', 'cargo' => 'Coordinador Nacional de Investigación', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // FCPyA UANL (id 40)
-    40 => [
-        ['id' => 2, 'nombre' => 'Adriana Garza Elizondo', 'cargo' => 'Vicepresidenta', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 28, 'nombre' => 'Mónica Blanco Jiménez', 'cargo' => 'Coordinador Regional Zona 2 de Certificación Académica', 'titular' => false, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // FCA UAS (id 41)
-    41 => [
-        ['id' => 5, 'nombre' => 'Leobardo Berrelleza Reyes', 'cargo' => 'Director Regional Zona 1', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // FCA UADY (id 42)
-    42 => [
-        ['id' => 12, 'nombre' => 'David Roberto Suárez Pacheco', 'cargo' => 'Coordinador Nacional de Certificación Académica', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true],
-        ['id' => 19, 'nombre' => 'Aureliano Martínez Castillo', 'cargo' => 'Coordinador Nacional de Historia', 'titular' => false, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // Facultad Administración BUAP (id 43)
-    43 => [
-        ['id' => 31, 'nombre' => 'Emigdio Larios Gómez', 'cargo' => 'Coordinador Regional Zona 5 de Posgrado', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // Facultad Contaduría Pública BUAP (id 44)
-    44 => [
-        ['id' => 23, 'nombre' => 'María Antonieta Monserrat Vera Muñoz', 'cargo' => 'Coordinador Nacional de Responsabilidad Social Universitaria', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // FCA UV (id 45)
-    45 => [
-        ['id' => 10, 'nombre' => 'Anabel Galván Sarabia', 'cargo' => 'Directora Regional Zona 6', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // CCEA UAA (id 46)
-    46 => [
-        ['id' => 7, 'nombre' => 'Ismael Manuel Rodríguez Herrera', 'cargo' => 'Director Regional Zona 3', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // División Contaduría UDG (id 47)
-    47 => [
-        ['id' => 8, 'nombre' => 'Cristian Omar Alcantar López', 'cargo' => 'Director Regional Zona 4', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // UACA UAN (id 48)
-    48 => [
-        ['id' => 25, 'nombre' => 'Idi Amin Germán Silva Jug', 'cargo' => 'Coordinador Nacional de Desarrollo Académico Estudiantil', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // Campus Guadalajara ITESO (id 49)
-    49 => [
-        ['id' => 33, 'nombre' => 'Luis Edmundo Garrido Sánchez', 'cargo' => 'Jefe de Departamento', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ],
-    // Campus PV UNIVA (id 50)
-    50 => [
-        ['id' => 38, 'nombre' => 'María Guadalupe Jiménez Hernández', 'cargo' => 'Director General de Plantel', 'titular' => true, 'fecha_inicio' => '2024-01-01', 'fecha_fin' => null, 'activo' => true]
-    ]
-];
-
-// ============================================================
-// FUNCIONES AUXILIARES
-// ============================================================
-
-function getInstitucionPorId($id) {
-    global $instituciones;
-    foreach ($instituciones as $i) {
-        if ($i['id'] == $id) {
-            return $i;
-        }
-    }
-    return null;
-}
-
-function getDependenciasDe($id) {
-    global $instituciones;
-    $dependencias = [];
-    foreach ($instituciones as $i) {
-        if ($i['id_universidad'] == $id) {
-            $dependencias[] = $i;
-        }
-    }
-    return $dependencias;
-}
-
-// ============================================================
-// BUSCAR LA INSTITUCIÓN
-// ============================================================
-
+$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 $institucion = getInstitucionPorId($id);
 
 if (!$institucion) {
-    echo '<div class="main-content"><div class="dashboard-container"><div class="alert-modern alert-error"><i class="fas fa-exclamation-circle"></i><div><strong>Error</strong> No se encontró la institución solicitada.</div></div></div></div>';
+    include 'template/header.php';
+    include 'template/menu.php';
+    echo '<main class="main-content"><div class="dashboard-container"><div class="alert-modern alert-error"><div><strong>Error</strong> No se encontró la institución solicitada.</div></div></div></main>';
     include 'template/footer.php';
     exit;
 }
 
 // ============================================================
-// OBTENER DATOS ADICIONALES
+// DATOS DERIVADOS
 // ============================================================
 
-$zona_nombre = $zonas_regionales[$institucion['id_zona']] ?? 'Sin zona';
-$zona_numero = explode(' - ', $zona_nombre)[0] ?? '?';
-$tipo_nombre = $tipos_institucion[$institucion['tipo']] ?? 'No definido';
-$entidad_nombre = $entidades_federativas[$institucion['id_entidad']] ?? 'Sin entidad';
-$participacion_nombre = $tipos_participacion[$institucion['participacion']] ?? 'No definido';
-$estado = $institucion['fecha_fin'] === null ? 'Vigente' : 'Finalizada';
-$es_matriz = $institucion['participacion'] == 'matriz';
+$es_matriz = $institucion['es_matriz'] ?? false;
 
-// Número de afiliación
-$num_afiliacion_mostrar = '---';
-if ($es_matriz) {
-    $num_afiliacion_mostrar = 'No aplica';
-} elseif ($institucion['num_afiliacion']) {
-    $num_afiliacion_mostrar = $institucion['num_afiliacion'];
+$participaciones = getParticipacionesDe($institucion);
+$participacion_vigente = $participaciones['vigente'];
+$participaciones_anteriores = $participaciones['anteriores'];
+
+$nombres = getNombresDe($institucion);
+$nombre_vigente = $nombres['vigente'];
+$nombres_anteriores = $nombres['anteriores'];
+
+$estado_institucion = getEstadoInstitucion($institucion);
+$esta_activa = ($estado_institucion === 'activa');
+
+$sedes = getDependenciasDe($institucion['id']);
+$tiene_sedes = count($sedes) > 0;
+
+// Universidad padre
+$universidad_padre = null;
+if ($institucion['id_universidad']) {
+    $universidad_padre = getInstitucionPorId($institucion['id_universidad']);
 }
 
-// Obtener dependencia
-$dependencia = '';
-$dependencia_id = null;
-if ($institucion['tipo'] != 1 && $institucion['id_universidad']) {
-    $dependencia_obj = getInstitucionPorId($institucion['id_universidad']);
-    if ($dependencia_obj) {
-        $dependencia = $dependencia_obj['nombre'];
-        $dependencia_id = $dependencia_obj['id'];
+// Personas asociadas
+$personas = $personas_asociadas[$institucion['id']] ?? [];
+$personas_activas = array_filter($personas, function($p) { return !empty($p['activo']); });
+$personas_inactivas = array_filter($personas, function($p) { return empty($p['activo']); });
+
+$total_personas = count($personas);
+$total_activas = count($personas_activas);
+$total_inactivas = count($personas_inactivas);
+
+// Dirección formateada
+$direccion = $institucion['direccion'] ?? null;
+
+// Número de afiliación vigente / último
+$num_afiliacion_actual = null;
+if ($participacion_vigente && !empty($participacion_vigente['num_afiliacion'])) {
+    $num_afiliacion_actual = $participacion_vigente['num_afiliacion'];
+} elseif (!$esta_activa && !empty($participaciones_anteriores)) {
+    foreach ($participaciones_anteriores as $p) {
+        if (!empty($p['num_afiliacion'])) {
+            $num_afiliacion_actual = $p['num_afiliacion'];
+            break;
+        }
     }
 }
-
-// Si es matriz, obtener instituciones asociadas
-$instituciones_asociadas = [];
-if ($es_matriz) {
-    $instituciones_asociadas = getDependenciasDe($institucion['id']);
-}
-
-// Obtener dirección
-$direccion = $direcciones[$id] ?? null;
-
-// Obtener sitios web
-$webs = $sitios_web[$id] ?? [];
-
-// Obtener personas asociadas
-$personas = $personas_asociadas[$id] ?? [];
 
 include 'template/header.php';
 include 'template/menu.php';
@@ -1131,295 +85,478 @@ include 'template/menu.php';
 
 <main class="main-content">
     <div class="dashboard-container">
-        
+
         <!-- Encabezado -->
         <div class="page-header">
             <div class="page-header-content">
-                <div class="page-header-icon">
-                    <i class="fas fa-university"></i>
-                </div>
                 <div>
-                    <h1 class="page-title">Detalle de Institución</h1>
-                    <p class="page-subtitle">Información completa de la institución registrada en el sistema</p>
+                    <div class="page-eyebrow">
+                        <?= $es_matriz ? 'Institución matriz' : getTipoNombre($institucion['tipo']) ?>
+                    </div>
+                    <h1 class="page-title"><?= htmlspecialchars($institucion['nombre']) ?></h1>
+                    <div class="page-meta">
+                        <span class="status-badge <?= $esta_activa ? 'status-active' : 'status-inactive' ?>">
+                            <span class="status-dot"></span>
+                            <?= $esta_activa ? 'Activa' : 'Inactiva' ?>
+                        </span>
+                        <?php if ($num_afiliacion_actual): ?>
+                            <span class="meta-num">Núm. <?= htmlspecialchars($num_afiliacion_actual) ?></span>
+                        <?php endif; ?>
+                    </div>
                 </div>
             </div>
             <div class="page-header-right">
-                <a href="institucion_edicion.php?id=<?= $id ?>" class="btn-primary-modern">
-                    <i class="fas fa-edit"></i> Editar
-                </a>
                 <a href="instituciones.php" class="btn-outline-modern">
-                    <i class="fas fa-arrow-left"></i> Volver al listado
+                    Volver al listado
+                </a>
+                <a href="institucion_edicion.php?id=<?= $institucion['id'] ?>" class="btn-primary-modern">
+                    Editar institución
                 </a>
             </div>
         </div>
 
-        <!-- Contenido -->
-        <div class="detail-container">
-            
-            <!-- Tarjeta de información general -->
-            <div class="detail-card profile-card">
-                <div class="profile-header">
-                    <div class="profile-avatar">
-                        <?php 
-                        $letras = explode(' ', $institucion['nombre']);
-                        $iniciales = '';
-                        foreach ($letras as $l) {
-                            if (strlen($l) > 0) {
-                                $iniciales .= substr($l, 0, 1);
-                            }
-                            if (strlen($iniciales) >= 3) break;
-                        }
-                        ?>
-                        <span><?= strtoupper($iniciales) ?></span>
-                    </div>
-                    <div class="profile-info">
-                        <h2><?= htmlspecialchars($institucion['nombre']) ?></h2>
-                        <div class="profile-meta">
-                            <span class="profile-afiliacion">
-                                <span class="afiliacion-label">Núm. Afiliación:</span>
-                                <span class="afiliacion-value <?= $es_matriz ? 'afiliacion-no-aplica' : '' ?>">
-                                    <?= htmlspecialchars($num_afiliacion_mostrar) ?>
-                                </span>
-                            </span>
-                            <span class="profile-status <?= $estado == 'Vigente' ? 'status-active' : 'status-inactive' ?>">
-                                <span class="status-dot"></span> <?= $estado ?>
-                            </span>
-                            <span class="profile-participacion <?= 
-                                $institucion['participacion'] == 'afiliada' ? 'badge-afiliada' : 
-                                ($institucion['participacion'] == 'matriz' ? 'badge-matriz' : 'badge-observadora') 
-                            ?>">
-                                <?= htmlspecialchars($participacion_nombre) ?>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="profile-body">
-                    <div class="profile-item">
-                        <span class="profile-label">Tipo</span>
-                        <span class="profile-value"><?= htmlspecialchars($tipo_nombre) ?></span>
-                    </div>
-                    <div class="profile-item">
-                        <span class="profile-label">Dependencia</span>
-                        <span class="profile-value">
-                            <?php if ($dependencia_id): ?>
-                                <a href="institucion_consulta.php?id=<?= $dependencia_id ?>" class="dependencia-link">
-                                    <?= htmlspecialchars($dependencia) ?>
-                                </a>
-                            <?php else: ?>
-                                <span class="dependencia-na"><?= $es_matriz ? 'Es matriz' : '---' ?></span>
+        <!-- Pestañas -->
+        <div class="tabs-container">
+            <nav class="tabs-nav" role="tablist">
+                <button class="tab-btn active" data-tab="tab-general" role="tab">General</button>
+                <button class="tab-btn" data-tab="tab-participacion" role="tab">Participación</button>
+                <button class="tab-btn" data-tab="tab-nombres" role="tab">Historial de nombres</button>
+                <button class="tab-btn" data-tab="tab-personas" role="tab">
+                    Personas
+                    <?php if ($total_activas > 0): ?>
+                        <span class="tab-badge"><?= $total_activas ?></span>
+                    <?php endif; ?>
+                </button>
+                <?php if ($es_matriz && $tiene_sedes): ?>
+                <button class="tab-btn" data-tab="tab-sedes" role="tab">
+                    Sedes
+                    <span class="tab-badge tab-badge-neutral"><?= count($sedes) ?></span>
+                </button>
+                <?php endif; ?>
+            </nav>
+
+            <!-- ============================================================ -->
+            <!-- TAB: GENERAL -->
+            <!-- ============================================================ -->
+            <div class="tab-panel active" id="tab-general" role="tabpanel">
+
+                <div class="info-grid">
+                    <!-- Identificación -->
+                    <div class="info-card">
+                        <h3 class="info-card-title">Identificación</h3>
+                        <dl class="info-list">
+                            <div class="info-row">
+                                <dt>Tipo</dt>
+                                <dd><?= $es_matriz ? 'Matriz contenedora' : getTipoNombre($institucion['tipo']) ?></dd>
+                            </div>
+                            <div class="info-row">
+                                <dt>Sector</dt>
+                                <dd><?= htmlspecialchars($sectores[$institucion['sector']] ?? $institucion['sector']) ?></dd>
+                            </div>
+                            <?php if ($universidad_padre): ?>
+                            <div class="info-row">
+                                <dt>Depende de</dt>
+                                <dd>
+                                    <a href="institucion_consulta.php?id=<?= $universidad_padre['id'] ?>" class="link-institucion">
+                                        <?= htmlspecialchars($universidad_padre['nombre']) ?>
+                                    </a>
+                                </dd>
+                            </div>
                             <?php endif; ?>
-                        </span>
+                            <?php if ($es_matriz): ?>
+                            <div class="info-row">
+                                <dt>Matriz desde</dt>
+                                <dd><?= formatearFecha($institucion['fecha_matriz']) ?></dd>
+                            </div>
+                            <?php endif; ?>
+                            <?php if ($num_afiliacion_actual): ?>
+                            <div class="info-row">
+                                <dt>Núm. afiliación</dt>
+                                <dd><span class="num-destacado"><?= htmlspecialchars($num_afiliacion_actual) ?></span></dd>
+                            </div>
+                            <?php endif; ?>
+                        </dl>
                     </div>
-                    <div class="profile-item">
-                        <span class="profile-label">Entidad</span>
-                        <span class="profile-value"><?= htmlspecialchars($entidad_nombre) ?></span>
+
+                    <!-- Ubicación -->
+                    <?php if (!$es_matriz && $direccion): ?>
+                    <div class="info-card">
+                        <h3 class="info-card-title">Ubicación</h3>
+                        <dl class="info-list">
+                            <div class="info-row">
+                                <dt>Dirección</dt>
+                                <dd>
+                                    <?= htmlspecialchars($direccion['calle']) ?>
+                                    <?= htmlspecialchars($direccion['numero_exterior']) ?>
+                                    <?php if (!empty($direccion['numero_interior'])): ?>
+                                        , Int. <?= htmlspecialchars($direccion['numero_interior']) ?>
+                                    <?php endif; ?>
+                                </dd>
+                            </div>
+                            <div class="info-row">
+                                <dt>Colonia</dt>
+                                <dd><?= htmlspecialchars($direccion['colonia']) ?></dd>
+                            </div>
+                            <div class="info-row">
+                                <dt>Municipio</dt>
+                                <dd><?= htmlspecialchars($direccion['municipio']) ?></dd>
+                            </div>
+                            <div class="info-row">
+                                <dt>Entidad</dt>
+                                <dd><?= htmlspecialchars(getEntidadNombre($institucion['id_entidad'])) ?></dd>
+                            </div>
+                            <div class="info-row">
+                                <dt>C.P.</dt>
+                                <dd><?= htmlspecialchars($direccion['cp']) ?></dd>
+                            </div>
+                            <div class="info-row">
+                                <dt>Zona regional</dt>
+                                <dd><?= htmlspecialchars(getZonaNombre($institucion['id_zona'])) ?></dd>
+                            </div>
+                        </dl>
                     </div>
-                    <div class="profile-item">
-                        <span class="profile-label">Zona</span>
-                        <span class="profile-value">
-                            <span class="badge-zona"><?= htmlspecialchars($zona_nombre) ?></span>
-                        </span>
+                    <?php elseif ($es_matriz): ?>
+                    <div class="info-card info-card-muted">
+                        <h3 class="info-card-title">Ubicación</h3>
+                        <p class="info-muted-text">
+                            Las instituciones matriz no tienen dirección propia. Cada una de sus sedes registra su ubicación de manera independiente.
+                        </p>
                     </div>
-                    <div class="profile-item">
-                        <span class="profile-label">Fecha Inicio</span>
-                        <span class="profile-value"><?= date('d/m/Y', strtotime($institucion['fecha_inicio'])) ?></span>
-                    </div>
-                    <div class="profile-item">
-                        <span class="profile-label">Fecha Fin</span>
-                        <span class="profile-value"><?= $institucion['fecha_fin'] ? date('d/m/Y', strtotime($institucion['fecha_fin'])) : '---' ?></span>
-                    </div>
-                    <div class="profile-item">
-                        <span class="profile-label">Personas asociadas</span>
-                        <span class="profile-value">
-                            <span class="badge-personas <?= $institucion['personas_relacionadas'] > 0 ? 'badge-personas-activo' : 'badge-personas-vacio' ?>">
-                                <?= $institucion['personas_relacionadas'] ?>
-                            </span>
-                        </span>
+                    <?php endif; ?>
+
+                    <!-- Sitios web -->
+                    <div class="info-card">
+                        <h3 class="info-card-title">Sitios web</h3>
+                        <?php if (!empty($institucion['sitios_web'])): ?>
+                            <ul class="sitios-list">
+                                <?php foreach ($institucion['sitios_web'] as $web): ?>
+                                    <li>
+                                        <a href="<?= htmlspecialchars($web) ?>" target="_blank" rel="noopener" class="link-externo">
+                                            <?= htmlspecialchars($web) ?>
+                                        </a>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php else: ?>
+                            <p class="info-muted-text">Sin sitios web registrados.</p>
+                        <?php endif; ?>
                     </div>
                 </div>
+
             </div>
 
-            <?php if ($es_matriz): ?>
-                <!-- Instituciones asociadas (solo para Matriz) -->
-                <div class="detail-card">
-                    <div class="detail-card-header">
-                        <h3>Instituciones asociadas</h3>
-                        <span class="detail-badge"><?= count($instituciones_asociadas) ?> institución(es)</span>
+            <!-- ============================================================ -->
+            <!-- TAB: PARTICIPACIÓN -->
+            <!-- ============================================================ -->
+            <div class="tab-panel" id="tab-participacion" role="tabpanel">
+
+                <?php if ($es_matriz): ?>
+                    <div class="empty-tab">
+                        <h3>Sin participación propia</h3>
+                        <p>
+                            Esta universidad opera como matriz contenedora. Su participación en ANFECA se refleja a través
+                            de sus sedes, que son las que se afilian o participan como observadoras de manera individual.
+                        </p>
+                        <?php if ($tiene_sedes): ?>
+                            <button type="button" class="btn-text" data-goto-tab="tab-sedes">Ver sedes registradas</button>
+                        <?php endif; ?>
                     </div>
-                    <div class="detail-card-body">
-                        <?php if (count($instituciones_asociadas) > 0): ?>
-                            <div class="table-modern-container">
-                                <div class="table-modern-wrapper">
-                                    <table class="table-modern">
-                                        <thead>
-                                            <tr>
-                                                <th>Institución</th>
-                                                <th>Tipo</th>
-                                                <th>Participación</th>
-                                                <th>Zona</th>
-                                                <th>Personas</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php foreach ($instituciones_asociadas as $asociada): 
-                                                $tipo_asociada = $tipos_institucion[$asociada['tipo']] ?? 'No definido';
-                                                $participacion_asociada = $tipos_participacion[$asociada['participacion']] ?? 'No definido';
-                                                $zona_asociada = $zonas_regionales[$asociada['id_zona']] ?? 'Sin zona';
-                                                $personas_count = $asociada['personas_relacionadas'] ?? 0;
-                                            ?>
-                                                <tr>
-                                                    <td>
-                                                        <a href="institucion_consulta.php?id=<?= $asociada['id'] ?>" class="institucion-link">
-                                                            <?= htmlspecialchars($asociada['nombre']) ?>
-                                                        </a>
-                                                    </td>
-                                                    <td><?= htmlspecialchars($tipo_asociada) ?></td>
-                                                    <td>
-                                                        <span class="badge-participacion <?= 
-                                                            $asociada['participacion'] == 'afiliada' ? 'badge-afiliada' : 
-                                                            ($asociada['participacion'] == 'matriz' ? 'badge-matriz' : 'badge-observadora') 
-                                                        ?>">
-                                                            <?= htmlspecialchars($participacion_asociada) ?>
-                                                        </span>
-                                                    </td>
-                                                    <td>
-                                                        <span class="badge-zona"><?= htmlspecialchars($zona_asociada) ?></span>
-                                                    </td>
-                                                    <td>
-                                                        <span class="badge-personas <?= $personas_count > 0 ? 'badge-personas-activo' : 'badge-personas-vacio' ?>">
-                                                            <?= $personas_count ?>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                            <?php endforeach; ?>
-                                        </tbody>
-                                    </table>
+                <?php else: ?>
+
+                    <!-- Participación vigente o estado inactivo -->
+                    <?php if ($participacion_vigente): ?>
+                        <div class="section-block">
+                            <h3 class="section-block-title">Participación vigente</h3>
+                            <div class="participacion-actual">
+                                <div class="participacion-actual-head">
+                                    <span class="badge-participacion badge-<?= strtolower($participacion_vigente['tipo']) ?>">
+                                        <?= htmlspecialchars($participacion_vigente['tipo']) ?>
+                                    </span>
+                                    <span class="status-badge status-active">
+                                        <span class="status-dot"></span> Activa
+                                    </span>
+                                </div>
+                                <dl class="info-list info-list-horizontal">
+                                    <?php if ($participacion_vigente['num_afiliacion']): ?>
+                                    <div class="info-row">
+                                        <dt>Núm. afiliación</dt>
+                                        <dd><span class="num-destacado"><?= htmlspecialchars($participacion_vigente['num_afiliacion']) ?></span></dd>
+                                    </div>
+                                    <?php endif; ?>
+                                    <div class="info-row">
+                                        <dt>Vigente desde</dt>
+                                        <dd><?= formatearFecha($participacion_vigente['fecha_inicio']) ?></dd>
+                                    </div>
+                                </dl>
+                            </div>
+                        </div>
+                    <?php else: ?>
+                        <div class="section-block">
+                            <h3 class="section-block-title">Participación vigente</h3>
+                            <div class="participacion-inactiva-box">
+                                <span class="status-badge status-inactive">
+                                    <span class="status-dot"></span> Sin participación vigente
+                                </span>
+                                <?php if (!empty($participaciones_anteriores)): 
+                                    $ultima = $participaciones_anteriores[0];
+                                ?>
+                                    <p class="inactiva-nota">
+                                        Última participación: <strong><?= htmlspecialchars($ultima['tipo']) ?></strong>
+                                        del <?= formatearFecha($ultima['fecha_inicio']) ?> al <?= formatearFecha($ultima['fecha_fin']) ?>.
+                                        Conserva su número de afiliación para una futura reactivación.
+                                    </p>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+
+                    <!-- Historial completo -->
+                    <div class="section-block">
+                        <h3 class="section-block-title">
+                            Historial de participación
+                            <span class="count-tag"><?= count($participaciones['vigente'] ? array_merge([$participaciones['vigente']], $participaciones_anteriores) : $participaciones_anteriores) ?> período(s)</span>
+                        </h3>
+
+                        <?php 
+                        $todos_periodos = [];
+                        if ($participacion_vigente) $todos_periodos[] = $participacion_vigente;
+                        foreach ($participaciones_anteriores as $p) $todos_periodos[] = $p;
+                        ?>
+
+                        <?php if (count($todos_periodos) > 0): ?>
+                            <ol class="timeline">
+                                <?php foreach ($todos_periodos as $p): 
+                                    $es_vigente = ($p['fecha_fin'] === null);
+                                ?>
+                                    <li class="timeline-item <?= $es_vigente ? 'timeline-item-active' : '' ?>">
+                                        <div class="timeline-marker"></div>
+                                        <div class="timeline-content">
+                                            <div class="timeline-head">
+                                                <span class="badge-participacion badge-<?= strtolower($p['tipo']) ?>">
+                                                    <?= htmlspecialchars($p['tipo']) ?>
+                                                </span>
+                                                <?php if ($es_vigente): ?>
+                                                    <span class="timeline-tag">Vigente</span>
+                                                <?php endif; ?>
+                                            </div>
+                                            <div class="timeline-body">
+                                                <div class="timeline-fechas">
+                                                    <?= formatearFecha($p['fecha_inicio']) ?>
+                                                    <?php if ($p['fecha_fin']): ?>
+                                                        &ndash; <?= formatearFecha($p['fecha_fin']) ?>
+                                                    <?php else: ?>
+                                                        &ndash; actualidad
+                                                    <?php endif; ?>
+                                                </div>
+                                                <?php if ($p['num_afiliacion']): ?>
+                                                    <div class="timeline-num">Núm. <?= htmlspecialchars($p['num_afiliacion']) ?></div>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ol>
+                        <?php else: ?>
+                            <p class="info-muted-text">Sin registros de participación.</p>
+                        <?php endif; ?>
+                    </div>
+
+                <?php endif; ?>
+
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- TAB: HISTORIAL DE NOMBRES -->
+            <!-- ============================================================ -->
+            <div class="tab-panel" id="tab-nombres" role="tabpanel">
+
+                <div class="section-block">
+                    <h3 class="section-block-title">
+                        Nombre vigente
+                    </h3>
+                    <div class="nombre-vigente-box">
+                        <div class="nombre-vigente-texto"><?= htmlspecialchars($institucion['nombre']) ?></div>
+                        <?php if ($nombre_vigente): ?>
+                            <div class="nombre-vigente-desde">
+                                Vigente desde el <?= formatearFecha($nombre_vigente['fecha_inicio']) ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <div class="section-block">
+                    <h3 class="section-block-title">
+                        Nombres anteriores
+                        <?php if (count($nombres_anteriores) > 0): ?>
+                            <span class="count-tag"><?= count($nombres_anteriores) ?></span>
+                        <?php endif; ?>
+                    </h3>
+
+                    <?php if (count($nombres_anteriores) > 0): ?>
+                        <ol class="timeline">
+                            <?php foreach ($nombres_anteriores as $h): ?>
+                                <li class="timeline-item">
+                                    <div class="timeline-marker"></div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-body">
+                                            <div class="timeline-nombre"><?= htmlspecialchars($h['nombre']) ?></div>
+                                            <div class="timeline-fechas">
+                                                <?= formatearFecha($h['fecha_inicio']) ?>
+                                                <?php if ($h['fecha_fin']): ?>
+                                                    &ndash; <?= formatearFecha($h['fecha_fin']) ?>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            <?php endforeach; ?>
+                        </ol>
+                    <?php else: ?>
+                        <p class="info-muted-text">Esta institución nunca ha cambiado de razón social.</p>
+                    <?php endif; ?>
+                </div>
+
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- TAB: PERSONAS -->
+            <!-- ============================================================ -->
+            <div class="tab-panel" id="tab-personas" role="tabpanel">
+
+                <?php if ($total_personas === 0): ?>
+                    <div class="empty-tab">
+                        <h3>Sin personas asociadas</h3>
+                        <p>
+                            No hay personas registradas en esta institución. Las personas se asocian al registrar
+                            representantes, titulares o coordinadores vinculados a la institución.
+                        </p>
+                    </div>
+                <?php else: ?>
+
+                    <?php if ($total_activas > 0): ?>
+                    <div class="section-block">
+                        <h3 class="section-block-title">
+                            Personas activas
+                            <span class="count-tag"><?= $total_activas ?></span>
+                        </h3>
+                        <div class="personas-list">
+                            <?php foreach ($personas_activas as $p): ?>
+                                <div class="persona-card">
+                                    <div class="persona-head">
+                                        <div class="persona-avatar">
+                                            <?= htmlspecialchars(mb_substr($p['nombre'], 0, 1)) ?>
+                                        </div>
+                                        <div class="persona-identidad">
+                                            <div class="persona-nombre"><?= htmlspecialchars($p['nombre']) ?></div>
+                                            <div class="persona-cargo"><?= htmlspecialchars($p['cargo']) ?></div>
+                                        </div>
+                                        <?php if (!empty($p['titular'])): ?>
+                                            <span class="persona-tag">Titular</span>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="persona-foot">
+                                        Desde <?= formatearFecha($p['fecha_inicio']) ?>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                    <?php endif; ?>
+
+                    <?php if ($total_inactivas > 0): ?>
+                    <div class="section-block">
+                        <h3 class="section-block-title">
+                            Personas con períodos finalizados
+                            <span class="count-tag count-tag-neutral"><?= $total_inactivas ?></span>
+                        </h3>
+                        <div class="personas-list">
+                            <?php foreach ($personas_inactivas as $p): ?>
+                                <div class="persona-card persona-card-inactiva">
+                                    <div class="persona-head">
+                                        <div class="persona-avatar persona-avatar-inactiva">
+                                            <?= htmlspecialchars(mb_substr($p['nombre'], 0, 1)) ?>
+                                        </div>
+                                        <div class="persona-identidad">
+                                            <div class="persona-nombre"><?= htmlspecialchars($p['nombre']) ?></div>
+                                            <div class="persona-cargo"><?= htmlspecialchars($p['cargo']) ?></div>
+                                        </div>
+                                        <?php if (!empty($p['titular'])): ?>
+                                            <span class="persona-tag persona-tag-neutral">Titular</span>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="persona-foot">
+                                        <?= formatearFecha($p['fecha_inicio']) ?> &ndash; <?= formatearFecha($p['fecha_fin']) ?>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                    <?php endif; ?>
+
+                <?php endif; ?>
+
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- TAB: SEDES -->
+            <!-- ============================================================ -->
+            <?php if ($es_matriz && $tiene_sedes): ?>
+            <div class="tab-panel" id="tab-sedes" role="tabpanel">
+
+                <div class="section-block">
+                    <h3 class="section-block-title">
+                        Sedes registradas
+                        <span class="count-tag"><?= count($sedes) ?></span>
+                    </h3>
+                    <p class="section-block-desc">
+                        Estas instituciones dependen de esta matriz y participan directamente en ANFECA.
+                    </p>
+
+                    <div class="sedes-list">
+                        <?php foreach ($sedes as $sede): 
+                            $sede_estado = getEstadoInstitucion($sede);
+                            $sede_esta_activa = ($sede_estado === 'activa');
+                            $sede_participaciones = getParticipacionesDe($sede);
+                            $sede_vigente = $sede_participaciones['vigente'];
+                            
+                            // Dirección corta de la sede
+                            $sede_dir = $sede['direccion'] ?? null;
+                            $sede_ubicacion = '';
+                            if ($sede_dir) {
+                                $sede_ubicacion = $sede_dir['municipio'] . ', ' . getEntidadNombre($sede['id_entidad']);
+                            }
+                        ?>
+                            <div class="sede-card">
+                                <div class="sede-card-head">
+                                    <a href="institucion_consulta.php?id=<?= $sede['id'] ?>" class="sede-card-nombre">
+                                        <?= htmlspecialchars($sede['nombre']) ?>
+                                    </a>
+                                    <span class="status-badge <?= $sede_esta_activa ? 'status-active' : 'status-inactive' ?>">
+                                        <span class="status-dot"></span>
+                                        <?= $sede_esta_activa ? 'Activa' : 'Inactiva' ?>
+                                    </span>
+                                </div>
+                                <div class="sede-card-meta">
+                                    <span class="meta-item"><?= getTipoNombre($sede['tipo']) ?></span>
+                                    <?php if ($sede_ubicacion): ?>
+                                        <span class="meta-sep"></span>
+                                        <span class="meta-item"><?= htmlspecialchars($sede_ubicacion) ?></span>
+                                    <?php endif; ?>
+                                    <?php if ($sede_vigente): ?>
+                                        <span class="meta-sep"></span>
+                                        <span class="badge-participacion badge-<?= strtolower($sede_vigente['tipo']) ?>">
+                                            <?= htmlspecialchars($sede_vigente['tipo']) ?>
+                                        </span>
+                                        <?php if ($sede_vigente['num_afiliacion']): ?>
+                                            <span class="meta-num">Núm. <?= htmlspecialchars($sede_vigente['num_afiliacion']) ?></span>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
                                 </div>
                             </div>
-                        <?php else: ?>
-                            <div class="empty-instituciones">
-                                <i class="fas fa-university"></i>
-                                <p>Esta institución matriz no tiene facultades o campus asociados</p>
-                            </div>
-                        <?php endif; ?>
-                    </div>
-                </div>
-            <?php endif; ?>
-
-            <!-- Dirección -->
-            <?php if ($direccion): ?>
-            <div class="detail-card">
-                <div class="detail-card-header">
-                    <h3>Dirección</h3>
-                </div>
-                <div class="detail-card-body">
-                    <div class="direccion-grid">
-                        <div class="direccion-item">
-                            <span class="direccion-label">Calle</span>
-                            <span class="direccion-value"><?= htmlspecialchars($direccion['calle']) ?></span>
-                        </div>
-                        <div class="direccion-item">
-                            <span class="direccion-label">Número Exterior</span>
-                            <span class="direccion-value"><?= htmlspecialchars($direccion['numero_exterior']) ?></span>
-                        </div>
-                        <?php if (!empty($direccion['numero_interior'])): ?>
-                        <div class="direccion-item">
-                            <span class="direccion-label">Número Interior</span>
-                            <span class="direccion-value"><?= htmlspecialchars($direccion['numero_interior']) ?></span>
-                        </div>
-                        <?php endif; ?>
-                        <div class="direccion-item">
-                            <span class="direccion-label">Colonia</span>
-                            <span class="direccion-value"><?= htmlspecialchars($direccion['colonia']) ?></span>
-                        </div>
-                        <div class="direccion-item">
-                            <span class="direccion-label">Código Postal</span>
-                            <span class="direccion-value"><?= htmlspecialchars($direccion['cp']) ?></span>
-                        </div>
-                        <div class="direccion-item">
-                            <span class="direccion-label">Alcaldía / Municipio</span>
-                            <span class="direccion-value"><?= htmlspecialchars($direccion['municipio']) ?></span>
-                        </div>
-                        <div class="direccion-item">
-                            <span class="direccion-label">Entidad</span>
-                            <span class="direccion-value"><?= htmlspecialchars($entidad_nombre) ?></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <?php endif; ?>
-
-            <!-- Sitios Web -->
-            <?php if (!empty($webs)): ?>
-            <div class="detail-card">
-                <div class="detail-card-header">
-                    <h3>Sitios Web</h3>
-                </div>
-                <div class="detail-card-body">
-                    <div class="webs-list">
-                        <?php foreach ($webs as $web): ?>
-                            <a href="<?= htmlspecialchars($web) ?>" target="_blank" class="web-link">
-                                <i class="fas fa-globe"></i> <?= htmlspecialchars($web) ?>
-                            </a>
                         <?php endforeach; ?>
                     </div>
                 </div>
-            </div>
-            <?php endif; ?>
 
-            <!-- Personas asociadas -->
-            <?php if (count($personas) > 0): ?>
-            <div class="detail-card">
-                <div class="detail-card-header">
-                    <h3>Personas asociadas</h3>
-                    <span class="detail-badge"><?= count($personas) ?> persona(s)</span>
-                </div>
-                <div class="detail-card-body">
-                    <div class="table-modern-container">
-                        <div class="table-modern-wrapper">
-                            <table class="table-modern">
-                                <thead>
-                                    <tr>
-                                        <th>Nombre</th>
-                                        <th>Cargo</th>
-                                        <th>Titular</th>
-                                        <th>Fecha Inicio</th>
-                                        <th>Fecha Fin</th>
-                                        <th>Estado</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach ($personas as $persona): ?>
-                                        <tr>
-                                            <td>
-                                                <a href="persona_consulta.php?id=<?= $persona['id'] ?>" class="persona-link">
-                                                    <?= htmlspecialchars($persona['nombre']) ?>
-                                                </a>
-                                            </td>
-                                            <td><?= htmlspecialchars($persona['cargo']) ?></td>
-                                            <td>
-                                                <?php if ($persona['titular']): ?>
-                                                    <span class="badge-titular">Sí</span>
-                                                <?php else: ?>
-                                                    <span class="badge-no-titular">No</span>
-                                                <?php endif; ?>
-                                            </td>
-                                            <td><?= date('d/m/Y', strtotime($persona['fecha_inicio'])) ?></td>
-                                            <td><?= $persona['fecha_fin'] ? date('d/m/Y', strtotime($persona['fecha_fin'])) : '---' ?></td>
-                                            <td>
-                                                <?php if ($persona['activo']): ?>
-                                                    <span class="status-active"><i class="fas fa-circle"></i> Activo</span>
-                                                <?php else: ?>
-                                                    <span class="status-inactive"><i class="fas fa-circle"></i> Inactivo</span>
-                                                <?php endif; ?>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
             </div>
             <?php endif; ?>
 
@@ -1433,61 +570,83 @@ include 'template/menu.php';
    ESTILOS - CONSULTA INSTITUCIÓN
    ============================================================ */
 
-/* Page Header */
+/* ---------- Page Header ---------- */
+
 .page-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
+    align-items: flex-start;
+    margin-bottom: 1.75rem;
     gap: 1.5rem;
     flex-wrap: wrap;
 }
 
 .page-header-content {
     display: flex;
-    align-items: center;
-    gap: 1.25rem;
+    align-items: stretch;
+    gap: 1rem;
+    min-width: 0;
+    flex: 1;
 }
 
-.page-header-icon {
-    width: 56px;
-    height: 56px;
-    background: linear-gradient(135deg, #8B0000, #5C0000);
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 1.5rem;
+.page-header-content::before {
+    content: '';
+    display: block;
+    width: 4px;
+    background: linear-gradient(180deg, #8B0000, #5C0000);
+    border-radius: 4px;
     flex-shrink: 0;
-    box-shadow: 0 4px 15px rgba(139, 0, 0, 0.25);
+}
+
+.page-header-content > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+}
+
+.page-eyebrow {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #8B0000;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 0.3rem;
 }
 
 .page-title {
-    font-size: 1.65rem;
+    font-size: 1.5rem;
     font-weight: 700;
     color: #1a1a1a;
     margin: 0;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    word-break: break-word;
 }
 
-.page-subtitle {
-    color: #888;
-    margin: 0.1rem 0 0 0;
-    font-size: 0.92rem;
+.page-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
 }
 
 .page-header-right {
     display: flex;
-    gap: 0.75rem;
+    gap: 0.6rem;
     align-items: center;
+    padding-top: 0.35rem;
+    flex-wrap: wrap;
 }
 
-/* Botones */
+/* ---------- Botones ---------- */
+
 .btn-primary-modern {
     display: inline-flex;
     align-items: center;
-    gap: 0.6rem;
-    padding: 0.75rem 1.8rem;
+    justify-content: center;
+    padding: 0.7rem 1.5rem;
     background: linear-gradient(135deg, #8B0000, #5C0000);
     color: white;
     border: none;
@@ -1495,30 +654,30 @@ include 'template/menu.php';
     font-weight: 600;
     font-size: 0.9rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.25s ease;
     text-decoration: none;
-    box-shadow: 0 4px 15px rgba(139, 0, 0, 0.25);
+    box-shadow: 0 4px 12px rgba(139, 0, 0, 0.2);
 }
 
 .btn-primary-modern:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 25px rgba(139, 0, 0, 0.35);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(139, 0, 0, 0.3);
     color: white;
 }
 
 .btn-outline-modern {
     display: inline-flex;
     align-items: center;
-    gap: 0.6rem;
-    padding: 0.75rem 1.5rem;
+    justify-content: center;
+    padding: 0.7rem 1.4rem;
     background: white;
     color: #4a4a4a;
-    border: 2px solid #e8e8e8;
+    border: 1.5px solid #e0e0e0;
     border-radius: 10px;
     font-weight: 600;
     font-size: 0.9rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.25s ease;
     text-decoration: none;
 }
 
@@ -1527,277 +686,372 @@ include 'template/menu.php';
     color: #8B0000;
 }
 
-/* Detail Container */
-.detail-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
-
-.detail-card {
-    background: white;
-    border-radius: 16px;
-    padding: 1.75rem;
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
-    border: 1px solid rgba(0, 0, 0, 0.04);
-}
-
-.detail-card-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1.25rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 2px solid #f5f0f0;
-}
-
-.detail-card-header h3 {
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: #1a1a1a;
-    margin: 0;
-}
-
-.detail-badge {
-    font-size: 0.7rem;
-    padding: 0.2rem 0.8rem;
-    background: #f5f0f0;
-    color: #666;
-    border-radius: 20px;
+.btn-text {
+    background: none;
+    border: none;
+    color: #8B0000;
+    font-size: 0.9rem;
     font-weight: 600;
-}
-
-.detail-card-body {
+    cursor: pointer;
     padding: 0;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.2s ease;
 }
 
-/* Profile Card */
-.profile-card {
-    padding: 0;
-    overflow: hidden;
+.btn-text:hover {
+    color: #5C0000;
 }
 
-.profile-header {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-    padding: 1.75rem;
-    background: linear-gradient(135deg, #faf8f8, #f5f0f0);
-    border-bottom: 1px solid #f0ecec;
-}
+/* ---------- Status badges ---------- */
 
-.profile-avatar {
-    width: 80px;
-    height: 80px;
-    background: linear-gradient(135deg, #8B0000, #5C0000);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 1.8rem;
-    font-weight: 700;
-    flex-shrink: 0;
-    box-shadow: 0 4px 15px rgba(139, 0, 0, 0.25);
-}
-
-.profile-info {
-    flex: 1;
-}
-
-.profile-info h2 {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: #1a1a1a;
-    margin: 0 0 0.3rem 0;
-}
-
-.profile-meta {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-    align-items: center;
-}
-
-.profile-afiliacion {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.8rem;
-}
-
-.afiliacion-label {
-    color: #888;
-    font-weight: 500;
-}
-
-.afiliacion-value {
-    font-weight: 600;
-    color: #1a1a1a;
-    font-family: monospace;
-    background: #f0ecec;
-    padding: 0.1rem 0.5rem;
-    border-radius: 4px;
-}
-
-.afiliacion-value.afiliacion-no-aplica {
-    color: #999;
-    font-family: inherit;
-    background: transparent;
-    font-weight: 500;
-}
-
-.profile-status {
-    font-size: 0.8rem;
-    font-weight: 600;
+.status-badge {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    white-space: nowrap;
 }
 
 .status-dot {
     display: inline-block;
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
 }
 
-.profile-status.status-active .status-dot {
-    background: #2e7d32;
-}
-
-.profile-status.status-inactive .status-dot {
-    background: #c62828;
-}
-
-.profile-status.status-active {
-    color: #2e7d32;
-}
-
-.profile-status.status-inactive {
-    color: #c62828;
-}
-
-.profile-participacion {
-    font-size: 0.7rem;
-    font-weight: 600;
-    padding: 0.2rem 0.7rem;
-    border-radius: 20px;
-}
-
-.profile-participacion.badge-afiliada {
+.status-badge.status-active {
     background: #e8f5e9;
     color: #2e7d32;
 }
 
-.profile-participacion.badge-observadora {
-    background: #fff3e0;
-    color: #e65100;
+.status-badge.status-active .status-dot {
+    background: #2e7d32;
 }
 
-.profile-participacion.badge-matriz {
-    background: #e3f2fd;
-    color: #0d47a1;
+.status-badge.status-inactive {
+    background: #f5f5f5;
+    color: #888;
 }
 
-.profile-body {
+.status-badge.status-inactive .status-dot {
+    background: #999;
+}
+
+.meta-num {
+    font-family: monospace;
+    font-size: 0.82rem;
+    color: #6b6b6b;
+    background: #f5f0f0;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+/* ---------- Tabs ---------- */
+
+.tabs-container {
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+}
+
+.tabs-nav {
+    display: flex;
+    gap: 0;
+    border-bottom: 1.5px solid #f0f0f0;
+    background: #fafafa;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.tabs-nav::-webkit-scrollbar {
+    display: none;
+}
+
+.tab-btn {
+    position: relative;
+    padding: 1rem 1.5rem;
+    background: none;
+    border: none;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #888;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-bottom: 2.5px solid transparent;
+    margin-bottom: -1.5px;
+}
+
+.tab-btn:hover {
+    color: #4a4a4a;
+}
+
+.tab-btn.active {
+    color: #8B0000;
+    border-bottom-color: #8B0000;
+    background: white;
+}
+
+.tab-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 0.4rem;
+    background: #8B0000;
+    color: white;
+    border-radius: 10px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.tab-badge-neutral {
+    background: #c4c4c4;
+}
+
+.tab-panel {
+    display: none;
+    padding: 2rem;
+    animation: fadeInPanel 0.25s ease;
+}
+
+.tab-panel.active {
+    display: block;
+}
+
+@keyframes fadeInPanel {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Info Cards ---------- */
+
+.info-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
-    padding: 1.25rem 1.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
 }
 
-.profile-item {
+.info-card {
+    background: #fafafa;
+    border: 1px solid #f0f0f0;
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.info-card-muted {
+    background: #faf8f8;
+    border-style: dashed;
+    border-color: #e8e0e0;
+}
+
+.info-card-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin: 0 0 1rem 0;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #ececec;
+}
+
+.info-list {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.info-list-horizontal {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1.25rem;
+}
+
+.info-row {
     display: flex;
     flex-direction: column;
     gap: 0.2rem;
 }
 
-.profile-label {
-    font-size: 0.7rem;
+.info-row dt {
+    font-size: 0.72rem;
     font-weight: 600;
+    color: #999;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: #999;
+    letter-spacing: 0.4px;
 }
 
-.profile-value {
-    font-size: 0.95rem;
-    font-weight: 500;
+.info-row dd {
+    font-size: 0.92rem;
     color: #1a1a1a;
+    margin: 0;
+    line-height: 1.4;
+    word-break: break-word;
 }
 
-/* Dependencia link */
-.dependencia-link {
-    color: #8B0000;
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.2s ease;
-}
-
-.dependencia-link:hover {
-    color: #5C0000;
-    text-decoration: underline;
-}
-
-.dependencia-na {
+.info-muted-text {
     color: #999;
+    font-size: 0.88rem;
+    line-height: 1.55;
+    margin: 0;
 }
 
-/* Institución link */
-.institucion-link {
+.num-destacado {
+    font-family: monospace;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #8B0000;
+    background: #f5edec;
+    padding: 0.2rem 0.65rem;
+    border-radius: 6px;
+    display: inline-block;
+}
+
+.link-institucion {
     color: #8B0000;
     text-decoration: none;
     font-weight: 500;
     transition: color 0.2s ease;
 }
 
-.institucion-link:hover {
+.link-institucion:hover {
     color: #5C0000;
     text-decoration: underline;
 }
 
-/* Persona link */
-.persona-link {
+.link-externo {
     color: #0d6efd;
     text-decoration: none;
-    font-weight: 500;
+    font-size: 0.88rem;
     transition: color 0.2s ease;
+    word-break: break-all;
 }
 
-.persona-link:hover {
+.link-externo:hover {
     color: #0a58ca;
     text-decoration: underline;
 }
 
-/* Badge Zona */
-.badge-zona {
-    display: inline-block;
-    padding: 0.2rem 0.8rem;
-    background: #f0ebeb;
-    color: #5a3a3a;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 500;
+.sitios-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
 }
 
-/* Badge Participación en tabla */
+/* ---------- Section blocks ---------- */
+
+.section-block {
+    margin-bottom: 2rem;
+}
+
+.section-block:last-child {
+    margin-bottom: 0;
+}
+
+.section-block-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0 0 0.35rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.section-block-desc {
+    font-size: 0.85rem;
+    color: #888;
+    margin: 0 0 1.25rem 0;
+    line-height: 1.5;
+}
+
+.count-tag {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #8B0000;
+    background: #f5edec;
+    padding: 0.15rem 0.55rem;
+    border-radius: 10px;
+}
+
+.count-tag-neutral {
+    color: #888;
+    background: #f0f0f0;
+}
+
+/* ---------- Participación actual ---------- */
+
+.participacion-actual {
+    background: linear-gradient(135deg, #f7fbf7, #eef7ee);
+    border: 1.5px solid #c8e6c9;
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.participacion-actual-head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+}
+
+.participacion-inactiva-box {
+    background: #fafafa;
+    border: 1.5px dashed #e0e0e0;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.inactiva-nota {
+    color: #6b6b6b;
+    font-size: 0.88rem;
+    line-height: 1.55;
+    margin: 1rem 0 0 0;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ---------- Badges de participación ---------- */
+
 .badge-participacion {
     display: inline-block;
-    padding: 0.15rem 0.6rem;
+    padding: 0.3rem 0.85rem;
     border-radius: 20px;
-    font-size: 0.65rem;
+    font-size: 0.78rem;
     font-weight: 600;
+    white-space: nowrap;
 }
 
 .badge-participacion.badge-afiliada {
-    background: #e8f5e9;
-    color: #2e7d32;
+    background: #d4edda;
+    color: #1b5e20;
 }
 
 .badge-participacion.badge-observadora {
     background: #fff3e0;
-    color: #e65100;
+    color: #b25000;
 }
 
 .badge-participacion.badge-matriz {
@@ -1805,231 +1059,336 @@ include 'template/menu.php';
     color: #0d47a1;
 }
 
-/* Badge Personas */
-.badge-personas {
-    display: inline-block;
-    padding: 0.15rem 0.6rem;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    min-width: 30px;
-    text-align: center;
+/* ---------- Timeline ---------- */
+
+.timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
 }
 
-.badge-personas-activo {
-    background: #e8f5e9;
-    color: #2e7d32;
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 6px;
+    bottom: 6px;
+    width: 2px;
+    background: #ececec;
 }
 
-.badge-personas-vacio {
-    background: #f5f5f5;
-    color: #999;
+.timeline-item {
+    position: relative;
+    padding-left: 2rem;
+    padding-bottom: 1.5rem;
 }
 
-/* Dirección */
-.direccion-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.75rem;
+.timeline-item:last-child {
+    padding-bottom: 0;
 }
 
-.direccion-item {
+.timeline-marker {
+    position: absolute;
+    left: 0;
+    top: 4px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid #d0d0d0;
+    z-index: 1;
+}
+
+.timeline-item-active .timeline-marker {
+    border-color: #2e7d32;
+    background: #2e7d32;
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.15);
+}
+
+.timeline-content {
+    padding: 0.15rem 0;
+}
+
+.timeline-head {
     display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.5rem;
+    flex-wrap: wrap;
 }
 
-.direccion-label {
-    font-size: 0.65rem;
-    font-weight: 600;
+.timeline-tag {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #2e7d32;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    color: #999;
 }
 
-.direccion-value {
-    font-size: 0.9rem;
-    color: #1a1a1a;
-}
-
-/* Sitios Web */
-.webs-list {
+.timeline-body {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
+    flex-direction: column;
+    gap: 0.25rem;
 }
 
-.web-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.4rem 0.8rem;
-    background: #f0f7fa;
-    color: #0d6efd;
-    border-radius: 8px;
-    text-decoration: none;
+.timeline-nombre {
+    font-size: 0.98rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    line-height: 1.35;
+}
+
+.timeline-fechas {
     font-size: 0.85rem;
+    color: #6b6b6b;
+}
+
+.timeline-num {
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: #8B0000;
+    background: #f5edec;
+    padding: 0.15rem 0.55rem;
+    border-radius: 4px;
+    align-self: flex-start;
+    font-weight: 600;
+}
+
+/* ---------- Nombre vigente ---------- */
+
+.nombre-vigente-box {
+    background: linear-gradient(135deg, #fdf5f5, #faf0ef);
+    border: 1.5px solid #e8d0ce;
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.nombre-vigente-texto {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    line-height: 1.35;
+    margin-bottom: 0.4rem;
+    word-break: break-word;
+}
+
+.nombre-vigente-desde {
+    font-size: 0.82rem;
+    color: #8B0000;
+    font-weight: 500;
+}
+
+/* ---------- Personas ---------- */
+
+.personas-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 0.85rem;
+}
+
+.persona-card {
+    background: #fafafa;
+    border: 1px solid #f0f0f0;
+    border-radius: 12px;
+    padding: 1.1rem 1.25rem;
     transition: all 0.2s ease;
 }
 
-.web-link:hover {
-    background: #0d6efd;
+.persona-card:hover {
+    background: #f5f0f0;
+    border-color: #e8d8d6;
+}
+
+.persona-card-inactiva {
+    opacity: 0.75;
+}
+
+.persona-head {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin-bottom: 0.75rem;
+}
+
+.persona-avatar {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #8B0000, #5C0000);
     color: white;
-}
-
-/* Personas asociadas */
-.table-modern-container {
-    border-radius: 12px;
-    overflow: hidden;
-    border: 1px solid #f0ecec;
-}
-
-.table-modern-wrapper {
-    overflow-x: auto;
-}
-
-.table-modern {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.9rem;
-}
-
-.table-modern thead {
-    background: #faf8f8;
-}
-
-.table-modern thead th {
-    text-align: left;
-    padding: 0.7rem 1rem;
-    font-weight: 600;
-    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.8px;
+}
+
+.persona-avatar-inactiva {
+    background: #c4c4c4;
+}
+
+.persona-identidad {
+    flex: 1;
+    min-width: 0;
+}
+
+.persona-nombre {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    line-height: 1.3;
+    word-break: break-word;
+}
+
+.persona-cargo {
+    font-size: 0.78rem;
+    color: #888;
+    margin-top: 0.15rem;
+}
+
+.persona-tag {
+    display: inline-block;
+    padding: 0.15rem 0.55rem;
+    background: #8B0000;
+    color: white;
+    border-radius: 20px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    white-space: nowrap;
+}
+
+.persona-tag-neutral {
+    background: #d0d0d0;
+    color: #4a4a4a;
+}
+
+.persona-foot {
+    font-size: 0.78rem;
+    color: #999;
+    padding-top: 0.75rem;
+    border-top: 1px solid #ececec;
+}
+
+/* ---------- Sedes ---------- */
+
+.sedes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.sede-card {
+    background: #fafafa;
+    border: 1px solid #f0f0f0;
+    border-radius: 12px;
+    padding: 1.15rem 1.35rem;
+    transition: all 0.2s ease;
+}
+
+.sede-card:hover {
+    background: #f5f0f0;
+    border-color: #e8d8d6;
+}
+
+.sede-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.sede-card-nombre {
+    font-size: 0.98rem;
+    font-weight: 600;
+    color: #8B0000;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    line-height: 1.35;
+}
+
+.sede-card-nombre:hover {
+    color: #5C0000;
+    text-decoration: underline;
+}
+
+.sede-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    font-size: 0.82rem;
+    color: #888;
+}
+
+.meta-item {
+    font-size: 0.82rem;
     color: #6b6b6b;
-    border-bottom: 2px solid #e8e8e8;
 }
 
-.table-modern tbody td {
-    padding: 0.7rem 1rem;
-    border-bottom: 1px solid #f0f0f0;
-    vertical-align: middle;
-}
-
-.table-modern tbody tr:last-child td {
-    border-bottom: none;
-}
-
-.table-modern tbody tr:hover {
-    background: #faf8f8;
-}
-
-.badge-titular {
+.meta-sep {
     display: inline-block;
-    padding: 0.1rem 0.5rem;
-    background: #e8f5e9;
-    color: #2e7d32;
-    border-radius: 12px;
-    font-size: 0.7rem;
-    font-weight: 600;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: #d0d0d0;
 }
 
-.badge-no-titular {
-    display: inline-block;
-    padding: 0.1rem 0.5rem;
-    background: #f5f5f5;
-    color: #999;
-    border-radius: 12px;
-    font-size: 0.7rem;
-    font-weight: 600;
-}
+/* ---------- Empty tab ---------- */
 
-.status-active {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    color: #2e7d32;
-    font-weight: 600;
-    font-size: 0.8rem;
-}
-
-.status-active i {
-    font-size: 0.5rem;
-}
-
-.status-inactive {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    color: #c62828;
-    font-weight: 600;
-    font-size: 0.8rem;
-}
-
-.status-inactive i {
-    font-size: 0.5rem;
-}
-
-/* Empty states */
-.empty-instituciones {
+.empty-tab {
     text-align: center;
-    padding: 2rem 0;
+    padding: 3rem 1.5rem;
+    max-width: 520px;
+    margin: 0 auto;
 }
 
-.empty-instituciones i {
-    font-size: 2.5rem;
-    color: #d0d0d0;
-    display: block;
-    margin-bottom: 0.75rem;
+.empty-tab h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #4a4a4a;
+    margin: 0 0 0.75rem 0;
 }
 
-.empty-instituciones p {
-    color: #999;
-    margin: 0;
+.empty-tab p {
+    color: #888;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 0 0 1.25rem 0;
+}
+
+/* ---------- Alerta error ---------- */
+
+.alert-modern {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
     font-size: 0.95rem;
 }
 
-.empty-personas {
-    text-align: center;
-    padding: 2rem 0;
+.alert-error {
+    background: #fdf0f0;
+    color: #7a1a1a;
+    border-left: 4px solid #c62828;
 }
 
-.empty-personas i {
-    font-size: 2.5rem;
-    color: #d0d0d0;
-    display: block;
-    margin-bottom: 0.75rem;
-}
-
-.empty-personas p {
-    color: #999;
-    margin: 0;
-    font-size: 0.95rem;
-}
-
-/* Responsive */
-@media (max-width: 992px) {
-    .profile-body {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .direccion-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
 
 @media (max-width: 768px) {
     .page-header {
         flex-direction: column;
         align-items: stretch;
-    }
-
-    .page-header-content {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .page-title {
-        font-size: 1.4rem;
     }
 
     .page-header-right {
@@ -2040,81 +1399,119 @@ include 'template/menu.php';
     .page-header-right .btn-primary-modern,
     .page-header-right .btn-outline-modern {
         width: 100%;
-        justify-content: center;
     }
 
-    .profile-header {
-        flex-direction: column;
-        text-align: center;
+    .page-title {
+        font-size: 1.25rem;
     }
 
-    .profile-meta {
-        justify-content: center;
-    }
-
-    .profile-body {
-        grid-template-columns: 1fr;
-        gap: 0.75rem;
-        padding: 1rem;
-    }
-
-    .direccion-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 0.5rem;
-    }
-
-    .detail-card {
+    .tab-panel {
         padding: 1.25rem;
     }
 
-    .table-modern thead th,
-    .table-modern tbody td {
-        padding: 0.5rem 0.6rem;
-        font-size: 0.8rem;
+    .tab-btn {
+        padding: 0.85rem 1rem;
+        font-size: 0.82rem;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .info-card {
+        padding: 1.25rem;
+    }
+
+    .personas-list {
+        grid-template-columns: 1fr;
+    }
+
+    .section-block-title {
+        font-size: 0.9rem;
     }
 }
 
 @media (max-width: 480px) {
-    .page-header-icon {
-        width: 44px;
-        height: 44px;
-        font-size: 1.2rem;
-    }
-
     .page-title {
-        font-size: 1.2rem;
-    }
-
-    .profile-avatar {
-        width: 64px;
-        height: 64px;
-        font-size: 1.4rem;
-    }
-
-    .profile-info h2 {
         font-size: 1.1rem;
     }
 
-    .profile-meta {
-        flex-direction: column;
-        align-items: center;
-        gap: 0.5rem;
+    .tab-panel {
+        padding: 1rem;
     }
 
-    .detail-card-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5rem;
+    .tab-btn {
+        padding: 0.75rem 0.85rem;
+        font-size: 0.78rem;
     }
 
-    .direccion-grid {
-        grid-template-columns: 1fr;
+    .info-card,
+    .participacion-actual,
+    .participacion-inactiva-box,
+    .nombre-vigente-box {
+        padding: 1rem;
     }
 
-    .webs-list {
-        flex-direction: column;
+    .info-row dt {
+        font-size: 0.68rem;
+    }
+
+    .info-row dd {
+        font-size: 0.88rem;
+    }
+
+    .nombre-vigente-texto {
+        font-size: 1rem;
     }
 }
 </style>
+
+<script>
+// ============================================================
+// NAVEGACIÓN POR PESTAÑAS
+// ============================================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabPanels = document.querySelectorAll('.tab-panel');
+    
+    function activarTab(tabId) {
+        tabButtons.forEach(function(btn) {
+            btn.classList.toggle('active', btn.dataset.tab === tabId);
+        });
+        tabPanels.forEach(function(panel) {
+            panel.classList.toggle('active', panel.id === tabId);
+        });
+        
+        // Actualizar hash sin scroll
+        if (history.replaceState) {
+            history.replaceState(null, '', '#' + tabId);
+        }
+    }
+    
+    tabButtons.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            activarTab(this.dataset.tab);
+        });
+    });
+    
+    // Botones internos que llevan a otra pestaña
+    document.querySelectorAll('[data-goto-tab]').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            activarTab(this.dataset.gotoTab);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    });
+    
+    // Si hay hash en la URL, activar la pestaña correspondiente
+    if (window.location.hash) {
+        const hash = window.location.hash.substring(1);
+        const targetBtn = document.querySelector('.tab-btn[data-tab="' + hash + '"]');
+        if (targetBtn) {
+            activarTab(hash);
+        }
+    }
+});
+</script>
 
 <?php include 'template/footer.php'; ?>
